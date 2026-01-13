@@ -1,0 +1,29 @@
+.wrapper {
+  background: #fbf6ee;
+  border-radius: 28px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: 30px auto;
+  font-family: "Roboto", sans-serif;
+}
+
+.title {
+  font-size: 28px;
+  color: #5a7c5a;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-family: "RocaTwo-Bold";
+}
+
+.subtitle {
+  font-size: 24px;
+  color: #6d8a6d;
+  margin-bottom: 42px;
+  font-family: 'Roboto';
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 32px;
+  }
+}

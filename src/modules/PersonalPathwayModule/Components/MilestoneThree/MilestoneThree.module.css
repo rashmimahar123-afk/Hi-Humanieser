@@ -1,0 +1,42 @@
+.cardWrapper {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CARD */
+.card {
+  position: relative;
+}
+
+/* TEXT – free from image size */
+.cardText {
+  position: absolute;
+  top: 30px;
+  left: -18px;             
+  width: 119px;             
+  text-align: center;
+
+  font-family: "RocaTwo";
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #0F4F58;
+
+  pointer-events: none;     /* optional */
+}
+
+/* TILT */
+.leftCard {
+  transform: rotate(-6deg);
+  margin-top: -85px;
+}
+
+/* ARROW */
+.arrowLeft {
+  position: absolute;
+  top: -105px;
+  left: -48px;
+}
