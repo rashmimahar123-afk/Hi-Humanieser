@@ -21,11 +21,6 @@
 .DS_Store
 *.pem
 
-node_modules/
-.next/
-.env
-.env.local
-
 
 # debug
 npm-debug.log*
