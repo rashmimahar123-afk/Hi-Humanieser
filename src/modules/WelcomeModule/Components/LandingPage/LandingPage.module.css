@@ -1,0 +1,44 @@
+.mainHeading {
+  font-size: 74px;
+  font-family: RocaTwo-Bold, serif;
+  margin-left: 49px;
+  margin-top: 55px;
+  margin-bottom:12px
+}
+
+.headSpan{
+    font-size: 20.8px;
+  font-weight: 400;
+  font-family: RocaTwo-Bold, serif;
+}
+
+.description{
+     margin-left: 58px;
+}
+.descParagraph{
+    font-size: 21px;
+  font-family: Roboto, sans-serif;
+}
+
+.goBtn{
+      position: absolute;
+    bottom: -2%;
+    left: -28%;
+}
+.goBtnText{
+    width: 137px;
+}
+.goBtnSpan{
+    font-family: RocaTwo-Bold, serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+.infoBox{
+    margin-top: 50px;
+}
+.infoBoxText{
+      font-family: RocaTwo-Bold, serif;
+  font-size: 18px;
+  color: #0F4F58;
+  text-align: center;
+}

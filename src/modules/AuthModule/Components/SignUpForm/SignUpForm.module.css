@@ -1,0 +1,54 @@
+.chatbotWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  padding-right: 60px;
+}
+
+.chatbotInner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* BOT IMAGE */
+.chatbotIcon img {
+  width: 48px;
+  height: auto;
+}
+
+/* TEXT — NO WHITE BG */
+.chatbotText {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #000000;
+  max-width: 223px;
+}
+
+.chatbotText strong {
+  font-weight: 600;
+  font-family: 'Aptos';
+}
+.footerFrame{
+        margin-top: 18px;
+    align-items: center;
+    font-family: "League Spartan";
+    
+}
+.footerFrame p{
+    font-family: "RocaTwo-Bl";
+    font-size: 28px;
+    width: 840px;
+}
+.leftArrow{
+        position: absolute;
+    left: 19%;
+    top: -13%;
+
+}
+.rightArrow{
+        position: absolute;
+    right: 19%;
+    top: -13%;
+
+}

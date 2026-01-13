@@ -1,0 +1,94 @@
+.wrapper {
+  background: #fbf6ee;
+  border-radius: 28px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: 18px auto;
+  font-family: "Roboto", sans-serif;
+}
+
+.title {
+  font-size: 28px;
+  color: #5a7c5a;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-family: "RocaTwo-Bold";
+}
+
+.subtitle {
+  font-size: 24px;
+  color: #6d8a6d;
+  margin-bottom: 42px;
+  font-family: 'Roboto';
+}
+
+.cardRow {
+  display: flex;
+  justify-content: center;
+
+}
+
+.cardWrapper {
+  position: relative;
+}
+
+/* CARD CONTAINER */
+.card {
+  position: relative;
+  width: 280px;
+  height: 170px;
+}
+
+/* BACKGROUND IMAGE */
+.cardBg {
+  object-fit: contain;
+  z-index: 1;
+}
+
+/* TEXT OVER IMAGE */
+.cardText {
+  position: absolute;
+  inset: 0; /* full cover */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 28px;
+  font-family: "RocaTwo-Bold";
+  color: #0F4F58;
+  z-index: 2;
+  line-height: 1.2;
+  font-weight: bold;
+
+}
+
+
+/* LEFT arrow (UPPER LEFT of text) */
+.arrowLeft {
+      position: absolute;
+    transform: rotate(180deg);
+    top: -18%;
+    left: -4%;
+  z-index: 1;
+   
+ 
+}
+
+/* RIGHT arrow (UPPER RIGHT of text) */
+.arrowRight {
+  position: absolute;
+    bottom:89%;
+  left:82%;
+  z-index: 1;
+      transform: rotate(121deg); 
+
+}
+
+
+@media (max-width: 640px) {
+
+
+  .wrapper {
+    padding: 32px;
+  }
+}
