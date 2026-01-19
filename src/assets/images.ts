@@ -145,6 +145,10 @@ import privacyFooterPoly from "../../public/images/privacyFooterPoly.png";
 import startPoly from "../../public/images/startPoly.png";
 import pathwayPoly from "../../public/images/pathwayPoly.png";
 import journeyPoly from "../../public/images/journeyPoly.png";
+import dotsPattern from "../../public/images/dotsPattern.png";
+import sixDots from "../../public/images/sixDots.png";
+import maria from "../../public/images/maria.png";
+import teamDot from "../../public/images/teamDot.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -293,6 +297,10 @@ type imageTypes = {
   startPoly: StaticImageData;
   pathwayPoly: StaticImageData;
   journeyPoly: StaticImageData;
+  dotsPattern: StaticImageData;
+  sixDots: StaticImageData;
+  maria: StaticImageData;
+  teamDot: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -442,6 +450,10 @@ const Images: imageTypes = {
   startPoly,
   pathwayPoly,
   journeyPoly,
+  dotsPattern,
+  sixDots,
+  maria,
+  teamDot,
 };
 
 export default Images;

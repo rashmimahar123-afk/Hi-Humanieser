@@ -25,7 +25,7 @@ function MyTeamJourney() {
         enter ? styles.enterActive : styles.enter
       }`}
     >
-      <UserProfileHeader />
+      <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
 
       <SuccessMessage
         text="Great to see you again — ready to explore?"

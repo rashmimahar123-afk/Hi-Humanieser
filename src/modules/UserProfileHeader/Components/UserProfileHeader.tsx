@@ -27,7 +27,7 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
           </div>
 
           <h1
-            className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
+            className="mt-4 text-[56px]  font-bold leading-[40%]"
             style={{ fontFamily: "RocaTwo-Bold", color: nameColor }}
           >
             Hi Maria!
@@ -37,8 +37,8 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
         {!hideUserProfile && (
           <div className="flex items-start gap-3">
             <div
-              className="text-right text-[#0F4F58] font-semibold mt-[28px] "
-              style={{ fontFamily: "Aptos" }}
+              className={"text-right font-semibold mt-[28px] "}
+              style={{ fontFamily: "Aptos", color: greetingColor }}
             >
               Maria
               <br />

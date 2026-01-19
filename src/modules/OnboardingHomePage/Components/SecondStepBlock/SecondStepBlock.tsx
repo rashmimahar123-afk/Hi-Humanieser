@@ -2,8 +2,10 @@ import React from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./SecondStepBlock.module.css";
+import { useRouter } from "next/navigation";
 
 function SecondStepBlock() {
+  const router = useRouter();
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Step 2 - Choose Your Starting Point</h2>
@@ -26,7 +28,10 @@ function SecondStepBlock() {
           />
 
           {/* CARD */}
-          <div className={styles.card}>
+          <div
+            className={styles.card}
+            onClick={() => router.push("personal-pathway")}
+          >
             <Image
               src={images.secondStepImg}
               alt="card shape"
@@ -44,7 +49,10 @@ function SecondStepBlock() {
         </div>
 
         {/* RIGHT CARD */}
-        <div className={styles.cardWrapper}>
+        <div
+          className={styles.cardWrapper}
+          onClick={() => router.push("my-team")}
+        >
           <Image
             src={images.arrowImg}
             alt="arrow"
