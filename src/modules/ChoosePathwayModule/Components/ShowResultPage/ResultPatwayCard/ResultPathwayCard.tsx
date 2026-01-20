@@ -14,12 +14,11 @@ function ResultPathwayCard(props: RESULT_PATHWAY_CARD_PROPS) {
   return (
     <div
       className={`
-        w-[294px] h-[326px]
+        w-[365px] h-[326px]
         bg-[#F5C882]
         rounded-[12px]
         px-6 py-8
         flex flex-col justify-between
-      
         ${selected ? "ring-2 ring-[#0F4F58]" : ""}
       `}
     >
@@ -41,19 +40,16 @@ function ResultPathwayCard(props: RESULT_PATHWAY_CARD_PROPS) {
       </div>
 
       {/* Actions */}
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-end gap-4">
         <button
           onClick={onLearnMore}
-          className="px-4 py-1 bg-[#F8E1B8] rounded-full text-[#0F4F58] text-[18px] ml-[121px]"
+          className="px-4 py-1 bg-[#F8E1B8] rounded-full text-[#0F4F58] text-[18px] "
           style={{ fontFamily: "RocaTwo-Bold" }}
         >
           learn more
         </button>
 
-        <div
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={onSelect}
-        >
+        <div className="flex gap-2 cursor-pointer" onClick={onSelect}>
           <span
             className="text-[16px] text-[#0F4F58]"
             style={{ fontFamily: "Aptos" }}
@@ -61,7 +57,7 @@ function ResultPathwayCard(props: RESULT_PATHWAY_CARD_PROPS) {
             choose pathway
           </span>
 
-          <span className="w-[15px] h-[17px] bg-[#86C9C9] clip-triangle" />
+          <span className="w-[21px] h-[23px] bg-[#86C9C9] clip-triangle" />
           {/* <div
             className={`
               w-4 h-4 rounded

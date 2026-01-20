@@ -78,7 +78,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
               (a) notice it but keep my focus on my own work
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -104,7 +104,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) check in gently when the moment feels right
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -130,7 +130,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) ask directly and make sure they know I’m here to support
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -217,7 +217,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
               (a) let the conversation move on
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -243,7 +243,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) wait for a pause and invite them back in
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -269,7 +269,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) address it directly and call out the behaviour
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -356,7 +356,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
               (a) asking me to repeat or clarify
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -382,7 +382,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) understanding me in the moment, but not always acting on it
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -408,7 +408,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) clear on next steps and confident about what to do
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -495,7 +495,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
               (a) remember the main points but miss some details
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -521,7 +521,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) recall both what was said and how the person felt
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -547,7 +547,7 @@ function SecondEightQuestions(props: SECOND_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) realise I was half-listening and need to ask again later
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 

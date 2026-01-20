@@ -66,7 +66,7 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
       <div className="flex">
         {" "}
         {/* Overlay content */}
-        <div className="px-12 py-10 flex justify-between">
+        <div className=" px-8 py-6 flex justify-between">
           {/* Left */}
           <div>
             <div
@@ -77,12 +77,12 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
             </div>
 
             <h1
-              className="mt-4 text-[56px] text-[#0F4F58] font-bold "
+              className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
               Hi Maria!
             </h1>
-            <div className="flex justify-center ">
+            <div className="flex justify-center mt-[40px]">
               <div>
                 <h2
                   className=" text-[45px] text-[#567F55] font-bold"

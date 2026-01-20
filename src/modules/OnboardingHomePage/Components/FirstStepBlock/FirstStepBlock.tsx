@@ -72,7 +72,8 @@ function FirstStepBlock() {
             <p>
               Your progress, all in one place. Track completed milestones, see
               your active micro-actions, and notice patterns in your
-              reflections.
+              reflections. You can also download a summary of your journey —
+              ready to bring into your performance review or appraisal.
             </p>
           </div>
         </div>
@@ -87,11 +88,12 @@ function FirstStepBlock() {
               />
             </div>
             <div className={styles.cardContent}>
-              <h3>Team Reflections</h3>
+              <h3>Reflection Walls</h3>
               <p>
                 A shared space to capture your team’s reflections. Pin your
                 thoughts anonymously, see what others notice, and give a quick
-                “like” when something resonates.
+                “like” when something resonates. Over time, these walls grow
+                into a living record of your team’s journey.
               </p>
             </div>
           </div>
@@ -108,9 +110,10 @@ function FirstStepBlock() {
             <div className={styles.cardContent}>
               <h3>Resources & Inspiration</h3>
               <p>
-                Here’s where everything comes together – the principles,
-                pathways, and tools that bring Hi Humaniser to life. You’ll also
-                find Huma, your companion for reflection and clarity.
+                Here’s where everything comes together: the principles,
+                pathways, and tools that bring Hi Humaniser! to life. You’ll
+                find curated insights and practical guidance designed to help
+                you pause, reflect, and reconnect with what matters.
               </p>
             </div>
           </div>

@@ -80,7 +80,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
             </span>
 
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -107,7 +107,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               (b) reflect on what I could learn from it
             </span>
 
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -134,7 +134,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               (c) talk it through with others to see what we can all take away
             </span>
 
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -221,7 +221,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               (a) feel a bit defensive
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -247,7 +247,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) get curious about their perspective
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -274,7 +274,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               (c) I listen a little, but don’t always explore their perspective
               fully
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -361,7 +361,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               (a) keep quiet and hope it’s not noticed
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -387,7 +387,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) acknowledge it and suggest how to fix it
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -413,7 +413,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) share it openly so others can learn too
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -500,7 +500,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               (a) rely mainly on my own perspective
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -526,7 +526,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) check in with how it might look from different angles
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -552,7 +552,7 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) seek out other voices before moving forward
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 

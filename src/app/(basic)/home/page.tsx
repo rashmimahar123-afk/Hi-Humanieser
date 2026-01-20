@@ -1,15 +1,15 @@
 "use client";
-import HomePage from "@/src/modules/WelcomeModule/Components/HomePage/HomePage";
+import Home from "@/src/modules/WelcomeModule/Components/Home/Home";
 import React, { Suspense } from "react";
 
-function Home() {
+function HomePage() {
   return (
     <>
       <Suspense fallback={"Loading..."}>
-        <HomePage />
+        <Home />
       </Suspense>
     </>
   );
 }
 
-export default Home;
+export default HomePage;

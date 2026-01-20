@@ -69,7 +69,7 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
       <div className="flex">
         {" "}
         {/* Overlay content */}
-        <div className="px-12 py-10 flex justify-between">
+        <div className="px-8 py-6 flex justify-between">
           {/* Left */}
           <div>
             <div
@@ -80,7 +80,7 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
             </div>
 
             <h1
-              className="mt-4 text-[56px] text-[#0F4F58] font-bold "
+              className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
               Hi Maria!
@@ -88,7 +88,7 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center mt-[40px]">
         <div className="max-w-[1000px] bg-white rounded-2xl px-8 py-8 relative">
           <div className="w-full">
             <header>

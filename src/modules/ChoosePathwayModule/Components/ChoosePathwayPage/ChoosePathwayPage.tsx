@@ -3,6 +3,8 @@ import images from "@/src/assets/images";
 import styles from "./ChoosePathwayPage.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
+import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 
 function ChoosePathwayPage() {
   const router = useRouter();
@@ -16,108 +18,27 @@ function ChoosePathwayPage() {
     <>
       <div
         className={`
-    min-h-screen bg-[#8BBE8A]
+    min-h-screen bg-[#8BBE8A] px-8 py-6 z-10 relative
     ${styles.page}
     ${enter ? styles.enterActive : styles.enterFromLeft}
   `}
       >
         <Image
-          src={images.pathwayPolygon}
-          alt="sky-rec"
-          width={620}
-          height={340}
-          priority
-          className="absolute top-0 right-0 z-0"
+          src={images.quizPolygon}
+          alt="quiz-polygon"
+          width={830}
+          height={830}
+          className="absolute top-0 right-0 -z-10 pointer-events-none"
         />
-        <div className="flex">
-          {" "}
-          {/* Overlay content */}
-          <div className="absolute inset-0 px-12 py-10 flex justify-between">
-            {/* Left */}
-            <div>
-              <div
-                className="text-[#FFFFFF]"
-                style={{ fontFamily: "Aptos", fontSize: "22px" }}
-              >
-                Hi Humaniser!{" "}
-                <span className="align-super text-[0.7em]">™</span>
-              </div>
+        <UserProfileHeader greetingColor="#FFFFFF" nameColor="#FFFFFF" />
+        <SuccessMessage
+          text="Your presence is one of your strongest tools
+"
+          fontSize="text-[30px]"
+          leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+          rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+        />
 
-              <h1
-                className="mt-4 text-[56px] text-[#0F4F58] font-bold "
-                style={{ fontFamily: "RocaTwo-Bold" }}
-              >
-                Hi Maria!
-              </h1>
-            </div>
-
-            {/* Right profile */}
-            <div className="flex items-start gap-3">
-              <div
-                className="text-right text-[#0F4F58] font-semibold mt-[28px] "
-                style={{ fontFamily: "Aptos" }}
-              >
-                Maria
-                <br />
-                Palacios
-              </div>
-              <div className="relative w-[120px] h-[120px]">
-                {/* Green shape */}
-                <Image
-                  src={images.greenRec}
-                  alt="Decorative Rectangle"
-                  fill
-                  className="object-contain"
-                />
-
-                {/* Circular profile image */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white">
-                    <Image
-                      src={images.userProfile}
-                      alt="Profile Picture"
-                      width={80}
-                      height={80}
-                      className="object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={`relative flex justify-center ${styles.borderFrame}`}>
-          {/* Left decoration */}
-          <Image
-            src={images.pathwayArrowLeft}
-            alt="Arrow Right"
-            width={40}
-            height={40}
-          />
-
-          {/* Banner text */}
-          <h2
-            className="text-white text-center font-bold"
-            style={{
-              fontFamily: "League Spartan",
-              fontSize: "24px",
-              color: "#FFFFFF",
-              marginTop: "62px",
-            }}
-          >
-            Reflection is not time wasted - it’s
-            <br />
-            performance fuel
-          </h2>
-          {/* Right decoration */}
-
-          <Image
-            src={images.pathwayArrowRight}
-            alt="Arrow Right"
-            width={40}
-            height={40}
-          />
-        </div>
         <div className={`flex justify-center mt-[40px]`}>
           <div className="relative mb-[50px]">
             {/* Background shape */}
@@ -202,7 +123,7 @@ function ChoosePathwayPage() {
 
                     <div
                       className={`${styles.cardText} cursor-pointer`}
-                      onClick={() => router.push("/myself")}
+                      onClick={() => router.push("/choose-myself")}
                     >
                       Choose
                       <br />

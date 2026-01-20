@@ -45,7 +45,6 @@
   line-height: 100%; /* Figma */
   color: #0F4F58;
 
-  text-decoration: underline;
   white-space: nowrap;
   pointer-events: none;
 }

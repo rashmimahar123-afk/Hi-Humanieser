@@ -131,7 +131,7 @@ function SavePathway() {
 
                 <div
                   className={`${styles.cardText} cursor-pointer`}
-                  onClick={() => router.push("/myself")}
+                  onClick={() => router.push("/choose-myself")}
                 >
                   Choose
                   <br />

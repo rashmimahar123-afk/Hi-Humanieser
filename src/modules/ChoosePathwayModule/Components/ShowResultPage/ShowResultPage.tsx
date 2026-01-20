@@ -52,10 +52,10 @@ function ShowResultPage() {
     >
       <div className="relative">
         <Image
-          src={images.blueGreenPoly}
+          src={images.quizPolygon}
           alt="login-rectangle"
-          width={530}
-          height={530}
+          width={830}
+          height={830}
           className="absolute top-0 right-0 z-0"
         />
       </div>
@@ -63,7 +63,7 @@ function ShowResultPage() {
       <div className="flex">
         {" "}
         {/* Overlay content */}
-        <div className="px-12 py-10 flex justify-between">
+        <div className="px-8 py-6 flex justify-between">
           {/* Left */}
           <div>
             <div
@@ -74,7 +74,7 @@ function ShowResultPage() {
             </div>
 
             <h1
-              className="mt-4 text-[56px] text-[#0F4F58] font-bold "
+              className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
               Hi Maria!
@@ -82,7 +82,7 @@ function ShowResultPage() {
           </div>
         </div>
       </div>
-      <div className="ml-[76px]">
+      <div className="ml-[76px] mt-[40px]">
         <div>
           <div>
             <h2
@@ -209,7 +209,7 @@ function ShowResultPage() {
                   your strengths shine, and where there’s room to grow:
                 </p>
                 {/* PILLARS GRID */}
-                <div className="mt-[40px] ml-[65px]">
+                <div className="mt-[40px]">
                   <div className="grid grid-cols-3 gap-[60px] text-center ">
                     {/* Pillar 1 */}
                     <div className="flex flex-col items-center">
@@ -338,7 +338,7 @@ function ShowResultPage() {
                   milestones — understand the habit, choose your micro-actions,
                   and build it into your everyday.{" "}
                 </p>
-                <div className="mt-[40px] ml-[65px]">
+                <div className="mt-[40px]">
                   <div className="grid grid-cols-3 gap-[40px]">
                     {pathways.map((item) => (
                       <ResultPathwayCard

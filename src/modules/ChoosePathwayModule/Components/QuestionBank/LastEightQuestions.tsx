@@ -79,7 +79,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
               (a) adapt to how things are done
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -105,7 +105,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) share ideas on how we could improve day-to-day ways of working
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -131,7 +131,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) help shape team habits and ways of working together
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -218,7 +218,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
               (a) not notice at the time
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -244,7 +244,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) check in with them afterwards
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -270,7 +270,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) bring them back into the discussion straight away
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -357,7 +357,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
               (a) keep pushing until everything is done
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -383,7 +383,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) raise concerns about what’s realistic
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -409,7 +409,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) encourage the team to balance effort with recovery
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -496,7 +496,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
               (a) push for speed, even if it’s exhausting
             </span>
             {/* Triangle checkbox */}
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -522,7 +522,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (b) balance urgency with a steady rhythm
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
@@ -548,7 +548,7 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
             <span className="text-[19px] text-[#737373] font-[Aptos] font-[400]">
               (c) plan for a pace that can be maintained long term
             </span>
-            <span className="relative w-[15px] h-[17px]">
+            <span className="relative w-[21px] h-[23px]">
               {/* Triangle */}
               <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 

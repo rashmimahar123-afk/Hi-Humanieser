@@ -33,7 +33,7 @@ function MySelfPage() {
       <div className="flex">
         {" "}
         {/* Overlay content */}
-        <div className="absolute inset-0 px-12 py-10 flex justify-between">
+        <div className="absolute inset-0 px-8 py-6 flex justify-between">
           {/* Left */}
           <div>
             <div
@@ -44,12 +44,12 @@ function MySelfPage() {
             </div>
 
             <h1
-              className={`mt-4 text-[56px] text-[#0F4F58] font-bold`}
+              className={`mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]`}
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
               Hi Maria!
             </h1>
-            <div className="ml-[30px]">
+            <div className="ml-[30px] mt-[60px]">
               <h2
                 className=" text-[42px] text-[#567F55] font-bold"
                 style={{ fontFamily: "RocaTwo-Bold" }}
@@ -58,16 +58,16 @@ function MySelfPage() {
               </h2>
 
               <p
-                className="text-[22px] text-[#0f4f58] ml-[20px] w-[800px] "
+                className="text-[22px] text-[#0f4f58] ml-[20px]  "
                 style={{ fontFamily: "Aptos" }}
               >
                 Each Pathway is built around one of Hi Humaniser’s Principles —
                 think of it as your practical guide to bringing that idea to
                 life through small, real actions.
               </p>
-              <div className="mt-[40px] px-[40px]">
+              <div className="mt-[100px] px-[40px]">
                 <p
-                  className="text-[22px] text-[#0f4f58] max-w-[800px]"
+                  className="text-[22px] text-[#0f4f58] "
                   style={{ fontFamily: "Aptos" }}
                 >
                   Select up to two Pathways to start with. We’ll guide you step

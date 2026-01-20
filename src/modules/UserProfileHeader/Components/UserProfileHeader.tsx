@@ -38,7 +38,7 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
           <div className="flex items-start gap-3">
             <div
               className={"text-right font-semibold mt-[28px] "}
-              style={{ fontFamily: "Aptos", color: greetingColor }}
+              style={{ fontFamily: "Aptos", color: nameColor }}
             >
               Maria
               <br />

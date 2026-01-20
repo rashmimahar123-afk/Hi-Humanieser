@@ -33,19 +33,19 @@ function CustomDropdown() {
     <div className="flex items-center gap-8" ref={dropdownRef}>
       {/* Label */}
       <label
-        className="w-[160px] text-[#567F55] text-[20px]"
+        className="w-[200px] text-[#567F55] text-[22px]"
         style={{ fontFamily: "Roboto" }}
       >
         Gender (optional)
       </label>
 
       {/* Dropdown */}
-      <div className="relative w-[550px]">
+      <div className="relative w-[900px]">
         {/* Selected */}
         <div
           onClick={() => setOpen(!open)}
           className="
-            h-[47px]
+            h-[55px]
             bg-white
             rounded-full
             px-6

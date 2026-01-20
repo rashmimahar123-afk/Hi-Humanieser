@@ -81,14 +81,14 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                 fontFamily: "RocaTwo-Bold",
               }}
             >
-              Hi Humaniser!{" "}
+              Hi Humaniser!
               <span
                 className="font-bold align-top"
                 style={{
-                  fontSize: "20.8px",
-                  lineHeight: "100%",
+                  fontSize: "32px",
+                  lineHeight: "92px",
                   letterSpacing: "0%",
-                  marginLeft: "6px",
+
                   fontFamily: "RocaTwo-Bold, serif",
                 }}
               >
@@ -103,39 +103,42 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
       <main>
         <div className="px-16 pt-28">
           <h1
-            className="text-[44px] font-[400px] text-[#0F4F58]"
+            className="text-[44px] font-[400px] text-[#0F4F58] font-bold"
             style={{ fontFamily: "Roca-Two" }}
           >
-            Reset your password
+            Forgot your password
           </h1>
           <p
             className="text-[#0F4F58] mt-2 "
-            style={{ fontFamily: "Roboto", fontSize: "20px" }}
+            style={{
+              fontFamily: "Roboto",
+              fontSize: "24px",
+              lineHeight: "10px",
+            }}
           >
-            Forgot your password? No worries — we’ve got you covered.
+            No worries — we’ve got you covered.
           </p>
         </div>
 
         {/* Center Card */}
-        <div className="flex justify-center mt-20">
-          <div className="relative w-[520px] bg-white rounded-xl p-8">
+        <div className="ml-[230px] mt-20">
+          <div className="relative w-[800px] bg-white rounded-xl p-10">
             <p
               className="text-center text-[#0F4F58]  mb-8"
-              style={{ fontFamily: "Aptos", fontSize: "21px" }}
+              style={{ fontFamily: "Aptos", fontSize: "25px" }}
             >
-              Enter the email address you used for Hi Humaniser,
-              <br />
-              and we’ll send you a secure link to reset your password
+              Enter the email address you used for Hi Humaniser, and we’ll send
+              you a secure link to reset your password
             </p>
 
             <form>
               {/* Email Input */}
               <div
-                className={`flex items-center gap-3 bg-[#F3E6D2] rounded-lg px-4 py-3 border ${
+                className={`flex items-center gap-3 bg-[#F3E6D2] rounded-lg px-4 py-4 border ${
                   errors.email ? "border-red-500" : "border-transparent"
                 }`}
               >
-                <Image src={images.email} alt="email" width={22} height={22} />
+                <Image src={images.email} alt="email" width={32} height={32} />
                 <input
                   type="email"
                   placeholder="Email Address"
@@ -166,19 +169,35 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                   Back to login
                 </button> */}
                 <button
-                  type="submit"
-                  className="relative cursor-pointer "
+                  type="button"
                   onClick={onBack}
+                  className="
+    h-[44px]
+    px-8
+    rounded-[12px]
+    bg-[#E9B97A]
+    flex
+    items-center
+    justify-center
+    cursor-pointer
+  
+    transition
+    mt-[50px]
+  "
                 >
-                  {/* Polygon */}
-
-                  {/* Text */}
-                  <div style={{ fontFamily: "RocaTwo" }}>
-                    <span className="text-[22px] leading-none whitespace-nowrap ">
-                      Back To Login
-                    </span>
-                  </div>
+                  <span
+                    style={{
+                      fontFamily: "Roboto",
+                      fontSize: "20px",
+                      fontWeight: 500,
+                      color: "#737373",
+                      lineHeight: "100%",
+                    }}
+                  >
+                    Back to sign up
+                  </span>
                 </button>
+
                 <button type="submit" className="relative cursor-pointer ">
                   {/* Polygon */}
                   <Image

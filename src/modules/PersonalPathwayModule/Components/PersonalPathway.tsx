@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import PracticePerspective from "./PracticePerspective/PracticePerspective";
 import styles from "./PersonalPathway.module.css";
+import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 
 function PersonalPathway() {
   const router = useRouter();
@@ -54,52 +55,38 @@ function PersonalPathway() {
 
   return (
     <div
-      className={`min-h-screen bg-[#4BA6A6] p-6 font-sans ${styles.page} ${
-        enter ? styles.enterActive : styles.enter
-      }`}
+      className={`relative min-h-screen bg-[#4BA6A6] px-8 py-6 font-sans z-10
+  ${styles.page} ${enter ? styles.enterActive : styles.enter}`}
     >
+      <Image
+        src={images.quizPolygon}
+        alt="quiz-polygon"
+        width={630}
+        height={630}
+        className="absolute top-0 right-0 -z-10 pointer-events-none"
+      />
+
       {/* Header */}
-      <UserProfileHeader />
-      <div className="flex items-center justify-center ">
-        {/* Left decoration */}
-        <Image
-          src={images.arrowImg}
-          alt="Left decoration"
-          width={40}
-          height={40}
-          className="shrink-0"
-        />
-
-        {/* Banner text */}
-        <h2
-          className="text-[#0F4F58] text-center font-bold text-[30px] leading-snug -mr-[10px]"
-          style={{ fontFamily: "League Spartan" }}
-        >
-          Great to see you again — ready to explore?
-        </h2>
-
-        {/* Right decoration */}
-        <Image
-          src={images.leftArrowImg}
-          alt="Right decoration"
-          width={60}
-          height={60}
-          className="shrink-0"
-        />
-      </div>
+      <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
+      <SuccessMessage
+        text="Great to see you again — ready to explore?"
+        fontSize="text-[30px]"
+        leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+        rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+      />
 
       {/* Card */}
-      <div className="mt-10 bg-[#F5F0EB] rounded-2xl shadow-lg max-w-[1054px] mx-auto p-8">
-        <div className="max-w-[987px]">
+      <div className="mt-10 bg-[#F5F0EB] rounded-2xl shadow-lg max-w-[1200px] mx-auto p-10">
+        <div className="max-w-[1135px]">
           <h2 className="text-[51px] font-[RocaTwo-Bold] text-[#0F4F58] font-bold flex justify-center">
             My Personal Pathway
           </h2>
 
-          <p className="mt-4 text-[#0F4F58] font-[700] font-[Roboto] text-[20px]">
-            Your chosen pathways — ready when you are. CURRENT JOURNEY{" "}
+          <p className="mt-4 text-[#0F4F58] font-[700] font-[Roboto] text-[24px]">
+            Your chosen pathways — ready when you are.
           </p>
 
-          <p className="mt-2 text-[#0F4F58] text-[20px] font-[Roboto] font-[400] ml-[20px]">
+          <p className="mt-2 text-[#0F4F58] text-[20px] font-[Roboto] font-[400] ml-[24px]">
             Every Pathway leads you through 3 milestones — learn it, choose your
             micro-actions, and start weaving the habit into your everyday.
           </p>
@@ -115,14 +102,16 @@ function PersonalPathway() {
                   width={93}
                   height={83}
                 />
-                <h3 className="font-[700] font-[Canva Sans] text-[19px] text-[#3C4C59]">
+                <h3 className="font-[700] font-[Canva Sans] text-[21px] text-[#3C4C59]">
                   Practice Perspective
                 </h3>
               </div>
 
-              <div className="flex items-center gap-6">
-                <button className="text-[15px] text-[#567F55] w-[51px] ">
-                  view details
+              <div className="grid grid-cols-[70px_70px_120px_80px] items-center gap-12">
+                <button className="text-[15px] text-[#567F55] text-left leading-tight ml-[57px]">
+                  view
+                  <br />
+                  details
                 </button>
                 <div
                   className="relative cursor-pointer"
@@ -139,7 +128,6 @@ function PersonalPathway() {
                     alt="path-eye"
                     width={59}
                     height={37}
-                    className="mb-[20px]"
                   />
 
                   {pathname !== null && (
@@ -157,18 +145,19 @@ function PersonalPathway() {
                   alt="path-eye"
                   width={102}
                   height={102}
-                  className="-mb-[16px]"
                 />{" "}
-                <div className="relative">
+                <div className="relative flex items-center justify-center">
                   <Image
                     src={images.practicePoly}
-                    alt="path-eye"
+                    alt="poly"
                     width={59}
                     height={80}
-                  />{" "}
-                  <button className="text-[#0F4F58] font-[RocaTwo-Bold] text-[18px] font-bold absolute top-[20px]">
-                    Explore Pathway
-                  </button>
+                  />
+                  <span className="absolute text-[#0F4F58] font-[RocaTwo-Bold] text-[20px] font-bold text-center leading-tight">
+                    Explore
+                    <br />
+                    Pathway
+                  </span>
                 </div>
               </div>
             </div>
@@ -189,13 +178,13 @@ function PersonalPathway() {
                   width={93}
                   height={83}
                 />
-                <h3 className="font-[700] font-[Canva Sans] text-[19px] text-[#3C4C59]">
+                <h3 className="font-[700] font-[Canva Sans] text-[21px] text-[#3C4C59] max-w-[400px]">
                   Wellbeing is Performance Infraestructure
                 </h3>
               </div>
 
-              <div className="flex items-center gap-6">
-                <button className="text-[15px] text-[#567F55] w-[51px] ">
+              <div className="grid grid-cols-[70px_70px_120px_80px] items-center gap-12">
+                <button className="text-[15px] text-[#567F55] text-left leading-tight ml-[57px]">
                   view details
                 </button>
                 <Image
@@ -219,7 +208,7 @@ function PersonalPathway() {
                     width={59}
                     height={80}
                   />{" "}
-                  <button className="text-[#0F4F58] font-[RocaTwo-Bold] text-[18px] font-bold absolute top-[20px]">
+                  <button className="text-[#0F4F58] font-[RocaTwo-Bold] text-[20px] font-bold absolute top-[20px]">
                     Explore Pathway
                   </button>
                 </div>

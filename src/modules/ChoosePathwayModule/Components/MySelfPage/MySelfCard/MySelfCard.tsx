@@ -94,7 +94,7 @@ function MySelfCard(props: MYSELF_CARD_PROPS) {
                   <div className="flex items-center gap-[10px] text-[#0F4F58]">
                     <span>choose pathway</span>
                     <span
-                      className={`w-[15px] h-[17px] clip-triangle`}
+                      className={`w-[21px] h-[23px]  clip-triangle`}
                       style={{ backgroundColor: card.learnMoreColor }}
                     />
                   </div>

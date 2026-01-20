@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import images from "@/src/assets/images";
-import styles from "./DashboardPage.module.css";
+import styles from "./Home.module.css";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ type DASHBOARD_BOX = {
   imageSrc: StaticImageData;
   badge?: string;
 };
-function DashboardPage() {
+function Home() {
   const boxes: DASHBOARD_BOX[] = [
     {
       id: 1,
@@ -79,7 +79,7 @@ function DashboardPage() {
 
         <SuccessMessage
           text="Great to see you again — ready to explore?"
-          fontSize="text-[21px]"
+          fontSize="text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
         />
@@ -97,7 +97,7 @@ function DashboardPage() {
                 className="rounded-3xl overflow-hidden"
                 style={{
                   backgroundColor: box.bgColor,
-                  height: "240px",
+                  height: "220px",
                 }}
               >
                 <div className="relative w-full h-full">
@@ -106,25 +106,24 @@ function DashboardPage() {
                     src={box.imageSrc}
                     alt={box.title}
                     fill
-                    className="object-contain"
+                    className="object-contain "
+                    style={{
+                      transform: "scaleX(1.10)",
+                    }}
                   />
 
                   {/* TEXT INSIDE POLYGON */}
                   <div
                     className="absolute inset-0 flex items-center"
                     style={{
-                      paddingLeft: "81px",
+                      paddingLeft: "110px",
                     }}
                   >
-                    <div
-                      style={{
-                        maxWidth: "70%",
-                      }}
-                    >
+                    <div style={{ maxWidth: "80%" }}>
                       <span
                         style={{
                           fontFamily: "RocaTwo-Bold",
-                          fontSize: "32px",
+                          fontSize: "34px",
                           lineHeight: "100%",
                           color: "#0F4F58",
                           textTransform: "uppercase",
@@ -179,12 +178,12 @@ function DashboardPage() {
               </div>
 
               {/* TEXT SECTION */}
-              <div className="mt-4 pl-2">
+              <div className="mt-4 flex justify-center text-center">
                 <p
-                  className="mt-1 font-bold"
+                  className="mt-1 font-bold "
                   style={{
                     fontFamily: "Roboto",
-                    fontSize: "19px",
+                    fontSize: "24px",
                     color: "#0F4F58",
                   }}
                 >
@@ -199,4 +198,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export default Home;

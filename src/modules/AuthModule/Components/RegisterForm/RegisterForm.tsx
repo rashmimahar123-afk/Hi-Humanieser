@@ -2,62 +2,102 @@ import React from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./RegisterForm.module.css";
-import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import SignUpModal, { openSignupModal } from "../SignUpModal/SignUpModal";
+import Link from "next/link";
 
 function RegisterForm() {
   return (
     <>
       <div className="min-h-screen bg-[#FBE6BF]">
         <Image
-          src={images.greenBluePolygon}
-          alt="register-rectangle"
-          width={630}
-          height={630}
-          className="absolute top-0 right-0 z-0"
+          src={images.skyRec}
+          alt="sky-rec"
+          width={620}
+          height={340}
+          priority
+          className="absolute top-65 right-0 z-0"
+        />
+        <div
+          className="absolute top-85 right-21 z-0"
+          style={{ fontFamily: "roboto" }}
+        >
+          <div className="flex items-center justify-center mb-6">
+            <p className="text-[#567F55] text-[23px] leading-relaxed max-w-[500px] text-center">
+              You`ll have full access for 10 days to move at your own pace —
+              discovering pathways, micro-actions, dashboards, and the rhythms
+              that help teams work in healthier, more human ways.
+            </p>
+          </div>
+          <h3 className="text-[28px] font-bold text-[#0F4F58] text-center">
+            No credit card required — just curiosity.
+          </h3>
+        </div>
+        <Image
+          src={images.homeArrow}
+          alt="home-arrow"
+          width={70}
+          height={70}
+          className="absolute top-[450px] right-9 z-10 -rotate-54"
         />
         {/* HERO IMAGE SECTION */}
-        <div>
-          <div className="relative w-full h-[330px]">
-            {/* Overlay content */}
-            <div className="absolute inset-0 py-4 flex justify-between">
-              {/* Left */}
-              <div>
-                <h2
-                  className="text-[48px] text-[#0F4F58] font-bold"
-                  style={{ fontFamily: "RocaTwo-Bold", marginLeft: "76px" }}
+        <div className="relative w-full h-[380px]">
+          {" "}
+          <div className="relative ">
+            <Image
+              src={images.homeRec}
+              alt="onboard-rec"
+              width={540}
+              height={640}
+            />
+          </div>
+          {/* Overlay content */}
+          <div className="absolute inset-0 py-4 flex justify-between px-8">
+            {/* Left */}
+            <div>
+              <h2
+                className="text-[48px] text-[#0F4F58] font-bold"
+                style={{ fontFamily: "RocaTwo-Bold" }}
+              >
+                Welcome To Hi Humaniser!
+              </h2>
+              <div className="relative ml-[52px] mt-[20px]">
+                {/* TEXT (Always on top) */}
+                <p
+                  className="
+    relative z-20
+    text-[#567F55]
+    text-[27px]
+    leading-[1.6]
+    max-w-[1250px]
+  "
+                  style={{ fontFamily: "RocaTwo" }}
                 >
-                  Welcome To Hi Humaniser!
-                </h2>
-                <div className="relative">
-                  {/* TEXT (Always on top) */}
-                  <p
-                    className="relative z-20 text-[#567F55] text-[27px] ml-[110px] font-[400]"
-                    style={{ fontFamily: "RocaTwo-Bold" }}
-                  >
-                    We’re thrilled to have you here.This is where
-                    <br />
-                    connection, care and performance come together.
-                    <br />
-                    <br />
-                    Tell us a little about you to get started.
-                  </p>
+                  <span className="font-bold">
+                    You’ve been invited to explore Hi Humaniser!™
+                  </span>{" "}
+                  — a digital experience where people, performance and everyday
+                  work come back into alignment.
+                  <br />
+                  <br />
+                  Step inside to see how Humanising Our Work shows up in
+                  practice, through thoughtful prompts, shared team spaces, and
+                  small human moments designed into everyday work.
+                </p>
 
-                  {/* SKY SHAPE CARD */}
-                </div>
+                {/* SKY SHAPE CARD */}
               </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-center bg-[#FBE6BF]">
+        <div className="flex justify-center mt-[280px] pb-[10px] bg-[#FBE6BF]">
           {/* FORM CONTAINER */}
-          <div className="w-[890px] bg-[#F5F0EB] rounded-2xl px-8 py-8 relative">
+          <div className="w-[1200px] bg-[#F5F0EB] rounded-2xl px-8 py-8 relative">
             {/* INPUT ROW */}
             <div className="space-y-6">
               {/* First Name */}
               <div className="flex items-center gap-8">
                 <label
-                  className="w-[160px] text-[#567F55] text-[20px]"
+                  className="w-[180px] text-[#567F55] text-[22px]"
                   style={{ fontFamily: "Roboto" }}
                 >
                   First Name
@@ -65,8 +105,8 @@ function RegisterForm() {
                 <input
                   type="text"
                   className="
-      w-[550px]
-      h-[47px]
+      w-[900px]
+      h-[55px]
       bg-white
       rounded-full
       px-6
@@ -74,6 +114,8 @@ function RegisterForm() {
       outline-none
       border border-transparent
       focus:border-[#9BB89A]
+       
+
     "
                 />
               </div>
@@ -81,7 +123,7 @@ function RegisterForm() {
               {/* Last Name */}
               <div className="flex items-center gap-8">
                 <label
-                  className="w-[160px] text-[#567F55] text-[20px]"
+                  className="w-[180px] text-[#567F55] text-[22px]"
                   style={{ fontFamily: "Roboto" }}
                 >
                   Last Name
@@ -89,8 +131,8 @@ function RegisterForm() {
                 <input
                   type="text"
                   className="
-      w-[550px]
-      h-[47px]
+      w-[900px]
+      h-[55px]
       bg-white
       rounded-full
       px-6
@@ -98,16 +140,51 @@ function RegisterForm() {
       outline-none
       border border-transparent
       focus:border-[#9BB89A]
+
+
+    "
+                />
+              </div>
+
+              {/* Company */}
+              <div className="flex items-center gap-8">
+                <label
+                  className="w-[180px] text-[#567F55] text-[22px]"
+                  style={{ fontFamily: "Roboto" }}
+                >
+                  Company Name
+                </label>
+                <input
+                  type="text"
+                  className="
+      w-[900px]
+      h-[55px]
+      bg-white
+      rounded-full
+      px-6
+      text-[#567F55]
+      outline-none
+      border border-transparent
+      focus:border-[#9BB89A]
+
+
     "
                 />
               </div>
 
               {/* Helper text */}
+              <div
+                className="py-6 text-[#567F55] text-[20px] ml-[20%]"
+                style={{ fontFamily: "Roboto" }}
+              >
+                This helps us create a private, secure space for you and your
+                organisation while you explore.
+              </div>
 
               {/* Email */}
               <div className="flex items-center gap-8">
                 <label
-                  className="w-[160px] text-[#567F55] text-[20px]"
+                  className="w-[180px] text-[#567F55] text-[22px]"
                   style={{ fontFamily: "Roboto" }}
                 >
                   Email
@@ -115,8 +192,8 @@ function RegisterForm() {
                 <input
                   type="email"
                   className="
-      w-[550px]
-      h-[47px]
+      w-[900px]
+      h-[55px]
       bg-white
       rounded-full
       px-6
@@ -124,6 +201,7 @@ function RegisterForm() {
       outline-none
       border border-transparent
       focus:border-[#9BB89A]
+  
     "
                 />
               </div>
@@ -131,7 +209,7 @@ function RegisterForm() {
               {/* Password */}
               <div className="flex items-center gap-8">
                 <label
-                  className="w-[160px] text-[#567F55] text-[20px]"
+                  className="w-[180px] text-[#567F55] text-[22px]"
                   style={{ fontFamily: "Roboto" }}
                 >
                   Password
@@ -139,8 +217,8 @@ function RegisterForm() {
                 <input
                   type="password"
                   className="
-      w-[550px]
-      h-[47px]
+      w-[900px]
+      h-[55px]
       bg-white
       rounded-full
       px-6
@@ -155,7 +233,7 @@ function RegisterForm() {
               {/* Confirm Password */}
               <div className="flex items-center gap-8">
                 <label
-                  className="w-[160px] text-[#567F55] text-[20px]"
+                  className="w-[180px] text-[#567F55] text-[22px]"
                   style={{ fontFamily: "Roboto" }}
                 >
                   Confirm Password
@@ -163,8 +241,8 @@ function RegisterForm() {
                 <input
                   type="password"
                   className="
-      w-[550px]
-      h-[47px]
+      w-[900px]
+      h-[55px]
       bg-white
       rounded-full
       px-6
@@ -175,54 +253,13 @@ function RegisterForm() {
     "
                 />
               </div>
-              <div className="mt-[80px]">
-                <div>
-                  <p
-                    className=" text-[#567F55] text-[18px]"
-                    style={{ fontFamily: "Roboto" }}
-                  >
-                    <span className="font-bold">Why we ask for this</span>
-                    <br />
-                    These details are optional. They help us understand patterns
-                    and experiences across different groups, so we can design
-                    more inclusive and human workplaces. This information is
-                    never used to assess individuals.
-                  </p>
-                </div>
-                <div className="mt-8">
-                  <CustomDropdown />
-                </div>
-                {/* Confirm Password */}
-                <div className="flex items-center gap-8 mt-6">
-                  <label
-                    className="w-[160px] text-[#567F55] text-[20px]"
-                    style={{ fontFamily: "Roboto" }}
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    type="password"
-                    className="
-      w-[550px]
-      h-[47px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-    "
-                  />
-                </div>
-              </div>
             </div>
 
             {/* FOOTER */}
             <div className="flex justify-between items-end mt-12">
               {/* Privacy */}
               <div
-                className="flex items-center gap-3 text-[#567F55] text-[17px]"
+                className="flex items-center gap-3 text-[#567F55] text-[20px]"
                 style={{ fontFamily: "Roboto" }}
               >
                 <Image
@@ -234,9 +271,13 @@ function RegisterForm() {
 
                 <p>
                   Your data stays yours. Learn more in our{" "}
-                  <span className="underline cursor-pointer">
+                  <Link
+                    href="/privacy-policy"
+                    target="_blank"
+                    className="underline cursor-pointer"
+                  >
                     Privacy Policy
-                  </span>
+                  </Link>
                 </p>
               </div>
 
@@ -271,9 +312,9 @@ function RegisterForm() {
                     className="absolute inset-0 flex flex-col items-center justify-center text-[#0F4F58] font-bold"
                     style={{ fontFamily: "RocaTwo" }}
                   >
-                    <span className="text-[22px] leading-[1]">Get</span>
+                    <span className="text-[22px] leading-[1]">Start</span>
                     <span className="text-[22px] leading-[1] mt-1">
-                      Started
+                      Exploring
                     </span>
                   </div>
                 </button>
@@ -282,7 +323,7 @@ function RegisterForm() {
           </div>
         </div>
       </div>
-      <SignUpModal />
+      <SignUpModal />;
     </>
   );
 }

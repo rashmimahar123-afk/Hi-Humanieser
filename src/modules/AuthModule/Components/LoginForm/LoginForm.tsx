@@ -128,10 +128,10 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
               <span
                 className="font-bold align-top"
                 style={{
-                  fontSize: "20.8px",
-                  lineHeight: "100%",
+                  fontSize: "32px",
+                  lineHeight: "92px",
                   letterSpacing: "0%",
-                  marginLeft: "6px",
+
                   fontFamily: "RocaTwo-Bold, serif",
                 }}
               >
