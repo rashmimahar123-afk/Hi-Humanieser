@@ -31,16 +31,15 @@ function ResourceInspiration() {
         src={images.resourcePolygon2}
         alt="shape"
         className="absolute top-50 left-0 z-0"
+        width={630}
       />
 
       {/* Content */}
       <div className="relative z-10 px-8 py-6">
-        <UserProfileHeader />
-
+        <UserProfileHeader greetingColor="#F5F0EB" nameColor="#0F4F58" />{" "}
         <h1 className="text-center text-[45px] font-bold text-[#0F4F58] font-[RocaTwo-Bold] mt-4">
           Resources & Inspiration
         </h1>
-
         {/* Top Section */}
         <div className="mt-12 flex flex-col lg:flex-row gap-10 items-start">
           {/* Left White Box */}
@@ -57,9 +56,13 @@ function ResourceInspiration() {
             space to pause and think.
           </p>
         </div>
-
+        <div className="flex justify-center text-[#FFFFFF] text-[33px] mt-[84px]">
+          Explore the pillars and principles behind HH!, discover how they show
+          up in everyday work, or dive into the research that proves
+          human-centred practices drive real performance.
+        </div>
         {/* Dark Container */}
-        <div className="mt-[146px] bg-[#0F4F58] rounded-3xl p-10 ">
+        <div className="mt-[65px] bg-[#0F4F58] rounded-3xl p-10 ">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
             <div
@@ -74,12 +77,12 @@ function ResourceInspiration() {
       activeCard === 1
         ? "scale-110 -translate-y-6 shadow-2xl z-20"
         : activeCard
-        ? "opacity-40"
-        : ""
+          ? "opacity-40"
+          : ""
     }
   `}
             >
-              <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[19px] font-bold">
+              <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[22px] font-bold">
                 Behind the Scenes of
                 <br />
                 Hi Humaniser!
@@ -96,10 +99,10 @@ function ResourceInspiration() {
                 />
 
                 {/* Text on top */}
-                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[18px]">
-                  Discover the three pillars and twelve principles that connect
-                  people, performance and purpose — the foundation for how we
-                  think, collaborate and grow together.
+                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+                  The three pillars and twelve principles behind Hi Humaniser!
+                  The foundation for how people, performance and purpose
+                  connect.
                 </p>
               </div>
             </div>
@@ -117,12 +120,12 @@ function ResourceInspiration() {
       activeCard === 2
         ? "scale-110 -translate-y-6 shadow-2xl z-20"
         : activeCard
-        ? "opacity-40"
-        : ""
+          ? "opacity-40"
+          : ""
     }
   `}
             >
-              <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[19px] font-bold">
+              <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[21px] font-bold">
                 From Ideas To Everyday
               </h3>
 
@@ -134,7 +137,7 @@ function ResourceInspiration() {
                   className="object-contain"
                 />
 
-                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[18px]">
+                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
                   Explore pathways and team rituals that turn principles into
                   living practice — growing people, strengthening teams, and
                   making performance more human.
@@ -153,12 +156,12 @@ function ResourceInspiration() {
       activeCard === 3
         ? "scale-110 -translate-y-6 shadow-2xl z-20"
         : activeCard
-        ? "opacity-40"
-        : ""
+          ? "opacity-40"
+          : ""
     }
   `}
             >
-              <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[19px] font-bold">
+              <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[22px] font-bold">
                 The Research Room
               </h3>
 
@@ -170,15 +173,14 @@ function ResourceInspiration() {
                   className="object-contain"
                 />
 
-                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[18px]">
-                  Here`s a list of research and recommended books if you want to
-                  take curiosity one step ahead!
+                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+                  Here’s a list of research and recommended books if you want to
+                  take curiosity one step head!
                 </p>
               </div>
             </div>
           </div>
         </div>
-
         {/* Footer Section */}
         <div className="mt-12">
           <SuccessMessage
@@ -187,11 +189,17 @@ Keep exploring, keep reflecting, and keep humanising the way you work."
             fontSize="text-[21px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+            left="380px"
+            bottom="52px"
+            rightImgBottom="42px"
+            rightImgRight="368px"
+            rotate="-35deg"
+            fontColor="#0F4F58"
           />
         </div>
       </div>
 
-      <div className="relative  pb-32">
+      <div className="relative  pb-36">
         {/* Footer Polygon Image */}
         <Image
           src={images.footerPolygon}

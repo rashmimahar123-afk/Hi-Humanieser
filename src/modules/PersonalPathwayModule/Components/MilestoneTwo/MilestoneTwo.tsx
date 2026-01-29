@@ -7,6 +7,8 @@ import styles from "./MilestoneTwo.module.css";
 import images from "@/src/assets/images";
 import { useRouter } from "next/navigation";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
+import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 
 type MILESTONE_TWO_PROPS = {
   onNext: () => void;
@@ -23,7 +25,7 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
         Milestone 2: Practice & Embed
       </h2>
 
-      <p className="mt-4 text-[#567F55] max-w-[700px] font-[Roboto] text-[18px] ml-[35px]">
+      <p className="mt-4 text-[#567F55] font-[Roboto] text-[18px] ml-[35px]">
         <span className="font-bold">
           Make it real. Try new Behaviours. See what shifts.
         </span>
@@ -44,7 +46,7 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
           height={80}
           className="absolute -right-[5%] top-[10%]"
         />
-        <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute top-[6%] -right-[6%] max-w-[50px]">
+        <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute top-[8%] -right-[4%] ">
           fill me up
         </p>
         <Image
@@ -69,23 +71,50 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
         </div>
 
         {/* Action Rows */}
-        <div className="space-y-8">
-          {/* Row */}
-          <MilestoneTwoActionRow
-            title="Ask yourself: “What else could be true?”"
-            description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
+        <div className="space-y-8 relative">
+          {/* Row 1 */}
+          <div className="relative">
+            {/* Row 1 */}
+            <MilestoneTwoActionRow
+              title="Ask yourself: “What else could be true?”"
+              description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
 “Let’s hear their full thinking before we respond.”
 It takes courage — but it quietly protects trust, dignity and voice in the room.`}
-          />
+              showSaveReflection={true}
+            />
 
-          <MilestoneTwoActionRow
-            title="Borrow someone else’s lens"
-            description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
-          />
+            {/* Polygon button BETWEEN first & second card */}
+            <div className="relative flex justify-end mt-[8px] mb-[36px] pr-[60px]">
+              {/* Wrapper with z-index */}
+              <div className="relative z-10">
+                <Image
+                  src={images.bluePoly}
+                  alt="blue polygon"
+                  width={120}
+                  height={92}
+                />
 
+                {/* Text ON TOP of image */}
+                <div className="absolute inset-0 flex items-center justify-center text-[#0F4F58] text-[20px] leading-[24px] font-[RocaTwo] font-bold text-center pointer-events-none">
+                  Add another
+                  <br />
+                  reflection
+                </div>
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <MilestoneTwoActionRow
+              title="Borrow someone else’s lens"
+              description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
+              showSaveReflection={false}
+            />
+          </div>
+          {/* Row 3 */}
           <MilestoneTwoActionRow
             title="The Quiet Recognition"
             description={`In your next conversation, to make sure you’ve understood correctly, ask one clarifying question: “Can I check if I’m hearing this right?” Then share your understanding. This prevents the brain from filling gaps with prediction.`}
+            showSaveReflection={false}
           />
         </div>
 

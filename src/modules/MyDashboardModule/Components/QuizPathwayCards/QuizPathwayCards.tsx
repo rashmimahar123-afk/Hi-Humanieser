@@ -18,7 +18,7 @@ function QuizPathwayCards(props: RESULT_PATHWAY_CARD_PROPS) {
   return (
     <div
       className={`
-        w-[294px] h-[326px]
+        w-[357px] h-[274px]
         rounded-[12px]
         px-6 py-8
         flex flex-col justify-between

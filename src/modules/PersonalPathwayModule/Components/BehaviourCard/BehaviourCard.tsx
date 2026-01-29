@@ -8,7 +8,15 @@ type BEHAVIOUR_CARD_PROPS = {
 
 function BehaviourCard({ image, text }: BEHAVIOUR_CARD_PROPS) {
   return (
-    <div className="relative ">
+    <div
+      className="
+        relative cursor-pointer
+        transition-all duration-500 ease-out
+        hover:-translate-y-6
+        hover:scale-110
+        hover:z-20
+      "
+    >
       {/* Image */}
       <Image src={image} alt="core" width={201} height={160} />
 
@@ -21,4 +29,5 @@ function BehaviourCard({ image, text }: BEHAVIOUR_CARD_PROPS) {
     </div>
   );
 }
+
 export default BehaviourCard;

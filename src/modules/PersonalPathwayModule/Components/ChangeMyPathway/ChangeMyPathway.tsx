@@ -67,11 +67,11 @@ function ChangeMyPathway() {
       </div>
       <div className="ml-[140px]">
         {/* Main Section */}
-        <div className="relative mt-20 px-12 flex justify-between items-start">
+        <div className="relative mt-20  flex justify-between items-start">
           {/* LEFT TEXT */}
           <div className="max-w-[520px]">
             <p className="text-[#E6A757] font-semibold tracking-wide text-[21px] font-[League Spartan]">
-              CHOOSING MY PATHWAY
+              CHANGE MY PATHWAY{" "}
             </p>
 
             <p className="mt-3 text-[#567F55] text-[20px] leading-relaxed ml-[20px] font-[Roboto]">
@@ -91,27 +91,27 @@ function ChangeMyPathway() {
             />
 
             {/* Text OVER polygon */}
-            <div className="absolute inset-0 flex flex-col justify-center px-8 text-white">
+            <div className="absolute inset-0 flex flex-col justify-center px-8 text-white pt-[20px]">
               <p className="font-semibold text-[17px] mb-2">Just remember</p>
 
-              <p className="text-[16px] leading-snug font-normal">
+              <p className="text-[16px] leading-snug font-normal flex items-center">
                 You can work on up to 2 pathways at a time so you have space to
                 make real progress
               </p>
             </div>
           </div>
         </div>
-        <div className="mt-8 space-y-4 max-w-[800px]">
+        <div className="mt-8 space-y-4 max-w-[900px]">
           {/* Pathway 1 */}
-          <div className="flex items-center justify-between  rounded-xl p-5">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between rounded-xl p-5">
+            <div className="flex items-center gap-4 max-w-[325px] ">
               <Image
                 src={images.pathEye}
                 alt="path-eye"
-                width={93}
+                width={100}
                 height={83}
               />
-              <h3 className="font-[700] font-[Canva Sans] text-[15px] text-[#3C4C59]">
+              <h3 className="font-[700] font-[Canva Sans] text-[17px] text-[#3C4C59]">
                 Practice Perspective
               </h3>
             </div>
@@ -120,14 +120,14 @@ function ChangeMyPathway() {
               <Image
                 src={images.pathwayTimer}
                 alt="path-eye"
-                width={54}
-                height={54}
+                width={84}
+                height={84}
                 className="-mb-[16px]"
               />{" "}
             </div>
             <div className="flex items-center gap-6 bg-[#F8E1B8] rounded-[12px] px-5 py-3">
               {/* Keep */}
-              <label className="flex items-center gap-2 text-[#3C4C59] text-[14px] cursor-pointer font-[Canva Sans]">
+              <label className="flex items-center gap-2 text-[#3C4C59] text-[16px] cursor-pointer font-[Canva Sans]">
                 <span>Keep</span>
                 <input
                   type="checkbox"
@@ -136,11 +136,11 @@ function ChangeMyPathway() {
               </label>
 
               {/* Remove */}
-              <label className="flex items-center gap-2 text-[#3C4C59] text-[14px] cursor-pointer font-[Canva Sans]">
+              <label className="flex items-center gap-2 text-[#3C4C59] text-[16px] cursor-pointer font-[Canva Sans]">
                 <span>Remove</span>
                 <input
                   type="checkbox"
-                  className="w-[16px] h-[16px] border border-[#0F4F58] rounded-sm accent-transparent"
+                  className="w-[18px] h-[18px] border border-[#0F4F58] rounded-sm accent-transparent"
                 />
               </label>
             </div>
@@ -148,14 +148,14 @@ function ChangeMyPathway() {
 
           {/* Pathway 2 */}
           <div className="flex items-center justify-between rounded-xl p-5">
-            <div className="flex items-center gap-4 max-w-[300px]">
+            <div className="flex items-center gap-4 max-w-[325px]">
               <Image
                 src={images.wellbeingImg}
                 alt="path-eye"
-                width={93}
+                width={100}
                 height={83}
               />
-              <h3 className="font-[700] font-[Canva Sans] text-[15px] text-[#3C4C59]">
+              <h3 className="font-[700] font-[Canva Sans] text-[17px] text-[#3C4C59]">
                 Wellbeing is Performance Infraestructure
               </h3>
             </div>
@@ -164,14 +164,14 @@ function ChangeMyPathway() {
               <Image
                 src={images.pathwayTimer}
                 alt="path-eye"
-                width={54}
-                height={54}
+                width={84}
+                height={84}
                 className="-mb-[16px]"
               />{" "}
             </div>
             <div className="flex items-center gap-6 bg-[#F6E3B8] rounded-[12px] px-5 py-3">
               {/* Keep */}
-              <label className="flex items-center gap-2 text-[#3C4C59] text-[14px] cursor-pointer font-[Canva Sans]">
+              <label className="flex items-center gap-2 text-[#3C4C59] text-[16px] cursor-pointer font-[Canva Sans]">
                 <span>Keep</span>
                 <input
                   type="checkbox"
@@ -180,7 +180,7 @@ function ChangeMyPathway() {
               </label>
 
               {/* Remove */}
-              <label className="flex items-center gap-2 text-[#3C4C59] text-[14px] cursor-pointer font-[Canva Sans]">
+              <label className="flex items-center gap-2 text-[#3C4C59] text-[16px] cursor-pointer font-[Canva Sans]">
                 <span>Remove</span>
                 <input
                   type="checkbox"

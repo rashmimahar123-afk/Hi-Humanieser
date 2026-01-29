@@ -36,7 +36,7 @@ function FromIdeasPathwayCard(props: IDEA_PATHWAY_CARD_PROPS) {
 
   return (
     <div
-      className="rounded-[24px] pl-[40px] py-[40px] flex gap-[40px] w-full max-w-[900px] overflow-visible"
+      className="rounded-[24px] pl-[40px] py-[40px] flex gap-[40px] w-full max-w-[1017px] overflow-visible"
       style={{ backgroundColor: bgColor }}
     >
       {/* LEFT TITLE */}

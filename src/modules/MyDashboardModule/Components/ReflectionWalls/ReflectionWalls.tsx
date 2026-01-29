@@ -53,6 +53,11 @@ function ReflectionWalls() {
           fontSize="text-[23px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+          left="382px"
+          top="175px"
+          rightImgRight="373px"
+          rightImgTop="173px"
+          fontColor="#0F4F58"
         />
         <h2 className="text-[52px] font-[RocaTwo] font-bold  text-[#4BA6A6] mt-[30px]">
           Reflection Walls
@@ -62,12 +67,12 @@ function ReflectionWalls() {
       {/* Description + Filters */}
 
       {/* Left text */}
-      <div className="mt-14">
+      <div className="mt-10">
         <h3 className="text-[25px] font-bold font-[Roboto] text-[#4BA6A6]">
           Small Reflections. Big Shifts.
         </h3>
 
-        <p className="mt-2 text-[22px] text-[#0F4F58] leading-[23px] max-w-[847px] font-[Roboto] ml-[36px]">
+        <p className="mt-2 text-[22px] text-[#0F4F58] leading-[23px] font-[Roboto] ml-[36px]">
           Every reflection adds a piece to the bigger picture of how your team
           works and grows. These walls capture the real, everyday moments that
           shape your culture — one insight at a time.
@@ -103,7 +108,7 @@ function ReflectionWalls() {
       </div>
 
       {/* Cards Section */}
-      <div className="bg-[#F8E1B8] rounded-[32px] px-12 py-14 mt-10 max-w-[1278px]">
+      <div className="bg-[#F8E1B8] rounded-[32px] px-12 py-10 mt-10 ">
         <div
           className="grid grid-cols-3 gap-x-[65px] gap-y-[40px]
 "
@@ -114,8 +119,8 @@ function ReflectionWalls() {
               className="
        bg-[#CDE3CC]
         rounded-[16px]
-        w-[350px]
-        h-[300px]
+       
+        h-[266px]
         px-[10px]
         py-[20px]
         flex

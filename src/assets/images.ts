@@ -149,6 +149,19 @@ import dotsPattern from "../../public/images/dotsPattern.png";
 import sixDots from "../../public/images/sixDots.png";
 import maria from "../../public/images/maria.png";
 import teamDot from "../../public/images/teamDot.png";
+import bluePoly from "../../public/images/bluePoly.png";
+import myDashGreenPoly from "../../public/images/myDashGreenPoly.png";
+import myDashBluePoly from "../../public/images/myDashBluePoly.png";
+import profilePolygon from "../../public/profile/images/profilePolygon.png";
+import profileQuiz from "../../public/profile/images/profileQuiz.png";
+import profilePathway from "../../public/profile/images/profilePathway.png";
+import profileChange from "../../public/profile/images/profileChange.png";
+import notificationPolygon from "../../public/profile/images/notificationPolygon.png";
+import profileNotification from "../../public/profile/images/profileNotification.png";
+import notificationImg from "../../public/profile/images/notificationImg.png";
+import nutImg from "../../public/profile/images/nutImg.png";
+import invitationImg from "../../public/profile/images/invitationImg.png";
+import spreadImg from "../../public/profile/images/spreadImg.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -301,6 +314,19 @@ type imageTypes = {
   sixDots: StaticImageData;
   maria: StaticImageData;
   teamDot: StaticImageData;
+  bluePoly: StaticImageData;
+  myDashGreenPoly: StaticImageData;
+  myDashBluePoly: StaticImageData;
+  profilePolygon: StaticImageData;
+  profileQuiz: StaticImageData;
+  profilePathway: StaticImageData;
+  profileChange: StaticImageData;
+  notificationPolygon: StaticImageData;
+  profileNotification: StaticImageData;
+  notificationImg: StaticImageData;
+  nutImg: StaticImageData;
+  invitationImg: StaticImageData;
+  spreadImg: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -454,6 +480,19 @@ const Images: imageTypes = {
   sixDots,
   maria,
   teamDot,
+  bluePoly,
+  myDashGreenPoly,
+  myDashBluePoly,
+  profilePolygon,
+  profileQuiz,
+  profilePathway,
+  profileChange,
+  notificationPolygon,
+  profileNotification,
+  notificationImg,
+  nutImg,
+  invitationImg,
+  spreadImg,
 };
 
 export default Images;

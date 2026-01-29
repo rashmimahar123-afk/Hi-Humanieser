@@ -10,6 +10,7 @@ function Profile() {
     { name: "Lorenzo DiCaprio", img: "/m4.jpg" },
     { name: "George Brown", img: "/m5.jpg" },
   ];
+
   const teamMembers = [
     { name: "Matthew Richardson", image: images.userProfile },
     { name: "Daniella James-Daniels", image: images.userProfile },
@@ -34,24 +35,40 @@ function Profile() {
     { name: "Lorenzo DiCaprio", image: images.userProfile },
   ];
 
+  const chunkByPattern = (arr: any, pattern = [5, 4]) => {
+    const chunks = [];
+    let i = 0;
+    let p = 0;
+
+    while (i < arr.length) {
+      chunks.push(arr.slice(i, i + pattern[p]));
+      i += pattern[p];
+      p = (p + 1) % pattern.length;
+    }
+
+    return chunks;
+  };
+
+  const rows = chunkByPattern(teamMembers);
+
   return (
     <div className="relative min-h-screen bg-[#F5F0EB] overflow-hidden">
       {/* Header */}
       <div className="px-8 py-6">
-        <UserProfileHeader />
+        <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
       </div>
-      <div className="absolute top-20 left-20 ">
+      <div className="absolute top-175 left-20 z-10 ">
         <Image src={images.sixDots} alt="dots" width={116} height={116} />
       </div>
       {/* Page Title */}
-      <div className="px-14 mt-12">
+      <div className="px-24 mt-4">
         <h2 className="text-[45px] font-[RocaTwo-Bold] font-bold text-[#0F4F58]">
           Profile
         </h2>
       </div>
 
       {/* Profile Card */}
-      <section className="relative mx-14 mt-6 rounded-[24px] bg-[#F8E1B8] px-14 py-12 overflow-hidden">
+      <section className="relative mx-14 rounded-[24px] bg-[#F8E1B8] px-14 py-12 overflow-hidden">
         {/* Right dotted pattern */}
         <div className="absolute right-12 top-12 opacity-40">
           <Image
@@ -86,10 +103,10 @@ function Profile() {
               Maria Palacios
             </h3>
 
-            <p className="mt-1 text-[19px] font-400 text-[#0F4F58] font-[Roboto] font-[#0F4F58]">
+            <p className="mt-1 text-[19px] font-400 text-[#0F4F58] font-[Roboto] ">
               Joined Jan 2026
             </p>
-            <p className="text-[14px] text-[#0B3D3A]">
+            <p className="text-[14px] text-[#0F4F58]">
               Active Member In Hi Humaniser!
             </p>
 
@@ -103,25 +120,25 @@ function Profile() {
         {/* Inputs */}
         <div className="mt-10  max-w-3xl space-y-4">
           <div className="flex items-center gap-8">
-            <span className="w-40 text-[15px] text-[#5E8C84]">First Name</span>
+            <span className="w-40 text-[15px] text-[#567F55]">First Name</span>
             <input
               disabled
               placeholder="not able to modify"
-              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#5E8C84] outline-none"
+              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
             />
           </div>
 
           <div className="flex items-center gap-8">
-            <span className="w-40 text-[15px] text-[#5E8C84]">Last Name</span>
+            <span className="w-40 text-[15px] text-[#567F55]">Last Name</span>
             <input
               disabled
               placeholder="not able to modify"
-              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#5E8C84] outline-none"
+              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
             />
           </div>
 
           <div className="flex items-center gap-8">
-            <span className="w-40 text-[15px] text-[#5E8C84]">
+            <span className="w-40 text-[15px] text-[#567F55]">
               email/username
             </span>
             <input
@@ -133,76 +150,111 @@ function Profile() {
         </div>
       </section>
 
-      {/* Team Structure Section */}
-      <section className="mx-14 mt-10 rounded-[24px] bg-[#F8E1B8] px-14 py-12 relative overflow-hidden">
-        {/* Decorative dashed curve */}
-        <div className="absolute left-24 top-6 opacity-40">
-          <Image src={images.teamDot} alt="curve" width={220} height={120} />
-        </div>
-
+      <div className=" px-14 py-12">
         {/* Header */}
-        <h2 className="text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">
+        <h2 className=" ml-10 text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">
           Team Structure
         </h2>
-
-        {/* Champion Card */}
-        <div className="mt-8 flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <div className="h-[72px] w-[72px] rounded-full overflow-hidden">
-              <Image
-                src={images.maria}
-                alt="Champion"
-                width={72}
-                height={72}
-                className="object-cover"
-              />
-            </div>
-
-            <div>
-              <p className="text-[18px] font-[Roboto] font-semibold text-[#0F4F58]">
-                Hi Humaniser! Champion
-              </p>
-              <p className="text-[15px] text-[#5E8C84]">Silvia Smith</p>
-            </div>
-          </div>
-
-          <div className="rounded-[14px] bg-[#BFE3E1] px-6 py-3 text-[16px] font-[Roboto] text-[#0B3D3A]">
-            Team:{" "}
-            <span className="font-semibold">Systems Engineering - UK</span>
-          </div>
+        <div className="absolute left-8 top-190 z-10">
+          <Image src={images.teamDot} alt="curve" width={620} height={120} />
         </div>
+        {/* Team Structure Section */}
+        <section className="rounded-[24px] bg-[#F8E1B8] relative overflow-hidden p-4">
+          {/* Decorative dashed curve */}
 
-        {/* Members title */}
-        <h3 className="mt-10 text-[24px] font-[RocaTwo] font-bold text-[#0F4F58]">
-          Hi Humaniser! Members
-        </h3>
-
-        {/* Members Grid */}
-        <div className="mt-8 grid grid-cols-5 gap-x-14 gap-y-12">
-          {teamMembers.map((member, index) => (
-            <div key={index} className="flex flex-col items-center text-center">
+          {/* Champion Card */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-5">
               <div className="h-[72px] w-[72px] rounded-full overflow-hidden">
                 <Image
-                  src={member.image}
-                  alt={member.name}
+                  src={images.maria}
+                  alt="Champion"
                   width={72}
                   height={72}
                   className="object-cover"
                 />
               </div>
 
-              <p className="mt-3 text-[14px] font-[Roboto] text-[#0F4F58] leading-5">
-                {member.name}
-              </p>
+              <div>
+                <p className="text-[18px] font-[Roboto] font-semibold text-[#0F4F58]">
+                  Hi Humaniser! Champion
+                </p>
+                <p className="text-[15px] text-[#0F4F58]">Silvia Smith</p>
+              </div>
             </div>
-          ))}
-        </div>
 
-        {/* Left dotted pattern */}
-        <div className="absolute bottom-10 left-10 opacity-40">
-          <Image src={images.dotsPattern} alt="dots" width={160} height={160} />
-        </div>
-      </section>
+            <div className="relative inline-block">
+              {/* Polygon Image */}
+              <Image
+                src={images.profilePolygon}
+                alt="profile polygon"
+                className="w-[280px] h-auto"
+              />
+
+              {/* Text on top of image */}
+              <div className="absolute inset-0 flex items-center justify-center px-6  z-10">
+                <p className="text-[18px] font-[Roboto] text-[#0B3D3A]">
+                  Team:{" "}
+                  <span className="font-semibold">
+                    [Systems Engineering - UK]
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Members title */}
+          <h3 className="mt-10 text-[24px] font-[RocaTwo] font-bold text-[#0F4F58]">
+            Hi Humaniser! Members
+          </h3>
+
+          {/* Members Grid */}
+          <div className="mt-8 space-y-12">
+            {rows.map((row, rowIndex) => (
+              <div
+                key={rowIndex}
+                className={`grid gap-x-14 gap-y-12
+        ${row.length === 5 ? "grid-cols-5" : "grid-cols-4 justify-center"}
+      `}
+                style={{
+                  justifyContent: row.length === 4 ? "center" : "start",
+                }}
+              >
+                {row.map((member: any, index: any) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div className="h-[72px] w-[72px] rounded-full overflow-hidden">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        width={72}
+                        height={72}
+                        className="object-cover"
+                      />
+                    </div>
+
+                    <p className="mt-3 text-[14px] font-[Roboto] text-[#0F4F58] leading-5 max-w-[120px]">
+                      {member.name}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Left dotted pattern */}
+          <div className="absolute bottom-10 left-10 opacity-40">
+            <Image
+              src={images.dotsPattern}
+              alt="dots"
+              width={160}
+              height={160}
+            />
+          </div>
+        </section>
+      </div>
 
       {/* Bottom dots */}
     </div>

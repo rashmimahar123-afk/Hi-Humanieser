@@ -11,10 +11,10 @@ function MyTeamProgress(props: MY_TEAM_PROGRESS_PROPS) {
   return (
     <>
       {/* Heading */}
-      <h2 className="text-[35px] font-bold text-[#0F4F58] font-[RocaTwo]">
+      <h2 className="text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
         My Team Progress
       </h2>
-      <p className="text-[#567F55] font-[Roboto] font-[400] text-[20px] ml-[40px] mt-[15px] max-w-3xl">
+      <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[22px] ml-[40px] mt-[15px] ">
         See the rituals your team is working on and your part in them. Track the
         ones you’ve contributed to — whether in progress or complete — and
         notice how your actions strengthen collective results.
@@ -77,7 +77,7 @@ function MyTeamProgress(props: MY_TEAM_PROGRESS_PROPS) {
         </div>
       </div>
 
-      <div className=" flex justify-center mt-[50px]">
+      <div className="flex justify-center mt-[50px]">
         <div className="grid grid-cols-2 gap-10">
           {/* -------slant Left Btn-------- */}
           <div></div>

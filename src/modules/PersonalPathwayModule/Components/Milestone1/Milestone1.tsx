@@ -16,7 +16,7 @@ function Milestone1({ onNext }: { onNext: () => void }) {
       <h2 className="text-[34px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
         Milestone 1: Understand & Commit
       </h2>
-      <p className="mt-4 text-[#567F55] max-w-[700px] font-[Roboto] text-[18px] ml-[35px]">
+      <p className="mt-4 text-[#567F55] font-[Roboto] text-[18px] ml-[35px]">
         <span className=" font-bold ">
           This is a moment to pause and notice what resonates.{" "}
         </span>
@@ -77,13 +77,18 @@ function Milestone1({ onNext }: { onNext: () => void }) {
       {/* Footer */}
       <MilestoneFooter
         onNext={onNext}
-        nextLabel="Return to Home"
-        helperText="Leading others? Explore how to create perspective-taking moments for your team."
+        nextLabel="Amplifier Behaviours"
+        helperText={
+          <>
+            <strong>Lead or influence others?</strong> Explore Amplifier
+            Behaviours, extra ways to shape culture through how you show up.
+          </>
+        }
       />
       {/* COMMON TRAPS */}
       <div className="mt-20 ">
         {/* Heading */}
-        <h3 className="text-[22px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
+        <h3 className="text-[23px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
           Common Traps
         </h3>
 
@@ -98,11 +103,11 @@ function Milestone1({ onNext }: { onNext: () => void }) {
         {/* List */}
 
         <ul className="mt-6 space-y-4 max-w-[620px] ml-[208px]">
-          <li className="relative flex items-start gap-3">
+          <li className="relative flex items-start gap-5">
             <div className="absolute mt-[4px]  z-20">
-              <ArrowSquare width={"22"} height={"17"} />
+              <ArrowSquare width={"24"} height={"19"} />
             </div>
-            <p className="text-[#567F55] text-[16px] leading-snug ml-[28px] font-[League Spartan] font-bold">
+            <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
               Confusing harmony with safety — people appear agreeable, but real
               concerns stay unspoken.
             </p>
@@ -110,9 +115,9 @@ function Milestone1({ onNext }: { onNext: () => void }) {
 
           <li className="relative flex items-start gap-3">
             <div className="absolute mt-[4px]  z-20">
-              <ArrowSquare width={"22"} height={"17"} />
+              <ArrowSquare width={"24"} height={"19"} />
             </div>
-            <p className="text-[#567F55] text-[16px] leading-snug ml-[28px] font-[League Spartan] font-bold">
+            <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
               Saying “it’s safe to speak” while reacting defensively when
               someone actually does.
             </p>
@@ -120,9 +125,9 @@ function Milestone1({ onNext }: { onNext: () => void }) {
 
           <li className="relative flex items-start gap-3">
             <div className="absolute mt-[4px]  z-20">
-              <ArrowSquare width={"22"} height={"17"} />
+              <ArrowSquare width={"24"} height={"19"} />
             </div>
-            <p className="text-[#567F55] text-[16px] leading-snug ml-[28px] font-[League Spartan] font-bold">
+            <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
               Relying on individual bravery instead of designing safety into
               everyday ways of working.
             </p>

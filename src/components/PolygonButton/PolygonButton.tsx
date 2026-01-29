@@ -24,10 +24,10 @@ type POLYGON_BUTTON_PROPS = {
   radius?: number;
   topTilt?: number;
   bottomTilt?: number;
-  slantSide?: "left" | "right";
-  decorationImg?: IMAGE_PROPS; // 👈 single prop
+  slantSide?: "left" | "right" | "none";
+  decorationImg?: IMAGE_PROPS;
   children?: React.ReactNode;
-  decorationPosition?: DECORATION_POSITION; // ✅ updated
+  decorationPosition?: DECORATION_POSITION;
 };
 
 const PolygonButton = ({

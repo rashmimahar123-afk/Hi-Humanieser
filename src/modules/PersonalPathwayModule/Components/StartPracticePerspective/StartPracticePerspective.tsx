@@ -13,12 +13,12 @@ function StartPracticePerspective() {
       {/* Description Box */}
       <div className="mt-10 bg-[#F8E1B8] rounded-xl px-12 py-8 text-center">
         <p className="text-[#567F55] text-[18px] leading-relaxed font-[Roboto]">
-          Listen to Understand is about hearing with curiosity rather than
-          judgement. It strengthens your ability to hold another person’s
-          perspective, notice what sits beneath their words, and keep
-          assumptions out of the way. When understanding is present,
-          conversations deepen, trust grows and solutions become more grounded
-          and shared
+          This pathway helps you create working environments where people can
+          speak up, ask questions, challenge ideas and admit uncertainty without
+          fear of blame or negative repercussions. Make it Safe focuses on
+          reducing hidden threat in everyday interactions so that issues surface
+          early and responsibility is shared. When safety is present, teams
+          think more clearly and perform more consistently.
         </p>
       </div>
 

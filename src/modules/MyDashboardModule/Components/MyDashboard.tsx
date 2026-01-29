@@ -136,178 +136,207 @@ function MyDashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#C2E2E2] p-6 font-sans">
-        <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />{" "}
-        <SuccessMessage
-          text="Great to see you again — ready to explore?"
-          fontSize="text-[21px]"
-          leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-          rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+      <div className="min-h-screen bg-[#4BA6A6] relative font-sans">
+        <Image
+          src={images.myDashGreenPoly}
+          alt="dash-green-rectangle"
+          width={330}
+          height={330}
+          className="absolute top-0 left-0 z-0"
         />
-        <h1 className="text-center text-[42px] font-semibold text-[#254C4C] mt-14">
-          My Dashboard
-        </h1>
-        {/* Description + Download */}
-        <div className="flex justify-between items-center max-w-5xl mx-auto mt-8">
-          <p className="max-w-xl text-[#5F7F7F] text-[18px] leading-7">
-            This is your hub — a snapshot of your journey so far. Explore your
-            quiz results, see your progress, track what you’re practising, and
-            notice your impact in the team.
-          </p>
 
-          <button className="flex flex-col items-center gap-2">
-            <Image src={images.downloadImg} alt="download" />
+        <Image
+          src={images.myDashBluePoly}
+          alt="dash-rectangle"
+          width={530}
+          height={530}
+          className="absolute top-50 right-0 z-0"
+        />
 
-            <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
-          </button>
-        </div>
-        {/* Cards */}
-        <div className={`flex justify-between items-center mx-auto mt-8`}>
-          <div className={`${styles.card} bg-[#F5F0EB]`}>
-            {/* Image layer */}
-            <div className={styles.imageWrapper}>
-              <Image
-                src={images.quizPoly}
-                alt="home icon"
-                fill
-                className={styles.cardImage}
-              />
-            </div>
-
-            {/* Text on top of image */}
-            <div className={styles.cardContent}>
-              <h3>My Quiz Results</h3>
-            </div>
-          </div>
-
-          <div className={`${styles.card} bg-[#F5F0EB]`}>
-            <div className={styles.imageWrapper}>
-              <Image
-                src={images.personalPoly}
-                alt="green-icon"
-                fill
-                className={styles.cardImage}
-              />
-            </div>
-            <div className={styles.cardContent}>
-              <h3>My Personal Progress</h3>
-            </div>
-          </div>
-
-          <div className={`${styles.card} bg-[#F5F0EB]`}>
-            <div className={styles.imageWrapper}>
-              <Image
-                src={images.activePoly}
-                alt="green-icon"
-                fill
-                className={styles.cardImage}
-              />
-            </div>
-            <div className={styles.cardContent}>
-              <h3>My Active Practice List</h3>
-            </div>
-          </div>
-
-          <div className={`${styles.card} bg-[#F5F0EB]`}>
-            <div className={styles.imageWrapper}>
-              <Image
-                src={images.progressPoly}
-                alt="green-icon"
-                fill
-                className={styles.cardImage}
-              />
-            </div>
-            <div className={styles.cardContent}>
-              <h3>My Team Progress</h3>
-            </div>
-          </div>
-        </div>
-        <div className={`items-center mx-auto mt-14`}>
-          {/* ---------------------My Quiz Results--------------- */}
-          <div className="mx-auto mt-14">
-            <MyQuizResults pathways={pathways} />
-          </div>
-          {/* ------------------------------------------------------ */}
-
-          {/* ----------------------My Personal Progress--------------- */}
-          <div className="mx-auto mt-14">
-            <MyPersonalProgress progressList={progressList} />
-          </div>
-          {/* ----------------------------------------------------------- */}
-
-          {/* ----------------------My Personal Progress--------------- */}
-          <div className="mx-auto mt-14">
-            <MyActivePractice practiceList={practiceList} />
-          </div>
-          {/* ----------------------------------------------------------- */}
-
-          {/* ------------------------My Team Progress-------------------- */}
-          <div className="mx-auto mt-14">
-            <MyTeamProgress teamProgressList={teamProgressList} />
-          </div>
-          {/* ------------------------------------------------------------- */}
-        </div>
-        {/* -------------------------------Download PDF------------ */}
-        <div className="flex justify-end">
-          <button className="flex flex-col items-center gap-2">
-            <Image src={images.downloadImg} alt="download" />
-
-            <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
-          </button>
-        </div>
-        {/* --------------------Success Message------------ */}
-        <div className="mt-14 mx-auto">
+        <div className="px-10 py-8 absolute">
+          <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />{" "}
           <SuccessMessage
-            text="Performance shifts when we practice, reflect, and connect — and you’re doing that here"
-            fontSize="text-[23px]"
+            text="Great to see you again — ready to explore?"
+            fontSize="text-[28px]"
+            fontColor="#0F4F58"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+            left="412px"
+            top="135px"
+            rightImgRight="407px"
           />
-        </div>
-        {/* ----------------------------Footer-------------------- */}
-        <div className="flex justify-between ">
-          <div className="mt-[160px] flex">
-            <div className="max-w-[200px] text-[#0F4F58] font-[Aptos] text-[17px]">
-              Love what Hi Humaniser!™ brings? Share it with a friend who’d
-              enjoy it too.
+          <h1 className="text-center text-[42px] font-semibold text-[#254C4C] mt-14">
+            My Dashboard
+          </h1>
+          {/* Description + Download */}
+          <div className="flex justify-between items-center max-w-[1000px] mx-auto mt-10">
+            <p className=" text-[#0F4F58] text-[20px] leading-7 max-w-[800px]">
+              This is your hub — a snapshot of your journey so far. Explore your
+              quiz results, see your progress, track what you’re practising, and
+              notice your impact in the team.
+            </p>
+
+            <button className="flex flex-col items-center gap-2">
+              <Image src={images.downloadImg} alt="download" />
+
+              <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
+            </button>
+          </div>
+          {/* Cards */}
+          <div
+            className={`flex justify-between items-center mx-auto mt-[80px]`}
+          >
+            <div className={`${styles.card} bg-[#F5F0EB]`}>
+              {/* Image layer */}
+              <div className={styles.imageWrapper}>
+                <Image
+                  src={images.quizPoly}
+                  alt="home icon"
+                  fill
+                  className={styles.cardImage}
+                />
+              </div>
+
+              {/* Text on top of image */}
+              <div className={styles.cardContent}>
+                <h3>My Quiz Results</h3>
+              </div>
             </div>
-            <div className="ml-[26px]">
-              <PolygonButton
-                width="85px"
-                height="95px"
-                bgColor="#F7C3BE"
-                radius={14}
-                topTilt={18}
-                slantSide="right"
-                bottomTilt={14}
-              >
-                <div className="h-full flex items-center justify-center text-center">
-                  <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[32px]">
-                    Invite a Humaniser
-                  </span>
-                </div>
-              </PolygonButton>
+
+            <div className={`${styles.card} bg-[#F5F0EB]`}>
+              <div className={styles.imageWrapper}>
+                <Image
+                  src={images.personalPoly}
+                  alt="green-icon"
+                  fill
+                  className={styles.cardImage}
+                />
+              </div>
+              <div className={styles.cardContent}>
+                <h3>My Personal Progress</h3>
+              </div>
+            </div>
+
+            <div className={`${styles.card} bg-[#F5F0EB]`}>
+              <div className={styles.imageWrapper}>
+                <Image
+                  src={images.activePoly}
+                  alt="green-icon"
+                  fill
+                  className={styles.cardImage}
+                />
+              </div>
+              <div className={styles.cardContent}>
+                <h3>My Active Practice List</h3>
+              </div>
+            </div>
+
+            <div className={`${styles.card} bg-[#F5F0EB]`}>
+              <div className={styles.imageWrapper}>
+                <Image
+                  src={images.progressPoly}
+                  alt="green-icon"
+                  fill
+                  className={styles.cardImage}
+                />
+              </div>
+              <div className={styles.cardContent}>
+                <h3>My Team Progress</h3>
+              </div>
             </div>
           </div>
-          <div className="mt-[60px] flex flex-col items-center gap-[14px] ">
-            <CommonButtons
-              label="Change my Pathway"
-              bgColor="#F5F0EB"
-              onClick={() => router.push("/choose-pathway")}
-            />
+          <div className={`items-center mx-auto mt-14`}>
+            {/* ---------------------My Quiz Results--------------- */}
+            <div className="mx-auto mt-14">
+              <MyQuizResults pathways={pathways} />
+            </div>
+            {/* ------------------------------------------------------ */}
 
-            <CommonButtons
-              label="Return to
+            {/* ----------------------My Personal Progress--------------- */}
+            <div className="mx-auto mt-14">
+              <MyPersonalProgress progressList={progressList} />
+            </div>
+            {/* ----------------------------------------------------------- */}
+
+            {/* ----------------------My Personal Progress--------------- */}
+            <div className="mx-auto mt-14">
+              <MyActivePractice practiceList={practiceList} />
+            </div>
+            {/* ----------------------------------------------------------- */}
+
+            {/* ------------------------My Team Progress-------------------- */}
+            <div className="mx-auto mt-14">
+              <MyTeamProgress teamProgressList={teamProgressList} />
+            </div>
+            {/* ------------------------------------------------------------- */}
+          </div>
+          {/* -------------------------------Download PDF------------ */}
+          <div className="flex justify-end">
+            <button className="flex flex-col items-center gap-2">
+              <Image src={images.downloadImg} alt="download" />
+
+              <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
+            </button>
+          </div>
+          {/* --------------------Success Message------------ */}
+          <div className="mt-14 mx-auto">
+            <SuccessMessage
+              text="Performance shifts when we practice, reflect, and connect — and you’re doing that here"
+              fontSize="text-[23px]"
+              leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+              rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+              fontColor="#0F4F58"
+              left="374px"
+              bottom="317px"
+              rightImgRight="360px"
+              rightImgBottom="299px"
+            />
+          </div>
+          {/* ----------------------------Footer-------------------- */}
+          <div className="flex justify-between ">
+            <div className="mt-[160px] flex">
+              <div className="max-w-[200px] text-[#0F4F58] font-[Aptos] text-[17px]">
+                Love what Hi Humaniser!™ brings? Share it with a friend who’d
+                enjoy it too.
+              </div>
+              <div className="ml-[26px]">
+                <PolygonButton
+                  width="85px"
+                  height="95px"
+                  bgColor="#F7C3BE"
+                  radius={14}
+                  topTilt={18}
+                  slantSide="right"
+                  bottomTilt={14}
+                >
+                  <div className="h-full flex items-center justify-center text-center">
+                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[32px]">
+                      Invite a Humaniser
+                    </span>
+                  </div>
+                </PolygonButton>
+              </div>
+            </div>
+            <div className="mt-[60px] flex flex-col items-center gap-[14px] ">
+              <CommonButtons
+                label="Change my Pathway"
+                bgColor="#F5F0EB"
+                onClick={() => router.push("/choose-pathway")}
+              />
+
+              <CommonButtons
+                label="Return to
 My Personal Pathway"
-              bgColor="#F5F0EB"
-              onClick={() => router.push("/dashboard")}
-            />
-            <CommonButtons
-              label="Return to My Team
+                bgColor="#F5F0EB"
+                onClick={() => router.push("/dashboard")}
+              />
+              <CommonButtons
+                label="Return to My Team
 Journey"
-              bgColor="#F5F0EB"
-              onClick={() => router.push("/dashboard")}
-            />
+                bgColor="#F5F0EB"
+                onClick={() => router.push("/dashboard")}
+              />
+            </div>
           </div>
         </div>
       </div>

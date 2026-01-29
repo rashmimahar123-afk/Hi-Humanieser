@@ -4,7 +4,7 @@ import images from "@/src/assets/images";
 type MILESTONE_FOOTER_PROPS = {
   onNext?: () => void;
   nextLabel?: string;
-  helperText?: string;
+  helperText?: any;
 };
 
 function MilestoneFooter(props: MILESTONE_FOOTER_PROPS) {
@@ -12,7 +12,7 @@ function MilestoneFooter(props: MILESTONE_FOOTER_PROPS) {
   return (
     <div className="mt-16 flex items-center justify-end">
       {/* Left: Bulb + helper text */}
-      <div className="flex items-center gap-4 max-w-[460px]">
+      <div className="flex items-center gap-4 max-w-[650px]">
         <Image
           src={images.milestoneBulb}
           alt="milestone-bulb"

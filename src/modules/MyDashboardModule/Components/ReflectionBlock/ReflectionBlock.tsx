@@ -4,7 +4,7 @@ function ReflectionBlock() {
   return (
     <div className="mt-10 bg-[#F6E7C3] rounded-[28px] px-6 py-8">
       {/* 3-column layout */}
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid grid-cols-2 gap-10">
         {/* COLUMN 1 */}
         <div>
           {/* 🔹 HEADING */}
@@ -30,18 +30,22 @@ function ReflectionBlock() {
         {/* COLUMN 2 */}
         <div>
           <p className="mb-3 text-center text-[#567F55] text-[16px] font-bold font-[League Spartan] uppercase">
-            REFLECTION
+            REFLECTIONS
           </p>
-          <TeamProgressCards />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <TeamProgressCards />
+            <TeamProgressCards />
+          </div>
         </div>
 
         {/* COLUMN 3 */}
-        <div>
+        {/* <div>
           <p className="mb-3 text-center text-[#567F55] text-[16px] font-bold font-[League Spartan] uppercase">
             REFLECTION
           </p>
           <TeamProgressCards />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import ArrowSquare from "@/src/components/ArrowSquare/ArrowSquare";
 import styles from "./MilestoneThree.module.css";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useState } from "react";
+import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
 
 type MILESTONE_THREE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -19,12 +20,14 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
 
   return (
     <div className="animate-slideInRight">
+      <StartPracticePerspective />
+
       {/* Title */}
-      <h2 className="text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">
+      <h2 className="text-[36px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
         Milestone 3: Lock In & Move Forward
       </h2>
       {/* Subtitle */}
-      <p className="mt-4 text-[18px] text-[#567F55] font-[Roboto] ml-[35px] max-w-[700px]">
+      <p className="mt-4 text-[18px] text-[#567F55] font-[Roboto] ml-[35px]">
         <span className="font-bold">
           Reflect. Recognise Progress. Decide what sticks.
         </span>
@@ -43,7 +46,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
             PULSE CHECK
           </p>
 
-          <p className="mt-3 max-w-[420px] text-[#567F55] text-[23px] font-[Roboto] font-[400] ml-[20px]">
+          <p className="mt-3 max-w-[420px] text-[#567F55] text-[23px] font-[Roboto] font-[400] ml-[82px]">
             How ready do you feel to approach challenges from different angles?
           </p>
         </div>
@@ -163,13 +166,12 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
         {/* ===== Heading & Description ===== */}
         <div className="max-w-[880px]">
           <p className="text-[#567F55] text-[22px] font-bold font-[Roboto]">
-            LOCK IN BEHAVIOURS (optional - pin to dashboard) pin as favourite
+            SAVE YOUR FAVOURITE (optional){" "}
           </p>
 
           <p className="mt-3 text-[#567F55] text-[23px] leading-[1.6] font-[400] font-[Roboto] ml-[20px]">
-            Which one’s worth keeping in play? Lock it in so it stays part of
-            your everyday rhythm. (it will be reflected in your dashboard….
-            explain more…)
+            Choose any micro-actions you’d like to keep as favourites — they’ll
+            live in your Dashboard so you can return to them anytime.
           </p>
         </div>
 

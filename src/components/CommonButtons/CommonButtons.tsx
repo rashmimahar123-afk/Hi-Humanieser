@@ -41,7 +41,7 @@ function CommonButtons({ label, onClick, bgColor }: COMMON_BUTTON_PROPS) {
     >
       <span className="pr-[48px] leading-[120%] text-left">{label}</span>
 
-      <span className="absolute right-[22px]">
+      <span className="absolute right-[8px]">
         <Image
           src={
             isChangePathway || isFormIdeas
@@ -51,8 +51,8 @@ function CommonButtons({ label, onClick, bgColor }: COMMON_BUTTON_PROPS) {
               : images.buttonArrow
           }
           alt="arrow"
-          width={59}
-          height={59}
+          width={49}
+          height={49}
         />
       </span>
     </button>

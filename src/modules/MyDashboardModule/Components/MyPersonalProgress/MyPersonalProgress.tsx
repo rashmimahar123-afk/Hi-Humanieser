@@ -11,10 +11,10 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
   return (
     <>
       {/* Heading */}
-      <h2 className="text-[35px] font-bold text-[#0F4F58] font-[RocaTwo]">
+      <h2 className="text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
         My Personal Progress
       </h2>
-      <p className="text-[#567F55] font-[Roboto] font-[400] text-[20px] ml-[40px] mt-[15px] max-w-2xl">
+      <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[22px] ml-[40px] mt-[15px] ">
         See the pathways you’ve taken on and how far you’ve come. Each one shows
         whether it’s in progress or complete, so you can track your journey at a
         glance.
@@ -30,7 +30,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
                 {/* Left */}
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 flex items-center justify-center">
-                    <Image src={item.icon} alt="" width={32} height={32} />
+                    <Image src={item.icon} alt="" width={80} height={80} />
                   </div>
                   <span className="text-[#000000] text-[17px] font-[Canva Sans] font-[400]">
                     {item.title}
@@ -97,13 +97,21 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
                 className: "-left-[44px] -top-[12px]",
               }}
             >
-              <div className="h-full flex items-center justify-center text-center px-2">
-                <span className="text-[#0F4F58] text-[24px] font-[RocaTwo] font-bold leading-[32px]">
-                  See all
-                  <br />
-                  Micro-Actions
-                  <br />
-                  I’ve tried
+              <div className="h-full flex items-center justify-center text-center ">
+                <span
+                  className="
+    text-[#0F4F58]
+    text-[22px]
+    font-[RocaTwo]
+    font-bold
+    leading-[28px]
+    text-center
+
+    overflow-hidden
+    whitespace-normal
+  "
+                >
+                  See all Micro-Actions I’ve tried
                 </span>
               </div>
             </PolygonButton>
@@ -128,7 +136,19 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
               }}
             >
               <div className="h-full flex items-center justify-center text-center px-2">
-                <span className="text-[#0F4F58] text-[24px] font-[RocaTwo] font-bold leading-[32px]">
+                <span
+                  className="
+    text-[#0F4F58]
+    text-[22px]
+    font-[RocaTwo]
+    font-bold
+    leading-[28px]
+    text-center
+
+    overflow-hidden
+    whitespace-normal
+  "
+                >
                   See all my Pathway Reflections
                 </span>
               </div>
