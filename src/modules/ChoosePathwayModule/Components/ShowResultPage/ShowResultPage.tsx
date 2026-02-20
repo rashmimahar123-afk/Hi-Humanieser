@@ -33,14 +33,15 @@ function ShowResultPage() {
   ];
 
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
+  const isPathwaySelected = selectedPathways.length > 0;
 
   const togglePathway = (id: any) => {
     setSelectedPathways((prev: any) =>
       prev.includes(id)
         ? prev.filter((p: any) => p !== id)
         : prev.length < 2
-        ? [...prev, id]
-        : prev
+          ? [...prev, id]
+          : prev,
     );
   };
 
@@ -347,9 +348,7 @@ function ShowResultPage() {
                         description={item.description}
                         selected={selectedPathways.includes(item?.id)}
                         onSelect={() => togglePathway(item.id)}
-                        onLearnMore={() =>
-                          console.log("Learn more:", item.title)
-                        }
+                        onLearnMore={() => router.push(`/pathway-card`)}
                       />
                     ))}
                   </div>
@@ -365,14 +364,16 @@ function ShowResultPage() {
           <div className="mt-[60px] flex flex-col items-center gap-[14px] ">
             <CommonButtons
               label="Return to My Personal Pathway"
-              bgColor="#ACD5AB"
+              bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
+              disabled={!isPathwaySelected}
               onClick={() => router.push("/choose-pathway")}
             />
 
             <CommonButtons
-              label="Go to Dashboard"
-              bgColor="#B7E0B5"
-              onClick={() => router.push("/dashboard")}
+              label="Choose my Own Pathway"
+              bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
+              disabled={!isPathwaySelected}
+              onClick={() => router.push("/choose-myself")}
             />
           </div>
         </div>

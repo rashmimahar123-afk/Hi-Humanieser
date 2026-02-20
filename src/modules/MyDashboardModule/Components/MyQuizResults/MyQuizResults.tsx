@@ -243,21 +243,25 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
           </div>
         </div>
 
-        <div className="flex justify-end mt-[30px]">
+        <div className="flex justify-end mt-[53px] mb-[7px]">
           <PolygonButton
             width="106px"
             height="107px"
             bgColor="#F6E3BF"
             radius={14}
-            topTilt={18}
-            bottomTilt={14}
+            clipPath={`polygon(
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
             decorationImg={{
               src: images.arrowImg,
               width: 48,
               height: 48,
             }}
             decorationPosition={{
-              className: "-left-[44px] -top-[12px]",
+              className: "-left-[31px] -top-[25px]",
             }}
           >
             <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">

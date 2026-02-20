@@ -7,8 +7,9 @@ import styles from "./MilestoneTwo.module.css";
 import images from "@/src/assets/images";
 import { useRouter } from "next/navigation";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
-import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import { useState } from "react";
+import FillUpFormModal from "../FillUpFormModal/FillUpFormModal";
 
 type MILESTONE_TWO_PROPS = {
   onNext: () => void;
@@ -16,6 +17,20 @@ type MILESTONE_TWO_PROPS = {
 function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
   const { onNext } = props;
   const router = useRouter();
+  const [pinned, setPinned] = useState<string[]>([]);
+
+  const togglePin = (title: string) => {
+    setPinned((prev) => {
+      if (prev.includes(title)) {
+        // Unpin
+        return prev.filter((item) => item !== title);
+      } else {
+        // Pin
+        return [...prev, title];
+      }
+    });
+  };
+
   return (
     <div className="animate-slideInRight">
       <StartPracticePerspective />
@@ -44,9 +59,9 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
           alt="arrow"
           width={80}
           height={80}
-          className="absolute -right-[5%] top-[10%]"
+          className="absolute -right-[3%] top-[10%]"
         />
-        <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute top-[8%] -right-[4%] ">
+        <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute top-[8%] -right-[3%] ">
           fill me up
         </p>
         <Image
@@ -73,48 +88,65 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
         {/* Action Rows */}
         <div className="space-y-8 relative">
           {/* Row 1 */}
-          <div className="relative">
-            {/* Row 1 */}
-            <MilestoneTwoActionRow
-              title="Ask yourself: “What else could be true?”"
-              description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
+          {/* <div className="relative"> */}
+          {/* Row 1 */}
+          <MilestoneTwoActionRow
+            title="Ask yourself: “What else could be true?”"
+            description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
 “Let’s hear their full thinking before we respond.”
 It takes courage — but it quietly protects trust, dignity and voice in the room.`}
-              showSaveReflection={true}
-            />
+            showSaveReflection={true}
+            isPinned={pinned.includes(
+              "Ask yourself: “What else could be true?”",
+            )}
+            onPinToggle={() =>
+              togglePin("Ask yourself: “What else could be true?”")
+            }
+            isPracticeEnabled={pinned.includes(
+              "Ask yourself: “What else could be true?”",
+            )}
+          />
 
-            {/* Polygon button BETWEEN first & second card */}
-            <div className="relative flex justify-end mt-[8px] mb-[36px] pr-[60px]">
-              {/* Wrapper with z-index */}
-              <div className="relative z-10">
-                <Image
-                  src={images.bluePoly}
-                  alt="blue polygon"
-                  width={120}
-                  height={92}
-                />
-
-                {/* Text ON TOP of image */}
-                <div className="absolute inset-0 flex items-center justify-center text-[#0F4F58] text-[20px] leading-[24px] font-[RocaTwo] font-bold text-center pointer-events-none">
-                  Add another
-                  <br />
-                  reflection
+          {/* Polygon button BETWEEN first & second card */}
+          {/* <div className="flex justify-end mt-[7px] mb-[7px] cursor-pointer">
+              <PolygonButton
+                width="110px"
+                height="88px"
+                bgColor="#4ba6a6"
+                radius={14}
+                clipPath={`polygon(
+    18% 12%,
+    82% 2%,
+    100% 88%,
+    6% 100%
+  )`}
+              >
+                <div className="relative z-20 flex flex-col items-center justify-center w-full h-full text-[#0F4F58] font-[RocaTwo] font-bold text-center pointer-events-none">
+                  <span className="text-[22px] leading-[24px]">
+                    Add another
+                  </span>
+                  <span className="text-[22px] leading-[24px]">reflection</span>
                 </div>
-              </div>
-            </div>
-
-            {/* Row 2 */}
-            <MilestoneTwoActionRow
-              title="Borrow someone else’s lens"
-              description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
-              showSaveReflection={false}
-            />
-          </div>
+              </PolygonButton>
+            </div> */}
+          {/* Row 2 */}
+          <MilestoneTwoActionRow
+            title="Borrow someone else’s lens"
+            description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
+            showSaveReflection={false}
+            isPinned={pinned.includes("Borrow someone else’s lens")}
+            onPinToggle={() => togglePin("Borrow someone else’s lens")}
+            isPracticeEnabled={pinned.includes("Borrow someone else’s lens")}
+          />
+          {/* </div> */}
           {/* Row 3 */}
           <MilestoneTwoActionRow
             title="The Quiet Recognition"
             description={`In your next conversation, to make sure you’ve understood correctly, ask one clarifying question: “Can I check if I’m hearing this right?” Then share your understanding. This prevents the brain from filling gaps with prediction.`}
             showSaveReflection={false}
+            isPinned={pinned.includes("The Quiet Recognition")}
+            onPinToggle={() => togglePin("The Quiet Recognition")}
+            isPracticeEnabled={pinned.includes("The Quiet Recognition")}
           />
         </div>
 
@@ -127,7 +159,7 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
         </div>
       </div>
       <MilestoneFooter
-        onNext={onNext}
+        nextRoute="/pathway-card"
         nextLabel="Conversation Starters"
         helperText="Want to go deeper?
 Explore “Conversation Starters Pack’  with few prompts to bring into team meetings, 1:1 and coffee chats."
@@ -167,6 +199,7 @@ Explore “Conversation Starters Pack’  with few prompts to bring into team me
           </div>
         </div>
       </div>
+      <FillUpFormModal />
     </div>
   );
 }

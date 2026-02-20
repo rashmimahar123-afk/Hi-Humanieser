@@ -13,17 +13,16 @@ export default function ProfilePathway() {
         <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
       </div>
       {/* Header */}
-      <div>
-        <div>
-          <h2 className="text-[#0F4F58] text-[42px] font-[RocaTwo] font-bold mt-[20px]">
-            My Personal Pathway
-          </h2>
 
-          <p className="text-[#0F4F58] text-[20px]  mt-[16px] leading-[30px]">
-            Your Pathway is where your growth begins. Choose how you’d like to
-            explore or adjust it.
-          </p>
-        </div>
+      <div className="ml-[37px] mt-6 ">
+        <h2 className="text-[#0F4F58] text-[42px] font-[RocaTwo] font-bold mt-[20px]">
+          My Pathways
+        </h2>
+
+        <p className="text-[#0F4F58] text-[20px]  mt-[16px] leading-[30px]">
+          Your Pathway is where your growth begins. Choose how you’d like to
+          explore or adjust it.
+        </p>
       </div>
 
       {/* Cards */}

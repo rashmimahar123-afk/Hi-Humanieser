@@ -6,6 +6,7 @@ import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
 import MilestoneTwoActionRow from "@/src/modules/PersonalPathwayModule/Components/MilestoneTwoActionRow/MilestoneTwoActionRow";
 import ReflectionBlock from "../ReflectionBlock/ReflectionBlock";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import DashboardPathwayCard from "../DashboardPathwayCard/DashboardPathwayCard";
 
 function DashboardPdf() {
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
@@ -471,14 +472,14 @@ function DashboardPdf() {
                 </div>
               </div>
             </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-12 relative">
+            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-6 relative">
               {/* Top labels */}
-              <div className="flex justify-between mb-8">
+              <div className="flex justify-between mb-4">
                 <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTION 1
+                  MICRO-ACTIONS
                 </span>
 
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[180px]">
+                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[340px]">
                   REFLECTION
                 </span>
               </div>
@@ -486,7 +487,7 @@ function DashboardPdf() {
               {/* Action Rows */}
               <div className="space-y-8">
                 {/* Row */}
-                <MilestoneTwoActionRow
+                <DashboardPathwayCard
                   title="Ask yourself: “What else could be true?”"
                   description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
 “Let’s hear their full thinking before we respond.”
@@ -494,21 +495,21 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
                 />
               </div>
             </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-12 relative">
+            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-6 relative">
               {/* Top labels */}
-              <div className="flex justify-between mb-8">
+              <div className="flex justify-between mb-4">
                 <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTION 1
+                  MICRO-ACTIONS
                 </span>
 
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[180px]">
+                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[340px]">
                   REFLECTION
                 </span>
               </div>
 
               {/* Action Rows */}
               <div className="space-y-8">
-                <MilestoneTwoActionRow
+                <DashboardPathwayCard
                   title="Borrow someone else’s lens"
                   description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
                 />
@@ -543,14 +544,14 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
                 </div>
               </div>
             </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-12 relative">
+            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-6 relative">
               {/* Top labels */}
-              <div className="flex justify-between mb-8">
+              <div className="flex justify-between mb-6">
                 <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTION 1
+                  MICRO-ACTIONS
                 </span>
 
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[180px]">
+                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[340px]">
                   REFLECTION{" "}
                 </span>
               </div>
@@ -558,7 +559,7 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
               {/* Action Rows */}
               <div className="space-y-8">
                 {/* Row */}
-                <MilestoneTwoActionRow
+                <DashboardPathwayCard
                   title="Ask yourself: “What else could be true?”"
                   description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
 “Let’s hear their full thinking before we respond.”
@@ -568,9 +569,9 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
             </div>
             <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-12 relative">
               {/* Top labels */}
-              <div className="flex justify-between mb-8">
+              <div className="flex justify-between mb-4">
                 <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTION 1
+                  MICRO-ACTIONS
                 </span>
 
                 <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[180px]">
@@ -580,7 +581,7 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
 
               {/* Action Rows */}
               <div className="space-y-8">
-                <MilestoneTwoActionRow
+                <DashboardPathwayCard
                   title="Borrow someone else’s lens"
                   description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
                 />

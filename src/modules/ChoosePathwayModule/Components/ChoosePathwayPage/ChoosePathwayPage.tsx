@@ -18,7 +18,7 @@ function ChoosePathwayPage() {
     <>
       <div
         className={`
-    min-h-screen bg-[#8BBE8A] px-8 py-6 z-10 relative
+    min-h-screen bg-[#4ba6a6] px-8 py-6 z-10 relative
     ${styles.page}
     ${enter ? styles.enterActive : styles.enterFromLeft}
   `}
@@ -37,6 +37,12 @@ function ChoosePathwayPage() {
           fontSize="text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+          fontColor="#0F4F58"
+          left="403px"
+          top="126px"
+          rightImgRight="390px"
+          rotate="-35deg"
+          rightImgTop="123px"
         />
 
         <div className={`flex justify-center mt-[40px]`}>

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import images from "@/src/assets/images";
 import Image from "next/image";
 
 type RESULT_PATHWAY_CARD_PROPS = {
@@ -20,6 +21,7 @@ function ResultPathwayCard(props: RESULT_PATHWAY_CARD_PROPS) {
         px-6 py-8
         flex flex-col justify-between
         ${selected ? "ring-2 ring-[#0F4F58]" : ""}
+         relative
       `}
     >
       {/* Top content */}
@@ -43,7 +45,7 @@ function ResultPathwayCard(props: RESULT_PATHWAY_CARD_PROPS) {
       <div className="flex flex-col items-end gap-4">
         <button
           onClick={onLearnMore}
-          className="px-4 py-1 bg-[#F8E1B8] rounded-full text-[#0F4F58] text-[18px] "
+          className="px-4 py-1 bg-[#F8E1B8] rounded-full text-[#0F4F58] text-[18px] cursor-pointer"
           style={{ fontFamily: "RocaTwo-Bold" }}
         >
           learn more
@@ -58,16 +60,12 @@ function ResultPathwayCard(props: RESULT_PATHWAY_CARD_PROPS) {
           </span>
 
           <span className="w-[21px] h-[23px] bg-[#86C9C9] clip-triangle" />
-          {/* <div
-            className={`
-              w-4 h-4 rounded
-              border border-[#0F4F58]
-              flex items-center justify-center
-              ${selected ? "bg-[#0F4F58]" : "bg-transparent"}
-            `}
-          >
-            {selected && <span className="text-white text-[10px]">✓</span>}
-          </div> */}
+
+          {selected && (
+            <div className="absolute right-4">
+              <Image src={images.tickImg} alt="tick" width={22} height={22} />
+            </div>
+          )}
         </div>
       </div>
     </div>

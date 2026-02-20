@@ -150,7 +150,7 @@ function MyDashboard() {
           alt="dash-rectangle"
           width={530}
           height={530}
-          className="absolute top-50 right-0 z-0"
+          className="absolute top-45 right-0 z-0"
         />
 
         <div className="px-10 py-8 absolute">
@@ -184,7 +184,7 @@ function MyDashboard() {
           </div>
           {/* Cards */}
           <div
-            className={`flex justify-between items-center mx-auto mt-[80px]`}
+            className={`flex justify-between items-center mx-auto mt-[90px]`}
           >
             <div className={`${styles.card} bg-[#F5F0EB]`}>
               {/* Image layer */}
@@ -270,13 +270,43 @@ function MyDashboard() {
             </div>
             {/* ------------------------------------------------------------- */}
           </div>
-          {/* -------------------------------Download PDF------------ */}
-          <div className="flex justify-end">
-            <button className="flex flex-col items-center gap-2">
-              <Image src={images.downloadImg} alt="download" />
+          <div className="flex justify-between mt-[50px]">
+            {/* -------------------------------Download PDF------------ */}
+            <div className="flex justify-end">
+              <button className="flex flex-col items-center gap-2">
+                <Image src={images.downloadImg} alt="download" />
 
-              <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
-            </button>
+                <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-10">
+              {/* -------slant Left Btn-------- */}
+              <div></div>
+              {/* -------slant Right Btn-------- */}
+              <div>
+                <PolygonButton
+                  width="137px"
+                  height="129px"
+                  bgColor="#f8e1b8"
+                  radius={14}
+                  clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
+                  decorationImg={{
+                    src: images.rightArrow,
+                    width: 48,
+                    height: 48,
+                  }}
+                  decorationPosition={{
+                    className: "-right-[20px] -top-[28px]",
+                  }}
+                >
+                  <div className="h-full flex items-center justify-center text-center">
+                    <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-[32px]">
+                      See all Ritual Reflections
+                    </span>
+                  </div>
+                </PolygonButton>
+              </div>
+            </div>
           </div>
           {/* --------------------Success Message------------ */}
           <div className="mt-14 mx-auto">
@@ -305,12 +335,10 @@ function MyDashboard() {
                   height="95px"
                   bgColor="#F7C3BE"
                   radius={14}
-                  topTilt={18}
-                  slantSide="right"
-                  bottomTilt={14}
+                  clipPath={`polygon(0% 0%, 100% 18px,100% calc(100% - 14px),0% 100%)`}
                 >
                   <div className="h-full flex items-center justify-center text-center">
-                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[32px]">
+                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[21px]">
                       Invite a Humaniser
                     </span>
                   </div>

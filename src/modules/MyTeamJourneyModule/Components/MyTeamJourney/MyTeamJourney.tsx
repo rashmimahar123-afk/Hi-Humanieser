@@ -21,20 +21,43 @@ function MyTeamJourney() {
 
   return (
     <div
-      className={`min-h-screen bg-[#4BA6A6] p-6 font-sans ${styles.page} ${
+      className={`min-h-screen bg-[#4BA6A6] font-sans ${styles.page} ${
         enter ? styles.enterActive : styles.enter
       }`}
     >
-      <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
-
-      <SuccessMessage
-        text="Great to see you again — ready to explore?"
-        fontSize="text-[21px]"
-        leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-        rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+      <Image
+        src={images.myDashGreenPoly}
+        alt="dash-green-rectangle"
+        width={300}
+        height={230}
+        className="absolute top-0 left-0 z-0"
       />
 
-      <div className="max-w-[1100px] mx-auto mt-10 bg-[#FBF4EF] rounded-[28px] px-16 py-14">
+      <Image
+        src={images.myDashBluePoly}
+        alt="dash-rectangle"
+        width={530}
+        height={530}
+        className="absolute top-0 right-0 z-0"
+      />
+      <div className="relative z-20 px-10 py-8 ">
+        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+      </div>
+      <div className="relative z-20  ">
+        <SuccessMessage
+          text="Great to see you again — ready to explore?"
+          fontSize="text-[30px]"
+          leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+          rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+          fontColor="#0F4F58"
+          left="403px"
+          top="-14px"
+          rightImgRight="390px"
+          rightImgBottom="-2px"
+          rotate="-35deg"
+        />
+      </div>
+      <div className="max-w-[1100px] mx-auto mt-10 bg-[#FBF4EF] rounded-[28px] px-16 py-14 mt-[110px]">
         {/* Heading */}
         <h1
           className="text-center text-[#244E52] text-[51px] font-bold mb-10"
@@ -57,10 +80,7 @@ function MyTeamJourney() {
 
         {/* Take a quick poll */}
         <div className="flex items-center gap-6 mt-10 ml-[100px]">
-          <div
-            className="relative w-[168px] h-[90px] cursor-pointer"
-            onClick={() => router.push("/team-journey-poll")}
-          >
+          <div className="relative w-[168px] h-[90px]">
             <Image
               src={images.pollImg}
               alt="poll"
@@ -90,7 +110,7 @@ function MyTeamJourney() {
             className="absolute -top-6 -right-6"
           />
 
-          <p className="text-[#737373] text-[24px] max-w-[716px] mb-8 font-[Aptos] font-[400]">
+          <p className="text-[#0f4f58] text-[24px] max-w-[716px] mb-8 font-[Aptos] font-[400]">
             If your team could make real progress on a few things over the next
             few weeks, which would matter most to you? Choose up to 2.
           </p>
@@ -101,7 +121,6 @@ function MyTeamJourney() {
             <HoverOption label="Improve Clarity" />
             <HoverOption label="Sustain Wellbeing" />
             <HoverOption label="Strengthen Collaboration" />
-            <HoverOption label="Shape the System" />
           </div>
 
           {/* Add my voice button */}

@@ -9,10 +9,10 @@ interface Props {
 }
 
 const textColors = [
-  "text-[#1F4D52]", // teal
-  "text-[#355F5B]", // dark teal
-  "text-[#2F6F73]", // bluish
-  "text-[#4A6E6A]", // muted green
+  "text-[#1F4D52]",
+  "text-[#355F5B]",
+  "text-[#2F6F73]",
+  "text-[#4A6E6A]",
 ];
 
 export default function ViewAllReflectionCard({
@@ -21,8 +21,11 @@ export default function ViewAllReflectionCard({
   imageKey,
   index,
 }: Props) {
+  const isReflectionWall2 =
+    typeof imageKey === "object" && imageKey?.src?.includes("reflectionWall2");
+
   return (
-    <div className={`relative w-[337px] h-[350px] ${rotate}`}>
+    <div className={`relative w-[397px] h-[373px] ${rotate} `}>
       {/* NOTE IMAGE */}
       <Image
         src={imageKey}
@@ -33,10 +36,14 @@ export default function ViewAllReflectionCard({
 
       {/* TEXT */}
       {text && (
-        <div className="absolute inset-0 flex items-center justify-center px-8 text-center">
+        <div
+          className={`absolute inset-0 flex items-center justify-center px-10 text-center ${
+            isReflectionWall2 ? "mt-[60px]" : ""
+          }`}
+        >
           <p
             className={`${textColors[index % textColors.length]}
-            text-[16px] leading-[15px] font-[Roboto] font-[400]`}
+              text-[18px] leading-[20px] font-[Roboto] font-[400]`}
           >
             {text}
           </p>

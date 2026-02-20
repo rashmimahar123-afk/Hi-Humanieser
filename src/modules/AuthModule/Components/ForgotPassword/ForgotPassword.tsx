@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { getEmailValidationRules } from "@/src/lib/Helpers";
 import { emailMessage } from "@/src/lib/ErrorMessages";
+import Link from "next/link";
 
 interface ForgotPasswordFormProps {
   onBack: () => void;
@@ -146,8 +147,8 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                     "email",
                     getEmailValidationRules(
                       emailMessage.requiredMessage,
-                      emailMessage.invalidMessage
-                    )
+                      emailMessage.invalidMessage,
+                    ),
                   )}
                   className="w-full bg-transparent outline-none text-lg"
                 />
@@ -238,9 +239,13 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
             }}
           >
             Your data stays yours. Learn more in our{" "}
-            <a href="#" className="text-[#567F55] underline">
+            <Link
+              href="/privacy-policy"
+              target="_blank"
+              className="underline hover:text-[#567F55] transition-colors"
+            >
               Privacy Policy
-            </a>
+            </Link>{" "}
           </span>
         </div>
       </footer>

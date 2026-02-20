@@ -1,8 +1,6 @@
 "use client";
+import LandingPage from "@/src/modules/WelcomeModule/Components/LandingPage/LandingPage";
 import React, { Suspense } from "react";
-const LandingPage = React.lazy(
-  () => import("@/src/modules/WelcomeModule/Components/LandingPage/LandingPage")
-);
 
 function WelcomePage() {
   return (
@@ -14,4 +12,4 @@ function WelcomePage() {
   );
 }
 
-export default LandingPage;
+export default WelcomePage;

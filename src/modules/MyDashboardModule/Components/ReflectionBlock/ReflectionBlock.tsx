@@ -2,50 +2,56 @@ import TeamProgressCards from "../TeamProgressCards/TeamProgressCards";
 
 function ReflectionBlock() {
   return (
-    <div className="mt-10 bg-[#F6E7C3] rounded-[28px] px-6 py-8">
-      {/* 3-column layout */}
-      <div className="grid grid-cols-2 gap-10">
-        {/* COLUMN 1 */}
-        <div>
-          {/* 🔹 HEADING */}
-          <p className="mb-3 text-center text-[#567F55] text-[16px] font-bold font-[League Spartan] uppercase">
-            TEAM RITUAL
+    <div className="mt-10 bg-[#FBE4BC] rounded-[24px] p-8">
+      {/* Header */}
+      <div className="grid grid-cols-[340px_1fr] mb-6">
+        <p className="text-[#567F55] font-[Aptos] font-bold text-[16px] ml-[130px] font-bold">
+          TEAM RITUAL
+        </p>
+        <p className="text-[#567F55] font-[Aptos] font-bold text-[16px] text-center font-bold">
+          REFLECTIONS
+        </p>
+      </div>
+
+      {/* Content */}
+      <div className="grid grid-cols-[380px_390px_390px] gap-6">
+        {/* Team Ritual */}
+        <div className="bg-white rounded-[20px] p-6">
+          <p className="text-[#567F55] font-bold text-[20px] mb-3">
+            Ask yourself: “What else could be true?”
           </p>
-
-          {/* 🔹 CARD */}
-          <div className="bg-[#F5F0EB] rounded-[21px] p-6">
-            <h4 className="text-[#567F55] font-bold text-[20px] font-[Roboto] font-[700] mb-3">
-              Ask yourself: “What else could be true?”
-              <span className="font-extrabold">“What else could be true?”</span>
-            </h4>
-
-            <p className="text-[#567F55] text-[19px] leading-relaxed font-[Roboto] font-[400]">
-              Next time you feel sure about what’s going on, take a breath and
-              imagine 2–3 other possibilities. You might uncover something that
-              shifts the conversation — and the outcome.
-            </p>
-          </div>
+          <p className="text-[#567F55] text-[16px] leading-relaxed">
+            Next time you feel sure about what’s going on, take a breath and
+            imagine 2–3 other possibilities. You might uncover something that
+            shifts the conversation – and the outcome.
+          </p>
         </div>
 
-        {/* COLUMN 2 */}
-        <div>
-          <p className="mb-3 text-center text-[#567F55] text-[16px] font-bold font-[League Spartan] uppercase">
-            REFLECTIONS
+        {/* Reflection 1 */}
+        <div className="bg-white rounded-[20px] p-6">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="border-b border-dotted border-[#567F55] py-2"
+            />
+          ))}
+          <p className="text-end text-[#0F4F58] text-[14px] mt-4 font-bold">
+            (Shared in reflection Wall)
           </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <TeamProgressCards />
-            <TeamProgressCards />
-          </div>
         </div>
 
-        {/* COLUMN 3 */}
-        {/* <div>
-          <p className="mb-3 text-center text-[#567F55] text-[16px] font-bold font-[League Spartan] uppercase">
-            REFLECTION
+        {/* Reflection 2 */}
+        <div className="bg-white rounded-[20px] p-6">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="border-b border-dotted border-[#567F55] py-2"
+            />
+          ))}
+          <p className="text-end text-[#0F4F58] text-[14px] font-bold mt-4">
+            (Shared in reflection Wall)
           </p>
-          <TeamProgressCards />
-        </div> */}
+        </div>
       </div>
     </div>
   );

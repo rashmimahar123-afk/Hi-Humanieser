@@ -10,12 +10,25 @@ import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 function MySelfPage() {
   const [animateText, setAnimateText] = useState(false);
   const [enter, setEnter] = useState(false);
+  const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
+
+  const isPathwaySelected = selectedPathways.length > 0;
 
   useEffect(() => {
     setEnter(true);
   }, []);
 
   const router = useRouter();
+
+  const togglePathway = (id: number) => {
+    setSelectedPathways((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((item) => item !== id);
+      }
+
+      return [...prev, id]; // no limit now
+    });
+  };
 
   return (
     <div
@@ -126,12 +139,18 @@ function MySelfPage() {
                     description:
                       "Transform your messages into clear direction that people can actually act on.",
                     learnMoreColor: "#7EC9C6",
+                    onLearnMore: () => router.push("/pathway-card"),
+                    selected: selectedPathways.includes(1),
+                    onSelect: () => togglePathway(1),
                   },
                   {
                     title: "Be Real, Not Right",
                     description:
                       "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
                     learnMoreColor: "#7EC9C6",
+                    onLearnMore: () => router.push("/pathway-card"),
+                    selected: selectedPathways.includes(2),
+                    onSelect: () => togglePathway(2),
                   },
                 ]}
               />
@@ -146,12 +165,18 @@ function MySelfPage() {
                     description:
                       "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
                     learnMoreColor: "#8BBE8A",
+                    onLearnMore: () => router.push("/pathway-card"),
+                    selected: selectedPathways.includes(3),
+                    onSelect: () => togglePathway(3),
                   },
                   {
                     title: "Be Real, Not Right",
                     description:
                       "Transform your messages into clear direction that people can actually act on.",
                     learnMoreColor: "#8BBE8A",
+                    onLearnMore: () => router.push("/pathway-card"),
+                    selected: selectedPathways.includes(4),
+                    onSelect: () => togglePathway(4),
                   },
                 ]}
               />
@@ -166,12 +191,18 @@ function MySelfPage() {
                     description:
                       "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
                     learnMoreColor: "#F8E1B8",
+                    onLearnMore: () => router.push("/pathway-card"),
+                    selected: selectedPathways.includes(5),
+                    onSelect: () => togglePathway(5),
                   },
                   {
                     title: "Wellbeing is Performance Infrastructure",
                     description:
                       "Learn how energy, recovery, and care directly strengthen performance.",
                     learnMoreColor: "#F8E1B8",
+                    onLearnMore: () => router.push("/pathway-card"),
+                    selected: selectedPathways.includes(6),
+                    onSelect: () => togglePathway(6),
                   },
                 ]}
               />
@@ -183,8 +214,9 @@ function MySelfPage() {
         <div className="mt-[60px] flex flex-col items-center gap-[14px] ">
           <CommonButtons
             label="Return to My Personal Pathway"
-            bgColor="#ACD5AB"
-            onClick={() => router.push("/choose-pathway")}
+            bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
+            disabled={!isPathwaySelected}
+            onClick={() => router.push("/personal-pathway")}
           />
         </div>
       </div>

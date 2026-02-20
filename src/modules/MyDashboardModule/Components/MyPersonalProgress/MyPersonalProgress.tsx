@@ -39,7 +39,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
 
                 {/* Right */}
                 <div className="flex items-center gap-3 text-sm">
-                  <Image src={images.compImg} alt="complete-img" />
+                  {/* <Image src={images.compImg} alt="complete-img" /> */}
                   <div className="text-right">
                     <p className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
                       {item.status === "Completed"
@@ -70,9 +70,9 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
               </h3>
             </div>
 
-            <span className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
+            {/* <span className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
               add 5 trofeos
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
@@ -81,13 +81,14 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
           {/* -------slant Left Btn-------- */}
           <div>
             <PolygonButton
-              width="155px"
-              height="151px"
+              height="129px"
               bgColor="#F6E3BF"
-              radius={14}
-              topTilt={18}
-              bottomTilt={14}
-              slantSide="left"
+              clipPath={`polygon(
+    0% 29px,
+    100% 7%,
+    87% 89%,
+    20% calc(100% - 13px)
+  )`}
               decorationImg={{
                 src: images.arrowImg,
                 width: 48,
@@ -97,20 +98,8 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
                 className: "-left-[44px] -top-[12px]",
               }}
             >
-              <div className="h-full flex items-center justify-center text-center ">
-                <span
-                  className="
-    text-[#0F4F58]
-    text-[22px]
-    font-[RocaTwo]
-    font-bold
-    leading-[28px]
-    text-center
-
-    overflow-hidden
-    whitespace-normal
-  "
-                >
+              <div className="h-full flex items-center justify-center text-center">
+                <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[28px]">
                   See all Micro-Actions I’ve tried
                 </span>
               </div>
@@ -119,35 +108,32 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
           {/* -------slant Right Btn-------- */}
           <div>
             <PolygonButton
-              width="137px"
-              height="151px"
-              bgColor="#86C9C9"
+              height="129px"
+              bgColor="#acd5ab"
               radius={14}
               topTilt={18}
               slantSide="right"
-              bottomTilt={14}
+              clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
               decorationImg={{
                 src: images.rightArrow,
                 width: 48,
                 height: 48,
               }}
               decorationPosition={{
-                className: "-right-[46px] -top-[12px]",
+                className: "-right-[27px] -top-[20px]",
               }}
             >
-              <div className="h-full flex items-center justify-center text-center px-2">
+              <div className="h-full flex items-center justify-center text-center">
                 <span
                   className="
-    text-[#0F4F58]
-    text-[22px]
-    font-[RocaTwo]
-    font-bold
-    leading-[28px]
-    text-center
-
-    overflow-hidden
-    whitespace-normal
-  "
+      text-[#0F4F58]
+      text-[18px]
+      font-[RocaTwo]
+      font-bold
+      leading-[28px]
+      text-center
+      whitespace-normal
+    "
                 >
                   See all my Pathway Reflections
                 </span>

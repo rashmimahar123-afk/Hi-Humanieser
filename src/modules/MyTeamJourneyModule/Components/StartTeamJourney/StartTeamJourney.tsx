@@ -7,23 +7,40 @@ import styles from "./StartTeamJourney.module.css";
 function StartTeamJourney() {
   return (
     <>
-      <div className="min-h-screen bg-[#4BA6A6] p-6 font-sans">
-        <UserProfileHeader />
-        <SuccessMessage
-          text="Great to see you again — ready to explore?"
-          fontSize="text-[21px]"
-          leftImg={{
-            src: images.arrowImg,
-            width: 40,
-            height: 40,
-          }}
-          rightImg={{
-            src: images.leftArrowImg,
-            width: 60,
-            height: 60,
-          }}
+      <div className="min-h-screen bg-[#4BA6A6] relative font-sans">
+        <Image
+          src={images.myDashGreenPoly}
+          alt="dash-green-rectangle"
+          width={300}
+          height={230}
+          className="absolute top-0 left-0 z-0"
         />
-        <div className="max-w-[1100px] mx-auto mt-10 bg-[#FBF4EF] rounded-[28px] px-16 py-14 relative">
+
+        <Image
+          src={images.myDashBluePoly}
+          alt="dash-rectangle"
+          width={530}
+          height={530}
+          className="absolute top-0 right-0 z-0"
+        />
+        <div className="relative z-20 px-10 py-8 ">
+          <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        </div>
+        <div className="relative z-20  ">
+          <SuccessMessage
+            text="Great to see you again — ready to explore?"
+            fontSize="text-[30px]"
+            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+            fontColor="#0F4F58"
+            left="402px"
+            bottom="4px"
+            rightImgRight="390px"
+            rightImgBottom="2px"
+            rotate="-35deg"
+          />
+        </div>
+        <div className="max-w-[1100px] mx-auto mt-30 bg-[#FBF4EF] rounded-[28px] px-12 py-10 relative ">
           {/* Heading */}
           <h1
             className="text-center text-[#244E52] text-[51px] font-bold mb-8 font-[RocaTwo]"
@@ -33,23 +50,23 @@ function StartTeamJourney() {
           </h1>
 
           {/* Sub heading */}
-          <p className="text-[#0F4F58] text-[30px] font-[400] max-w-[900px] font-[RocaTwo]">
-            Hold Tight Maria, your champion is setting up a team poll to gather
-            everyone’s input.
+          <p className="text-[#0F4F58] text-[30px] font-[400] font-[RocaTwo]">
+            Hold Tight Maria, your Champion is getting the team poll ready — a
+            space where everyone’s voice helps shape what the team focuses on
+            next.
           </p>
 
           {/* Description */}
-          <p className="mt-6 text-[#0F4F58] text-[21px] max-w-[900px] leading-relaxed font-[Roboto] ml-[40px]">
-            Once the team’s voices are in, your leader will choose the next
-            ritual. It will appear here, ready for your team to try together
-            over the next 4 weeks.
+          <p className="mt-6 text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-[40px]">
+            Once the poll is live, it will appear right here so you can share
+            what matters most to you.
           </p>
 
           {/* Yellow CTA Box */}
-          <div className="mt-12 bg-[#F3D28E] rounded-[18px] px-12 py-4 max-w-[799px] ml-[55px] gap-6">
+          <div className="mt-12 bg-[#f5c882] rounded-[18px] px-12 py-4 max-w-[799px] ml-[55px] gap-6">
             {/* Left text */}
             <div>
-              <p className="text-[#737373] text-[21px] whitespace-nowrap font-[Aptos]">
+              <p className="text-[#0f4f58] text-[22px] whitespace-nowrap font-[Aptos]">
                 In the meantime, you can
               </p>
             </div>
@@ -99,7 +116,7 @@ function StartTeamJourney() {
 
             {/* Right text */}
             <div className="flex justify-end">
-              <p className="text-[#737373] text-[21px] max-w-[341px] font-[Aptos]">
+              <p className="text-[#0f4f58] text-[22px] max-w-[360px] font-[Aptos]">
                 to explore other parts of Hi Humaniser! while your team’s ritual
                 is being set.
               </p>
@@ -107,14 +124,14 @@ function StartTeamJourney() {
           </div>
 
           {/* Bottom note */}
-          <div className="mt-14 flex items-center gap-4 justify-end">
+          <div className="mt-14 flex  gap-4 justify-end">
             <Image
               src={images.milestoneBulb}
               alt="milestone-bulb"
               width={60}
               height={60}
             />
-            <p className="text-[#0F4F58] text-[17px] font-[Aptos] max-w-[520px] text-center">
+            <p className="text-[#0f4f58] text-[20px] font-[Aptos] max-w-[520px] font-[Roboto]">
               Team rituals are designed to work within and across teams, even
               when not everyone is using Hi Humaniser!
             </p>

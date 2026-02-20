@@ -111,19 +111,19 @@ function FromIdeas() {
               <div className="mt-[32px] px-[40px]">
                 <FromIdeasPathwayCard
                   sectionTitle="The Mindset We Bring"
-                  bgColor="#9FD3D1"
+                  bgColor="#4ba6a6"
                   cards={[
                     {
                       title: "Own Your Impact",
                       description:
                         "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#7EC9C6",
+                      learnMoreColor: "#4ba6a6",
                     },
                     {
                       title: "Be Real, Not Right",
                       description:
                         "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
-                      learnMoreColor: "#7EC9C6",
+                      learnMoreColor: "#4ba6a6",
                     },
                   ]}
                 />
@@ -201,19 +201,19 @@ function FromIdeas() {
               <div className="mt-[32px] px-[40px]">
                 <FromIdeasPathwayCard
                   sectionTitle="The Mindset We Bring"
-                  bgColor="#9FD3D1"
+                  bgColor="#4ba6a6"
                   cards={[
                     {
                       title: "Own Your Impact",
                       description:
                         "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#7EC9C6",
+                      learnMoreColor: "#4ba6a6",
                     },
                     {
                       title: "Be Real, Not Right",
                       description:
                         "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
-                      learnMoreColor: "#7EC9C6",
+                      learnMoreColor: "#4ba6a6",
                     },
                   ]}
                 />
@@ -221,19 +221,19 @@ function FromIdeas() {
               <div className="mt-[32px] px-[40px]">
                 <FromIdeasPathwayCard
                   sectionTitle="The Way We Connect"
-                  bgColor="#8BBE8A"
+                  bgColor="#f5c882"
                   cards={[
                     {
                       title: "Make it Safe",
                       description:
                         "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
-                      learnMoreColor: "#8BBE8A",
+                      learnMoreColor: "#f5c882",
                     },
                     {
                       title: "Be Real, Not Right",
                       description:
                         "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#8BBE8A",
+                      learnMoreColor: "#f5c882",
                     },
                   ]}
                 />
@@ -241,19 +241,59 @@ function FromIdeas() {
               <div className="mt-[32px] px-[40px]">
                 <FromIdeasPathwayCard
                   sectionTitle="The Culture We Shape"
-                  bgColor="#F5C882"
+                  bgColor="#acd5ab"
                   cards={[
                     {
                       title: "Culture by Design",
                       description:
                         "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-                      learnMoreColor: "#F5C882",
+                      learnMoreColor: "#acd5ab",
                     },
                     {
                       title: "Wellbeing is Performance Infrastructure",
                       description:
                         "Learn how energy, recovery, and care directly strengthen performance.",
-                      learnMoreColor: "#F5C882",
+                      learnMoreColor: "#acd5ab",
+                    },
+                  ]}
+                />
+              </div>
+              <div className="mt-[32px] px-[40px]">
+                <FromIdeasPathwayCard
+                  sectionTitle="The Culture We Shape"
+                  bgColor="#f7c3be"
+                  cards={[
+                    {
+                      title: "Culture by Design",
+                      description:
+                        "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
+                      learnMoreColor: "#f7c3be",
+                    },
+                    {
+                      title: "Wellbeing is Performance Infrastructure",
+                      description:
+                        "Learn how energy, recovery, and care directly strengthen performance.",
+                      learnMoreColor: "#f7c3be",
+                    },
+                  ]}
+                />
+              </div>
+              <div className="mt-[32px] px-[40px]">
+                <FromIdeasPathwayCard
+                  sectionTitle="The Culture We Shape"
+                  bgColor="#4ba6a6"
+                  cards={[
+                    {
+                      title: "Culture by Design",
+                      description:
+                        "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
+                      learnMoreColor: "#4ba6a6",
+                    },
+                    {
+                      title: "Wellbeing is Performance Infrastructure",
+                      description:
+                        "Learn how energy, recovery, and care directly strengthen performance.",
+                      learnMoreColor: "#4ba6a6",
                     },
                   ]}
                 />
@@ -368,9 +408,7 @@ function FromIdeas() {
                   height="95px"
                   bgColor="#F7C3BE"
                   radius={14}
-                  topTilt={18}
-                  slantSide="right"
-                  bottomTilt={14}
+                  clipPath={`polygon(0% 0%, 100% 18px,100% calc(100% - 14px),0% 100%)`}
                 />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none -top-[38px]">
                   <span

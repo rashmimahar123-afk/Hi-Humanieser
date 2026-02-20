@@ -6,9 +6,20 @@ import ArrowSquare from "@/src/components/ArrowSquare/ArrowSquare";
 import styles from "./Milestone1.module.css";
 import { useRouter } from "next/navigation";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
+import { useState } from "react";
 
 function Milestone1({ onNext }: { onNext: () => void }) {
   const router = useRouter();
+  const [selectedBehaviours, setSelectedBehaviours] = useState<number[]>([]);
+
+  const toggleBehaviour = (index: number) => {
+    setSelectedBehaviours(
+      (prev) =>
+        prev.includes(index)
+          ? prev.filter((item) => item !== index) // remove if already selected
+          : [...prev, index], // add if not selected
+    );
+  };
 
   return (
     <div className="animate-slideInRight">
@@ -35,49 +46,38 @@ function Milestone1({ onNext }: { onNext: () => void }) {
         results.
       </p>
       {/* Cards */}
-      <div className="mt-10 flex justify-center gap-10">
-        <BehaviourCard
-          image={images.coreOne}
-          text="Listen to their meaning, not your assumptions, by noticing tone, context and emotion."
-        />
 
-        <BehaviourCard
-          image={images.coreTwo}
-          text="Notice when you’re tightening up inside, and give yourself a moment before responding."
-        />
-        <div className="relative">
-          <BehaviourCard
-            image={images.coreOne}
-            text="Distinguish between your assumptions, others’ intent, and the wider context influencing behaviour."
-          />
-          <div>
-            {" "}
-            <Image
-              src={images.coreArrow}
-              alt="arrow"
-              width={50}
-              height={50}
-              className="absolute -right-[27%] -bottom-[21%]"
-            />
-            <div className="absolute w-[130px] -right-[58%] -bottom-[60%] text-[#F2A39C] text-[14px] font-medium">
-              Tap one — or a few — to begin. You can change this later
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="relative mt-16 flex items-start ml-[126px] gap-6">
+      <div className="relative mt-10 flex items-start ml-[126px] gap-6">
         {/* Q Hand */}
         <Image src={images.qImg} alt="hand-q" width={107} height={107} />
 
         {/* Question text */}
-        <p className="max-w-[420px] text-[23px] text-[#567F55] leading-snug font-[Roboto]">
+        <p className=" text-[23px] text-[#567F55] leading-snug font-[Roboto] mt-[30px]">
           Which of these behaviours feels most alive for you right now?
         </p>
       </div>
+      <div className="mt-10 flex justify-center gap-10">
+        {[0, 1, 2].map((item, index) => (
+          <BehaviourCard
+            key={index}
+            image={index === 1 ? images.coreTwo : images.coreOne}
+            text={
+              index === 0
+                ? "Listen to their meaning, not your assumptions, by noticing tone, context and emotion."
+                : index === 1
+                  ? "Notice when you’re tightening up inside, and give yourself a moment before responding."
+                  : "Distinguish between your assumptions, others’ intent, and the wider context influencing behaviour."
+            }
+            isSelected={selectedBehaviours.includes(index)}
+            onClick={() => toggleBehaviour(index)}
+          />
+        ))}
+      </div>
+
       {/* Footer */}
       <MilestoneFooter
-        onNext={onNext}
         nextLabel="Amplifier Behaviours"
+        nextRoute="/pathway-card"
         helperText={
           <>
             <strong>Lead or influence others?</strong> Explore Amplifier

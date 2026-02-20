@@ -1,8 +1,11 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./LandingPage.module.css";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function LandingPage() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-[#f5f5f0] px-4 py-8">
       <div className="w-full max-w-7xl mx-auto">
@@ -38,7 +41,8 @@ function LandingPage() {
                   marginLeft: "18px",
                 }}
               >
-                People & Performance Thriving Together
+                {/* People & Performance Thriving Together */}
+                Human Habits Clear Decision Reliable Execution.
               </div>
             </div>
             {/* Main Heading */}
@@ -87,6 +91,7 @@ function LandingPage() {
                 {/* Text with background */}
                 <div
                   className={`bg-white rounded-[20px] px-4 py-2 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center ${styles.goBtnText}`}
+                  onClick={() => router.push("/")}
                 >
                   <span
                     className={`text-black whitespace-nowrap font-bold ${styles.goBtnSpan}`}
@@ -98,7 +103,7 @@ function LandingPage() {
               {/* Image with rounded background */}
               <div className="relative">
                 <Image
-                  src={images.peopleImg}
+                  src={images.people}
                   alt="Team collaborating"
                   className="w-full h-auto object-cover"
                 />
@@ -113,10 +118,24 @@ function LandingPage() {
         <Image src={images.landRectangle} alt="Land Rectangle" />
 
         {/* Text Overlay */}
-        <div className={"absolute inset-0 flex left-[12%] top-[18%]"}>
+        <div className="absolute inset-0 flex left-[12%] top-[18%]">
           <p className={`text-center font-bold ${styles.infoBoxText}`}>
             Curious? Explore how to join or bring Hi Humaniser!™ to your
-            organisation. Visit HumanisingOurWorkplaces.com or check the FAQ
+            organisation. Visit{" "}
+            <Link
+              href="https://humanisingourworkplaces.com"
+              target="_blank"
+              className="underline hover:text-[#0F4F58] transition-colors"
+            >
+              HumanisingOurWorkplaces.com
+            </Link>{" "}
+            or check the{" "}
+            <Link
+              href="/faq"
+              className="underline hover:text-[#0F4F58] transition-colors"
+            >
+              FAQ
+            </Link>
           </p>
         </div>
       </div>

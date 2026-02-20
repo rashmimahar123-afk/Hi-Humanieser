@@ -1,21 +1,32 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 
-const genderOptions = [
-  "Male",
-  "Female",
-  "Non-binary",
-  "Prefer not to say",
-  "Self-describe",
-];
+interface CommonDropdownProps {
+  label?: string;
+  options: string[];
+  value?: string;
+  onChange?: (val: string) => void;
+  placeholder?: string;
+  textColor?: string; // selected text color
+  placeholderColor?: string; // placeholder color
+}
 
-function CustomDropdown() {
+function CustomDropdown({
+  label,
+  options,
+  value = "",
+  onChange,
+  placeholder = "Select",
+  textColor,
+  placeholderColor,
+}: CommonDropdownProps) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(value);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -29,36 +40,48 @@ function CustomDropdown() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleSelect = (item: string) => {
+    setSelected(item);
+    onChange?.(item);
+    setOpen(false);
+  };
+
   return (
-    <div className="flex items-center gap-8" ref={dropdownRef}>
+    <div
+      ref={dropdownRef}
+      className="grid grid-cols-[180px_1fr] items-center gap-6"
+    >
       {/* Label */}
       <label
-        className="w-[200px] text-[#567F55] text-[22px]"
-        style={{ fontFamily: "Roboto" }}
+        className="text-[20px] whitespace-nowrap"
+        style={{ fontFamily: "RocaTwo", color: textColor }}
       >
-        Gender (optional)
+        {label}
       </label>
 
       {/* Dropdown */}
-      <div className="relative w-[900px]">
-        {/* Selected */}
+      <div className="relative">
         <div
           onClick={() => setOpen(!open)}
           className="
-            h-[55px]
-            bg-white
-            rounded-full
-            px-6
-            flex
-            items-center
-            justify-between
-            cursor-pointer
-            border
-            border-transparent
-            hover:border-[#9BB89A]
-          "
+          h-[52px]
+          bg-[#ffffff]
+          rounded-full
+          px-6
+          flex
+          items-center
+          justify-between
+          cursor-pointer
+        "
         >
-          <span className="text-[#567F55]">{selected || "Select Gender"}</span>
+          <span
+            className="truncate"
+            style={{
+              color: selected ? "#0F4F58" : "#0000",
+            }}
+          >
+            {selected || placeholder}
+          </span>
 
           <Image
             src={images.dropdownImg}
@@ -69,34 +92,13 @@ function CustomDropdown() {
           />
         </div>
 
-        {/* Options */}
         {open && (
-          <div
-            className="
-              absolute
-              z-20
-              mt-2
-              w-full
-              bg-white
-              rounded-2xl
-              shadow-lg
-              overflow-hidden
-            "
-          >
-            {genderOptions.map((item) => (
+          <div className="absolute z-20 mt-2 w-full bg-white rounded-xl shadow-lg overflow-hidden">
+            {options.map((item) => (
               <div
                 key={item}
-                onClick={() => {
-                  setSelected(item);
-                  setOpen(false);
-                }}
-                className="
-                  px-6
-                  py-3
-                  text-[#567F55]
-                  cursor-pointer
-                  hover:bg-[#F5F0EB]
-                "
+                onClick={() => handleSelect(item)}
+                className="px-6 py-3 text-[#0F4F58] cursor-pointer hover:bg-[#F5F0EB]"
               >
                 {item}
               </div>
@@ -107,4 +109,5 @@ function CustomDropdown() {
     </div>
   );
 }
+
 export default CustomDropdown;

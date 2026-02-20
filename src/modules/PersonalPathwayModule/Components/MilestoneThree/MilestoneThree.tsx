@@ -8,6 +8,9 @@ import styles from "./MilestoneThree.module.css";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useState } from "react";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
+import { openFillupModal } from "../FillUpFormModal/FillUpFormModal";
+import FillUpFormModal from "../FillUpFormModal/FillUpFormModal";
+import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 
 type MILESTONE_THREE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -15,8 +18,16 @@ type MILESTONE_THREE_PROPS = {
 
 function MilestoneThree(props: MILESTONE_THREE_PROPS) {
   const { ClosePracticePerspective } = props;
+
   const router = useRouter();
+
   const [showSuccess, setShowSuccess] = useState(false);
+
+  const microActions = [
+    "Ask yourself: “What else could be true?”",
+    "Borrow someone else’s lens",
+    "Before acting, pause and ask:“How will this land for people — and for performance?”",
+  ];
 
   return (
     <div className="animate-slideInRight">
@@ -130,7 +141,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
               height={80}
               className="absolute -right-[1%] -top-[2%]"
             />
-            <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute -top-[5%] -right-[12%] max-w-[50px]">
+            <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute -top-[5%] -right-[12%] ">
               fill me up
             </p>
             {/* Dotted Lines */}
@@ -142,9 +153,8 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                 />
               ))}
             </div>
-
             {/* Checkbox */}
-            <div className="mt-[20px] flex items-start gap-3">
+            {/* <div className="mt-[20px] flex items-start gap-3">
               <div>
                 <p className="text-[14px] text-[#0F4F58] ml-[22px]">
                   Share your insights with your team?
@@ -158,7 +168,31 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                 type="checkbox"
                 className="mt-1 w-6 h-4 rounded border-[#0F4F58] mr-[18px]"
               />
-            </div>
+            </div> */}
+            <div
+              className="flex justify-end mt-[7px] mb-[7px] cursor-pointer"
+              onClick={openFillupModal}
+            >
+              <PolygonButton
+                width="110px"
+                height="80px"
+                bgColor="#4ba6a6"
+                radius={14}
+                clipPath={`polygon(
+    18% 12%,
+    82% 2%,
+    100% 88%,
+    6% 100%
+  )`}
+              >
+                <div className="relative z-20 flex flex-col items-center justify-center w-full h-full text-[#0F4F58] font-[RocaTwo] font-bold text-center pointer-events-none">
+                  <span className="text-[20px] leading-[24px]">
+                    Click Me To
+                  </span>
+                  <span className="text-[22px] leading-[24px]">Fill up</span>
+                </div>
+              </PolygonButton>
+            </div>{" "}
           </div>
         </div>
       </div>
@@ -176,47 +210,48 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
         </div>
 
         {/* ===== Micro Actions Card ===== */}
-        <div className="flex justify-center w-full">
-          <div className="mt-[40px] bg-[#F5F0EB] rounded-[20px] px-[40px] py-[30px] max-w-[652px]">
-            {/* Header */}
-            <div className="flex justify-between mb-6">
-              <p className="text-[#567F55] font-bold text-[19px] font-[Roboto]">
-                MICRO-ACTIONS
-              </p>
+        <div className="w-full">
+          <div className="flex">
+            <div className="mt-[40px] bg-[#F5F0EB] rounded-[20px] px-[40px] py-[30px] w-[800px] ml-[110px]">
+              {/* Header */}
+              <div className="flex justify-between mb-6">
+                <p className="text-[#567F55] font-bold text-[19px] font-[Roboto]">
+                  MICRO-ACTIONS
+                </p>
 
-              <p className="text-[#567F55] font-bold text-[19px] text-right font-[Roboto]">
-                ADD TO ACTIVE <br /> PRACTICE LIST?
-              </p>
-            </div>
+                <p className="text-[#567F55] font-bold text-[19px] text-right font-[Roboto]">
+                  ADD TO ACTIVE <br /> PRACTICE LIST?
+                </p>
+              </div>
 
-            {/* Rows */}
-            <div className="space-y-5">
-              {[
-                "Ask yourself: “What else could be true?”",
-                "Borrow someone else’s lens",
-                "Before acting, pause and ask: “How will this land for people — and for performance?”",
-              ].map((item, index) => (
-                <div key={index} className="flex justify-between items-start">
-                  {/* Left */}
-                  <div className="flex gap-4 max-w-[520px]">
-                    <div className="absolute mt-[4px]  z-20">
-                      <ArrowSquare width={"22"} height={"17"} />
+              {/* Rows */}
+              <div className="space-y-6">
+                {microActions.map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-[1fr_72px] items-center"
+                  >
+                    {/* Left: arrow + text */}
+                    <div className="flex items-start gap-4 max-w-[520px]">
+                      <div className="mt-[4px] shrink-0">
+                        <ArrowSquare width={"22"} height={"17"} />
+                      </div>
+
+                      <p className="text-[#567F55] text-[18px] leading-[1.5] font-[Roboto] font-[400]">
+                        {item}
+                      </p>
                     </div>
 
-                    <p className="text-[#567F55] text-[18px] leading-[1.5] font-[Roboto] font-[400] ml-[30px]">
-                      {item}
-                    </p>
+                    {/* Right: checkbox perfectly centered */}
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="w-[22px] h-[22px] rounded-[6px] border-2 border-[#0F4F58]"
+                      />
+                    </div>
                   </div>
-
-                  {/* Checkbox */}
-                  <div className="pt-1">
-                    <input
-                      type="checkbox"
-                      className="w-[22px] h-[22px] rounded-[6px] border-2 border-[#0F4F58]"
-                    />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -227,7 +262,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
             alt="arrow"
             width={80}
             height={80}
-            className="absolute left-[81%] top-[53%] "
+            className="absolute left-[83%] top-[53%] "
           />
 
           <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute -right-[4%] top-[53%] max-w-[128px]">
@@ -272,7 +307,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
       </div>
       {showSuccess && (
         <>
-          <SuccessMessage
+          {/* <SuccessMessage
             text="Congratulations! Another pathway in the bag —
 your dashboard is beaming"
             fontSize="text-[21px]"
@@ -287,10 +322,23 @@ your dashboard is beaming"
               width: 60,
               height: 60,
             }}
+          /> */}
+          <SuccessMessage
+            text="Congratulations! Another pathway in the bag —
+your dashboard is beaming"
+            fontSize="text-[21px]"
+            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+            fontColor="#0f4f58"
+            left="227px"
+            bottom="130px"
+            rightImgRight="215px"
+            rightImgBottom="125px"
+            rotate="-35deg"
           />
           <div className=" mt-[40px] flex justify-between">
             <button
-              onClick={() => router.push("start-quiz")}
+              onClick={() => router.push("/choose-pathway")}
               className="bg-[#F5F0EB] px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[16px] flex items-center gap-4 font-[Aptos] cursor-pointer"
             >
               Start a New Pathway
@@ -316,7 +364,9 @@ your dashboard is beaming"
           </div>
         </>
       )}
+      <FillUpFormModal />
     </div>
   );
 }
+
 export default MilestoneThree;

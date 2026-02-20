@@ -15,7 +15,6 @@ const SuccessQuizMessage = ({ show }: any) => {
         {step === "2" ? (
           <p className="text-[#0F4F58] text-[18px] font-bold leading-[1.4]">
             Great progress — two-thirds complete!
-            <br />
             <span className="block mt-1">
               Final stretch: the culture we shape together.
             </span>
@@ -31,7 +30,6 @@ const SuccessQuizMessage = ({ show }: any) => {
         ) : (
           <p className="text-[#0F4F58] text-[18px] font-bold leading-[1.4]">
             Nice work — that’s the first part done!
-            <br />
             <span className="block mt-1">
               Next up: how we connect with others.
             </span>

@@ -1,14 +1,29 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
+import { useRouter } from "next/navigation";
 
 type MILESTONE_FOOTER_PROPS = {
   onNext?: () => void;
   nextLabel?: string;
   helperText?: any;
+  nextRoute?: string;
 };
 
 function MilestoneFooter(props: MILESTONE_FOOTER_PROPS) {
-  const { onNext, nextLabel, helperText } = props;
+  const { onNext, nextLabel, helperText, nextRoute } = props;
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (onNext) {
+      onNext();
+      return;
+    }
+
+    if (nextRoute) {
+      router.push(nextRoute);
+    }
+  };
+
   return (
     <div className="mt-16 flex items-center justify-end">
       {/* Left: Bulb + helper text */}
@@ -27,8 +42,8 @@ function MilestoneFooter(props: MILESTONE_FOOTER_PROPS) {
 
       {/* Right: CTA */}
       <button
-        onClick={onNext}
-        className="bg-[#F5F0EB] px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[16px] flex items-center gap-4 font-[Aptos]"
+        onClick={handleClick}
+        className="bg-[#F5F0EB] px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[16px] flex items-center gap-4 font-[Aptos] cursor-pointer "
       >
         {nextLabel}
 

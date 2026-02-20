@@ -148,7 +148,10 @@ function ResourceInspiration() {
             {/* Card 3 */}
 
             <div
-              onClick={() => setActiveCard(activeCard === 3 ? null : 3)}
+              onClick={() => {
+                setActiveCard(activeCard === 3 ? null : 3);
+                router.push("/research-room");
+              }}
               className={`
     bg-[#F5C882] rounded-xl p-6 cursor-pointer
     transition-all duration-500 ease-in-out

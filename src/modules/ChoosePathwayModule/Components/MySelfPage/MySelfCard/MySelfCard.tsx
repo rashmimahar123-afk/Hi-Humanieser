@@ -1,3 +1,5 @@
+import Image from "next/image";
+import images from "@/src/assets/images";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -5,6 +7,9 @@ type PATHWAY_CARD = {
   title: string;
   description: string;
   learnMoreColor: string;
+  onLearnMore: () => void;
+  selected: boolean;
+  onSelect: () => void;
 };
 
 type MYSELF_CARD_PROPS = {
@@ -64,7 +69,7 @@ function MySelfCard(props: MYSELF_CARD_PROPS) {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="bg-[#F7F3ED] from-amber-50 to-stone-100 rounded-3xl p-8 shadow-lg h-full flex flex-col justify-between min-h-[320px]"
+              className="relative bg-[#F7F3ED] rounded-3xl p-8 shadow-lg h-full flex flex-col justify-between min-h-[320px]"
             >
               <div>
                 <h3
@@ -85,18 +90,32 @@ function MySelfCard(props: MYSELF_CARD_PROPS) {
               <div className="flex justify-end mt-[40px]">
                 <div className="flex flex-col items-center gap-[20px]">
                   <button
-                    className="px-[28px] py-[8px] rounded-full text-[18px] text-[#0F4F58]"
+                    onClick={card.onLearnMore}
+                    className="px-[28px] py-[8px] rounded-full text-[18px] text-[#0F4F58] cursor-pointer"
                     style={{ backgroundColor: card.learnMoreColor }}
                   >
                     learn more
                   </button>
 
-                  <div className="flex items-center gap-[10px] text-[#0F4F58]">
+                  <div
+                    className="flex items-center gap-[10px] text-[#0F4F58]"
+                    onClick={card.onSelect}
+                  >
                     <span>choose pathway</span>
                     <span
                       className={`w-[21px] h-[23px]  clip-triangle`}
                       style={{ backgroundColor: card.learnMoreColor }}
                     />
+                    {card.selected && (
+                      <div className="absolute right-8">
+                        <Image
+                          src={images.tickImg}
+                          alt="tick"
+                          width={22}
+                          height={22}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

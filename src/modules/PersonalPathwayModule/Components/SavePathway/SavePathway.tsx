@@ -148,12 +148,12 @@ function SavePathway() {
             label="Return to
 My Personal Pathway"
             bgColor="#ACD5AB"
-            onClick={() => router.push("/choose-pathway")}
+            onClick={() => router.push("/personal-pathway")}
           />
           <CommonButtons
             label="Return to Home"
             bgColor="#C2E2E2"
-            onClick={() => router.push("/choose-pathway")}
+            onClick={() => router.push("/home")}
           />
         </div>
       </div>

@@ -68,11 +68,18 @@ function PersonalPathway() {
 
       {/* Header */}
       <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
+
       <SuccessMessage
         text="Great to see you again — ready to explore?"
         fontSize="text-[30px]"
         leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
         rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+        fontColor="#0F4F58"
+        left="402px"
+        top="125px"
+        rightImgRight="390px"
+        rightImgTop="122px"
+        rotate="-35deg"
       />
 
       {/* Card */}
@@ -146,7 +153,10 @@ function PersonalPathway() {
                   width={102}
                   height={102}
                 />{" "}
-                <div className="relative flex items-center justify-center">
+                <div
+                  className="relative flex items-center justify-center cursor-pointer"
+                  onClick={() => router.push("/pathway-card")}
+                >
                   <Image
                     src={images.practicePoly}
                     alt="poly"

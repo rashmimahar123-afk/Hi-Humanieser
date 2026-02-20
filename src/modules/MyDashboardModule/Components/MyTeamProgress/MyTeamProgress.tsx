@@ -39,7 +39,7 @@ function MyTeamProgress(props: MY_TEAM_PROGRESS_PROPS) {
 
                 {/* Right */}
                 <div className="flex items-center gap-3 text-sm">
-                  <Image src={images.compImg} alt="complete-img" />
+                  {/* <Image src={images.compImg} alt="complete-img" /> */}
                   <div className="text-right">
                     <p className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
                       {item.status === "Completed"
@@ -69,43 +69,6 @@ function MyTeamProgress(props: MY_TEAM_PROGRESS_PROPS) {
                 Make it Sustainable
               </h3>
             </div>
-
-            <span className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
-              add 5 trofeos
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center mt-[50px]">
-        <div className="grid grid-cols-2 gap-10">
-          {/* -------slant Left Btn-------- */}
-          <div></div>
-          {/* -------slant Right Btn-------- */}
-          <div>
-            <PolygonButton
-              width="137px"
-              height="151px"
-              bgColor="#86C9C9"
-              radius={14}
-              topTilt={18}
-              slantSide="right"
-              bottomTilt={14}
-              decorationImg={{
-                src: images.rightArrow,
-                width: 48,
-                height: 48,
-              }}
-              decorationPosition={{
-                className: "-right-[46px] -top-[12px]",
-              }}
-            >
-              <div className="h-full flex items-center justify-center text-center">
-                <span className="text-[#0F4F58] text-[24px] font-[RocaTwo] font-bold leading-[32px]">
-                  See all Ritual Reflections
-                </span>
-              </div>
-            </PolygonButton>
           </div>
         </div>
       </div>

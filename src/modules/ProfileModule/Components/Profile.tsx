@@ -33,9 +33,19 @@ function Profile() {
     { name: "Daniella James-Daniels", image: images.userProfile },
     { name: "Bibil Baby Paramatthatil", image: images.userProfile },
     { name: "Lorenzo DiCaprio", image: images.userProfile },
+    { name: "Maria Palacios", image: images.maria },
+    { name: "Daniella James-Daniels", image: images.userProfile },
+    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
+    { name: "Lorenzo DiCaprio", image: images.userProfile },
+    { name: "Daniella James-Daniels", image: images.userProfile },
+    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
+    { name: "Lorenzo DiCaprio", image: images.userProfile },
+    { name: "Lorenzo DiCaprio", image: images.userProfile },
+    { name: "Daniella James-Daniels", image: images.userProfile },
+    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
   ];
 
-  const chunkByPattern = (arr: any, pattern = [5, 4]) => {
+  const chunkByPattern = (arr: any, pattern = [8, 6]) => {
     const chunks = [];
     let i = 0;
     let p = 0;
@@ -70,7 +80,7 @@ function Profile() {
       {/* Profile Card */}
       <section className="relative mx-14 rounded-[24px] bg-[#F8E1B8] px-14 py-12 overflow-hidden">
         {/* Right dotted pattern */}
-        <div className="absolute right-12 top-12 opacity-40">
+        <div className="absolute right-12 top-12 ">
           <Image
             src={images.dotsPattern}
             alt="pattern"
@@ -156,7 +166,7 @@ function Profile() {
           Team Structure
         </h2>
         <div className="absolute left-8 top-190 z-10">
-          <Image src={images.teamDot} alt="curve" width={620} height={120} />
+          <Image src={images.teamDot} alt="curve" width={520} height={120} />
         </div>
         {/* Team Structure Section */}
         <section className="rounded-[24px] bg-[#F8E1B8] relative overflow-hidden p-4">
@@ -192,7 +202,7 @@ function Profile() {
               />
 
               {/* Text on top of image */}
-              <div className="absolute inset-0 flex items-center justify-center px-6  z-10">
+              <div className="absolute inset-0 flex items-center justify-center z-10">
                 <p className="text-[18px] font-[Roboto] text-[#0B3D3A]">
                   Team:{" "}
                   <span className="font-semibold">
@@ -204,54 +214,62 @@ function Profile() {
           </div>
 
           {/* Members title */}
-          <h3 className="mt-10 text-[24px] font-[RocaTwo] font-bold text-[#0F4F58]">
-            Hi Humaniser! Members
-          </h3>
 
           {/* Members Grid */}
-          <div className="mt-8 space-y-12">
-            {rows.map((row, rowIndex) => (
-              <div
-                key={rowIndex}
-                className={`grid gap-x-14 gap-y-12
-        ${row.length === 5 ? "grid-cols-5" : "grid-cols-4 justify-center"}
-      `}
-                style={{
-                  justifyContent: row.length === 4 ? "center" : "start",
-                }}
-              >
-                {row.map((member: any, index: any) => (
+          <div className="relative z-20 mt-8 space-y-12 mb-[130px]">
+            <h3 className="text-[24px] font-[RocaTwo] font-bold text-[#0F4F58]">
+              Hi Humaniser! Members
+            </h3>
+            {rows.map((row, rowIndex) => {
+              const isSix = row.length === 6;
+              const isLast = rowIndex === rows.length - 1;
+
+              return (
+                <div key={rowIndex} className="relative">
                   <div
-                    key={index}
-                    className="flex flex-col items-center text-center"
+                    className={`grid gap-y-12
+    ${
+      isSix
+        ? "grid-cols-6 gap-x-6 max-w-[800px] mx-auto"
+        : "grid-cols-8 gap-x-10"
+    }
+  `}
                   >
-                    <div className="h-[72px] w-[72px] rounded-full overflow-hidden">
+                    {row.map((member: any, index: number) => (
+                      <div
+                        key={index}
+                        className="flex flex-col items-center text-center"
+                      >
+                        <div className="h-[72px] w-[72px] rounded-full overflow-hidden">
+                          <Image
+                            src={member.image}
+                            alt={member.name}
+                            width={72}
+                            height={72}
+                            className="object-cover"
+                          />
+                        </div>
+
+                        <p className="mt-3 text-[14px] font-[Roboto] text-[#0F4F58] leading-5 max-w-[120px]">
+                          {member.name}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {isSix && isLast && (
+                    <div className="absolute -bottom-24 left-[31%] -translate-x-[330px]">
                       <Image
-                        src={member.image}
-                        alt={member.name}
-                        width={72}
-                        height={72}
-                        className="object-cover"
+                        src={images.teamDots}
+                        alt="dots"
+                        width={160}
+                        height={160}
                       />
                     </div>
-
-                    <p className="mt-3 text-[14px] font-[Roboto] text-[#0F4F58] leading-5 max-w-[120px]">
-                      {member.name}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          {/* Left dotted pattern */}
-          <div className="absolute bottom-10 left-10 opacity-40">
-            <Image
-              src={images.dotsPattern}
-              alt="dots"
-              width={160}
-              height={160}
-            />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       </div>

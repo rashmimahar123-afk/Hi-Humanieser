@@ -6,6 +6,14 @@ import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import SignUpModal, { openSignupModal } from "../SignUpModal/SignUpModal";
 
 function SignUpForm() {
+  const genderOptions = [
+    "Male",
+    "Female",
+    "Non-binary",
+    "Prefer not to say",
+    "Self-describe",
+  ];
+
   return (
     <>
       <div className="min-h-screen bg-[#FBE6BF]">
@@ -35,9 +43,8 @@ function SignUpForm() {
                     className="relative z-20 text-[#567F55] text-[30px] ml-[45px]  font-[400]"
                     style={{ fontFamily: "RocaTwo-Bold" }}
                   >
-                    We’re thrilled to have you here.This is where connection,
+                    We’re thrilled to have you here. This is where connection,
                     care and performance come together.
-                    <br />
                     <br />
                     Tell us a little about you to get started.
                   </p>
@@ -192,7 +199,19 @@ function SignUpForm() {
                   </p>
                 </div>
                 <div className="mt-8">
-                  <CustomDropdown />
+                  <CustomDropdown
+                    label="Gender (optional)"
+                    options={[
+                      "Male",
+                      "Female",
+                      "Non-binary",
+                      "Prefer not to say",
+                      "Self-describe",
+                    ]}
+                    placeholder="Male / Female / Non-binary / Prefer not to say / Self-describe"
+                    textColor="#567F55"
+                    placeholderColor="#9BB89A"
+                  />
                 </div>
                 {/* Confirm Password */}
                 <div className="flex items-center gap-8 mt-6">

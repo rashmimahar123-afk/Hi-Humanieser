@@ -10,28 +10,27 @@ import styles from "./BehindScene.module.css";
 
 function BehindScene() {
   const column1Data = [
-    { num: "01", title: "Own Your Impact", icon: images.icon1 },
-    { num: "02", title: "Stay Curious", icon: images.icon2 },
-    { num: "03", title: "Be Real, Not Right", icon: images.icon3 },
-    { num: "04", title: "Practice Perspective", icon: images.icon4 },
+    { num: "01", title: "Own Your Impact" },
+    { num: "02", title: "Stay Curious" },
+    { num: "03", title: "Be Real, Not Right" },
+    { num: "04", title: "Practice Perspective" },
   ];
 
   const column2Data = [
-    { num: "05", title: "Recognise the Person", icon: images.icon5 },
-    { num: "06", title: "Make it Safe", icon: images.icon6 },
-    { num: "07", title: "Speak with Clarity", icon: images.icon7 },
-    { num: "08", title: "Listen to Understand", icon: images.icon8 },
+    { num: "05", title: "Recognise the Person" },
+    { num: "06", title: "Make it Safe" },
+    { num: "07", title: "Speak with Clarity" },
+    { num: "08", title: "Listen to Understand" },
   ];
 
   const column3Data = [
-    { num: "09", title: "Culture by Design", icon: images.icon9 },
-    { num: "10", title: "Build Care & Belonging In", icon: images.icon10 },
+    { num: "09", title: "Culture by Design" },
+    { num: "10", title: "Build Care & Belonging In" },
     {
       num: "11",
       title: "Wellbeing is Performance Infrastructure",
-      icon: images.icon11,
     },
-    { num: "12", title: "Make it Sustainable", icon: images.icon12 },
+    { num: "12", title: "Make it Sustainable" },
   ];
 
   const router = useRouter();
@@ -43,7 +42,7 @@ function BehindScene() {
   }, []);
   return (
     <div
-      className={`min-h-screen bg-[#F5F0EB] p-6 font-sans ${styles.page} ${
+      className={`min-h-screen bg-[#F5F0EB] font-sans ${styles.page} ${
         enter ? styles.enterActive : styles.enter
       }`}
     >
@@ -55,7 +54,7 @@ function BehindScene() {
       />
       <div className="relative z-10 px-8 py-6">
         <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />
-        <div className="max-w-[900px] mx-auto text-center mt-20">
+        <div className=" text-center mt-20 px-4">
           <h1 className="text-[#0F4F58] text-[45px] font-[RocaTwo] leading-tight mb-10 font-bold">
             Behind The Scenes Of
             <br />
@@ -83,19 +82,19 @@ function BehindScene() {
         </div>
 
         {/* Heart & Structure Section */}
-        <div className="mt-32 px-8 max-w-[1200px] mx-auto ">
+        <div className="mt-32 ml-[100px]">
           {/* Heading */}
           <h2 className="text-[40px] font-[RocaTwo] mb-6 text-[#4BA6A6] font-bold">
             The Heart And Structure Of Hi Humaniser!
           </h2>
           <div className="ml-[28px]">
             {/* Intro Text */}
-            <p className="text-[22px] max-w-[780px] leading-relaxed mb-4 text-[#0F4F58] font-[400] font-[Roboto]">
+            <p className="text-[22px] leading-relaxed mb-4 text-[#0F4F58] font-[400] font-[Roboto]">
               At the foundation of Hi Humaniser! are three pillars — The Mindset
               We Bring, The Way We Connect, and The Culture We Shape.
             </p>
 
-            <p className="text-[22px] max-w-[780px] leading-relaxed mb-16 text-[#0F4F58] font-[400] font-[Roboto]">
+            <p className="text-[22px] leading-relaxed text-[#0F4F58] font-[400] font-[Roboto]">
               Together, they hold 12 guiding principles that show what
               human-centred performance looks like in action — from owning our
               impact to making work sustainable.
@@ -103,7 +102,7 @@ function BehindScene() {
           </div>
 
           {/* Tilted Highlight Box */}
-          <div className="relative max-w-[760px] mx-auto mb-24">
+          <div className="relative max-w-[640px] mx-auto mb-20">
             {/* Image container */}
             <div className="relative transform -rotate-2">
               <Image
@@ -216,29 +215,22 @@ function BehindScene() {
 
           {/* Principles Section */}
           <div className="mt-14">
-            <div className="max-w-[1200px] mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-16 text-[#0F4F58]">
+            <div className="  grid grid-cols-1 md:grid-cols-3 gap-16 text-[#0F4F58]">
               {/* Column 1 */}
-              <div className="space-y-12">
-                {column1Data.map(({ num, title, icon }) => (
+              <div className="space-y-6 ml-[90px]">
+                {column1Data.map(({ num, title }) => (
                   <div key={num} className="flex items-center gap-4">
-                    {/* Icon */}
-                    <div className="w-8 h-8 flex-shrink-0">
-                      <Image
-                        src={icon}
-                        alt={title}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-
                     {/* Number + Text */}
-                    <div className="flex items-center gap-3">
-                      {/* Number */}
-                      <span className="w-[32px] text-[22px] font-bold leading-none">
-                        {num}
-                      </span>
+                    <div className="flex items-center gap-6">
+                      {/* BIG NUMBER */}
+                      <div className="w-[56px] text-center">
+                        <span className="block text-[48px] font-[RocaTwo] font-bold leading-none text-[#2F6F6A]">
+                          {num}
+                        </span>
+                      </div>
 
-                      {/* Title */}
-                      <p className="text-[18px] leading-[20px] max-w-[180px] font-normal font-[Roboto]">
+                      {/* TITLE */}
+                      <p className="text-[16px] leading-[26px] max-w-[220px] font-normal font-[Roboto]">
                         {title}
                       </p>
                     </div>
@@ -247,27 +239,20 @@ function BehindScene() {
               </div>
 
               {/* Column 2 */}
-              <div className="space-y-12">
-                {column2Data.map(({ num, title, icon }) => (
+              <div className="space-y-6">
+                {column2Data.map(({ num, title }) => (
                   <div key={num} className="flex items-center gap-4">
-                    {/* Icon */}
-                    <div className="w-8 h-8 flex-shrink-0">
-                      <Image
-                        src={icon}
-                        alt={title}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-
                     {/* Number + Text */}
-                    <div className="flex items-center gap-3">
-                      {/* Number */}
-                      <span className="w-[32px] text-[22px] font-bold leading-none">
-                        {num}
-                      </span>
+                    <div className="flex items-center gap-6">
+                      {/* BIG NUMBER */}
+                      <div className="w-[56px] text-center">
+                        <span className="block text-[48px] font-[RocaTwo] font-bold leading-none text-[#2F6F6A]">
+                          {num}
+                        </span>
+                      </div>
 
-                      {/* Title */}
-                      <p className="text-[18px] leading-[20px] max-w-[180px] font-normal font-[Roboto]">
+                      {/* TITLE */}
+                      <p className="text-[16px] leading-[26px] max-w-[220px] font-normal font-[Roboto]">
                         {title}
                       </p>
                     </div>
@@ -276,27 +261,20 @@ function BehindScene() {
               </div>
 
               {/* Column 3 */}
-              <div className="space-y-12">
-                {column3Data.map(({ num, title, icon }) => (
+              <div className="space-y-6">
+                {column3Data.map(({ num, title }) => (
                   <div key={num} className="flex items-center gap-4">
-                    {/* Icon */}
-                    <div className="w-8 h-8 flex-shrink-0">
-                      <Image
-                        src={icon}
-                        alt={title}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-
                     {/* Number + Text */}
-                    <div className="flex items-center gap-3">
-                      {/* Number */}
-                      <span className="w-[32px] text-[22px] font-bold leading-none">
-                        {num}
-                      </span>
+                    <div className="flex items-center gap-6">
+                      {/* BIG NUMBER */}
+                      <div className="w-[56px] text-center">
+                        <span className="block text-[48px] font-[RocaTwo] font-bold leading-none text-[#2F6F6A]">
+                          {num}
+                        </span>
+                      </div>
 
-                      {/* Title */}
-                      <p className="text-[18px] leading-[20px] max-w-[180px] font-normal font-[Roboto]">
+                      {/* TITLE */}
+                      <p className="text-[16px] leading-[26px] max-w-[220px] font-normal font-[Roboto]">
                         {title}
                       </p>
                     </div>
@@ -318,14 +296,14 @@ function BehindScene() {
           </div>
         </div>
 
-        <div className="max-w-[1100px] mt-14 mx-auto">
+        <div className=" mt-14 mx-auto">
           {/* Heading */}
           <h2 className="text-[#4BA6A6] text-[40px] font-[RocaTwo] font-bold mb-6">
             Designed To Work As A System
           </h2>
           <div className="ml-[28px]">
             {/* Description */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed max-w-[760px] mb-8 font-[Roboto] font-[400]">
+            <p className="text-[#0F4F58] text-[23px] leading-relaxed  mb-8 font-[Roboto] font-[400]">
               These pillars and principles give teams a shared language for how
               they think, communicate, and build trust — turning good intentions
               into everyday behaviours.
@@ -359,14 +337,14 @@ Team Rituals"
             />
           </div>
         </div>
-        <div className="max-w-[1100px] mt-14 mx-auto">
+        <div className=" mt-14 mx-auto">
           {/* Heading */}
           <h2 className="text-[#4BA6A6] text-[40px] font-[RocaTwo] font-bold mb-6">
             An Evidence-Led Framework
           </h2>
           <div className="ml-[28px]">
             {/* Description */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed max-w-[760px] mb-8 font-[Roboto] font-[400]">
+            <p className="text-[#0F4F58] text-[23px] leading-relaxed mb-8 font-[Roboto] font-[400]">
               Hi Humaniser! is underpinned by a strong evidence base.
             </p>
 
@@ -388,7 +366,7 @@ Team Rituals"
             </div>
 
             {/* Bottom text */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed max-w-[760px] mb-12 font-[Roboto] font-[400  ]">
+            <p className="text-[#0F4F58] text-[23px] leading-relaxed  mb-12 font-[Roboto] font-[400  ]">
               Together, these lenses form the intellectual backbone of Hi
               Humaniser! — ensuring the framework is robust enough to support
               meaningful, human-centred performance in complex, real-world
@@ -412,6 +390,12 @@ Research Room"
             fontSize="text-[23px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+            fontColor="#0F4F58"
+            left="387px"
+            bottom="210px"
+            rightImgRight="377px"
+            rightImgBottom="200px"
+            rotate="-35deg"
           />
         </div>
         <div className="flex justify-start ">
@@ -419,18 +403,16 @@ Research Room"
             <div className="max-w-[350px] text-[#0F4F58] font-[Aptos] text-[17px]">
               Feeling inspired? Invite someone to explore Hi Humaniser!™
             </div>
-            <div className="ml-[26px]">
+            <div className="-ml-[6px]">
               <PolygonButton
                 width="85px"
                 height="95px"
                 bgColor="#F7C3BE"
                 radius={14}
-                topTilt={18}
-                slantSide="right"
-                bottomTilt={14}
+                clipPath={`polygon(0% 0%, 100% 18px,100% calc(100% - 14px),0% 100%)`}
               >
                 <div className="h-full flex items-center justify-center text-center">
-                  <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[32px]">
+                  <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[21px]">
                     Invite a Humaniser
                   </span>
                 </div>

@@ -162,6 +162,25 @@ import notificationImg from "../../public/profile/images/notificationImg.png";
 import nutImg from "../../public/profile/images/nutImg.png";
 import invitationImg from "../../public/profile/images/invitationImg.png";
 import spreadImg from "../../public/profile/images/spreadImg.png";
+import researchImg from "../../public/images/researchImg.png";
+import researchPoly from "../../public/images/researchPoly.png";
+import teamDots from "../../public/profile/images/teamDots.png";
+import people from "../../public/images/peopleImg.png";
+import shadowPoly from "../../public/images/shadowPoly.png";
+import dottedArrow from "../../public/images/dottedArrow.png";
+import labImg from "../../public/images/labImg.png";
+import amplifierSecondImg from "../../public/images/amplifierSecondImg.png";
+import amplifierForthImg from "../../public/images/amplifierForthImg.png";
+import conversationImg from "../../public/images/conversationImg.png";
+import ConversationFirstImg from "../../public/images/ConversationFirstImg.png";
+import waveImg from "../../public/images/waveImg.png";
+import screwImg from "../../public/images/screwImg.png";
+import dottedCurve from "../../public/profile/images/dottedCurve.png";
+import pressureImg from "../../public/profile/images/pressureImg.png";
+import pollResultImg from "../../public/profile/images/pollResultImg.png";
+import engagementImg from "../../public/profile/images/engagementImg.png";
+import timerImg from "../../public/profile/images/timerImg.png";
+import questionsImg from "../../public/profile/images/questionsImg.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -327,6 +346,25 @@ type imageTypes = {
   nutImg: StaticImageData;
   invitationImg: StaticImageData;
   spreadImg: StaticImageData;
+  researchImg: StaticImageData;
+  researchPoly: StaticImageData;
+  teamDots: StaticImageData;
+  people: StaticImageData;
+  shadowPoly: StaticImageData;
+  dottedArrow: StaticImageData;
+  labImg: StaticImageData;
+  amplifierSecondImg: StaticImageData;
+  amplifierForthImg: StaticImageData;
+  conversationImg: StaticImageData;
+  ConversationFirstImg: StaticImageData;
+  waveImg: StaticImageData;
+  screwImg: StaticImageData;
+  dottedCurve: StaticImageData;
+  pressureImg: StaticImageData;
+  pollResultImg: StaticImageData;
+  engagementImg: StaticImageData;
+  timerImg: StaticImageData;
+  questionsImg: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -493,6 +531,25 @@ const Images: imageTypes = {
   nutImg,
   invitationImg,
   spreadImg,
+  researchImg,
+  researchPoly,
+  teamDots,
+  people,
+  shadowPoly,
+  dottedArrow,
+  labImg,
+  amplifierSecondImg,
+  amplifierForthImg,
+  conversationImg,
+  ConversationFirstImg,
+  waveImg,
+  screwImg,
+  dottedCurve,
+  pressureImg,
+  pollResultImg,
+  engagementImg,
+  timerImg,
+  questionsImg,
 };
 
 export default Images;

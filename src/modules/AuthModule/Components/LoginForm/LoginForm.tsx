@@ -12,6 +12,7 @@ import {
 } from "@/src/lib/Helpers";
 import { emailMessage, passwordMessage } from "@/src/lib/ErrorMessages";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -65,7 +66,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         onError: (error: any) => {
           console.error("Login error:", error);
         },
-      }
+      },
     );
   });
 
@@ -200,8 +201,8 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                       "email",
                       getEmailValidationRules(
                         emailMessage?.requiredMessage,
-                        emailMessage.invalidMessage
-                      )
+                        emailMessage.invalidMessage,
+                      ),
                     )}
                     className="flex-1 bg-transparent outline-none border-none text-[21px] font-normal leading-relaxed text-black p-0"
                     style={{
@@ -236,8 +237,8 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                       "password",
                       getPasswordValidationRules(
                         passwordMessage.password_required,
-                        passwordMessage.password_message
-                      )
+                        passwordMessage.password_message,
+                      ),
                     )}
                     className="flex-1 bg-transparent outline-none border-none text-[21px] font-normal leading-relaxed text-black p-0 placeholder:text-gray-400"
                     style={{
@@ -351,7 +352,14 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
               New here? Hi Humaniser!™ is part of Humanising Our Workplaces, a
               movement bringing humanity back into performance.
               <br />
-              Discover more at HumanisingOurWorkplaces.com
+              Discover more at{" "}
+              <Link
+                href="https://humanisingourworkplaces.com"
+                target="_blank"
+                className="underline hover:text-[#0F4F58] transition-colors"
+              >
+                HumanisingOurWorkplaces.com
+              </Link>{" "}
             </p>
           </div>
         </div>
@@ -368,9 +376,13 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             }}
           >
             Your data stays yours. Learn more in our{" "}
-            <a href="#" className="text-[#567F55] underline">
+            <Link
+              href="/privacy-policy"
+              target="_blank"
+              className="underline hover:text-[#567F55] transition-colors"
+            >
               Privacy Policy
-            </a>
+            </Link>{" "}
           </span>
         </div>
       </footer>

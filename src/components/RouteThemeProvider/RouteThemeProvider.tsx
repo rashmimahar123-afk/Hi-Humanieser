@@ -23,6 +23,15 @@ export default function RouteThemeProvider() {
       fg = "#0F4F58";
     }
 
+    if (pathname === "/research-room") {
+      bg = "#f5f0eb";
+      fg = "#0F4F58";
+    }
+
+    if (pathname === "/change-password") {
+      bg = "#e8e4df";
+      fg = "#0F4F58";
+    }
     root.style.setProperty("--background", bg);
     root.style.setProperty("--foreground", fg);
   }, [pathname]);

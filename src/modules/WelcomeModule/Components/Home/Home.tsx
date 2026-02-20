@@ -65,11 +65,12 @@ function Home() {
 
   const handleDashboardRouting = (id: number) => {
     if (id === 1) {
-      router.push("/home");
+      router.push("/start-here");
     } else if (id === 2) {
-      router.push("/personal-pathway");
+      router.push("/choose-pathway");
+      // When the user logs in for the first time and it needs to select a pathways, it should show the ‘ready to choose a pathway?’, which will take them to ‘Start Quiz’ OR ‘Choose Myself’
     } else if (id === 3) {
-      router.push("/my-team");
+      router.push("/start-team-journey");
     }
   };
   return (
@@ -82,8 +83,15 @@ function Home() {
           fontSize="text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+          fontColor="#0F4F58"
+          left="403px"
+          top="126px"
+          rightImgRight="390px"
+          rotate="-35deg"
+          rightImgTop="123px"
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8 py-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-8 py-8">
           {boxes.map((box) => (
             <div
               key={box.id}
