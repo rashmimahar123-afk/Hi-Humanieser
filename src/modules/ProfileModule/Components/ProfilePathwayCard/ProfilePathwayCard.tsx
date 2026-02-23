@@ -15,7 +15,7 @@ function ProfilePathwayCard({
   title: string;
   description: string;
   shapeImg: any;
-  arrowImg: any;
+  arrowImg?: any;
   arrowPosition?: string;
   width?: string;
   rotate?: string;
@@ -33,13 +33,14 @@ function ProfilePathwayCard({
         />
 
         {/* Arrow Image */}
-        <Image
-          src={arrowImg}
-          alt="arrow decoration"
-          className={`absolute ${arrowPosition} h-auto`}
-          style={{ width: width, rotate: rotate }}
-        />
-
+        {arrowImg && (
+          <Image
+            src={arrowImg}
+            alt="arrow decoration"
+            className={`absolute ${arrowPosition} h-auto`}
+            style={{ width: width, rotate: rotate }}
+          />
+        )}
         {/* Text on top */}
         <h3 className="relative z-10 text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-[32px] text-center px-4">
           {title}

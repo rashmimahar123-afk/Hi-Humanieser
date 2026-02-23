@@ -32,6 +32,11 @@ export default function RouteThemeProvider() {
       bg = "#e8e4df";
       fg = "#0F4F58";
     }
+
+    if (pathname === "/team-insight") {
+      bg = "#F5F0EB";
+      fg = "#0F4F58";
+    }
     root.style.setProperty("--background", bg);
     root.style.setProperty("--foreground", fg);
   }, [pathname]);

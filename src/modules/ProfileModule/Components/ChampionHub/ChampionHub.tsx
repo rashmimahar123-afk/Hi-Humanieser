@@ -110,6 +110,7 @@ function ChampionHub() {
     transition-all duration-500 ease-in-out
   
   `}
+          onClick={() => router.push("/champion-notes")}
         >
           <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[21px] font-bold">
             Champion Notes
