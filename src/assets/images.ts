@@ -181,6 +181,13 @@ import pollResultImg from "../../public/profile/images/pollResultImg.png";
 import engagementImg from "../../public/profile/images/engagementImg.png";
 import timerImg from "../../public/profile/images/timerImg.png";
 import questionsImg from "../../public/profile/images/questionsImg.png";
+import trainingImg from "../../public/profile/images/trainingImg.png";
+import focusImg from "../../public/profile/images/focusImg.png";
+import trainingPoly from "../../public/profile/images/trainingPoly.png";
+import rolePoly from "../../public/profile/images/rolePoly.png";
+import championTrainImg from "../../public/profile/images/championTrainImg.png";
+import toolkitImg from "../../public/profile/images/toolkitImg.png";
+import targetImg from "../../public/profile/images/targetImg.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -365,6 +372,13 @@ type imageTypes = {
   engagementImg: StaticImageData;
   timerImg: StaticImageData;
   questionsImg: StaticImageData;
+  trainingImg: StaticImageData;
+  focusImg: StaticImageData;
+  trainingPoly: StaticImageData;
+  rolePoly: StaticImageData;
+  championTrainImg: StaticImageData;
+  toolkitImg: StaticImageData;
+  targetImg: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -550,6 +564,13 @@ const Images: imageTypes = {
   engagementImg,
   timerImg,
   questionsImg,
+  trainingImg,
+  focusImg,
+  trainingPoly,
+  rolePoly,
+  championTrainImg,
+  toolkitImg,
+  targetImg,
 };
 
 export default Images;
