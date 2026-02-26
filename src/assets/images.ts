@@ -188,6 +188,7 @@ import rolePoly from "../../public/profile/images/rolePoly.png";
 import championTrainImg from "../../public/profile/images/championTrainImg.png";
 import toolkitImg from "../../public/profile/images/toolkitImg.png";
 import targetImg from "../../public/profile/images/targetImg.png";
+import crossTeamPoly from "../../public/profile/images/crossTeamPoly.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -379,6 +380,7 @@ type imageTypes = {
   championTrainImg: StaticImageData;
   toolkitImg: StaticImageData;
   targetImg: StaticImageData;
+  crossTeamPoly: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -571,6 +573,7 @@ const Images: imageTypes = {
   championTrainImg,
   toolkitImg,
   targetImg,
+  crossTeamPoly,
 };
 
 export default Images;

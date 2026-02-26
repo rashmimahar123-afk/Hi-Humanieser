@@ -24,7 +24,7 @@ function ProfileNotification() {
         alt="dash-rectangle"
         width={630}
         height={630}
-        className="absolute top-44 right-25 z-0"
+        className="absolute top-44 right-0 z-0"
       />
 
       <div className="relative z-20 ">
@@ -32,17 +32,17 @@ function ProfileNotification() {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 ml-[42px]">
-        <h2 className="text-[#0F4F58] text-[45px] font-[RocaTwo] font-bold ml-[40px]">
+      <div className="relative z-10 ml-[82px]">
+        <h2 className="text-[#0F4F58] text-[45px] font-[RocaTwo] font-bold ">
           Notifications
         </h2>
 
-        <p className="text-[#0F4F58] text-[20px] mt-[20px] leading-[30px]">
+        <div className="text-[#0F4F58] text-[20px] mt-[20px] leading-[30px]">
           <span className="font-bold">Your space, your rhythm.</span>
           <br />
           Choose the reminders that help you stay connected — and silence the
           ones that don’t.
-        </p>
+        </div>
       </div>
 
       {/* Content */}
@@ -66,6 +66,16 @@ function ProfileNotification() {
           <NotificationItems text="Team Rituals — Stay in sync when your team starts, updates, or completes a ritual — never miss the collective moments that build culture." />
           <NotificationItems text="Reflection Prompts — Get notified when new reflections open, so you can see what others are sharing and join the conversation on your team’s wall." />
           <NotificationItems text="Micro-Actions — Receive gentle nudges to keep small, meaningful habits alive — one ripple at a time." />
+        </NotificationSection>
+
+        <NotificationSection
+          title="Notification About Your Team"
+          className="mt-[48px]"
+        >
+          <NotificationItems text="Notification 1" />
+          <NotificationItems text="Notification 2" />
+          <NotificationItems text="Notification 3" />
+          <NotificationItems text="Notification 4" />
         </NotificationSection>
       </div>
 

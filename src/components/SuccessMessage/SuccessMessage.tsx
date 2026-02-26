@@ -65,13 +65,17 @@ const SuccessMessage = ({
       <h2
         className={`
           ${fontSize}
-          ${maxWidth}
+          
           text-center
           font-bold
           leading-snug
           ${textClassName}
         `}
-        style={{ fontFamily: "League Spartan", color: fontColor }}
+        style={{
+          fontFamily: "League Spartan",
+          color: fontColor,
+          maxWidth: maxWidth,
+        }}
       >
         {text}
       </h2>
