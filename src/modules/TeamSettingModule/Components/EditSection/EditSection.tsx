@@ -5,6 +5,8 @@ const EditSection = () => (
   <div className="bg-[#F6E3BB] rounded-3xl p-14 ml-[37px] max-w-[1100px]">
     <h3 className="text-[35px] text-[#567F55] mb-10 font-[RocaTwo]">
       Edit member profile
+      {/* For Edit User Profile based on condition
+      Edit User Profile */}
     </h3>
 
     {/* Email */}
@@ -32,7 +34,7 @@ const EditSection = () => (
     </div>
 
     {/* Last Name */}
-    <div className="flex items-center">
+    <div className="flex items-center mb-10">
       <label className="w-[200px] text-[#567F55] text-[20px]">Last Name</label>
       <input
         type="text"
@@ -40,6 +42,49 @@ const EditSection = () => (
         className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
+
+    {/* Role for edit user profile this is based on condition */}
+
+    {/* <div className="flex items-start gap-16">
+      <label className="w-[220px] text-[20px] text-[#567F55] font-[Roboto]">
+        Role
+      </label>
+
+      <div className="flex items-start gap-8">
+        <div
+          className="
+        bg-[#ffffff]
+        rounded-[16px]
+        px-6
+        py-6
+        w-[416px]
+        flex
+        flex-col
+        gap-6
+      "
+        >
+          {["Member", "Champion", "Overseer"].map((role) => (
+            <label
+              key={role}
+              className="flex items-center gap-6 text-[20px] text-[#3F8A8A] font-[Roboto] cursor-pointer"
+            >
+              <input
+                type="radio"
+                name="role"
+                className="w-[20px] h-[20px] accent-[#3F8A8A] cursor-pointer"
+              />
+              {role}
+            </label>
+          ))}
+        </div>
+
+        <div className="mt-6">
+          <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center">
+            <span className="text-[#1D5C63] text-[28px] font-semibold">i</span>
+          </div>
+        </div>
+      </div>
+    </div> */}
 
     <div className="flex justify-end mt-16">
       <PolygonButton
