@@ -194,6 +194,8 @@ import overseerToolPoly from "../../public/profile/images/overseerToolPoly.png";
 import orgSnapBg from "../../public/profile/images/orgSnapBg.png";
 import orgSnapTextBg from "../../public/profile/images/orgSnapTextBg.png";
 import mailImg from "../../public/profile/images/mailImg.png";
+import faqPoly from "../../public/profile/images/faqPoly.png";
+import faqQs from "../../public/profile/images/faqQs.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -391,6 +393,8 @@ type imageTypes = {
   orgSnapBg: StaticImageData;
   orgSnapTextBg: StaticImageData;
   mailImg: StaticImageData;
+  faqPoly: StaticImageData;
+  faqQs: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -589,6 +593,8 @@ const Images: imageTypes = {
   orgSnapBg,
   orgSnapTextBg,
   mailImg,
+  faqPoly,
+  faqQs,
 };
 
 export default Images;

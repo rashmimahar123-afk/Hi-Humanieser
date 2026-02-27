@@ -9,20 +9,9 @@ import { useRouter } from "next/navigation";
 import ProgressPill from "../ProgressPill/ProgressPill";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useRef, useState } from "react";
-import PressurePointProgress from "../PressurePointProgress/PressurePointProgress";
+import PreviousCycle from "../PreviousCycle/PreviousCycle";
 
 function PressurePointRecord() {
-  const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
-  const ritualOptions = ["Weekly Sync", "Retro", "Check-in", "Planning"];
-  const weekOptions = ["1 Week", "2 Weeks", "4 Weeks", "8 Weeks"];
-  const members = [
-    { name: "Matthew Richardson", img: "/m1.jpg" },
-    { name: "Daniella James-Daniels", img: "/m2.jpg" },
-    { name: "Bibil Baby Paramathatil", img: "/m3.jpg" },
-    { name: "Lorenzo DiCaprio", img: "/m4.jpg" },
-    { name: "George Brown", img: "/m5.jpg" },
-  ];
-
   const teamMembers = [
     { name: "Matthew Richardson", image: images.userProfile },
     { name: "Daniella James-Daniels", image: images.userProfile },
@@ -74,26 +63,6 @@ function PressurePointRecord() {
   const rows = chunkByPattern(teamMembers);
 
   const router = useRouter();
-
-  const [open, setOpen] = useState(false);
-  const [openActiveRitual, setOpenActiveRitual] = useState(false);
-
-  const [selected, setSelected] = useState("");
-  const [selectedActiveRitual, setSelectedActiveRitual] = useState("");
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const handleSelect = (item: string) => {
-    setSelected(item);
-
-    setOpen(false);
-  };
-
-  const handleSelectActiveRitual = (item: string) => {
-    setSelectedActiveRitual(item);
-
-    setOpenActiveRitual(false);
-  };
 
   const [openPreviousPoll, setOpenPreviousPoll] = useState(false);
   const [selectedPreviousPoll, setSelectedPreviousPoll] = useState<
@@ -548,256 +517,209 @@ Champion Hub"
         </div>
       </div>
 
-      <div className="relative bg-[#E6D2B1] p-10 mt-10 rounded-xl overflow-hidden">
-        <div className="absolute left-0  top-11 ">
+      <div className="mt-10 relative">
+        {/* Section Title */}
+        <h2 className="text-[32px] font-[RocaTwo] text-[#0F4F58] mt-6 font-bold">
+          Active Focus & Engagement
+        </h2>
+
+        <div className="absolute left-0 top-0 ">
           <Image
             src={images.dottedCurve}
             alt="pattern"
-            width={600}
+            width={500}
             height={270}
           />
         </div>
-        <div className="text-right flex items-center justify-end gap-6">
-          <h3 className="text-[#0f4f58] text-[28px] font-bold font-[RocaTwo]">
-            Current Focus
-          </h3>
-          <div className="grid grid-cols-[257px_1fr] items-center gap-6">
-            {/* Dropdown */}
-            <div className="relative">
-              <div
-                onClick={() => setOpen(!open)}
-                className="
-          h-[52px]
-          bg-[#ffffff]
-          rounded-full
-          px-6
-          flex
-          items-center
-          justify-between
-          cursor-pointer
-        "
-              >
-                <span
-                  className="truncate text-[17px] font-[Roboto]"
-                  style={{
-                    color: selected ? "#567f55" : "#0000",
-                  }}
-                >
-                  {selected || "Select Focus Area"}
-                </span>
 
-                <Image
-                  src={images.dropdownImg}
-                  alt="arrow"
-                  width={18}
-                  height={18}
-                  className={`transition-transform ${open ? "rotate-180" : ""}`}
-                />
-              </div>
+        {/* Outer Beige Container */}
+        <div className="bg-[#E3CFA8] rounded-[24px] p-10 mt-5">
+          {/* Description Text */}
+          <div>
+            <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto] font-medium">
+              This is your team’s current improvement cycle. Track what’s live,
+              how participation is evolving, and where attention may be needed.
+            </p>
 
-              {open && (
-                <div className="absolute z-20 mt-2 w-full bg-white rounded-xl shadow-lg overflow-hidden">
-                  {ritualOptions.map((item) => (
-                    <div
-                      key={item}
-                      onClick={() => handleSelect(item)}
-                      className="px-6 py-3 text-[#0F4F58] cursor-pointer hover:bg-[#F5F0EB]"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>{" "}
-        </div>
-        <div className="text-right flex items-center justify-start gap-6 mt-4">
-          <h3 className="text-[#0f4f58] text-[28px] font-bold font-[RocaTwo]">
-            Active Team Ritual
-          </h3>
-          <div className="grid grid-cols-[257px_1fr] items-center gap-6">
-            {/* Dropdown */}
-            <div className="relative">
-              <div
-                onClick={() => setOpenActiveRitual(!openActiveRitual)}
-                className="
-          h-[52px]
-          bg-[#ffffff]
-          rounded-full
-          px-6
-          flex
-          items-center
-          justify-between
-          cursor-pointer
-        "
-              >
-                <span
-                  className="truncate text-[17px] font-[Roboto]"
-                  style={{
-                    color: selectedActiveRitual ? "#567f55" : "#0000",
-                  }}
-                >
-                  {selectedActiveRitual || "Select Focus Area"}
-                </span>
-
-                <Image
-                  src={images.dropdownImg}
-                  alt="arrow"
-                  width={18}
-                  height={18}
-                  className={`transition-transform ${openActiveRitual ? "rotate-180" : ""}`}
-                />
-              </div>
-
-              {openActiveRitual && (
-                <div className="absolute z-20 mt-2 w-full bg-white rounded-xl shadow-lg overflow-hidden">
-                  {ritualOptions.map((item) => (
-                    <div
-                      key={item}
-                      onClick={() => handleSelectActiveRitual(item)}
-                      className="px-6 py-3 text-[#0F4F58] cursor-pointer hover:bg-[#F5F0EB]"
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>{" "}
-        </div>
-
-        {/* ENGAGEMENT CARD */}
-        <div className="bg-[#C2E2E259] rounded-[18px] p-6 mt-6 ml-2">
-          <div className="flex items-center justify-end gap-4">
-            <span className="text-[#0f4f58] text-[19px] font-bold font-[RocaTwo]">
-              Time remaining in this cycle
-            </span>
-            <div className="bg-[#EDEBE7] rounded-full px-4 py-2 text-[#567f55] text-[18px] font-[Roboto]">
-              [5 Weeks]
-            </div>
+            <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto]">
+              Sustained performance doesn’t come from pressure — it comes from
+              steady rhythm.
+            </p>
           </div>
-          <div className="mb-4">
-            <h3 className="text-[#0f4f58] text-[27px] font-bold font-[RocaTwo]">
-              Engagement so far:
-            </h3>
+          {/* Two Column Layout */}
+          <div className="grid grid-cols-2 gap-12  mt-4">
+            {/* CARD */}
+            {[1, 2].map((_, index) => (
+              <div key={index} className="bg-[#cde3cc] rounded-[20px] p-10 ">
+                {/* TOP INFO SECTION */}
+                <div className="space-y-6">
+                  {/* Focus Area */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[20px] font-[RocaTwo] text-[#0F4F58]">
+                      Focus Area
+                    </span>
+                    <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                      {index === 0 ? "Improve Clarity" : "Build Trust"}
+                    </div>
+                  </div>
+
+                  {/* Active Team Ritual */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
+                      Active Team <br /> Ritual
+                    </span>
+                    <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                      {index === 0 ? "What Happens Next" : "Say It in One Line"}
+                    </div>
+                  </div>
+
+                  {/* Time Remaining */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
+                      Time remaining <br /> in this cycle
+                    </span>
+                    <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                      [5 Weeks]
+                    </div>
+                  </div>
+                </div>
+
+                {/* Engagement Section */}
+                <div className="mt-12">
+                  <h3 className="text-[28px] font-[RocaTwo] text-[#0F4F58] mb-8">
+                    Engagement so far:
+                  </h3>
+
+                  <ul className="space-y-6 text-[18px] text-[#0F4F58] font-[Roboto]">
+                    <li className="flex items-start gap-4">
+                      <Image
+                        src={images.engagementImg}
+                        alt="arrow"
+                        width={22}
+                        height={22}
+                        className="mt-1"
+                      />
+                      <span>Awareness: 92% have viewed the ritual</span>
+                    </li>
+
+                    <li className="flex items-start gap-4">
+                      <Image
+                        src={images.engagementImg}
+                        alt="arrow"
+                        width={22}
+                        height={22}
+                        className="mt-1"
+                      />
+                      <span>
+                        Participation: 67% have contributed at least one team
+                        reflection
+                      </span>
+                    </li>
+
+                    <li className="flex items-start gap-4">
+                      <Image
+                        src={images.engagementImg}
+                        alt="arrow"
+                        width={22}
+                        height={22}
+                        className="mt-1"
+                      />
+                      <span>Momentum: 41% have contributed more than once</span>
+                    </li>
+
+                    <li className="flex items-start gap-4">
+                      <Image
+                        src={images.engagementImg}
+                        alt="arrow"
+                        width={22}
+                        height={22}
+                        className="mt-1"
+                      />
+                      <span>
+                        Sharing: 14 reflections shared on Reflection Wall
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            ))}
           </div>
-          <ul className="space-y-5 text-[#0f4f58] text-[18px] ml-22 font-[Roboto]">
-            <li>
-              <div className="flex items-center gap-2">
-                {" "}
-                <Image
-                  src={images.engagementImg}
-                  alt="arrow"
-                  width={18}
-                  height={18}
-                />
-                Awareness: 92% have viewed the ritual
-              </div>
-            </li>
-            <li>
-              <div className="flex items-center gap-2">
-                {" "}
-                <Image
-                  src={images.engagementImg}
-                  alt="arrow"
-                  width={18}
-                  height={18}
-                />
-                Participation: 67% have contributed at least one team reflection
-              </div>
-            </li>
-            <li>
-              {" "}
-              <div className="flex items-center gap-2">
-                {" "}
-                <Image
-                  src={images.engagementImg}
-                  alt="arrow"
-                  width={18}
-                  height={18}
-                />{" "}
-                Momentum: 41% have contributed more than once
-              </div>
-            </li>
-            <li>
-              {" "}
-              <div className="flex items-center gap-2">
-                {" "}
-                <Image
-                  src={images.engagementImg}
-                  alt="arrow"
-                  width={18}
-                  height={18}
-                />{" "}
-                Sharing: 14 new shared reflections this week
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div className="mt-10">
-          <SuccessMessage
-            text=" These insights help you see where people are connecting, and where a
-            gentle invitation might open the next step.
+          <div className="relative mt-10">
+            <SuccessMessage
+              text="These insights help you see where people are connecting, and where a gentle invitation might open the next step.
 "
-            fontSize="text-[23px]"
-            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            fontColor="#0F4F58"
-            left="337px"
-            bottom="253px"
-            rightImgRight="330px"
-            rotate="-35deg"
-            rightImgBottom="253px"
-          />
+              fontSize="text-[23px]"
+              leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+              rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+              fontColor="#0F4F58"
+              left="230px"
+              bottom="32px"
+              rightImgRight="220px"
+              rotate="-34deg"
+              rightImgBottom="24px"
+              maxWidth="800px"
+            />
+          </div>
         </div>
-        {/* ACTION SECTION */}
-        <div className="space-y-2">
-          {/* Need More Time */}
-          <div className="flex items-center gap-6">
+      </div>
+      <div className="ml-20">
+        <div className="flex items-center justify-between  mt-10">
+          {/* LEFT SECTION */}
+          <div className="flex items-center gap-10">
+            {/* Polygon */}
             <PolygonButton
               width="106px"
-              height="85px"
+              height="107px"
               bgColor="#86c9c9"
               radius={14}
               clipPath={`polygon(
-        0% 30%,
-        92% 0%,
-        100% 87%,
-        3% calc(100% - 15px)
-      )`}
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
             >
-              <span className="text-[#0f4f58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
-                Need a bit more time?
+              <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                Need a bit <br />
+                <span className="whitespace-nowrap">more time? </span>
               </span>
             </PolygonButton>
-            <p className="text-[#0f4f58] text-[18px] font-[Roboto] leading-relaxed">
-              Extend this ritual for up to 2 more weeks.
+
+            {/* Middle Text */}
+            <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
+              Extend this cycle for up to 2 more weeks.
             </p>
           </div>
+        </div>
 
-          {/* Finished Early */}
-          <div className="flex items-start gap-6">
-            <div className="flex items-center gap-6">
-              <PolygonButton
-                width="106px"
-                height="85px"
-                bgColor="#acd5ab"
-                radius={14}
-                clipPath={`polygon(
-        0% 30%,
-        92% 0%,
-        100% 87%,
-        3% calc(100% - 15px)
-      )`}
-              >
-                <span className="text-[#0f4f58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
-                  Finished early?
-                </span>
-              </PolygonButton>
-              <p className="text-[#0f4f58] text-[18px] font-[Roboto] leading-relaxed">
-                Mark this ritual as completed and choose your next one.
-              </p>
-            </div>
+        {/* ROW 2 */}
+        <div className="flex items-center justify-between">
+          {/* LEFT SECTION */}
+          <div className="flex items-center gap-10">
+            {/* Polygon */}
+            <PolygonButton
+              width="106px"
+              height="107px"
+              bgColor="#acd5ab"
+              radius={14}
+              clipPath={`polygon(
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
+            >
+              <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                Finished
+                <br />
+                <span className="whitespace-nowrap">early?</span>
+              </span>
+            </PolygonButton>
+
+            {/* Middle Text */}
+            <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
+              Mark these rituals as completed and start a new cycle.
+            </p>
           </div>
         </div>
       </div>
@@ -841,7 +763,7 @@ Champion Notes"
           onClick={() => setOpenPreviousPoll(!openPreviousPoll)}
           className="text-[#0f4f58] text-[28px] font-bold font-[RocaTwo] cursor-pointer"
         >
-          Previous Poll Results
+          Previous Team Rituals
         </h3>
 
         {/* Dropdown */}
@@ -889,26 +811,7 @@ Champion Notes"
       {/* ===== EXPANDED RESULT UI ===== */}
       {selectedPreviousPoll && (
         <div className="bg-[#b9cbb7] rounded-2xl p-10 space-y- mt-4">
-          <p className="text-[#737373] text-[23px] font-[Aptos] ml-20 mb-6">
-            If we could make real progress on a few things as a team over the
-            next few months, which 3 would you choose?
-          </p>
-
-          {/* Progress Grid */}
-          <div className="grid grid-cols-2 gap-6 ml-20">
-            <PressurePointProgress label="Built Trust" percent={70} />
-            <PressurePointProgress label="Foster Belonging" percent={60} />
-            <PressurePointProgress label="Improve Clarity" percent={65} />
-            <PressurePointProgress label="Sustain Wellbeing" percent={25} />
-            <PressurePointProgress
-              label="Strengthen Collaboration"
-              percent={50}
-            />
-          </div>
-
-          <div className="text-right text-[#0F4F58] font-semibold font-[Roboto]">
-            Participation: 8 of 12 members responded (67%)
-          </div>
+          <PreviousCycle />
         </div>
       )}
 
@@ -964,116 +867,30 @@ Champion Notes"
       {selectedPreviousRitual && (
         <div className="bg-[#B9CBB7] rounded-2xl px-16 py-14 mt-6">
           {/* 2 COLUMN FORM LAYOUT */}
-          <div className="grid grid-cols-2 gap-x-24 gap-y-10">
-            {/* LEFT COLUMN */}
-            <div className="space-y-10">
-              {/* Team Ritual Name */}
-              <div className="flex items-center justify-between">
-                <label className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold">
-                  Team Rituals Name
-                </label>
-
-                <div className="w-[360px] h-[56px] bg-[#ECECEC] rounded-full px-6 flex items-center text-[#567F55] text-[20px]">
-                  {selectedPreviousRitual}
-                </div>
-              </div>
-
-              {/* Focus Area */}
-              <div className="flex items-center justify-between">
-                <label className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold">
-                  Focus Area
-                </label>
-
-                <div className="w-[360px] h-[56px] bg-[#ECECEC] rounded-full px-6 flex items-center text-[#567F55] text-[20px]">
-                  [Focus Area]
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN */}
-            <div className="space-y-10">
-              {/* Start Date */}
-              <div className="flex items-center justify-between">
-                <label className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold">
-                  Start Date
-                </label>
-
-                <div className="w-[360px] h-[56px] bg-[#ECECEC] rounded-full" />
-              </div>
-
-              {/* End Date */}
-              <div className="flex items-center justify-between">
-                <label className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold">
-                  End Date
-                </label>
-
-                <div className="w-[360px] h-[56px] bg-[#ECECEC] rounded-full" />
-              </div>
-            </div>
-          </div>
-
-          {/* ================= PARTICIPATION SUMMARY ================= */}
-          <div className="mt-16 ml-20">
-            <h4 className="text-[#0F4F58] text-[28px] font-bold font-[RocaTwo] mb-8">
-              Participation Summary
-            </h4>
-
-            <ul className="space-y-5 text-[#0f4f58] text-[18px] ml-20 font-[Roboto]">
-              <li>
-                <div className="flex items-center gap-2">
-                  {" "}
-                  <Image
-                    src={images.engagementImg}
-                    alt="arrow"
-                    width={18}
-                    height={18}
-                  />
-                  Awareness: 92% have viewed the ritual
-                </div>
-              </li>
-              <li>
-                <div className="flex items-center gap-2">
-                  {" "}
-                  <Image
-                    src={images.engagementImg}
-                    alt="arrow"
-                    width={18}
-                    height={18}
-                  />
-                  Participation: 67% have contributed at least one team
-                  reflection
-                </div>
-              </li>
-              <li>
-                {" "}
-                <div className="flex items-center gap-2">
-                  {" "}
-                  <Image
-                    src={images.engagementImg}
-                    alt="arrow"
-                    width={18}
-                    height={18}
-                  />{" "}
-                  Consistency: 41% have contributed more than once
-                </div>
-              </li>
-              <li>
-                {" "}
-                <div className="flex items-center gap-2">
-                  {" "}
-                  <Image
-                    src={images.engagementImg}
-                    alt="arrow"
-                    width={18}
-                    height={18}
-                  />{" "}
-                  Momentum: 14 reflections in total
-                </div>
-              </li>
-            </ul>
-          </div>
+          <PreviousCycle />
         </div>
       )}
+
+      <div className="mt-10 flex justify-end items-center  ">
+        <div className="flex flex-col gap-4">
+          <div>
+            <CommonButtons
+              label="Return to 
+Champion Hub"
+              bgColor="#FBE1DE"
+              onClick={() => router.push("/dashboard")}
+            />
+          </div>
+          <div>
+            {" "}
+            <CommonButtons
+              label="Go to Homepage "
+              bgColor="#FBE1DE"
+              onClick={() => router.push("/dashboard")}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
