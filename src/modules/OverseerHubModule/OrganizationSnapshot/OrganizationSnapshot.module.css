@@ -1,0 +1,24 @@
+.card {
+  position: relative;
+  width: 125px;    
+  height: 100px;   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImage {
+  object-fit: contain;  /* 👈 very important */
+}
+
+.cardTitle {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  font-family: "RocaTwo";
+  font-size: 20px;
+  font-weight: 700;
+  color: #0F4F58;
+  line-height: 1.2;
+  pointer-events: none;
+}

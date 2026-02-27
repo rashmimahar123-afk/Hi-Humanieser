@@ -189,6 +189,11 @@ import championTrainImg from "../../public/profile/images/championTrainImg.png";
 import toolkitImg from "../../public/profile/images/toolkitImg.png";
 import targetImg from "../../public/profile/images/targetImg.png";
 import crossTeamPoly from "../../public/profile/images/crossTeamPoly.png";
+import orgSnapPoly from "../../public/profile/images/orgSnapPoly.png";
+import overseerToolPoly from "../../public/profile/images/overseerToolPoly.png";
+import orgSnapBg from "../../public/profile/images/orgSnapBg.png";
+import orgSnapTextBg from "../../public/profile/images/orgSnapTextBg.png";
+import mailImg from "../../public/profile/images/mailImg.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -381,6 +386,11 @@ type imageTypes = {
   toolkitImg: StaticImageData;
   targetImg: StaticImageData;
   crossTeamPoly: StaticImageData;
+  orgSnapPoly: StaticImageData;
+  overseerToolPoly: StaticImageData;
+  orgSnapBg: StaticImageData;
+  orgSnapTextBg: StaticImageData;
+  mailImg: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -574,6 +584,11 @@ const Images: imageTypes = {
   toolkitImg,
   targetImg,
   crossTeamPoly,
+  orgSnapPoly,
+  overseerToolPoly,
+  orgSnapBg,
+  orgSnapTextBg,
+  mailImg,
 };
 
 export default Images;

@@ -162,7 +162,7 @@ function Profile() {
 
       <div className=" px-14 py-12">
         {/* Header */}
-        <h2 className=" ml-10 text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">
+        <h2 className="ml-10 text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">
           Team Structure
         </h2>
         <div className="absolute left-8 top-190 z-10">
