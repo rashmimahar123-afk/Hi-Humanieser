@@ -112,7 +112,7 @@ function MyTeamJourney() {
 
           <p className="text-[#0f4f58] text-[24px] max-w-[716px] mb-8 font-[Aptos] font-[400]">
             If your team could make real progress on a few things over the next
-            few weeks, which would matter most to you? Choose up to 2.
+            few weeks, which would matter most to you?
           </p>
 
           <div className="grid grid-cols-2 gap-y-4 text-[#0F4F58] text-[19px] ml-[65px] font-[Roboto]">

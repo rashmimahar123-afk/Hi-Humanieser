@@ -47,7 +47,7 @@ function EditTeam() {
               type="text"
               value="Systems Engineering - UK" // <-- fetched value here
               readOnly
-              className="bg-[#F2F2F2]
+              className="bg-[#ffffff]
           text-[#4E6E5D]
           italic
           text-[18px]
@@ -69,7 +69,7 @@ function EditTeam() {
             <input
               type="text"
               placeholder="in here, the team name as before"
-              className="bg-[#F2F2F2]
+              className="bg-[#ffffff]
           text-[#4E6E5D]
           italic
           text-[18px]

@@ -17,7 +17,7 @@ const DeleteSection = () => (
       <input
         type="email"
         placeholder="add email address"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
     <div className="flex justify-end mb-6">
@@ -32,7 +32,7 @@ const DeleteSection = () => (
         readOnly
         type="text"
         placeholder="add pre stablished profile details"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
 
@@ -43,7 +43,7 @@ const DeleteSection = () => (
         readOnly
         type="text"
         placeholder="add pre stablished profile details"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
 
@@ -54,7 +54,7 @@ const DeleteSection = () => (
         readOnly
         type="text"
         placeholder="add pre stablished profile details"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
     <div className="flex justify-end mt-16">

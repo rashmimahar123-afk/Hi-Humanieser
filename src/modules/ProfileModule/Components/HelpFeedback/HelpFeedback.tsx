@@ -1,102 +1,126 @@
+"use client";
+
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import React, { useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import ProfileCommonDropdown from "@/src/components/ProfileCommonDropdown/ProfileCommonDropdown";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 
 function HelpFeedback() {
   const router = useRouter();
-  const [reflection, setReflection] = useState("");
+  const [message, setMessage] = useState("");
 
   return (
-    <div className=" relative min-h-screen bg-[#F8F4EE] px-8 py-10 font-serif  z-10">
-      <div>
-        <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
-      </div>
-      <Image
-        src={images.quizPolygon}
-        alt="quiz-polygon"
-        width={630}
-        height={630}
-        className="absolute top-0 right-0 -z-10 pointer-events-none"
-      />
+    <div className="relative min-h-screen bg-[#F7F2EA] px-12 pt-10 pb-20">
       {/* Header */}
-      <div className="flex justify-between items-start mb-10">
-        <div className="ml-[37px]">
-          <h2 className="text-3xl font-bold text-[#0F3D3E] font-[RocaTwo] ">
-            Help & Feedback
-          </h2>
-          <p className="text-[#4E6E5D] mt-2 ml-2">
-            Have a question about the portal? Something unclear? An idea to
-            improve it?
-          </p>
-          <p className="text-[#4E6E5D] mt-2 ml-2">
-            We’d love to hear from you.
-          </p>
-        </div>
+      <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+
+      <Image
+        src={images.feedbackBg}
+        alt="feedback-shape"
+        width={350}
+        height={350}
+        className="absolute top-45 right-0 z-0  pointer-events-none"
+      />
+      {/* Page Title Section */}
+      <div className="mt-10 ml-[40px] max-w-[900px]">
+        <h2 className="text-[44px] font-[RocaTwo] text-[#0F4F58] font-bold">
+          Help & Feedback
+        </h2>
+
+        <p className="text-[18px] text-[#4E6E5D] mt-6 leading-[30px]">
+          Have a question about the portal? Something unclear? An idea to
+          improve it?
+        </p>
+
+        <p className="text-[18px] text-[#4E6E5D] mt-3">
+          We’d love to hear from you.
+        </p>
       </div>
 
-      {/* Invite Members */}
-      <div className="bg-[#F6E3BB] rounded-3xl p-10">
-        <div className="max-w-[1000px] space-y-6 mt-6">
-          {/* First Name */}
-          <div className="flex items-center gap-8">
-            <label className="w-[160px] text-[#567F55] text-[18px] font-[Roboto]">
+      {/* Form Card */}
+      <div className="mt-14 ml-[40px] bg-[#F4D9A9] rounded-[28px] px-14 py-10 w-[1120px] relative z-10">
+        <div className="space-y-4">
+          {/* Name */}
+          <div className="flex items-center gap-10">
+            <label className="w-[200px] text-[#567F55] text-[20px] font-[Roboto]">
               Name
             </label>
 
             <input
               type="text"
-              className="flex-1 max-w-[720px] h-[48px] bg-[#EDEBE6] 
-      rounded-[12px] px-6 text-[#0F4F58] outline-none"
+              placeholder="auto-filled"
+              className="flex-1 h-[56px] bg-[#ffffff] rounded-[14px] px-6 text-[#0F4F58] outline-none"
             />
           </div>
 
-          <div className="flex items-center gap-8">
-            <label className="w-[160px] text-[#567F55] text-[18px] font-[Roboto]">
-              Type of request{" "}
-            </label>
-
-            <div className="relative flex-1 max-w-[720px]">
-              <select
-                className="appearance-none w-full h-[48px] bg-[#EDEBE6]
-        rounded-[12px] px-6 pr-12 text-[#4E6E5D] outline-none"
-              ></select>
-
-              {/* Custom dropdown icon */}
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                <Image src={images.dropdownImg} alt="dropdown" width={18} />
-              </div>
+          {/* Type of Request */}
+          <div className="flex items-center gap-10">
+            <div>
+              <ProfileCommonDropdown
+                label="Type of request"
+                options={[
+                  "Question",
+                  " Technical Issue",
+                  "Suggestion",
+                  "Feedback",
+                ]}
+                placeholder="Male / Female / Non-binary / Prefer not to say / Self-describe"
+                textColor="#567F55"
+                placeholderColor="#9BB89A"
+                gap="38px"
+                width="200px"
+                textSize="20px"
+                fieldWidth="770px"
+              />
             </div>
           </div>
-          <div className="flex items-center gap-8">
-            <label className="w-[160px] text-[#567F55] text-[18px] font-[Roboto]">
+
+          {/* Message */}
+          <div className="flex items-start gap-10">
+            <label className="w-[200px] text-[#567F55] text-[20px] font-[Roboto] mt-4">
               Message
             </label>
+
             <textarea
-              value={reflection}
-              onChange={(e) => setReflection(e.target.value)}
-              placeholder="Write your reflection here…"
-              className="
-              w-full
-              min-h-[180px]
-              resize-none
-              rounded-[18px]
-              border border-[#A7D3CB]
-              bg-transparent
-              px-4 py-3
-              text-[15px]
-              text-[#0F4F58]
-              placeholder:text-[#8FA8A4]
-              focus:outline-none
-              focus:ring-2
-             ` focus:ring-[#A7D3CB]
-            "
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="flex-1 h-[420px] bg-[#ffffff] rounded-[20px] px-6 py-6 text-[#0F4F58] resize-none outline-none"
             />
           </div>
+
+          <div className="flex justify-end ">
+            <PolygonButton
+              width="106px"
+              height="75px"
+              bgColor="#86c9c9"
+              radius={14}
+              clipPath={`polygon(
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
+              childTop={11}
+            >
+              <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
+                Send
+              </span>
+            </PolygonButton>
+          </div>
         </div>
+      </div>
+
+      <div className="flex justify-end mt-10">
+        {/* Bottom Buttons */}
+        <CommonButtons
+          label="Return to  Homepage"
+          bgColor="#cde3cc"
+          onClick={() => router.push("/dashboard")}
+        />
       </div>
     </div>
   );

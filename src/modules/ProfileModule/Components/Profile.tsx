@@ -258,7 +258,7 @@ function Profile() {
                   </div>
 
                   {isSix && isLast && (
-                    <div className="absolute -bottom-24 left-[31%] -translate-x-[330px]">
+                    <div className="absolute -bottom-24 left-[28%] -translate-x-[330px]">
                       <Image
                         src={images.teamDots}
                         alt="dots"

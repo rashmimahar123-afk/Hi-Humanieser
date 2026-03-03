@@ -14,7 +14,7 @@ const TransferSection = () => (
       <input
         type="email"
         placeholder="add email address"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
     <div className="flex justify-end mb-6">
@@ -29,7 +29,7 @@ const TransferSection = () => (
         readOnly
         type="text"
         placeholder="add pre stablished profile details"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
 
@@ -40,7 +40,7 @@ const TransferSection = () => (
         readOnly
         type="text"
         placeholder="add pre stablished profile details"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
 
@@ -51,7 +51,7 @@ const TransferSection = () => (
         readOnly
         type="text"
         placeholder="add pre stablished profile details"
-        className="bg-[#F2F2F2] italic px-6 h-[56px] w-[700px] rounded-[16px]"
+        className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
       />
     </div>
 
@@ -62,7 +62,7 @@ const TransferSection = () => (
       </label>
 
       <div className="relative w-[700px]">
-        <select className="w-full bg-[#F2F2F2] italic px-6 h-[56px] rounded-[16px] appearance-none">
+        <select className="w-full bg-[#ffffff] italic px-6 h-[56px] rounded-[16px] appearance-none">
           <option>
             Champions can transfer members to other teams within the
             organisation

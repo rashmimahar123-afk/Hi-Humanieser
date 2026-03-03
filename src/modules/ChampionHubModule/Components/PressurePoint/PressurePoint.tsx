@@ -64,7 +64,10 @@ As the work grows more complex, small differences in understanding quietly multi
           rotate="-35deg"
         />
 
-        <div className="flex justify-end  mb-[7px]">
+        <div
+          className="flex justify-end  mb-[7px]"
+          onClick={() => router.push("/pressure-point-record")}
+        >
           <PolygonButton
             width="106px"
             height="107px"

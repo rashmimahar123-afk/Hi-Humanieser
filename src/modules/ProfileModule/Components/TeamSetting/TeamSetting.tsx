@@ -23,10 +23,10 @@ function TeamSetting() {
       {/* Header */}
       <div className="flex justify-between items-start mb-10">
         <div className="ml-[37px]">
-          <h2 className="text-3xl font-bold text-[#0F3D3E] font-[RocaTwo] ">
+          <h2 className="text-[45px] font-bold text-[#0f4f58] font-[RocaTwo] ">
             My Team Settings
           </h2>
-          <p className="text-[#4E6E5D] mt-2 ml-2">
+          <p className="text-[#0f4f58] ml-2 font-[Roboto] text-[22px]">
             Manage your teams, members and preferences here.
           </p>
         </div>
@@ -38,17 +38,17 @@ function TeamSetting() {
           Teams
         </h3>
 
-        <div className="space-y-6 w-full">
+        <div className="space-y-4 w-full">
           {/* Champion */}
+
           <div className="flex items-center gap-4">
             <label className="w-[103px] text-[#567F55] text-[19px] font-[Roboto]">
               You are the Champion of
             </label>
-
-            <div className="relative ml-[100px]">
-              <select
-                className="
-          appearance-none
+            <div className="ml-[100px]">
+              <input
+                type="text"
+                className="appearance-none
           bg-white
           text-[#0F4F58]
           text-[18px]
@@ -59,14 +59,8 @@ function TeamSetting() {
           w-[416px]
           rounded-[12px]
           outline-none
-          font-[Roboto]
-        "
-              >
-                <option></option>
-              </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                <Image src={images.dropdownImg} alt="dropdown-img" width={25} />
-              </div>
+          font-[Roboto]"
+              />
             </div>
             <div>
               <CommonButtons
@@ -77,7 +71,6 @@ function TeamSetting() {
               />
             </div>
           </div>
-
           {/* Members */}
           <div className="flex items-center gap-4">
             <label className="w-[103px] text-[#567F55] text-[19px] font-[Roboto]">
@@ -149,7 +142,7 @@ function TeamSetting() {
           </div>
         </div>
 
-        <div className="max-w-[1000px] space-y-6 mt-6">
+        <div className="max-w-[1000px] space-y-4 mt-6">
           {/* First Name */}
           <div className="flex items-center gap-8">
             <label className="w-[160px] text-[#567F55] text-[18px] font-[Roboto]">
@@ -158,7 +151,7 @@ function TeamSetting() {
 
             <input
               type="text"
-              className="flex-1 max-w-[720px] h-[48px] bg-[#EDEBE6] 
+              className="flex-1 max-w-[720px] h-[48px] bg-[#ffffff] 
       rounded-[12px] px-6 text-[#0F4F58] outline-none"
             />
           </div>
@@ -171,7 +164,7 @@ function TeamSetting() {
 
             <input
               type="text"
-              className="flex-1 max-w-[720px] h-[48px] bg-[#EDEBE6] 
+              className="flex-1 max-w-[720px] h-[48px] bg-[#ffffff] 
       rounded-[12px] px-6 text-[#0F4F58] outline-none"
             />
           </div>
@@ -184,7 +177,7 @@ function TeamSetting() {
 
             <input
               type="email"
-              className="flex-1 max-w-[720px] h-[48px] bg-[#EDEBE6] 
+              className="flex-1 max-w-[720px] h-[48px] bg-[#ffffff] 
       rounded-[12px] px-6 text-[#0F4F58] outline-none"
             />
           </div>
@@ -197,7 +190,7 @@ function TeamSetting() {
 
             <div className="relative flex-1 max-w-[720px]">
               <select
-                className="appearance-none w-full h-[48px] bg-[#EDEBE6]
+                className="appearance-none w-full h-[48px] bg-[#ffffff]
         rounded-[12px] px-6 pr-12 text-[#4E6E5D] outline-none"
               >
                 <option>it can only show the Champion’s teams (max 2)</option>
@@ -212,7 +205,7 @@ function TeamSetting() {
         </div>
 
         <div className="flex justify-between items-center mt-10">
-          <div className="text-[18px] text-[#567F55] max-w-md">
+          <div className="text-[18px] text-[#567F55] ">
             <div className="flex items-start gap-2">
               <div>
                 <Image
@@ -224,9 +217,7 @@ function TeamSetting() {
               </div>
 
               <div>
-                <p className="font-medium mb-1">
-                  Teams thrive when kept between 8–12 people.
-                </p>
+                <p>Teams thrive when kept between 8–12 people.</p>
                 <p>
                   You can add up to 20 members per team for meaningful
                   connection.
@@ -234,7 +225,7 @@ function TeamSetting() {
               </div>
             </div>
           </div>
-          <div className="bg-white px-6 py-2 rounded-full text-sm">
+          <div className="bg-white px-6 py-2 rounded-full text-[18px] font-[Roboto] text-[#567f55]">
             Upload CSV
           </div>
         </div>
@@ -265,17 +256,6 @@ function TeamSetting() {
               Add Members
             </span>
           </PolygonButton>
-        </div>
-        <div>
-          <div className="text-[#567F55] text-[18px]">
-            💬 Suggest a Champion
-          </div>
-          <div className="text-[18px] text-[#567F55]">
-            Want to propose a colleague to become a Champion?
-          </div>
-          <div className="text-[18px] text-[#567F55]">
-            We’ll notify your Overseer.
-          </div>
         </div>
       </div>
     </div>

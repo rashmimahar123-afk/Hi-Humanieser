@@ -211,7 +211,10 @@ function TeamFocus() {
           {/* CARDS GRID */}
           <div className="relative z-10 mt-20 grid grid-cols-3 gap-12  mx-auto">
             {/* CARD 1 */}
-            <div className="bg-[#FFF7F3] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out">
+            <div
+              className="bg-[#FFF7F3] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out"
+              onClick={() => router.push("/pressure-point")}
+            >
               <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                 Everything feels urgent.
               </h3>

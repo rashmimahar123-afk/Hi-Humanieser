@@ -49,7 +49,7 @@ function EditMembers() {
           <select
             value={action}
             onChange={(e) => setAction(e.target.value)}
-            className="w-full bg-[#F2F2F2] text-[#4E6E5D] text-[18px] px-6 h-[56px] rounded-[16px] outline-none font-[Roboto] appearance-none"
+            className="w-full bg-[#ffffff] text-[#4E6E5D] text-[18px] px-6 h-[56px] rounded-[16px] outline-none font-[Roboto] appearance-none"
           >
             <option value="edit">Edit member profile</option>
             <option value="transfer">Transfer member to another team</option>

@@ -196,6 +196,7 @@ import orgSnapTextBg from "../../public/profile/images/orgSnapTextBg.png";
 import mailImg from "../../public/profile/images/mailImg.png";
 import faqPoly from "../../public/profile/images/faqPoly.png";
 import faqQs from "../../public/profile/images/faqQs.png";
+import feedbackBg from "../../public/profile/images/feedbackBg.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -395,6 +396,7 @@ type imageTypes = {
   mailImg: StaticImageData;
   faqPoly: StaticImageData;
   faqQs: StaticImageData;
+  feedbackBg: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -595,6 +597,7 @@ const Images: imageTypes = {
   mailImg,
   faqPoly,
   faqQs,
+  feedbackBg,
 };
 
 export default Images;

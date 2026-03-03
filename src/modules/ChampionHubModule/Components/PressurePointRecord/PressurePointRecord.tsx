@@ -419,7 +419,10 @@ Champion Hub"
           help most, the focus areas below are the strongest candidates right
           now.
         </p>
-        <div className=" flex justify-center mt-[20px]">
+        <div
+          className=" flex justify-center mt-[20px]"
+          onClick={() => router.push("/continue-pressure")}
+        >
           <div className="grid grid-cols-2 gap-10">
             {/* Focus Cards Section */}
             <div>

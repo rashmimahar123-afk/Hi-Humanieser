@@ -1,6 +1,8 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
+import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
+import ProfileCommonDropdown from "@/src/components/ProfileCommonDropdown/ProfileCommonDropdown";
 
 function AccountSetting() {
   return (
@@ -66,31 +68,58 @@ function AccountSetting() {
           </div>
 
           {/* Inputs */}
-          <div className="mt-12 max-w-3xl space-y-6">
-            {[
-              { label: "First Name", editable: true },
-              { label: "Last Name", editable: true },
-              { label: "email/username", editable: false },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-6">
-                <span className="w-40 text-[22px] text-[#567F55] font-[Roboto]">
-                  {item.label}
-                </span>
+          <div className="mt-12 max-w-4xl space-y-4">
+            {/* First Name */}
+            <div className="flex items-center gap-6">
+              <span className="w-[200px] text-[22px] text-[#567F55] font-[Roboto]">
+                First Name
+              </span>
 
-                <input
-                  disabled={!item.editable}
-                  placeholder={item.editable ? "" : "not able to modify"}
-                  className="flex-1 rounded-[16px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
-                />
+              <input
+                type="text"
+                placeholder="Enter First Name"
+                className="w-[500px] h-[60px] rounded-[16px] bg-white px-5 text-[16px] text-[#567F55] outline-none"
+              />
 
-                {item.editable && (
-                  <button className="text-[18px] text-[#567F55] font-[Roboto]">
-                    Edit
-                  </button>
-                )}
-              </div>
-            ))}
+              <button className="w-[60px] text-[18px] text-[#567F55] font-[Roboto]">
+                Edit
+              </button>
+            </div>
 
+            {/* Last Name */}
+            <div className="flex items-center gap-6">
+              <span className="w-[200px] text-[22px] text-[#567F55] font-[Roboto]">
+                Last Name
+              </span>
+
+              <input
+                type="text"
+                placeholder="Enter Last Name"
+                className="w-[500px] h-[60px] rounded-[16px] bg-white px-5 text-[16px] text-[#567F55] outline-none"
+              />
+
+              <button className="w-[60px] text-[18px] text-[#567F55] font-[Roboto]">
+                Edit
+              </button>
+            </div>
+
+            {/* Email */}
+            <div className="flex items-center gap-6">
+              <span className="w-[200px] text-[22px] text-[#567F55] font-[Roboto]">
+                Email/Username
+              </span>
+
+              <input
+                disabled
+                placeholder="not able to modify"
+                className="w-[500px] h-[60px] rounded-[16px] bg-[#ffffff] px-5 text-[16px] text-[#567F55] outline-none"
+              />
+
+              {/* Empty space to match Edit button width */}
+              <div className="w-[60px]" />
+            </div>
+
+            {/* Change Password */}
             <p className="text-right text-[22px] text-[#567F55] font-[Roboto]">
               Change your password? click{" "}
               <span className="underline cursor-pointer">here</span>
@@ -110,25 +139,36 @@ function AccountSetting() {
           </div>
 
           {/* Optional Fields */}
-          <div className="mt-8 max-w-3xl space-y-6">
-            <div className="flex items-center gap-10">
-              <span className="text-[22px] text-[#567F55]">
-                Gender (optional)
-              </span>
-
-              <select className="flex-1 rounded-[16px] bg-white px-3 py-3 text-[14px] text-[#567F55] outline-none">
-                <option>
-                  Male / Female / Non-binary / Prefer not to say / Self-describe
-                </option>
-              </select>
+          <div className="mt-8 max-w-4xl space-y-4">
+            <div>
+              <ProfileCommonDropdown
+                label="Gender (optional)"
+                options={[
+                  "Male",
+                  "Female",
+                  "Non-binary",
+                  "Prefer not to say",
+                  "Self-describe",
+                ]}
+                placeholder="Male / Female / Non-binary / Prefer not to say / Self-describe"
+                textColor="#567F55"
+                placeholderColor="#9BB89A"
+                width="220px"
+                textSize="22px"
+                gap="24px"
+                fieldWidth="800px"
+              />
             </div>
 
             <div className="flex items-center gap-6">
-              <span className=" text-[22px] text-[#567F55]">
+              <span className="w-[220px] text-[22px] text-[#567F55] font-[Roboto]">
                 Birth Year (optional)
               </span>
 
-              <input className="flex-1 rounded-[16px] bg-white px-3 py-3 text-[14px] outline-none" />
+              <input
+                type="text"
+                className="w-[800px] h-[60px] rounded-[16px] bg-[#ffffff] px-5 text-[16px] text-[#567F55] outline-none"
+              />
             </div>
           </div>
 

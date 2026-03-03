@@ -30,7 +30,7 @@ function ChampionHub() {
         Champion Hub
       </div>
       {/* RIGHT SIDE DROPDOWNS */}
-      <div className="relative z-10 mt-10 flex justify-end">
+      {/* <div className="relative z-10 mt-10 flex justify-end">
         <div className="space-y-4 w-[520px]">
           <CustomDropdown
             label="Current Focus"
@@ -50,7 +50,7 @@ function ChampionHub() {
             value="8 Weeks"
           />
         </div>
-      </div>
+      </div> */}
 
       {/* WELCOME TEXT */}
       <div className="relative z-10 mt-8">
