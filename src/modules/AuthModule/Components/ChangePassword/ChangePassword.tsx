@@ -21,33 +21,25 @@ function ChangePassword() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
+  } = useForm({ mode: "onChange" });
 
   const onSubmit = (data: any) => {
     console.log("Change Password Data:", data);
   };
 
-  const handleChangePasswordSubmit = handleSubmit((values: any) => {
-    console.log("Forgot Password Email:", values.email);
-    // Add your forgot password API call here
-    // Example:
-    // forgotPasswordMutation.mutate({ email: values.email });
-  });
-
   return (
-    <div className="h-screen bg-[#e8e4df]   ">
+    <div className="min-h-screen bg-[#e8e4df] flex flex-col">
       <Image
         src={images.loginRectangle}
         alt="login-rectangle"
         width={630}
         height={630}
-        className="absolute top-0 right-0 z-0"
+        className="absolute top-0 right-0 z-0 w-[180px] sm:w-[360px] md:w-[500px] lg:w-[630px] h-auto"
       />
+
       {/* Header */}
-      <header className="relative px-8 pt-8 flex-shrink-0">
-        <div className="flex items-start">
+      <header className="relative z-10 px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           {/* Logo */}
           <div className="flex-shrink-0">
             <div className="flex items-center gap-2">
@@ -60,44 +52,40 @@ function ChangePassword() {
               />
               <div
                 style={{
-                  fontSize: "28px",
                   fontFamily: "Aptos, sans-serif",
                   fontWeight: "bold",
                   lineHeight: "1",
                 }}
+                className="text-xl sm:text-2xl lg:text-[28px]"
               >
                 <span className="block">Humanising our</span>
                 <span className="block -mt-[2px]">Workplaces</span>
               </div>
             </div>
-            <div
-              style={{
-                fontFamily: "Aptos, sans-serif",
-                fontWeight: 400,
-                marginLeft: "18px",
-              }}
+            <p
+              style={{ fontFamily: "Aptos, sans-serif", fontWeight: 400 }}
+              className="ml-[18px] text-sm sm:text-base mt-1"
             >
-              People & Performance Thriving Together
-            </div>
+              People &amp; Performance Thriving Together
+            </p>
           </div>
-          {/* Heading */}
-          <div className="absolute" style={{ left: "679px", top: "89px" }}>
+
+          {/* Hi Humaniser heading */}
+          <div className="sm:text-right">
             <h1
-              className="font-bold inline-block text-[#0F4F58]"
+              className="font-bold mt-0 sm:mt-6 lg:mt-[89px] text-[#0F4F58] leading-none"
               style={{
-                fontSize: "84.8px",
                 fontFamily: "RocaTwo-Bold",
+                fontSize: "clamp(32px, 6vw, 84.8px)",
               }}
             >
               Hi Humaniser!
               <span
                 className="font-bold align-top"
                 style={{
-                  fontSize: "32px",
-                  lineHeight: "92px",
-                  letterSpacing: "0%",
-
                   fontFamily: "RocaTwo-Bold, serif",
+                  fontSize: "clamp(14px, 2vw, 32px)",
+                  lineHeight: "clamp(40px, 7vw, 92px)",
                 }}
               >
                 ™
@@ -108,71 +96,73 @@ function ChangePassword() {
       </header>
 
       {/* Main Content */}
-      <main>
-        <div className="px-16 pt-28">
-          <h1
-            className="text-[44px] font-[400px] text-[#0F4F58] font-bold"
-            style={{ fontFamily: "Roca-Two" }}
-          >
-            Change your password
-          </h1>
-        </div>
+      <main className="relative z-10 flex-1 px-4 sm:px-6 lg:px-16 pt-6 sm:pt-10 lg:pt-28 pb-4">
+        <h1
+          className="text-2xl sm:text-3xl lg:text-[44px] font-bold text-[#0F4F58]"
+          style={{ fontFamily: "Roca-Two" }}
+        >
+          Change your password
+        </h1>
 
         {/* Center Card */}
-        <div className="ml-[230px] mt-10">
-          <div className="relative w-[800px] bg-white rounded-xl p-10">
+        <div className="w-full lg:ml-[230px] mt-6 lg:mt-10">
+          <div className="relative w-full lg:w-[800px] bg-white rounded-xl p-5 sm:p-8 lg:p-10">
             <p
-              className="text-center text-[#0F4F58]  mb-8"
-              style={{ fontFamily: "Aptos", fontSize: "25px" }}
+              className="text-center text-[#0F4F58] mb-6 lg:mb-8"
+              style={{
+                fontFamily: "Aptos",
+                fontSize: "clamp(15px, 3vw, 25px)",
+              }}
             >
-              Enter the email address you used for Hi Humaniser, and we’ll send
+              Enter the email address you used for Hi Humaniser, and we'll send
               you a secure link to reset your password
             </p>
+
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="space-y-12 mt-12"
+              className="space-y-6 lg:space-y-12 mt-6 lg:mt-12"
             >
               {/* Email Row */}
-              <div className="flex items-center gap-10">
-                <label className="w-[220px] text-[24px] text-gray-600 font-[Aptos]">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] flex-shrink-0">
                   Email Address
                 </label>
                 <input
                   type="email"
                   value="prefilled@email.com"
                   readOnly
-                  className="flex-1 bg-[#f8e1b8] rounded-xl px-6 py-4 text-[22px] outline-none"
+                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
               </div>
 
               {/* Current Password */}
-              <div className="flex items-center gap-10">
-                <label className="w-[220px] text-[24px] text-gray-600 font-[Aptos]">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] flex-shrink-0">
                   Current password
                 </label>
                 <input
                   type={showCurrent ? "text" : "password"}
                   {...register("currentPassword", { required: "Required" })}
-                  className="flex-1 bg-[#f8e1b8] rounded-xl px-6 py-4 text-[22px] outline-none"
+                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
               </div>
 
               {/* New Password */}
-              <div className="flex items-center gap-10">
-                <label className="w-[220px] text-[24px] text-gray-600 font-[Aptos] leading-tight">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
                   Add your new password
                 </label>
                 <input
                   type={showNew ? "text" : "password"}
                   {...register("newPassword", { required: "Required" })}
-                  className="flex-1 bg-[#f8e1b8] rounded-xl px-6 py-4 text-[22px] outline-none"
+                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
               </div>
 
               {/* Repeat Password */}
-              <div className="flex items-center gap-10">
-                <label className="w-[220px] text-[24px] text-gray-600 font-[Aptos] leading-tight">
-                  repeat your new password
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                  Repeat your new password
                 </label>
                 <input
                   type={showRepeat ? "text" : "password"}
@@ -182,23 +172,18 @@ function ChangePassword() {
                       value === watch("newPassword") ||
                       "Passwords do not match",
                   })}
-                  className="flex-1 bg-[#f8e1b8] rounded-xl px-6 py-4 text-[22px] outline-none"
+                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
               </div>
 
               {/* Button */}
-              <div className="flex justify-end ">
+              <div className="flex justify-end">
                 <PolygonButton
                   width="106px"
                   height="75px"
                   bgColor="#86c9c9"
                   radius={14}
-                  clipPath={`polygon(
-    15% 11%,
-    81% 0%,
-    100% 87%,
-    3% calc(100% - 15px)
-  )`}
+                  clipPath={`polygon(15% 11%, 81% 0%, 100% 87%, 3% calc(100% - 15px))`}
                   childTop={11}
                 >
                   <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
@@ -212,18 +197,23 @@ function ChangePassword() {
           </div>
         </div>
       </main>
+
       {/* Footer */}
-      <footer className="flex-shrink-0">
-        <div className="flex items-center gap-2 mt-6 p-6">
-          <Image src={images.footerDb} alt="footer-db" width={24} height={24} />
+      <footer className="relative z-10 flex-shrink-0">
+        <div className="flex items-center gap-2 mt-4 lg:mt-6 p-4 lg:p-6">
+          <Image
+            src={images.footerDb}
+            alt="footer-db"
+            width={24}
+            height={24}
+            className="flex-shrink-0"
+          />
           <span
             style={{
               fontFamily: "Aptos, sans-serif",
               fontWeight: 400,
-              fontSize: "20px",
-              lineHeight: "100%",
-              letterSpacing: "0%",
               color: "#567F55",
+              fontSize: "clamp(13px, 2vw, 20px)",
             }}
           >
             Your data stays yours. Learn more in our{" "}
@@ -233,7 +223,7 @@ function ChangePassword() {
               className="underline hover:text-[#567F55] transition-colors"
             >
               Privacy Policy
-            </Link>{" "}
+            </Link>
           </span>
         </div>
       </footer>

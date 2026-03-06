@@ -39,14 +39,14 @@ function EasePressure() {
         </h3>
         <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto]">
           <div className="mb-2">
-            Leadership pressure rarely shows up as one big issue — it tends to
+            Leadership pressure rarely shows up as one big issue, it tends to
             appear as urgency that never stops, teams moving without full
             alignment, problems surfacing too late, decisions depending too
             heavily on one person, or simply a sense that work feels heavier
             than it should.
           </div>
           <div>
-            This space offers small structural ideas to ease those pressures —
+            This space offers small structural ideas to ease those pressures -
             practical shifts that reduce friction, clarify ownership, and help
             work flow more steadily without adding more to your plate.
           </div>

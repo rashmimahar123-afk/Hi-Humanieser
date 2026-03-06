@@ -52,6 +52,14 @@ function PressureOne() {
 
       SuccessMessage:
         "This is a common leadership pressure — and it’s workable.",
+
+      successPosition: {
+        left: "323px",
+        bottom: "0px",
+        rightImgRight: "319px",
+        rightImgBottom: "0px",
+        maxWidth: "1100px",
+      },
     },
     {
       id: 2,
@@ -61,7 +69,7 @@ function PressureOne() {
 
       underneath: [
         "This pressure often shows up when decision boundaries are not clear, priorities keep shifting, or uncertainty flows upward instead of being resolved where the work happens.",
-        "Over time, urgency becomes the default operating mode — not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
+        "Over time, urgency becomes the default operating mode, not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
       ],
 
       leadershipResponse:
@@ -77,7 +85,7 @@ function PressureOne() {
         {
           title: "Define One Escalation Rule",
           description:
-            "Clarify what truly needs same-day escalation — and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
+            "Clarify what truly needs same-day escalation and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
           why: "Urgency thrives in ambiguity. One rule creates instant filtering.",
         },
         {
@@ -89,12 +97,19 @@ function PressureOne() {
         {
           title: "Close Meetings With a Priority Check",
           description:
-            "End key meetings by naming the top 1–3 priorities until the next check-in. This reduces mid-week re-prioritisation and urgent follow-ups.",
+            "End key meetings by naming the top 1-3 priorities until the next check-in. This reduces mid-week re-prioritisation and urgent follow-ups.",
           why: "Urgency often comes from shifting direction, not workload.",
         },
       ],
       SuccessMessage:
         "Hard-working teams can still struggle when shared direction is not clear.",
+      successPosition: {
+        left: "392px",
+        bottom: "30px",
+        rightImgRight: "385px",
+        rightImgBottom: "22px",
+        maxWidth: "470px",
+      },
     },
     {
       id: 3,
@@ -104,7 +119,7 @@ function PressureOne() {
 
       underneath: [
         "This pressure often shows up when decision boundaries are not clear, priorities keep shifting, or uncertainty flows upward instead of being resolved where the work happens.",
-        "Over time, urgency becomes the default operating mode — not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
+        "Over time, urgency becomes the default operating mode, not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
       ],
 
       leadershipResponse:
@@ -120,7 +135,7 @@ function PressureOne() {
         {
           title: "Define One Escalation Rule",
           description:
-            "Clarify what truly needs same-day escalation — and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
+            "Clarify what truly needs same-day escalation and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
           why: "Urgency thrives in ambiguity. One rule creates instant filtering.",
         },
         {
@@ -138,6 +153,13 @@ function PressureOne() {
       ],
       SuccessMessage:
         "This is a common leadership pressure — and it’s workable.",
+      successPosition: {
+        left: "323px",
+        bottom: "0px",
+        rightImgRight: "319px",
+        rightImgBottom: "0px",
+        maxWidth: "1100px",
+      },
     },
     {
       id: 4,
@@ -147,7 +169,7 @@ function PressureOne() {
 
       underneath: [
         "This pressure often shows up when decision boundaries are not clear, priorities keep shifting, or uncertainty flows upward instead of being resolved where the work happens.",
-        "Over time, urgency becomes the default operating mode — not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
+        "Over time, urgency becomes the default operating mode, not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
       ],
 
       leadershipResponse:
@@ -163,7 +185,7 @@ function PressureOne() {
         {
           title: "Define One Escalation Rule",
           description:
-            "Clarify what truly needs same-day escalation — and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
+            "Clarify what truly needs same-day escalation and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
           why: "Urgency thrives in ambiguity. One rule creates instant filtering.",
         },
         {
@@ -181,6 +203,13 @@ function PressureOne() {
       ],
       SuccessMessage:
         "Many leaders experience this as organisations grow and demands increase.",
+      successPosition: {
+        left: "358px",
+        bottom: "30px",
+        rightImgRight: "348px",
+        rightImgBottom: "23px",
+        maxWidth: "500px",
+      },
     },
     {
       id: 5,
@@ -190,7 +219,7 @@ function PressureOne() {
 
       underneath: [
         "This pressure often shows up when decision boundaries are not clear, priorities keep shifting, or uncertainty flows upward instead of being resolved where the work happens.",
-        "Over time, urgency becomes the default operating mode — not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
+        "Over time, urgency becomes the default operating mode, not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.",
       ],
 
       leadershipResponse:
@@ -206,7 +235,7 @@ function PressureOne() {
         {
           title: "Define One Escalation Rule",
           description:
-            "Clarify what truly needs same-day escalation — and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
+            "Clarify what truly needs same-day escalation and what can wait 24 hours. Even a simple shared rule reduces constant interruptions and decision fatigue.",
           why: "Urgency thrives in ambiguity. One rule creates instant filtering.",
         },
         {
@@ -224,6 +253,13 @@ function PressureOne() {
       ],
       SuccessMessage:
         "Not all pressures are obvious or easy to name — that doesn’t make it less real or less workable.",
+      successPosition: {
+        left: "316px",
+        bottom: "32px",
+        rightImgRight: "304px",
+        rightImgBottom: "25px",
+        maxWidth: "570px",
+      },
     },
   ];
 
@@ -279,23 +315,24 @@ function PressureOne() {
           </div>
 
           {/* Success Message */}
-          <div className="mt-10 relative">
+          <div className="mt-20 relative">
             <SuccessMessage
               text={item.SuccessMessage}
               fontSize="text-[22px]"
               leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
               rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
               fontColor="#0F4F58"
-              left="323px"
-              bottom="0px"
-              rightImgRight="319px"
-              rightImgBottom="0px"
+              left={item.successPosition.left}
+              bottom={item.successPosition.bottom}
+              rightImgRight={item.successPosition.rightImgRight}
+              rightImgBottom={item.successPosition.rightImgBottom}
               rotate="-35deg"
+              maxWidth={item.successPosition.maxWidth}
             />
           </div>
 
           {/* Structural Moves */}
-          <div className="mt-10 flex items-start gap-4">
+          <div className="mt-20 flex items-start gap-4">
             <ArrowSquare width="40" height="24" />
 
             <div>

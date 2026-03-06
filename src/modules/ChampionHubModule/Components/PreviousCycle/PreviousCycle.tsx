@@ -105,7 +105,7 @@ function PreviousCycle() {
                     data={data}
                     dataKey="value"
                     outerRadius={170}
-                    label={({ name, percent }) =>
+                    label={({ name, percent }: any) =>
                       `${name} ${(percent * 100).toFixed(1)}%`
                     }
                   >

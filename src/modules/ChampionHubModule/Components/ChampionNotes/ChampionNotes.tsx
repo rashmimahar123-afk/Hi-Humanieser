@@ -72,40 +72,12 @@ function ChampionNotes() {
           </div>
         </div>
         <div className="mt-18">
-          <div className="flex items-center justify-between  mb-2">
-            {/* Current Focus */}
-            <div
-              className="flex items-center gap-3 cursor-pointer"
-              onClick={() => setOpenCurrent(!openCurrent)}
-            >
-              <h2 className="text-[33px] text-[#0F4F58] font-bold font-[RocaTwo]">
-                Current Focus
-              </h2>
-              <div
-                className={`w-0 h-0 border-l-[14px] border-r-[14px] border-t-[16px] border-l-transparent border-r-transparent border-t-[#0F4F58] transition-transform ${
-                  openCurrent ? "rotate-180" : ""
-                }`}
-              />
-            </div>
-
-            {/* Previous Focus */}
-            <div
-              className="flex items-center gap-3 cursor-pointer"
-              onClick={() => setOpenPrevious(!openPrevious)}
-            >
-              <h2 className="text-[33px] text-[#0F4F58] font-bold font-[RocaTwo]">
-                Previous Focus
-              </h2>
-              <div
-                className={`w-0 h-0 border-l-[14px] border-r-[14px] border-t-[16px] border-l-transparent border-r-transparent border-t-[#0F4F58] transition-transform ${
-                  openPrevious ? "rotate-180" : ""
-                }`}
-              />
-            </div>
-          </div>
+          <h2 className="text-[32px] font-[RocaTwo] text-[#0F4F58] mt-6 font-bold">
+            Active Focus & Engagement
+          </h2>
 
           {/* ================= MAIN CARD ================= */}
-          <div className="bg-[#f8e1b8] rounded-3xl px-16 py-14">
+          <div className="bg-[#f8e1b8] rounded-3xl px-16 py-14 mt-2">
             <div className="grid grid-cols-2 gap-x-28 gap-y-10">
               {/* ===== LEFT COLUMN ===== */}
               <div className="space-y-10">
@@ -142,10 +114,10 @@ function ChampionNotes() {
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
             fontColor="#0F4F58"
-            left="392px"
-            bottom="20px"
-            rightImgRight="380px"
-            rightImgBottom="20px"
+            left="274px"
+            bottom="-1px"
+            rightImgRight="267px"
+            rightImgBottom="-5px"
             rotate="-35deg"
           />
         </div>
@@ -159,13 +131,13 @@ function ChampionNotes() {
           </p>
 
           {/* ================= TWO CARDS ================= */}
-          <div className="grid grid-cols-2 gap-14 mt-14">
+          <div className="grid grid-cols-2 gap-14 mt-6">
             <MyNotes />
             <MyNotes />
           </div>
         </div>
 
-        <div className="relative z-10  mt-10">
+        <div className="relative z-10  mt-20">
           {/* Heading */}
           <h1 className="text-[33px] leading-[1.1] font-[RocaTwo] text-[#0F4F58] font-bold">
             What Good Looks Like
@@ -191,7 +163,7 @@ function ChampionNotes() {
           </ul>
         </div>
 
-        <div className=" mt-10 relative z-10">
+        <div className=" mt-20 relative z-10 ">
           <div className="absolute right-0 top-0 ">
             <Image
               src={images.dottedCurve}

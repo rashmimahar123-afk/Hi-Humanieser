@@ -3,6 +3,7 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./SharedCard.module.css";
 import { useRouter } from "next/navigation";
+import { openSendInvitationModal } from "../SendInvitationModal/SendInvitationModal";
 
 export default function SharedCard() {
   const router = useRouter();
@@ -64,25 +65,35 @@ export default function SharedCard() {
           />
         </div>
       </div>
-      <div className="flex mt-[100px] ml-[900px]">
-        {/* Send Button */}
-        <div className={styles.cardWrapper}>
-          <Image
-            src={images.arrowImg}
-            alt="arrow"
-            width={50}
-            height={50}
-            className={styles.arrowLeft}
-          />
 
-          <div
-            className={`${styles.card} ${styles.leftCard} cursor-pointer`}
-            onClick={() => router.push("/start-quiz")}
+      <div className="flex mt-[50px] ml-[900px]">
+        <div className="cursor-pointer" onClick={openSendInvitationModal}>
+          <PolygonButton
+            width="106px"
+            height="75px"
+            bgColor="#86c9c9"
+            radius={14}
+            slantSide="right"
+            clipPath={`polygon(
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
+            childTop={5}
+            decorationImg={{
+              src: images.arrowImg,
+              width: 48,
+              height: 48,
+            }}
+            decorationPosition={{
+              className: "-left-[32px] -top-[35px]",
+            }}
           >
-            <Image src={images.invitationImg} alt="card shape" />
-
-            <div className={styles.cardText}>Send Invitation</div>
-          </div>
+            <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center ">
+              Send Invitation
+            </span>
+          </PolygonButton>
         </div>
       </div>
       {/* Decorative scribbles */}

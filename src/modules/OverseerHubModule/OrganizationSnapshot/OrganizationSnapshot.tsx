@@ -423,7 +423,7 @@ function OrganizationSnapshot() {
             Latest Team Poll Results{" "}
           </h1>
         </div>
-        <div className="relative bg-[#E6D2B1] p-4 mt-6 rounded-xl overflow-hidden">
+        <div className="relative bg-[#f8e1b8] p-4 mt-6 rounded-xl overflow-hidden">
           {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
           <p>State 4 – Poll reached threshold</p>
           <p>(≥ 50% responses, Champion can act)</p>
@@ -446,7 +446,7 @@ function OrganizationSnapshot() {
                 What the team says would most support progress right now
               </h3>
 
-              <div className="bg-[#EBCDB6] rounded-2xl p-8 space-y-6">
+              <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-6">
                 <ProgressPill label="Built Trust" percent={70} />
                 <ProgressPill label="Improve Clarity" percent={60} />
                 <ProgressPill label="Strengthen Collaboration" percent={65} />
@@ -461,7 +461,7 @@ function OrganizationSnapshot() {
                 How this helps your leadership
               </h3>
 
-              <div className="bg-[#EBCDB6] rounded-2xl p-8 space-y-8 text-[#0F4F58] text-[18px] leading-relaxed font-[Roboto]">
+              <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-8 text-[#0F4F58] text-[18px] leading-relaxed font-[Roboto] ">
                 <p>
                   Earlier issue-raising, better judgement in decisions, and
                   fewer surprises later.
@@ -502,7 +502,7 @@ function OrganizationSnapshot() {
       <div className="mt-10">
         <div className="grid grid-cols-3 gap-10">
           {/* Card 1 */}
-          <div className="bg-[#E3CFA8] rounded-[16px] px-8 py-6">
+          <div className="bg-[#f8e1b8] rounded-[16px] px-8 py-6">
             <h3 className="text-[#0F4F58] text-[20px] font-[RocaTwo] mb-6">
               Champion Pressure Point
             </h3>
@@ -513,7 +513,7 @@ function OrganizationSnapshot() {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-[#E3CFA8] rounded-[16px] px-8 py-6">
+          <div className="bg-[#f8e1b8] rounded-[16px] px-8 py-6">
             <h3 className="text-[#0F4F58] text-[20px] font-[RocaTwo] mb-2">
               Recommended Focus Area
             </h3>
@@ -546,7 +546,7 @@ function OrganizationSnapshot() {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-[#E3CFA8] rounded-[16px] px-8 py-6">
+          <div className="bg-[#f8e1b8] rounded-[16px] px-8 py-6">
             <h3 className="text-[#0F4F58] text-[20px] font-[RocaTwo] mb-6">
               Chosen Team Ritual
             </h3>
@@ -572,7 +572,7 @@ function OrganizationSnapshot() {
         </h2>
 
         {/* Outer Beige Container */}
-        <div className="bg-[#E3CFA8] rounded-[24px] p-10">
+        <div className="bg-[#f8e1b8] rounded-[24px] p-10">
           {/* Two Column Layout */}
           <div className="grid grid-cols-2 gap-12">
             {/* CARD */}

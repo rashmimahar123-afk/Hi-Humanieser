@@ -7,7 +7,7 @@ import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
 import PressurePointSection from "../PressurePointSection/PressurePointSection";
 
-function PressurePoint() {
+function UrgentPressurePoint() {
   const router = useRouter();
   return (
     <div className="min-h-screen bg-[#E9E6E2] relative overflow-hidden">
@@ -25,29 +25,29 @@ function PressurePoint() {
         {/* TITLE */}
         <h1 className="text-[#0f4f58] text-[32px] leading-[50px] font-bold mb-6 font-[RocaTwo]">
           Pressure Point <br />
-          Teams are Busy, but not Aligned
+          Everything Feels Urgent
         </h1>
 
         {/* DESCRIPTION BOX */}
         <div className="bg-[#f8e1b8] text-[#0f4f58] text-[20px] leading-[28px] p-6 rounded-2xl max-w-3xl mb-16 font-[Roboto] ml-4">
-          Your team is busy and capable, yet progress feels uneven and slower
-          than expected. Different parts of the work move in parallel without
-          fully connecting, creating rework and a sense that effort is not
-          adding up.
+          Your days are filled with escalations, last-minute decisions, and
+          “quick questions” that are not quick. Priorities keep shifting,
+          there’s little uninterrupted time to think, and work feels reactive
+          rather than led.
         </div>
 
         {/* SECTION 1 */}
         <PressurePointSection
           title="What’s usually underneath"
-          description={`This pressure tends to emerge when alignment relies on conversations rather than shared anchors. Goals exist, but they’re interpreted rather than held in common.
+          description={`This pressure often shows up when decision boundaries are not clear, priorities keep shifting, or uncertainty flows upward instead of being resolved where the work happens. 
 
-As the work grows more complex, small differences in understanding quietly multiply — until effort no longer translates cleanly into outcomes.`}
+Over time, urgency becomes the default operating mode — not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.`}
         />
 
         {/* SECTION 2 */}
         <PressurePointSection
           title="A common leadership response"
-          description={`Leaders often try to restore alignment by explaining more, checking in more frequently, or holding additional coordination meetings. It brings temporary clarity — but alignment fades again once attention moves elsewhere.`}
+          description={`To keep things moving, leaders often step in more, stay constantly available, and absorb pressure personally. It works in the short term — but can quietly increase dependency and reinforce urgency over time.`}
         />
 
         {/* CENTER EMPHASIS */}
@@ -102,4 +102,4 @@ Another Pressure"
   );
 }
 
-export default PressurePoint;
+export default UrgentPressurePoint;

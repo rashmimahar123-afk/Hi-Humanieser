@@ -7,10 +7,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function ChampionHub() {
-  const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
-  const ritualOptions = ["Weekly Sync", "Retro", "Check-in", "Planning"];
-  const weekOptions = ["1 Week", "2 Weeks", "4 Weeks", "8 Weeks"];
-
   const router = useRouter();
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -25,6 +21,14 @@ function ChampionHub() {
         height={414}
         className="absolute top-0 left-0 -z-10"
         priority
+      />
+
+      <Image
+        src={images.profileNotification}
+        alt="dash-rectangle"
+        width={630}
+        height={630}
+        className="absolute top-44 right-0 z-0"
       />
       <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo]">
         Champion Hub
@@ -53,7 +57,7 @@ function ChampionHub() {
       </div> */}
 
       {/* WELCOME TEXT */}
-      <div className="relative z-10 mt-8">
+      <div className="relative z-10 mt-10">
         <h3 className="text-[#0f4f58] text-[30px] font-bold mb-6 font-[RocaTwo] ml-12">
           Welcome Champion.
         </h3>
@@ -73,110 +77,103 @@ function ChampionHub() {
       </div>
 
       {/* CARDS SECTION */}
-      <div className="relative z-10 mt-20 grid grid-cols-2 gap-10">
+      <div className="relative z-10 mt-20 grid grid-cols-2 gap-x-20 gap-y-14  mx-auto max-w-[1000px]">
+        {/* TEAM FOCUS */}
         <div
-          className={`
-    bg-[#FFF7F3] rounded-xl p-6 cursor-pointer
-    transition-all duration-500 ease-in-out
-   
-  `}
+          className="relative bg-[#CFE8E6] rounded-xl p-4 cursor-pointer"
           onClick={() => router.push("/team-focus")}
         >
-          <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[22px] font-bold">
+          {/* Heading */}
+          <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold">
             TEAM FOCUS
           </h3>
 
-          {/* Shape container */}
-          <div className="relative h-[182px]">
-            {/* Shape Image */}
+          <div className="relative">
+            {/* Shape */}
             <Image
-              src={images.resourcePoly1}
+              src={images.hubPolyOne}
               alt="shape"
-              fill
-              className="object-contain absolute -left-[24px] top-0"
+              width={450}
+              height={45}
+              className="object-contain absolute right-1 -top-5 rotate-2 z-0"
             />
 
-            {/* Text on top */}
-            <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+            {/* Text */}
+            <p className="relative z-10 text-center text-[#0F4F58] text-[20px]">
               Notice where pressure is showing up and choose what the team works
               on next.
             </p>
           </div>
         </div>
 
+        {/* CHAMPION NOTES */}
+
         <div
-          className={`
-    bg-[#F8E1B8] rounded-xl p-6 cursor-pointer
-    transition-all duration-500 ease-in-out
-  
-  `}
+          className="relative bg-[#CDE3CC] rounded-xl p-6 cursor-pointer"
           onClick={() => router.push("/champion-notes")}
         >
-          <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[21px] font-bold">
-            Champion Notes
+          {/* Heading */}
+          <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
+            Champion Notes{" "}
           </h3>
 
-          <div className="relative h-[182px]">
+          <div className="relative ">
+            {/* Shape */}
             <Image
-              src={images.resourcePoly2}
+              src={images.hubPolyTwo}
               alt="shape"
-              fill
-              className="object-contain"
+              width={450}
+              height={45}
+              className="object-contain absolute right-1 -top-5 rotate-2 z-0"
             />
 
-            <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+            {/* Text */}
+            <p className="relative z-10 text-center text-[#0F4F58] text-[20px] ">
               A simple timeline of past focus areas, rituals and reflections.
             </p>
           </div>
         </div>
 
-        <div
-          className={`
-    bg-[#F8E1B8] rounded-xl p-6 cursor-pointer
-    transition-all duration-500 ease-in-out
-  ml-[100px]
-  `}
-        >
-          <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[21px] font-bold">
-            Team Insights{" "}
+        {/* TEAM INSIGHTS */}
+        <div className="relative bg-[#F8E1B8] rounded-xl p-4 ml-16 cursor-pointer">
+          <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
+            Team Insights
           </h3>
 
-          <div className="relative h-[182px]">
+          <div className="relative ">
             <Image
-              src={images.resourcePoly2}
+              src={images.hubPolyThree}
               alt="shape"
-              fill
-              className="object-contain"
+              width={450}
+              height={45}
+              className="object-contain absolute right-1 -top-5 rotate-2 z-0"
             />
 
-            <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+            <p className="relative z-10 text-center text-[#0F4F58] text-[20px] ">
               See the collective patterns emerging from your team’s individual
-              journeys.{" "}
+              journeys.
             </p>
           </div>
         </div>
-        <div
-          className={`
-    bg-[#F8E1B8] rounded-xl p-6 cursor-pointer
-    transition-all duration-500 ease-in-out
-  mr-[100px]
-  `}
-        >
-          <h3 className="text-[#0F4F58] font-[RocaTwo-Bl] text-center mb-4 font-[400] text-[21px] font-bold">
-            Champion Resources{" "}
+
+        {/* CHAMPION RESOURCES */}
+        <div className="relative bg-[#FBE1DE] rounded-xl p-4 mr-16 cursor-pointer">
+          <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
+            Champion Resources
           </h3>
 
-          <div className="relative h-[182px]">
+          <div className="relative">
             <Image
-              src={images.resourcePoly2}
+              src={images.hubPolyFour}
               alt="shape"
-              fill
-              className="object-contain"
+              width={450}
+              height={45}
+              className="object-contain absolute right-1 -top-5 rotate-2 z-0"
             />
 
-            <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+            <p className="relative z-10 text-center text-[#0F4F58] text-[20px] ">
               Access tools, training and practical guides to support your role
-              and team rhythm.{" "}
+              and team rhythm.
             </p>
           </div>
         </div>

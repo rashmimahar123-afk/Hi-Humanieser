@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { openSelectTeamRitualModal } from "../SelectTeamRitualModal/SelectTeamRitualModal";
 
 type PATHWAY_CARD = {
   title: string;
@@ -12,10 +13,11 @@ type PATHWAY_CARD = {
 type IDEA_PATHWAY_CARD_PROPS = {
   bgColor: string;
   cards: PATHWAY_CARD[];
+  onCardClick?: (card: PATHWAY_CARD, index: number) => void;
 };
 
 function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
-  const { bgColor, cards } = props;
+  const { bgColor, cards, onCardClick } = props;
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -36,8 +38,7 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
     },
   };
 
-  const [selected, setSelected] = useState(false);
-
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   return (
     <div
       className="rounded-[24px] pl-[40px] py-[40px] flex  w-full overflow-visible"
@@ -89,10 +90,13 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
                 </span>
 
                 <div
-                  onClick={() => setSelected(!selected)}
+                  onClick={() => {
+                    setSelectedIndex(index);
+                    onCardClick?.(card, index);
+                  }}
                   className="w-[26px] h-[26px] rounded-[6px] border-2 border-[#0F4F58] flex items-center justify-center cursor-pointer"
                 >
-                  {selected && (
+                  {selectedIndex === index && (
                     <div className="w-[16px] h-[16px] bg-[#E6B86C] rounded-[4px]" />
                   )}
                 </div>

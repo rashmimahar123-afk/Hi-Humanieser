@@ -24,7 +24,7 @@ axios.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor
@@ -37,7 +37,7 @@ axios.interceptors.response.use(
       console.error(
         "Response error:",
         error.response.status,
-        error.response.data
+        error.response.data,
       );
     } else if (error.request) {
       console.error("Request error - no response received:", error.request);
@@ -45,14 +45,12 @@ axios.interceptors.response.use(
       console.error("Error:", error.message);
     }
     return Promise.reject(error);
-  }
+  },
 );
 // In your Helpers file
 // Helpers.ts
 export const authFetcher = (config: AxiosRequestConfig) => {
-  // Backend port 8080 hai according to instructions
-  const baseURL =
-    process.env.NEXT_PUBLIC_API_URL || "https://backendapi.eggsample.xyz:8080";
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   return axios.request({
     baseURL: baseURL,
@@ -69,8 +67,7 @@ export const authFetcher = (config: AxiosRequestConfig) => {
 
 export const secureFetcher = (config: AxiosRequestConfig) => {
   const { language } = getAuthValue();
-  const baseURL =
-    process.env.NEXT_PUBLIC_API_URL || "https://backendapi.eggsample.xyz:8080";
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
   return axios.request({
     baseURL: baseURL,
@@ -143,7 +140,7 @@ export const jsonToFormData = (data: any) => {
 
 export const getBase64 = (
   file: File,
-  cb: (base64: string | ArrayBuffer | null) => void
+  cb: (base64: string | ArrayBuffer | null) => void,
 ) => {
   if (typeof window !== "undefined") {
     let reader = new FileReader();
@@ -160,7 +157,7 @@ export const getBase64 = (
 export const getBase64ToFile = (
   base64: string,
   filename: string,
-  mimeType: string
+  mimeType: string,
 ): any => {
   try {
     // Ensure the base64 string is properly formatted
@@ -211,7 +208,7 @@ export function generateRandomString(length: number) {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   return Array.from(
     { length },
-    () => characters[Math.floor(Math.random() * characters.length)]
+    () => characters[Math.floor(Math.random() * characters.length)],
   ).join("");
 }
 
@@ -237,7 +234,7 @@ export const filterUrlData = (
   router: AppRouterInstance,
   routeName: string,
   keyName: string,
-  value: string
+  value: string,
 ) => {
   const data = new URLSearchParams(window.location.search);
 
@@ -265,7 +262,7 @@ export function hasNumber(url: any) {
 
 export const getEmailValidationRules = (
   requiredMessage: string,
-  invalidMessage: string
+  invalidMessage: string,
 ) => {
   return {
     validate: (value: string) =>
@@ -280,7 +277,7 @@ export const getEmailValidationRules = (
 
 export const getPasswordValidationRules = (
   requiredMessage: string,
-  invalidMessage: string
+  invalidMessage: string,
 ) => {
   return {
     validate: (value: string) =>

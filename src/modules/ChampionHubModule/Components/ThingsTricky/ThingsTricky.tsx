@@ -8,6 +8,7 @@ import EasePressureList from "../EasePressureList/EasePressureList";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import Link from "next/link";
 
 function ThingsTricky() {
   const router = useRouter();
@@ -133,7 +134,7 @@ function ThingsTricky() {
       {/* RIGHT PINK POLYGON */}
       <div className="flex justify-end mt-10">
         <PolygonButton
-          width="480px"
+          width="476px"
           height="190px"
           bgColor="#fbe1de"
           radius={24}
@@ -141,8 +142,8 @@ function ThingsTricky() {
           childTop={8}
         >
           <div className="px-8 text-left text-[#0F4F58] text-[18px] leading-relaxed font-bold font-[Roboto]">
-            If you’re holding the space with care — even when it feels slow or
-            uncertain — you’re already doing something important. This kind of
+            If you’re holding the space with care - even when it feels slow or
+            uncertain - you’re already doing something important. This kind of
             leadership often works quietly, but its impact runs deep.
           </div>
         </PolygonButton>
@@ -157,23 +158,30 @@ function ThingsTricky() {
             connection, you don’t have to start from scratch.
           </div>
           <div className="mb-4">
-            You can draw on <span className="font-bold ml-1">HH! Moments </span>
+            You can draw on{" "}
+            <Link href="/moments" className="font-bold mr-1 ">
+              HH! Moments
+            </Link>
             to gently re-ground a meeting or open up a different kind of
             conversation.
           </div>
 
           <div className="mb-4">
             If patterns feel bigger than one team or keep repeating,{" "}
-            <span className="font-bold ml-1">Cross-Team Workshops</span> can
-            help surface shared themes and build understanding across
+            <Link href="/team-workshops" className="font-bold mr-1 ">
+              Cross-Team Workshops
+            </Link>{" "}
+            can help surface shared themes and build understanding across
             boundaries.
           </div>
           <div className="mb-4">
-            If the pressure feels structural — recurring bottlenecks, constant
-            urgency, or decision loops —{" "}
-            <span className="font-bold ml-1">Ease the Pressure </span>offers
-            small, practical shifts that can lighten the load without adding
-            more work.
+            If the pressure feels structural - recurring bottlenecks, constant
+            urgency, or decision loops -{" "}
+            <Link href="/ease-pressure" className="font-bold mr-1 ">
+              Ease the Pressure{" "}
+            </Link>
+            offers small, practical shifts that can lighten the load without
+            adding more work.
           </div>
           <div>
             And sometimes, the best next step is simply to pause, notice what’s

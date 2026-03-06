@@ -53,7 +53,7 @@ function TeamWorkshops() {
 
           <p className="text-[#0F4F58] text-[22px] leading-relaxed">
             They create feedback loops that move learning beyond individual
-            teams — and into how work actually flows across the organisation.
+            teams - and into how work actually flows across the organisation.
           </p>
         </div>
       </div>
@@ -66,7 +66,7 @@ function TeamWorkshops() {
         </h2>
 
         <p className="text-[#0F4F58] text-[22px]  leading-relaxed mb-20 font-[Roboto] ml-4">
-          Because improving how work feels — and how it performs — requires
+          Because improving how work feels (and how it performs) requires
           learning at the system level, not just within teams.
         </p>
         <div className="flex justify-center">
@@ -92,7 +92,7 @@ function TeamWorkshops() {
               </h4>
               <p className="text-[#0F4F58] text-[20px] leading-relaxed font-[Roboto]">
                 Teams generate valuable learning through rituals and everyday
-                practice. Cross-Team Workshops help make that learning visible —
+                practice. Cross-Team Workshops help make that learning visible,
                 so it can be understood, shared, and built upon across teams.
               </p>
             </div>
@@ -128,7 +128,7 @@ function TeamWorkshops() {
               <p className="text-[#0F4F58] text-[20px] leading-relaxed font-[Roboto]">
                 When teams hear how others are experimenting and navigating
                 challenges, trust and collaboration grow naturally. Not through
-                mandates — but through shared understanding.
+                mandates but through shared understanding.
               </p>
             </div>
           </div>
@@ -143,7 +143,7 @@ function TeamWorkshops() {
                 They help shape the system, not just behaviours
               </h4>
               <p className="text-[#0F4F58] text-[20px] leading-relaxed font-[Roboto]">
-                Patterns that appear across teams often point to system issues —
+                Patterns that appear across teams often point to system issues:
                 structures, expectations, processes. Cross-Team Workshops help
                 organisations decide what to strengthen, change, or redesign.
               </p>
@@ -168,15 +168,15 @@ function TeamWorkshops() {
 
             <p>
               We recommend running a workshop{" "}
-              <span className="font-bold">every 3–4 months</span> — enough time
+              <span className="font-bold">every 3-4 months,</span> enough time
               for teams to practise, experiment, and notice patterns, without
               losing momentum.
             </p>
 
             <p>
-              Rather than one-off events, these workshops act as check-in points
-              — a chance to step back from delivery, look across teams, and
-              reflect on how work is actually unfolding.
+              Rather than one-off events, these workshops act as check-in
+              points, a chance to step back from delivery, look across teams,
+              and reflect on how work is actually unfolding.
             </p>
           </div>
         </div>
@@ -312,7 +312,7 @@ function TeamWorkshops() {
 
               <div className="flex items-center gap-6">
                 <Image
-                  src={images.downloadImg}
+                  src={images.downloadIcon}
                   alt="download"
                   width={42}
                   height={42}
@@ -334,7 +334,7 @@ function TeamWorkshops() {
 
               <div className="flex items-center gap-6">
                 <Image
-                  src={images.downloadImg}
+                  src={images.downloadIcon}
                   alt="download"
                   width={42}
                   height={42}
@@ -354,11 +354,12 @@ It happens when teams learn — together."
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
           fontColor="#0F4F58"
-          left="341px"
-          bottom="31px"
-          rightImgRight="335px"
+          left="410px"
+          bottom="27px"
+          rightImgRight="400px"
           rightImgBottom="26px"
           rotate="-35deg"
+          maxWidth="460px"
         />
       </div>
 

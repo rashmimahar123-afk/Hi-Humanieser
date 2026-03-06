@@ -197,6 +197,11 @@ import mailImg from "../../public/profile/images/mailImg.png";
 import faqPoly from "../../public/profile/images/faqPoly.png";
 import faqQs from "../../public/profile/images/faqQs.png";
 import feedbackBg from "../../public/profile/images/feedbackBg.png";
+import downloadIcon from "../../public/profile/images/downloadIcon.png";
+import hubPolyOne from "../../public/profile/images/hubPoly1.png";
+import hubPolyTwo from "../../public/profile/images/hubPoly2.png";
+import hubPolyThree from "../../public/profile/images/hubPoly3.png";
+import hubPolyFour from "../../public/profile/images/hubPoly4.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -397,6 +402,11 @@ type imageTypes = {
   faqPoly: StaticImageData;
   faqQs: StaticImageData;
   feedbackBg: StaticImageData;
+  downloadIcon: StaticImageData;
+  hubPolyOne: StaticImageData;
+  hubPolyTwo: StaticImageData;
+  hubPolyThree: StaticImageData;
+  hubPolyFour: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -598,6 +608,11 @@ const Images: imageTypes = {
   faqPoly,
   faqQs,
   feedbackBg,
+  downloadIcon,
+  hubPolyOne,
+  hubPolyTwo,
+  hubPolyThree,
+  hubPolyFour,
 };
 
 export default Images;

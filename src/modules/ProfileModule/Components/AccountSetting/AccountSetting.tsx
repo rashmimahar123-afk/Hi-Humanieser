@@ -3,8 +3,11 @@ import images from "@/src/assets/images";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import ProfileCommonDropdown from "@/src/components/ProfileCommonDropdown/ProfileCommonDropdown";
+import { useState } from "react";
 
 function AccountSetting() {
+  const [selected, setSelected] = useState("");
+
   return (
     <div className="min-h-screen bg-[#F5F0EB] ">
       {/* Header */}
@@ -140,7 +143,19 @@ function AccountSetting() {
 
           {/* Optional Fields */}
           <div className="mt-8 max-w-4xl space-y-4">
-            <div>
+            <div className="relative">
+              <div className="flex gap-6">
+                <label
+                  style={{
+                    fontFamily: "RocaTwo",
+                    color: "#567F55",
+                    width: "220px",
+                    fontSize: "22px",
+                  }}
+                >
+                  Gender (Optional)
+                </label>
+                {/* <div>
               <ProfileCommonDropdown
                 label="Gender (optional)"
                 options={[
@@ -158,8 +173,30 @@ function AccountSetting() {
                 gap="24px"
                 fieldWidth="800px"
               />
-            </div>
+            </div> */}
+                <select
+                  value={selected}
+                  onChange={(e) => setSelected(e.target.value)}
+                  className="w-[800px] bg-[#ffffff]  text-[18px] px-6 h-[56px] rounded-[16px] outline-none font-[Roboto] appearance-none"
+                  style={{
+                    color: selected ? "#0F4F58" : "#000000",
+                  }}
+                >
+                  <option value="" disabled hidden>
+                    Select request type
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-binary</option>
+                  <option value="prefer-not-say">Prefer not to say</option>
+                  <option value="self-describe">Self-describe</option>
+                </select>
 
+                <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-[#0F4F58]">
+                  ▼
+                </div>
+              </div>
+            </div>
             <div className="flex items-center gap-6">
               <span className="w-[220px] text-[22px] text-[#567F55] font-[Roboto]">
                 Birth Year (optional)
