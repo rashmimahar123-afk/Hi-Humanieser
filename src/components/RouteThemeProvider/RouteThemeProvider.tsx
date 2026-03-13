@@ -17,9 +17,24 @@ export default function RouteThemeProvider() {
       bg = "#4BA6A6";
       fg = "#ffffff";
     }
-
+    if (pathname === "/home") {
+      bg = "#4BA6A6";
+      fg = "#ffffff";
+    }
+    if (pathname === "/start-team-journey") {
+      bg = "#4BA6A6";
+      fg = "#ffffff";
+    }
+    if (pathname === "/personal-pathway") {
+      bg = "#4BA6A6";
+      fg = "#ffffff";
+    }
     if (pathname === "/choose-pathway") {
       bg = "#F5F0EB";
+      fg = "#0F4F58";
+    }
+    if (pathname === "/moments") {
+      bg = "#F3EEE7";
       fg = "#0F4F58";
     }
 

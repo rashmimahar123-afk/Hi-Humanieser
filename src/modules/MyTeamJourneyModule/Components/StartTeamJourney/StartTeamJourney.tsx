@@ -40,7 +40,7 @@ function StartTeamJourney() {
             rotate="-35deg"
           />
         </div>
-        <div className="max-w-[1100px] mx-auto mt-30 bg-[#FBF4EF] rounded-[28px] px-12 py-10 relative ">
+        <div className="max-w-[1100px] mx-auto mt-[80px] bg-[#FBF4EF] rounded-[28px] px-12 py-10 relative ">
           {/* Heading */}
           <h1
             className="text-center text-[#244E52] text-[51px] font-bold mb-8 font-[RocaTwo]"
@@ -73,7 +73,7 @@ function StartTeamJourney() {
             {/* Center CTA */}
 
             {/* Image-based button */}
-            <div className="flex justify-center">
+            <div className="flex justify-center mr-[86px]">
               <button className="relative ">
                 {/* Arrow strokes */}
                 <Image
@@ -115,7 +115,7 @@ function StartTeamJourney() {
             </div>
 
             {/* Right text */}
-            <div className="flex justify-end">
+            <div className="flex justify-end -mr-[46px]">
               <p className="text-[#0f4f58] text-[22px] max-w-[360px] font-[Aptos]">
                 to explore other parts of Hi Humaniser! while your team’s ritual
                 is being set.

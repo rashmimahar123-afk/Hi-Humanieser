@@ -14,6 +14,7 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
+  Tooltip,
 } from "recharts";
 import ProgressPill from "../../ChampionHubModule/Components/ProgressPill/ProgressPill";
 import styles from "./OrganizationSnapshot.module.css";
@@ -21,13 +22,11 @@ import ViewAllReflectionCard from "../../MyDashboardModule/Components/ViewAllRef
 import { createPatternRows } from "@/src/lib/Helpers";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import GaugeChart from "react-gauge-chart";
 
 function OrganizationSnapshot() {
   const [isOpen, setIsOpen] = useState(false);
-
-  const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
-  const ritualOptions = ["Weekly Sync", "Retro", "Check-in", "Planning"];
-  const weekOptions = ["1 Week", "2 Weeks", "4 Weeks", "8 Weeks"];
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const router = useRouter();
   const data = [
@@ -56,6 +55,77 @@ function OrganizationSnapshot() {
   }));
 
   const rows = createPatternRows(reflections, [3, 2]);
+
+  const renderBar = (props: any) => {
+    const { x, y, width, height, index } = props;
+
+    let fill = "#86c9c9";
+
+    if (activeIndex !== null && activeIndex !== index) {
+      fill = "#B7D6D6";
+    }
+
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        rx={8}
+        ry={8}
+        fill={fill}
+        style={{ cursor: "pointer" }}
+        onMouseEnter={() => setActiveIndex(index)}
+        onMouseLeave={() => setActiveIndex(null)}
+      />
+    );
+  };
+
+  const CustomTooltip = ({ active, payload, coordinate }: any) => {
+    if (!active || !payload || !payload.length) return null;
+
+    const data = payload[0].payload;
+
+    return (
+      <div
+        style={{
+          position: "absolute",
+          left: coordinate.x + 10, // value axis (x)
+          top: coordinate.y - 20, // name axis (y)
+          background: "#1f2430",
+          borderRadius: "8px",
+          padding: "8px",
+          color: "#fff",
+          textAlign: "center",
+          minWidth: "200px",
+        }}
+      >
+        <div style={{ fontSize: "14px" }}>{data.name}</div>
+
+        <div
+          style={{
+            fontSize: "18px",
+            fontWeight: "600",
+          }}
+        >
+          {data.value}
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            left: "-6px",
+            top: "30%",
+            transform: "translateY(-5x0%)",
+            width: 0,
+            height: 0,
+            borderTop: "6px solid transparent",
+            borderBottom: "6px solid transparent",
+            borderRight: "6px solid #1f2430",
+          }}
+        />
+      </div>
+    );
+  };
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
@@ -276,13 +346,25 @@ function OrganizationSnapshot() {
                 How you show up — your habits, openness, and self-awareness.
               </p>
 
-              <div className="mt-6">
-                <Image
-                  src={images.clockOne}
-                  alt="mindset-gauge"
-                  width={220}
-                  height={120}
+              <div className="mt-6 relative w-[250px]">
+                <GaugeChart
+                  id="connect-gauge"
+                  nrOfLevels={1}
+                  percent={3.5 / 5}
+                  hideText={true}
+                  arcWidth={0.38} // thicker arc
+                  colors={["#D3CBB6"]}
+                  needleColor="#F28B82"
                 />
+
+                {/* Labels */}
+                <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                  1
+                </span>
+
+                <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                  5
+                </span>
               </div>
             </div>
 
@@ -302,13 +384,25 @@ function OrganizationSnapshot() {
                 How you communicate, listen, and build trust with others.
               </p>
 
-              <div className="mt-6">
-                <Image
-                  src={images.clockTwo}
-                  alt="connect-gauge"
-                  width={220}
-                  height={120}
+              <div className="mt-6 relative w-[250px]">
+                <GaugeChart
+                  id="connect-gauge"
+                  nrOfLevels={1}
+                  percent={3.5 / 5}
+                  hideText={true}
+                  arcWidth={0.38} // thicker arc
+                  colors={["#D3CBB6"]}
+                  needleColor="#F28B82"
                 />
+
+                {/* Labels */}
+                <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                  1
+                </span>
+
+                <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                  5
+                </span>
               </div>
             </div>
 
@@ -328,20 +422,32 @@ function OrganizationSnapshot() {
                 How your actions influence the team environment and wellbeing.
               </p>
 
-              <div className="mt-6">
-                <Image
-                  src={images.clockThree}
-                  alt="culture-gauge"
-                  width={220}
-                  height={120}
+              <div className="mt-6 relative w-[250px]">
+                <GaugeChart
+                  id="connect-gauge"
+                  nrOfLevels={1}
+                  percent={3.5 / 5}
+                  hideText={true}
+                  arcWidth={0.38} // thicker arc
+                  colors={["#D3CBB6"]}
+                  needleColor="#F28B82"
                 />
+
+                {/* Labels */}
+                <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                  1
+                </span>
+
+                <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                  5
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Participation Pill */}
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-20">
           <div className="bg-[#86c9c9] px-8 py-2 rounded-full">
             <p className="text-[#0F4F58] text-[22px] font-bold">
               Participation: 12/18 have responded to the quiz
@@ -406,9 +512,16 @@ function OrganizationSnapshot() {
 
               <Bar
                 dataKey="value"
-                fill="#79B3B3"
-                radius={[8, 8, 8, 8]}
                 barSize={40}
+                shape={renderBar}
+                isAnimationActive
+                animationDuration={2000}
+                animationEasing="ease-in-out"
+              />
+
+              <Tooltip
+                cursor={false}
+                content={(props) => <CustomTooltip {...props} />}
               />
             </BarChart>
           </ResponsiveContainer>

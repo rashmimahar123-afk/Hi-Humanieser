@@ -1,13 +1,30 @@
 .userNameText{
-        margin-top: 20px;
+    margin-top: 20px;
     font-weight: bold;
     color: white;
     font-family: Aptos;
     font-size: 17px;
 }
+
 .borderFrame{
-        margin-top: 34px;
+    margin-top: 34px;
     align-items: center;
     font-family: "League Spartan";
-    
+}
+
+.page {
+  position: relative;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.enterRight {
+  transform: translateX(100%);
+}
+
+.enterLeft {
+  transform: translateX(-100%);
+}
+
+.enterActive {
+  transform: translateX(0);
 }

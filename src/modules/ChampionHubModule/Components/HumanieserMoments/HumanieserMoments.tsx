@@ -13,65 +13,63 @@ function HumanieserMoments() {
     {
       title: "Weather Check",
       desc: "A simple way to sense how people are arriving - without asking for explanations or updates.",
-      width: " 200px",
+      width: "160px",
+      ppt: "/moments/weather.pptx",
+      pdf: "/moments/weather.pdf",
     },
     {
       title: "What We’re Practising",
       desc: "A brief reminder of the behaviour or habit the team is currently exploring - so it doesn’t get lost in delivery.",
-      width: "200px",
+      width: "160px",
+      ppt: "/moments/practicing.pptx",
+      pdf: "/moments/practicing.pdf",
     },
     {
       title: "Common Trap to Watch For",
-      desc: "A quick spotlight on a common pattern that can quietly undermine good intentions - especially under pressure.",
+      desc: "A brief reminder that small misunderstandings often start with assumptions.",
       width: "160px",
+      ppt: "/moments/traps.pptx",
+      pdf: "/moments/traps.pdf",
     },
     {
-      title: "A Reflection from the Wall",
+      title: "Pause for Clarity",
       desc: "Share one anonymous reflection captured by the team - and let it speak for itself.",
       width: "160px",
+      ppt: "/moments/clarity.pptx",
+      pdf: "/moments/clarity.pdf",
     },
     {
-      title: "What’s Helping Us Right Now?",
-      desc: "A pause to notice what’s already working - so it doesn’t get sacrificed under pressure.",
+      title: "Did You Know? ",
+      desc: "A short insight about how the brain works and how it influences behaviour at work.",
       width: "160px",
+      ppt: "/moments/know.pptx",
+      pdf: "/moments/know.pdf",
     },
     {
-      title: "Why pausing helps performance",
-      desc: "Share one anonymous reflection from the team.",
-      width: "200px",
-    },
-    {
-      title: "A Bias to Watch For",
-      desc: "A quick spotlight on a common pattern that can quietly undermine good intentions - especially under pressure.",
+      title: "From the Reflection Wall",
+      desc: "An anonymous reflection captured from the team.",
       width: "160px",
+      ppt: "/moments/reflection.pptx",
+      pdf: "/moments/reflection.pdf",
     },
     {
-      title: "A Systems Reminder",
-      desc: "Share one anonymous reflection captured by the team - and let it speak for itself.",
+      title: "Three Biases to Notice",
+      desc: "A quick spotlight on thinking patterns that shape conversations and decisions.",
       width: "160px",
+      ppt: "/moments/notice.pptx",
+      pdf: "/moments/notice.pdf",
     },
     {
-      title: "What Research Shows",
-      desc: "A pause to notice what’s already working - so it doesn’t get sacrificed under pressure.",
+      title: "Join the Dots",
+      desc: "A moment to step back and look beyond our immediate view and staying curious.",
       width: "160px",
-    },
-    {
-      title: "Did You Know?",
-      desc: "The brain at work",
-      width: "200px",
-    },
-    {
-      title: "HH! Moment 11",
-      desc: "A pause to notice what’s already working - so it doesn’t get sacrificed under pressure.",
-      width: "200px",
-    },
-    {
-      title: "HH! Moment 12",
-      desc: "Share one anonymous reflection from the team.",
-      width: "200px",
+      ppt: "/moments/dots.pptx",
+      pdf: "/moments/dots.pdf",
     },
   ];
+
   const router = useRouter();
+
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
@@ -115,7 +113,7 @@ function HumanieserMoments() {
             or ED&I moments) and usually take under five minutes.
           </p>
         </div>
-        <div className="mt-35 space-y-6">
+        <div className="mt-[150px] space-y-6">
           {momentsList.map((item, index) => (
             <div key={index} className="flex items-center gap-8">
               {/* YELLOW BOX (ONLY TITLE + DESC) */}
@@ -137,18 +135,35 @@ function HumanieserMoments() {
 
               {/* RIGHT SIDE (SEPARATE DIV — NO BG) */}
               <div className="flex items-center gap-6 shrink-0">
-                {/* Download Icon */}
-                <Image
-                  src={images.downloadIcon}
-                  alt="download"
-                  width={42}
-                  height={42}
-                />
-
-                {/* Plain Text Links */}
-                <div className="flex items-center gap-6 text-[#0F4F58] text-[15px] font-[19px] font-[Roboto]">
-                  <button className="hover:underline">pdf</button>
-                  <button className="hover:underline">pttx</button>
+                <div className="flex">
+                  {/* PDF Download */}
+                  <a href={item.pdf} download>
+                    <Image
+                      src={images.downloadIcon}
+                      alt="download pdf"
+                      width={42}
+                      height={42}
+                      className="cursor-pointer"
+                    />
+                  </a>
+                  <span className=" text-[#0F4F58] text-[19px] font-[Roboto] ">
+                    pdf
+                  </span>
+                </div>
+                <div className="mr-2 flex">
+                  {/* PPT Download */}
+                  <a href={item.ppt} download>
+                    <Image
+                      src={images.downloadIcon}
+                      alt="download ppt"
+                      width={42}
+                      height={42}
+                      className="cursor-pointer"
+                    />
+                  </a>
+                  <span className="text-[#0F4F58] text-[19px] font-[Roboto] ">
+                    pptx
+                  </span>
                 </div>
               </div>
             </div>

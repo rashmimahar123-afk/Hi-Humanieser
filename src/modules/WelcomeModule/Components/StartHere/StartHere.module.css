@@ -30,7 +30,7 @@
   font-family: 'Aptos';
 }
 .footerFrame{
-        margin-top: 18px;
+        margin-top: 50px;
     align-items: center;
     font-family: "League Spartan";
     
@@ -54,30 +54,19 @@
 }
 
 .page {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  position: relative;
+  transition: transform 0.6s ease, opacity 0.6s ease;
 }
 
-.enter {
+.enterRight {
   transform: translateX(100%);
-  opacity: 0;
+}
+
+.enterLeft {
+  transform: translateX(-100%);
 }
 
 .enterActive {
   transform: translateX(0);
-  opacity: 1;
-}
-
-.exit {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.exitActive {
-  transform: translateX(-100%);
-  opacity: 0;
 }
 

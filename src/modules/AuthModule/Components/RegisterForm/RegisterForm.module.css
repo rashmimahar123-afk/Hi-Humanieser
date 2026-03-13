@@ -1,0 +1,514 @@
+/* ═══════════════════════════════════════════════════
+   RegisterForm.module.css
+   Desktop values = pixel-for-pixel from original Tailwind
+   Mobile (<768px) = responsive override at bottom
+═══════════════════════════════════════════════════ */
+
+/* ── Page ── */
+.page {
+  min-height: 100vh;
+  background-color: #fbe6bf;
+  overflow-x: hidden;
+}
+
+/* ════════════════════════════════════════
+   HERO SECTION
+   Original: relative w-full h-[380px]
+════════════════════════════════════════ */
+.heroSection {
+  position: relative;
+  width: 100%;
+  height: 380px;
+}
+
+/* Original: <div className="relative"> wrapping the image */
+.heroImageWrap {
+  position: relative;
+}
+
+.heroImage {
+  display: block;
+  width: 540px;
+  height: auto;
+}
+
+/* Original: absolute inset-0 py-4 flex justify-between px-8 */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.heroLeft {
+  /* left column only */
+}
+
+/* Original: text-[48px] text-[#0F4F58] font-bold, fontFamily RocaTwo-Bold */
+.heroHeading {
+  font-family: "RocaTwo-Bold", serif;
+  font-size: 48px;
+  color: #0f4f58;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Original: relative ml-[52px] mt-[20px] */
+.heroSubtitle {
+  position: relative;
+  margin-left: 52px;
+  margin-top: 20px;
+}
+
+/* Original: relative z-20 text-[#567F55] text-[27px] leading-[1.6] max-w-[1250px] fontFamily RocaTwo */
+.heroSubtitleText {
+  position: relative;
+  z-index: 20;
+  color: #567f55;
+  font-size: 27px;
+  line-height: 1.6;
+  max-width: 1250px;
+  font-family: "RocaTwo", serif;
+  margin: 0;
+}
+
+.heroSubtitleBold {
+  font-weight: bold;
+}
+
+/* Second paragraph — gap matches original <br/><br/> spacing */
+.heroSubtitleSecond {
+  margin-top: 20px;
+}
+
+/* ════════════════════════════════════════
+   SKY REC SECTION
+   Original: relative w-full (separate div after heroSection)
+   skyRec image:   absolute top-65 right-0 z-0
+                   top-65 = 65 * 4px = 260px
+   text overlay:   absolute top-[95px] right-[60px] z-0
+   homeArrow:      absolute top-[190px] right-9 z-10 -rotate-54
+                   right-9 = 9 * 4px = 36px
+════════════════════════════════════════ */
+.skySection {
+  position: relative;
+  width: 100%;
+  height: 380px;
+}
+
+/* Original: absolute top-65 right-0 z-0, w=620 h=340 */
+.skyImage {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  z-index: 0;
+  width: 620px !important;
+  height: 340px !important;
+}
+
+/* Original: absolute top-[95px] right-[60px] z-0, fontFamily roboto */
+.skyTextOverlay {
+  position: absolute;
+  top: 50px;
+  right: 70px;
+  z-index: 1;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Original: flex items-center justify-center mb-6 */
+.skyTextInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+/* Original: text-[#567F55] text-[23px] leading-relaxed max-w-[500px] text-center */
+.skyBodyText {
+  color: #567f55;
+  font-size: 23px;
+  line-height: 1.625;
+  max-width: 530px;
+    font:bold;
+
+  text-align: center;
+  margin: 0;
+}
+
+/* Original: text-[28px] font-bold text-[#0F4F58] text-center */
+.skyTitle {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0f4f58;
+  text-align: center;
+  margin: 0;
+}
+
+/* Original: absolute top-[190px] right-9 z-10 -rotate-54 */
+.homeArrow {
+  position: absolute;
+  top: 135px;
+  right: 13px;
+  z-index: 10;
+  transform: rotate(-54deg);
+  width: 70px !important;
+  height: 70px !important;
+}
+
+/* ════════════════════════════════════════
+   SKY REC — mobile only (hidden on desktop)
+════════════════════════════════════════ */
+.skyBlockMobile {
+  display: none;
+  position: relative;
+  margin: 0 14px 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 170px;
+  font-family: "Roboto", sans-serif;
+}
+
+.skyBlockMobileInner {
+  position: relative;
+  z-index: 10;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skyBodyTextMobile {
+  color: #567f55;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+}
+
+.skyTitleMobile {
+  font-size: 15px;
+  font-weight: bold;
+  color: #0f4f58;
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+/* ════════════════════════════════════════
+   FORM SECTION
+   Original: flex justify-center mt-[400px] pb-[10px] bg-[#FBE6BF]
+════════════════════════════════════════ */
+.formSection {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  padding-bottom: 10px;
+  background-color: #fbe6bf;
+  box-sizing: border-box;
+}
+
+/* Original: w-[1200px] bg-[#F5F0EB] rounded-2xl px-8 py-8 relative */
+.formCard {
+  width: 1200px;
+  background-color: #f5f0eb;
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Original: space-y-6 → gap 24px */
+.fieldsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Original: flex items-center gap-8 */
+.fieldRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Original: w-[180px] text-[#567F55] text-[22px] fontFamily Roboto */
+.fieldLabel {
+  width: 180px;
+  flex-shrink: 0;
+  color: #567f55;
+  font-family: "Roboto", sans-serif;
+  font-size: 22px;
+}
+
+/* Original: w-[900px] h-[55px] bg-white rounded-full px-6 outline-none border */
+.fieldInput {
+  flex: 1;
+  width: 100%;
+  height: 55px;
+  background-color: #fff;
+  border-radius: 9999px;
+  padding-left: 24px;
+  padding-right: 24px;
+  color: #567f55;
+  outline: none;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.fieldInput:focus { border-color: #9bb89a; }
+.fieldInputError  { border-color: #ef4444 !important; }
+
+/* Original: relative w-[900px] (password wrapper) */
+.passwordWrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.passwordWrapper .fieldInput {
+  padding-right: 56px;
+  width: 100%;
+}
+
+/* Original: absolute right-5 top-1/2 -translate-y-1/2 */
+.eyeBtn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* Original: text-red-500 text-sm ml-[215px] mt-1 */
+.errorText {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 4px;
+  margin-left: 215px;
+  line-height: 1.3;
+}
+
+/* Original: py-6 text-[#567F55] text-[20px] ml-[20%] fontFamily Roboto */
+.helperText {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  color: #567f55;
+  font-size: 20px;
+  margin-left: 20%;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.5;
+}
+
+/* ── Form footer ── */
+/* Original: flex justify-between items-end mt-12 */
+.formFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 48px;
+}
+
+/* Original: flex items-center gap-3 text-[#567F55] text-[20px] fontFamily Roboto */
+.privacyRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #567f55;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+}
+
+.privacyRow p { margin: 0; }
+.privacyLink { text-decoration: underline; cursor: pointer; color: inherit; }
+
+/* Original: relative */
+.polygonWrapper { position: relative; flex-shrink: 0; }
+
+/* Original: absolute -left-[80%] -top-[22%] */
+.arrowLeft {
+  position: absolute;
+  left: -80%;
+  top: -22%;
+}
+
+.polygonBtn {
+  position: relative;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  display: block;
+}
+
+/* Original: rotate-[-6deg] */
+.polygonBtnImg { transform: rotate(-6deg); display: block; }
+
+/* Original: absolute inset-0 flex flex-col items-center justify-center text-[#0F4F58] font-bold fontFamily RocaTwo */
+.polygonBtnText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #0f4f58;
+  font-weight: bold;
+  font-family: "RocaTwo", serif;
+}
+
+.polygonBtnText span { font-size: 22px; line-height: 1; }
+.polygonBtnText span + span { margin-top: 4px; }
+
+
+/* ════════════════════════════════════════
+   TABLET LARGE  960px – 1199px
+   Absolute skySection layout, scaled from desktop
+════════════════════════════════════════ */
+@media (min-width: 960px) and (max-width: 1199px) {
+  .heroSection     { height: clamp(300px, 33vw, 380px); }
+  .heroImage       { width: clamp(380px, 42vw, 490px); }
+  .heroOverlay     { padding: clamp(14px, 1.6vw, 24px) clamp(20px, 2.5vw, 32px); }
+  .heroHeading     { font-size: clamp(34px, 4vw, 46px); }
+  .heroSubtitle    { margin-left: clamp(28px, 3.5vw, 52px); margin-top: clamp(12px, 1.5vw, 20px); }
+  .heroSubtitleText { font-size: clamp(17px, 2vw, 24px); }
+  .heroSubtitleSecond { display: block; margin-top: 16px; }
+
+  .skySection      { height: clamp(320px, 36vw, 440px); }
+  .skyImage        { top: 10px; width: clamp(420px, 52vw, 580px) !important; height: clamp(240px, 28vw, 320px) !important; }
+  .skyTextOverlay  { top: clamp(70px, 6vw, 100px); right: clamp(24px, 3vw, 60px); }
+  .skyBodyText     { font-size: clamp(14px, 1.6vw, 21px); max-width: clamp(300px, 36vw, 460px); }
+  .skyTitle        { font-size: clamp(16px, 1.9vw, 26px); }
+  .homeArrow       { top: clamp(110px, 14vw, 180px); right: clamp(18px, 2vw, 36px); width: clamp(48px, 5vw, 66px) !important; height: clamp(48px, 5vw, 66px) !important; }
+
+  .formSection     { margin-top: clamp(24px, 3vw, 40px); padding: 0 clamp(16px, 2vw, 28px) 24px; }
+  .formCard        { width: 100%; padding: clamp(22px, 2.5vw, 32px); }
+  .fieldsWrapper   { gap: clamp(16px, 1.8vw, 22px); }
+  .fieldRow        { flex-direction: row; align-items: center; gap: clamp(18px, 2vw, 32px); }
+  .fieldLabel      { width: clamp(130px, 14vw, 180px); flex-shrink: 0; font-size: clamp(15px, 1.7vw, 21px); }
+  .fieldInput      { flex: 1; width: 100%; height: clamp(46px, 5vw, 55px); font-size: clamp(13px, 1.4vw, 16px); }
+  .passwordWrapper { flex: 1; width: 100%; }
+  .helperText      { font-size: clamp(13px, 1.4vw, 18px); margin-left: clamp(148px, 16vw, 212px); padding-top: 16px; padding-bottom: 16px; }
+  .errorText       { margin-left: clamp(148px, 16vw, 212px); }
+  .formFooter      { flex-direction: row; align-items: flex-end; margin-top: clamp(28px, 3vw, 48px); }
+  .privacyRow      { font-size: clamp(13px, 1.4vw, 18px); }
+}
+
+/* ════════════════════════════════════════
+   TABLET SMALL  600px – 959px
+   Inline sky card (not absolute), horizontal form
+════════════════════════════════════════ */
+@media (min-width: 600px) and (max-width: 959px) {
+  /* Hero — natural height, teal image as corner only */
+  .heroSection     { height: auto; overflow: visible; padding-bottom: 16px; }
+  .heroImage       { width: clamp(220px, 36vw, 340px); }
+  .heroOverlay     { padding: clamp(12px, 2vw, 20px); }
+  .heroHeading     { font-size: clamp(26px, 4.5vw, 38px); }
+  .heroSubtitle    { margin-left: clamp(16px, 3vw, 36px); margin-top: clamp(10px, 1.5vw, 18px); }
+  .heroSubtitleText { font-size: clamp(14px, 2.2vw, 20px); }
+  .heroSubtitleSecond { display: block; margin-top: clamp(10px, 1.5vw, 16px); }
+
+  /* Hide absolute sky, show inline mobile sky card — right aligned */
+  .skySection      { display: none; }
+  .skyBlockMobile  {
+    display: block;
+    position: relative;
+    width: clamp(280px, 55%, 480px);
+    margin-left: auto;
+    margin-right: clamp(12px, 2vw, 24px);
+    margin-bottom: clamp(16px, 2vw, 24px);
+    border-radius: 14px;
+    overflow: hidden;
+    min-height: clamp(180px, 26vw, 260px);
+    font-family: "Roboto", sans-serif;
+  }
+  .skyBodyTextMobile { font-size: clamp(14px, 2.2vw, 18px); }
+  .skyTitleMobile    { font-size: clamp(15px, 2.4vw, 20px); margin-top: 10px; }
+
+  /* Form — horizontal label+input rows */
+  .formSection     { margin-top: 0; padding: 0 clamp(12px, 2vw, 20px) 24px; }
+  .formCard        { width: 100%; padding: clamp(18px, 2.5vw, 28px); }
+  .fieldsWrapper   { gap: clamp(14px, 2vw, 20px); }
+  .fieldRow        { flex-direction: row; align-items: center; gap: clamp(14px, 2vw, 28px); }
+  .fieldLabel      { width: clamp(110px, 16vw, 160px); flex-shrink: 0; font-size: clamp(14px, 2vw, 18px); }
+  .fieldInput      { flex: 1; width: 100%; height: clamp(42px, 6vw, 52px); font-size: clamp(13px, 1.8vw, 16px); }
+  .passwordWrapper { flex: 1; width: 100%; }
+  .helperText      { font-size: clamp(12px, 1.8vw, 16px); margin-left: clamp(124px, 18vw, 188px); padding-top: 12px; padding-bottom: 12px; }
+  .errorText       { margin-left: clamp(124px, 18vw, 188px); }
+  .formFooter      { flex-direction: row; align-items: flex-end; margin-top: clamp(22px, 3vw, 40px); }
+  .privacyRow      { font-size: clamp(12px, 1.8vw, 16px); }
+}
+
+/* ════════════════════════════════════════
+   MOBILE  max-width: 599px
+   Stacked layout, all inputs full width
+════════════════════════════════════════ */
+@media (max-width: 599px) {
+  .heroSection     { height: auto; overflow: visible; }
+  .heroImageWrap   { position: relative; }
+  .heroImage       { width: 42vw; max-width: 180px; position: absolute; top: 0; left: 0; }
+  .heroOverlay     { position: relative; inset: unset; padding: 14px; display: block; }
+  .heroLeft        { max-width: 100%; }
+  .heroHeading     { font-size: clamp(22px, 6.5vw, 30px); }
+  .heroSubtitle    { margin-left: 0; margin-top: 8px; position: static; }
+  .heroSubtitleText { font-size: clamp(13px, 4vw, 16px); }
+  .heroSubtitleSecond { display: none; }
+
+  /* skySection must be hidden AND have no height */
+  .skySection      { display: none; height: 0; overflow: hidden; }
+
+  /* Mobile sky card — compact, right aligned */
+  .skyBlockMobile  {
+    display: block;
+    position: relative;
+    width: calc(100% - 28px);
+    max-width: 360px;
+    margin: 0 14px 16px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 0;
+    font-family: "Roboto", sans-serif;
+  }
+
+  .skyBlockMobileInner {
+    padding: 16px 14px;
+  }
+
+  .skyBodyTextMobile { font-size: clamp(12px, 3.5vw, 15px); }
+  .skyTitleMobile    { font-size: clamp(13px, 3.8vw, 16px); margin-top: 8px; }
+
+  /* Form */
+  .formSection     { margin-top: 0; padding: 0 12px 24px; }
+  .formCard        { width: 100%; padding: 18px 14px; box-sizing: border-box; }
+  .fieldsWrapper   { gap: 14px; }
+  .fieldRow        { flex-direction: column; align-items: stretch; gap: 6px; width: 100%; }
+  .fieldLabel      { width: 100%; font-size: clamp(14px, 4vw, 16px); flex-shrink: unset; }
+  .fieldInput      { flex: unset; width: 100%; height: 46px; font-size: 15px; box-sizing: border-box; }
+  .passwordWrapper { flex: unset; width: 100%; box-sizing: border-box; }
+  .passwordWrapper .fieldInput { width: 100%; }
+  .helperText      { margin-left: 0; font-size: 13px; padding-top: 8px; padding-bottom: 8px; }
+  .errorText       { margin-left: 4px; }
+  .formFooter      { flex-direction: column; align-items: flex-start; gap: 20px; margin-top: 24px; }
+  .polygonWrapper  { align-self: flex-end; }
+  .privacyRow      { font-size: 13px; }
+}
+
+/* Extra small phones */
+@media (max-width: 400px) {
+  .heroHeading     { font-size: 20px; }
+  .heroSubtitleText { font-size: 13px; }
+  .formCard        { padding: 14px 10px; }
+  .fieldInput      { height: 42px; font-size: 14px; }
+}
+
+
+

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
@@ -6,199 +8,81 @@ import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import SignUpModal, { openSignupModal } from "../SignUpModal/SignUpModal";
 
 function SignUpForm() {
-  const genderOptions = [
-    "Male",
-    "Female",
-    "Non-binary",
-    "Prefer not to say",
-    "Self-describe",
-  ];
-
   return (
     <>
-      <div className="min-h-screen bg-[#FBE6BF]">
+      <div className={styles.page}>
+        {/* Decorative polygon — absolute top-right */}
         <Image
           src={images.greenBluePolygon}
           alt="register-rectangle"
           width={630}
-          height={630}
-          className="absolute top-0 right-0 z-0"
+          height={830}
+          className={styles.bgPolygon}
         />
-        {/* HERO IMAGE SECTION */}
-        <div>
-          <div className="relative w-full h-[330px]">
-            {/* Overlay content */}
-            <div className="absolute inset-0 py-4 px-8 flex justify-between">
-              {/* Left */}
-              <div>
-                <h2
-                  className="text-[48px] text-[#0F4F58] font-bold"
-                  style={{ fontFamily: "RocaTwo-Bold" }}
-                >
-                  Welcome To Hi Humaniser!
-                </h2>
-                <div className="relative mt-[20px]">
-                  {/* TEXT (Always on top) */}
-                  <p
-                    className="relative z-20 text-[#567F55] text-[30px] ml-[45px]  font-[400]"
-                    style={{ fontFamily: "RocaTwo-Bold" }}
-                  >
-                    We’re thrilled to have you here. This is where connection,
-                    care and performance come together.
-                    <br />
-                    Tell us a little about you to get started.
-                  </p>
 
-                  {/* SKY SHAPE CARD */}
-                </div>
+        {/* ════════ HERO SECTION ════════ */}
+        <div className={styles.heroSection}>
+          <div className={styles.heroOverlay}>
+            <div>
+              <h2 className={styles.heroHeading}>Welcome To Hi Humaniser!</h2>
+              <div className={styles.heroSubtitle}>
+                <p className={styles.heroSubtitleText}>
+                  We&apos;re thrilled to have you here. This is where
+                  connection, care and performance come together.
+                  <br />
+                  Tell us a little about you to get started.
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-center bg-[#FBE6BF]">
-          {/* FORM CONTAINER */}
-          <div className="w-[1200px] bg-[#F5F0EB] rounded-2xl px-8 py-8 relative">
-            {/* INPUT ROW */}
-            <div className="space-y-6">
-              {/* First Name */}
-              <div className="flex items-center gap-8">
-                <label
-                  className="w-[200px] text-[#567F55] text-[22px]"
-                  style={{ fontFamily: "Roboto" }}
-                >
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  className="
-      w-[900px]
-      h-[55px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-             
 
-    "
-                />
+        {/* ════════ FORM SECTION ════════ */}
+        <div className={styles.formSection}>
+          <div className={styles.formCard}>
+            <div className={styles.fieldsWrapper}>
+              {/* First Name */}
+              <div className={styles.fieldRow}>
+                <label className={styles.fieldLabel}>First Name</label>
+                <input type="text" className={styles.fieldInput} />
               </div>
 
               {/* Last Name */}
-              <div className="flex items-center gap-8">
-                <label
-                  className="w-[200px] text-[#567F55] text-[22px]"
-                  style={{ fontFamily: "Roboto" }}
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  className="
-      w-[900px]
-      h-[55px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-      
-    "
-                />
+              <div className={styles.fieldRow}>
+                <label className={styles.fieldLabel}>Last Name</label>
+                <input type="text" className={styles.fieldInput} />
               </div>
 
-              {/* Helper text */}
-
               {/* Email */}
-              <div className="flex items-center gap-8">
-                <label
-                  className="w-[200px] text-[#567F55] text-[22px]"
-                  style={{ fontFamily: "Roboto" }}
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="
-      w-[900px]
-      h-[55px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-    "
-                />
+              <div className={styles.fieldRow}>
+                <label className={styles.fieldLabel}>Email</label>
+                <input type="email" className={styles.fieldInput} />
               </div>
 
               {/* Password */}
-              <div className="flex items-center gap-8">
-                <label
-                  className="w-[200px] text-[#567F55] text-[22px]"
-                  style={{ fontFamily: "Roboto" }}
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="
-      w-[900px]
-      h-[55px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-    "
-                />
+              <div className={styles.fieldRow}>
+                <label className={styles.fieldLabel}>Password</label>
+                <input type="password" className={styles.fieldInput} />
               </div>
 
               {/* Confirm Password */}
-              <div className="flex items-center gap-8">
-                <label
-                  className="w-[200px] text-[#567F55] text-[22px]"
-                  style={{ fontFamily: "Roboto" }}
-                >
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  className="
-      w-[900px]
-      h-[55px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-    "
-                />
+              <div className={styles.fieldRow}>
+                <label className={styles.fieldLabel}>Confirm Password</label>
+                <input type="password" className={styles.fieldInput} />
               </div>
-              <div className="mt-[80px]">
-                <div>
-                  <p
-                    className=" text-[#567F55] text-[20px]"
-                    style={{ fontFamily: "Roboto" }}
-                  >
-                    <span className="font-bold">Why we ask for this</span>
-                    <br />
-                    These details are optional. They help us understand patterns
-                    and experiences across different groups, so we can design
-                    more inclusive and human workplaces. This information is
-                    never used to assess individuals.
-                  </p>
-                </div>
-                <div className="mt-8">
+
+              {/* Why we ask + optional fields */}
+              <div className={styles.whySection}>
+                <p className={styles.whyText}>
+                  <strong>Why we ask for this</strong>
+                  <br />
+                  These details are optional. They help us understand patterns
+                  and experiences across different groups, so we can design more
+                  inclusive and human workplaces. This information is never used
+                  to assess individuals.
+                </p>
+
+                <div className={styles.dropdownWrapper}>
                   <CustomDropdown
                     label="Gender (optional)"
                     options={[
@@ -213,89 +97,60 @@ function SignUpForm() {
                     placeholderColor="#9BB89A"
                   />
                 </div>
-                {/* Confirm Password */}
-                <div className="flex items-center gap-8 mt-6">
-                  <label
-                    className="w-[200px] text-[#567F55] text-[22px]"
-                    style={{ fontFamily: "Roboto" }}
-                  >
-                    Birth Year (optional){" "}
+
+                {/* Birth Year */}
+                <div className={styles.birthYearRow}>
+                  <label className={styles.fieldLabel}>
+                    Birth Year (optional)
                   </label>
-                  <input
-                    type="text"
-                    className="
-      w-[900px]
-      h-[55px]
-      bg-white
-      rounded-full
-      px-6
-      text-[#567F55]
-      outline-none
-      border border-transparent
-      focus:border-[#9BB89A]
-    "
-                  />
+                  <input type="text" className={styles.fieldInput} />
                 </div>
               </div>
             </div>
+            {/* end fieldsWrapper */}
 
-            {/* FOOTER */}
-            <div className="flex justify-between items-end mt-12">
+            {/* ── Footer ── */}
+            <div className={styles.formFooter}>
               {/* Privacy */}
-              <div
-                className="flex items-center gap-3 text-[#567F55] text-[20px]"
-                style={{ fontFamily: "Roboto" }}
-              >
+              <div className={styles.privacyRow}>
                 <Image
                   src={images.footerDb}
                   alt="footer-db"
                   width={24}
                   height={24}
+                  style={{ flexShrink: 0 }}
                 />
-
                 <p>
                   Your data stays yours. Learn more in our{" "}
-                  <span className="underline cursor-pointer">
-                    Privacy Policy
-                  </span>
+                  <span className={styles.privacyLink}>Privacy Policy</span>
                 </p>
               </div>
 
-              {/* START EXPLORING BUTTON */}
-              <div className="relative">
-                <div className="absolute -left-[80%] -top-[22%]">
+              {/* Get Started button */}
+              <div className={styles.polygonWrapper}>
+                <div className={styles.arrowLeft}>
                   <Image
                     src={images.arrowImg}
                     alt="arrow"
                     width={50}
                     height={50}
-                    className={styles.arrowLeft}
                   />
                 </div>
-
                 <button
-                  type="submit"
-                  className="relative cursor-pointer"
+                  type="button"
+                  className={styles.polygonBtn}
                   onClick={openSignupModal}
                 >
-                  {/* Polygon background */}
                   <Image
                     src={images.resetPolygon}
                     alt="start-bg"
                     width={70}
                     height={90}
-                    className="rotate-[-6deg]"
+                    className={styles.polygonBtnImg}
                   />
-
-                  {/* Text */}
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-center text-[#0F4F58] font-bold"
-                    style={{ fontFamily: "RocaTwo" }}
-                  >
-                    <span className="text-[22px] leading-[1]">Get</span>
-                    <span className="text-[22px] leading-[1] mt-1">
-                      Started
-                    </span>
+                  <div className={styles.polygonBtnText}>
+                    <span>Get</span>
+                    <span>Started</span>
                   </div>
                 </button>
               </div>

@@ -32,7 +32,7 @@ function StartQuizPage() {
   }, []);
 
   const getQuestionsQuery = useGetQuestionsQuery();
-
+  const { data, isLoading, isError } = useGetQuestionsQuery();
   console.log(getQuestionsQuery.data?.data.questions);
   return (
     <div>

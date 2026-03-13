@@ -6,6 +6,7 @@ import styles from "./ShowResultPage.module.css";
 import { useRouter } from "next/navigation";
 import ResultPathwayCard from "./ResultPatwayCard/ResultPathwayCard";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import GaugeChart from "react-gauge-chart";
 
 function ShowResultPage() {
   const [animateText, setAnimateText] = useState(false);
@@ -229,13 +230,25 @@ function ShowResultPage() {
                         self-awareness.
                       </p>
 
-                      <div className="mt-6">
-                        <Image
-                          src={images.clockOne}
-                          alt="mindset-gauge"
-                          width={220}
-                          height={120}
+                      <div className="mt-6 relative w-[250px]">
+                        <GaugeChart
+                          id="connect-gauge"
+                          nrOfLevels={1}
+                          percent={3.5 / 5}
+                          hideText={true}
+                          arcWidth={0.38} // thicker arc
+                          colors={["#D3CBB6"]}
+                          needleColor="#F28B82"
                         />
+
+                        {/* Labels */}
+                        <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                          1
+                        </span>
+
+                        <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                          5
+                        </span>
                       </div>
                     </div>
 
@@ -256,13 +269,25 @@ function ShowResultPage() {
                         others.
                       </p>
 
-                      <div className="mt-6">
-                        <Image
-                          src={images.clockTwo}
-                          alt="connect-gauge"
-                          width={220}
-                          height={120}
+                      <div className="mt-6 relative w-[250px]">
+                        <GaugeChart
+                          id="connect-gauge"
+                          nrOfLevels={1}
+                          percent={3.5 / 5}
+                          hideText={true}
+                          arcWidth={0.38} // thicker arc
+                          colors={["#D3CBB6"]}
+                          needleColor="#F28B82"
                         />
+
+                        {/* Labels */}
+                        <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                          1
+                        </span>
+
+                        <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                          5
+                        </span>
                       </div>
                     </div>
 
@@ -283,13 +308,25 @@ function ShowResultPage() {
                         wellbeing.
                       </p>
 
-                      <div className="mt-6">
-                        <Image
-                          src={images.clockThree}
-                          alt="culture-gauge"
-                          width={220}
-                          height={120}
+                      <div className="mt-6 relative w-[250px]">
+                        <GaugeChart
+                          id="connect-gauge"
+                          nrOfLevels={1}
+                          percent={3.5 / 5}
+                          hideText={true}
+                          arcWidth={0.38} // thicker arc
+                          colors={["#D3CBB6"]}
+                          needleColor="#F28B82"
                         />
+
+                        {/* Labels */}
+                        <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                          1
+                        </span>
+
+                        <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                          5
+                        </span>
                       </div>
                     </div>
                   </div>

@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import images from "@/src/assets/images";
 import Image from "next/image";
-import useLoginMutation from "../../Hooks/useLoginMutation";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {
@@ -13,13 +12,94 @@ import {
 import { emailMessage, passwordMessage } from "@/src/lib/ErrorMessages";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useLoginMutation } from "../../Hooks/useLoginMutation";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Breakpoints
+   xs  : 0   – 479   (small phones  e.g. iPhone SE)
+   sm  : 480 – 767   (large phones  e.g. iPhone Pro Max)
+   md  : 768 – 1023  (tablets       e.g. iPad)
+   lg  : 1024+       (laptops / desktops) ← unchanged from original
+───────────────────────────────────────────────────────────── */
+type BP = "xs" | "sm" | "md" | "lg";
+
+function useBP(): BP {
+  const get = (): BP => {
+    if (typeof window === "undefined") return "lg";
+    const w = window.innerWidth;
+    if (w < 480) return "xs";
+    if (w < 768) return "sm";
+    if (w < 1024) return "md";
+    return "lg";
+  };
+  const [bp, set] = useState<BP>(get);
+  useEffect(() => {
+    const handler = () => set(get());
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return bp;
+}
+
+/* ── Standalone controlled checkbox (replaces Tailwind peer trick) ── */
+function CheckboxVisual() {
+  const [checked, setChecked] = useState(false);
+  return (
+    <div
+      role="checkbox"
+      aria-checked={checked}
+      tabIndex={0}
+      onClick={() => setChecked((c) => !c)}
+      onKeyDown={(e) => e.key === " " && setChecked((c) => !c)}
+      style={{
+        width: 38,
+        height: 26,
+        backgroundColor: checked ? "#3b82f6" : "#fff",
+        border: `2px solid ${checked ? "#3b82f6" : "#d1d5db"}`,
+        borderRadius: 7,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        transition: "background-color 0.15s, border-color 0.15s",
+        outline: "none",
+      }}
+    >
+      {checked && (
+        <svg
+          style={{ width: 18, height: 18, color: "#fff" }}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="3"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      )}
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════
+   Main LoginForm
+════════════════════════════════════════════ */
 function LoginForm({ onForgotPassword }: LoginFormProps) {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const bp = useBP();
+
+  const isLg = bp === "lg";
+  const isMd = bp === "md";
+  const isSm = bp === "sm";
+  const isXs = bp === "xs";
 
   const {
     register,
@@ -27,113 +107,245 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   const router = useRouter();
-  const loginMutation = useLoginMutation();
+  const { mutate: loginUser, isPending } = useLoginMutation();
 
-  // Perform login logic here
   const handleLoginFrom = handleSubmit((values: any) => {
-    console.log("Form Values:", values);
-
-    loginMutation.mutate(
+    loginUser(
       {
-        email_address: values.email, // ✅ FIXED
+        email_address: values.email,
         password: values.password,
       },
       {
         onSuccess: (res: any) => {
-          // Axios response
-          // res.status → HTTP status
-          if (res.status === 200 || res.status === 201) {
-            // Remember Me logic (UI concern, backend se unrelated)
-            // if (rememberMe) {
-            //   localStorage.setItem("rememberedEmail", values.email);
-            //   localStorage.setItem("rememberMe", "true");
-            // } else {
-            //   localStorage.removeItem("rememberedEmail");
-            //   localStorage.removeItem("rememberMe");
-            // }
+          console.log("Login success", res);
 
-            // ✅ Cookie already stored by browser
-            router.push("/dashboard");
-          }
-        },
-        onError: (error: any) => {
-          console.error("Login error:", error);
+          localStorage.setItem("token", res?.token);
+
+          router.push("/home");
         },
       },
     );
   });
 
+  /* ── Corner image ── */
+  const cornerW = isLg ? 630 : isMd ? 460 : isSm ? 280 : 150;
+
+  /* ── Header ── */
+  const hPadX = isLg ? 32 : isMd ? 28 : isSm ? 20 : 16;
+  const hPadT = isLg ? 32 : isMd ? 28 : isSm ? 24 : 20;
+
+  /* Logo */
+  const logoW = isLg ? 80 : isMd ? 68 : isSm ? 56 : 46;
+  const logoFontSize = isLg ? 28 : isMd ? 22 : isSm ? 20 : 17;
+  const taglineSize = isLg ? 16 : 13;
+
+  /* Header inner layout — column on mobile, row on tablet, column on lg */
+  const headerRowStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: isSm || isXs ? "column" : isLg ? "column" : "row",
+    alignItems: "flex-start",
+    gap: isLg ? undefined : isMd ? 16 : 6,
+  };
+
+  /* "Hi Humaniser!" — absolute only on lg (preserves original layout) */
+  const hiStyle: React.CSSProperties = isLg
+    ? { position: "absolute", left: 679, top: 89, textAlign: "right" }
+    : {
+        position: "relative",
+        textAlign: isMd ? "right" : "left",
+        marginTop: isMd ? 0 : 6,
+      };
+
+  const hiFontSize = isLg
+    ? "clamp(32px, 6vw, 84.8px)"
+    : isMd
+      ? "clamp(28px, 5vw, 52px)"
+      : isSm
+        ? "clamp(24px, 7.5vw, 42px)"
+        : "clamp(22px, 9vw, 34px)";
+
+  const tmFontSize = isLg
+    ? "clamp(14px, 2vw, 32px)"
+    : isMd
+      ? "clamp(12px, 1.8vw, 22px)"
+      : "clamp(10px, 3vw, 16px)";
+
+  const tmLineH = isLg ? "clamp(40px, 8vw, 92px)" : "1";
+
+  /* ── Main ── */
+  const mainPadX = isLg ? 0 : isMd ? 32 : isSm ? 20 : 16;
+  const mainPadT = isLg ? 0 : isMd ? 32 : isSm ? 24 : 16;
+  const mainPadB = isLg ? 20 : isMd ? 24 : 16;
+  const cardPadT = isLg ? 100 : 0;
+
+  /* ── Banner ── */
+  const bannerMb = isLg ? 20 : isMd ? 24 : 20;
+  const bannerFontSize = isLg
+    ? "clamp(15px, 3vw, 24px)"
+    : isMd
+      ? "clamp(14px, 2.2vw, 19px)"
+      : isSm
+        ? 16
+        : 14;
+
+  /* ── Inputs ── */
+  const inputMl: number = isLg ? 43 : 0;
+  const inputW: React.CSSProperties["width"] = isLg ? 494 : "100%";
+  const inputFontSize = isLg
+    ? "clamp(15px, 2.5vw, 21px)"
+    : isMd
+      ? "clamp(14px, 2vw, 18px)"
+      : 15;
+
+  /* ── Remember / Forgot row ── */
+  const rfMb = isLg ? 24 : isMd ? 28 : isSm ? 20 : 16;
+  // CHANGED: forgotMr set to 0 for all breakpoints so Forgot Password sits at far right
+  const forgotMr = 0;
+  const rfFontSize = isLg
+    ? "clamp(14px, 2vw, 18px)"
+    : isMd
+      ? 16
+      : isSm
+        ? 15
+        : 13;
+
+  /* ── Login button ── */
+  const btnW = isLg ? 573 : "100%";
+  const btnFontSize = isLg
+    ? "clamp(22px, 4vw, 32px)"
+    : isMd
+      ? "clamp(18px, 3vw, 26px)"
+      : isSm
+        ? 21
+        : 19;
+
+  /* ── Footer ── */
+  const footerMt = isLg ? 0 : isMd ? 20 : 14;
+  const footerPad = isLg ? 24 : 16;
+  const ftLeft = isLg ? "15%" : isMd ? "14%" : isSm ? "5%" : "3%";
+  const ftTop = isLg ? "12%" : "7%";
+  const ftFontSize = isLg
+    ? "clamp(9px, 1.5vw, 18px)"
+    : isMd
+      ? "clamp(9px, 1.4vw, 14px)"
+      : isSm
+        ? "clamp(8px, 2vw, 12px)"
+        : "clamp(7px, 2.2vw, 10px)";
+  const footerDbSize = isXs ? 20 : 24;
+  const privacyFontSize = isLg
+    ? "clamp(13px, 2vw, 20px)"
+    : isMd
+      ? "clamp(13px, 1.8vw, 16px)"
+      : isSm
+        ? 14
+        : 12;
+
+  /* ════════════════ JSX ════════════════ */
   return (
-    <div className="h-screen bg-[#e8e4df] flex flex-col overflow-hidden">
+    <div
+      style={{
+        minHeight: isLg ? undefined : "100vh",
+        height: isLg ? "100vh" : undefined,
+        maxHeight: isLg ? "100vh" : undefined,
+        backgroundColor: "#e8e4df",
+        display: "flex",
+        flexDirection: "column",
+        overflow: isLg ? "hidden" : undefined,
+        overflowX: "hidden",
+        position: "relative",
+      }}
+    >
+      {/* ── Corner decorative image ── */}
       <Image
         src={images.loginRectangle}
         alt="login-rectangle"
         width={630}
         height={630}
-        className="absolute top-0 right-0 z-0"
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          zIndex: 0,
+          width: cornerW,
+          height: "auto",
+          pointerEvents: "none",
+        }}
       />
-      {/* Header */}
-      <header className="relative px-8 pt-8 flex-shrink-0">
-        <div className="flex items-start">
-          {/* Logo - Group 5: 307×90 at (63px, 33px) */}
-          <div className="flex-shrink-0">
-            <div className="flex items-center gap-2">
+
+      {/* ════════ HEADER ════════ */}
+      <header
+        style={{
+          position: "relative",
+          paddingLeft: hPadX,
+          paddingRight: hPadX,
+          paddingTop: hPadT,
+          flexShrink: 0,
+          zIndex: 1,
+        }}
+      >
+        <div style={headerRowStyle}>
+          {/* Logo */}
+          <div style={{ flexShrink: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Image
                 src={images.humaniserLogo}
                 alt="Humanising Our Workplaces Logo"
-                width={80}
-                className="object-contain"
+                width={logoW}
+                style={{ objectFit: "contain", flexShrink: 0 }}
                 priority
               />
               <div
                 style={{
-                  fontSize: "28px",
+                  fontSize: logoFontSize,
                   fontFamily: "Aptos, sans-serif",
                   fontWeight: "bold",
-                  lineHeight: "1",
+                  lineHeight: 1,
                 }}
               >
-                <span className="block">Humanising our</span>
-                <span className="block -mt-[2px]">Workplaces</span>
+                <span style={{ display: "block" }}>Humanising our</span>
+                <span style={{ display: "block", marginTop: -2 }}>
+                  Workplaces
+                </span>
               </div>
             </div>
             <div
               style={{
                 fontFamily: "Aptos, sans-serif",
                 fontWeight: 400,
-                marginLeft: "18px",
+                marginLeft: 18,
+                fontSize: taglineSize,
+                marginTop: 4,
               }}
             >
-              People & Performance Thriving Together
+              People &amp; Performance Thriving Together
             </div>
           </div>
-          {/* Heading - positioned at 577px from left */}
-          <div className="absolute" style={{ left: "679px", top: "89px" }}>
-            {/* Hi Humaniser! - 467×99 */}
+
+          {/* "Hi Humaniser!" heading */}
+          <div style={hiStyle}>
             <h1
-              className="font-bold inline-block text-[#0F4F58]"
               style={{
-                fontSize: "84.8px",
-                fontFamily: "RocaTwo-Bold",
+                fontFamily: "RocaTwo-Bold, serif",
+                fontSize: hiFontSize,
+                fontWeight: "bold",
+                display: "inline-block",
+                color: "#0F4F58",
+                margin: 0,
+                lineHeight: 1,
               }}
             >
               Hi Humaniser!
-              {/* TM - 33×30 at offset position */}
               <span
-                className="font-bold align-top"
                 style={{
-                  fontSize: "32px",
-                  lineHeight: "92px",
-                  letterSpacing: "0%",
-
                   fontFamily: "RocaTwo-Bold, serif",
+                  fontSize: tmFontSize,
+                  lineHeight: tmLineH,
+                  fontWeight: "bold",
+                  verticalAlign: "top",
                 }}
               >
                 ™
@@ -143,235 +355,405 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* ════════ MAIN ════════ */}
       <main
-        className="flex-1 flex items-start justify-center overflow-auto"
-        style={{ paddingTop: "145px", paddingBottom: "20px" }}
+        style={{
+          flex: isLg ? "1 1 0" : undefined,
+          minHeight: isLg ? 0 : undefined,
+          display: "flex",
+          alignItems: isLg ? "center" : "flex-start",
+          justifyContent: "center",
+          overflowY: isLg ? "auto" : undefined,
+          paddingLeft: mainPadX,
+          paddingRight: mainPadX,
+          paddingTop: mainPadT,
+          paddingBottom: mainPadB,
+          position: "relative",
+          zIndex: 1,
+        }}
       >
-        <div className="w-full max-w-2xl">
-          {/* Login Box */}
-          <div>
-            <div
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 573,
+            paddingTop: cardPadT,
+          }}
+        >
+          {/* Green banner */}
+          <div
+            style={{
+              width: "100%",
+              borderRadius: 12,
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: bannerMb,
+              backgroundColor: "#8BBE8A",
+              boxSizing: "border-box",
+            }}
+          >
+            <p
               style={{
-                width: "573px",
-                height: "56px",
-                backgroundColor: "#8BBE8A",
-                borderRadius: "12px",
-                padding: "10px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: "32px",
+                textAlign: "center",
+                color: "#000",
+                margin: 0,
+                fontFamily: "Aptos, sans-serif",
+                fontWeight: 400,
+                fontSize: bannerFontSize,
+                lineHeight: 1.3,
               }}
             >
-              <p
+              Please login to access to Hi Humaniser! Portal
+            </p>
+          </div>
+
+          {/* ── Form ── */}
+          <form style={{ width: "100%" }} onSubmit={handleLoginFrom}>
+            {/* Email */}
+            <div style={{ marginBottom: 10, marginLeft: inputMl }}>
+              <div
                 style={{
-                  fontFamily: "Aptos, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "24px",
-                  lineHeight: "100%",
-                  letterSpacing: "0%",
-                  color: "#000000",
-                  margin: 0,
-                  textAlign: "center",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  backgroundColor: "#fff",
+                  borderRadius: 8,
+                  padding: isLg ? "10px 16px" : "12px 16px",
+                  border: `1px solid ${errors?.email ? "#ef4444" : "#e5e7eb"}`,
+                  width: inputW,
+                  boxSizing: "border-box",
                 }}
               >
-                Please login to access to Hi Humaniser! Portal
-              </p>
+                <Image
+                  src={images.email}
+                  alt="email-icon"
+                  width={30}
+                  height={16}
+                  style={{ flexShrink: 0 }}
+                />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  {...register(
+                    "email",
+                    getEmailValidationRules(
+                      emailMessage?.requiredMessage,
+                      emailMessage.invalidMessage,
+                    ),
+                  )}
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    background: "transparent",
+                    outline: "none",
+                    border: "none",
+                    fontWeight: 400,
+                    lineHeight: 1.5,
+                    color: "#000",
+                    padding: 0,
+                    fontFamily: "Aptos, sans-serif",
+                    fontSize: inputFontSize,
+                  }}
+                />
+              </div>
+              {errors?.email && (
+                <span
+                  style={{
+                    display: "block",
+                    color: "#ef4444",
+                    fontSize: 13,
+                    marginTop: 6,
+                    marginLeft: 4,
+                  }}
+                >
+                  {errors.email?.message}
+                </span>
+              )}
             </div>
 
-            {/* Email Input */}
-            <form className="w-full" onSubmit={handleLoginFrom}>
-              <div className="mb-3 ml-[43px]">
-                <div
-                  className={`flex items-center gap-3 bg-white rounded-lg px-4 py-3 border ${
-                    errors?.email ? "border-red-500" : "border-gray-200"
-                  } w-[494px] box-border`}
-                >
-                  <Image
-                    src={images.email}
-                    alt="email-icon"
-                    width={30}
-                    height={16}
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    {...register(
-                      "email",
-                      getEmailValidationRules(
-                        emailMessage?.requiredMessage,
-                        emailMessage.invalidMessage,
-                      ),
-                    )}
-                    className="flex-1 bg-transparent outline-none border-none text-[21px] font-normal leading-relaxed text-black p-0"
-                    style={{
-                      fontFamily: "Aptos, sans-serif",
-                    }}
-                  />
-                </div>
-                {errors?.email && (
-                  <span className="block text-red-500 text-sm mt-1.5 ml-1">
-                    {errors.email?.message}
-                  </span>
-                )}
-              </div>
-
-              {/* Password Input */}
-              <div className="mb-3 ml-[43px]">
-                <div
-                  className={`flex items-center gap-3 bg-white rounded-lg px-4 py-3 border ${
-                    errors?.password ? "border-red-500" : "border-gray-200"
-                  } w-[494px] box-border`}
-                >
-                  <Image
-                    src={images.lock}
-                    alt="lock-icon"
-                    width={30}
-                    height={16}
-                  />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Password"
-                    {...register(
-                      "password",
-                      getPasswordValidationRules(
-                        passwordMessage.password_required,
-                        passwordMessage.password_message,
-                      ),
-                    )}
-                    className="flex-1 bg-transparent outline-none border-none text-[21px] font-normal leading-relaxed text-black p-0 placeholder:text-gray-400"
-                    style={{
-                      fontFamily: "Aptos, sans-serif",
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="flex-shrink-0 focus:outline-none cursor-pointer"
-                  >
-                    <Image
-                      src={showPassword ? images.eyeOpen : images.eyeClose}
-                      alt={showPassword ? "Hide password" : "Show password"}
-                      width={24}
-                      height={24}
-                      className="opacity-60 hover:opacity-100 transition-opacity"
-                    />
-                  </button>
-                </div>
-                {errors?.password && (
-                  <div className="text-red-500 text-sm mt-1.5 ml-1 w-[494px] leading-[1.3]">
-                    {errors.password?.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Remember Me and Forgot Password */}
-              <div className="flex items-center justify-between mb-10 ml-[43px]">
-                <label className="flex items-center gap-[11px] cursor-pointer group">
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      // checked={rememberMe}
-                      // onChange={(e) => setRememberMe(e.target.checked)}
-                      className="peer sr-only"
-                    />
-                    <div className="w-10 h-7 bg-white border-2 border-gray-300 rounded-lg peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors"></div>
-                    <svg
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="3"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-[#E6A757] text-lg font-bold leading-none tracking-normal">
-                    Remember Me
-                  </span>
-                </label>
+            {/* Password */}
+            <div style={{ marginBottom: 10, marginLeft: inputMl }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  backgroundColor: "#fff",
+                  borderRadius: 8,
+                  padding: isLg ? "10px 16px" : "12px 16px",
+                  border: `1px solid ${errors?.password ? "#ef4444" : "#e5e7eb"}`,
+                  width: inputW,
+                  boxSizing: "border-box",
+                }}
+              >
+                <Image
+                  src={images.lock}
+                  alt="lock-icon"
+                  width={30}
+                  height={16}
+                  style={{ flexShrink: 0 }}
+                />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  {...register(
+                    "password",
+                    getPasswordValidationRules(
+                      passwordMessage.password_required,
+                      passwordMessage.password_message,
+                    ),
+                  )}
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    background: "transparent",
+                    outline: "none",
+                    border: "none",
+                    fontWeight: 400,
+                    lineHeight: 1.5,
+                    color: "#000",
+                    padding: 0,
+                    fontFamily: "Aptos, sans-serif",
+                    fontSize: inputFontSize,
+                  }}
+                />
                 <button
                   type="button"
-                  onClick={onForgotPassword}
-                  className="text-[#E6A757] text-lg font-bold leading-none tracking-normal mr-[135px] hover:underline transition-all cursor-pointer"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  style={{
+                    flexShrink: 0,
+                    outline: "none",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
                 >
-                  Forgot Password
+                  <Image
+                    src={showPassword ? images.eyeOpen : images.eyeClose}
+                    alt={showPassword ? "Hide password" : "Show password"}
+                    width={24}
+                    height={24}
+                    style={{ opacity: 0.6 }}
+                  />
                 </button>
               </div>
+              {errors?.password && (
+                <div
+                  style={{
+                    color: "#ef4444",
+                    fontSize: 13,
+                    marginTop: 6,
+                    marginLeft: 4,
+                    width: isLg ? 494 : "100%",
+                    lineHeight: 1.3,
+                    boxSizing: "border-box",
+                  }}
+                >
+                  {errors.password?.message}
+                </div>
+              )}
+            </div>
 
-              {/* Login Button */}
-              <button
-                className="bg-[#8BBE8A] hover:bg-[#7aad79] transition-colors underline disabled:opacity-50 disabled:cursor-not-allowed"
+            {/* Remember Me + Forgot Password */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: rfMb,
+                marginLeft: inputMl,
+                flexWrap: "nowrap",
+                gap: 12,
+                width: inputW,
+                boxSizing: "border-box",
+                position: "relative",
+                zIndex: 2,
+              }}
+            >
+              <label
                 style={{
-                  width: "573px",
-                  borderRadius: "12px",
-                  padding: "10px",
-                  fontFamily: "Aptos, sans-serif",
-                  fontWeight: 700,
-                  fontSize: "32px",
-                  letterSpacing: "0%",
-                  color: "#000000",
-                  textDecoration: "underline",
-                  textDecorationStyle: "solid",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
                   cursor: "pointer",
+                  flexShrink: 0,
                 }}
-                type="submit"
               >
-                Login
+                <CheckboxVisual />
+                <span
+                  style={{
+                    color: "#E6A757",
+                    fontWeight: "bold",
+                    lineHeight: 1,
+                    whiteSpace: "nowrap",
+                    fontFamily: "Aptos, sans-serif",
+                    fontSize: rfFontSize,
+                  }}
+                >
+                  Remember Me
+                </span>
+              </label>
+
+              <button
+                type="button"
+                onClick={onForgotPassword}
+                style={{
+                  color: "#E6A757",
+                  fontWeight: "bold",
+                  lineHeight: 1,
+                  // CHANGED: marginRight is now 0 for all breakpoints — sits at far right via space-between
+                  marginRight: forgotMr,
+                  cursor: "pointer",
+                  flexShrink: 0,
+                  whiteSpace: "nowrap",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  fontFamily: "Aptos, sans-serif",
+                  fontSize: rfFontSize,
+                  textDecoration: "none",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.textDecoration =
+                    "underline")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.textDecoration =
+                    "none")
+                }
+              >
+                Forgot Password
               </button>
-            </form>
-          </div>
+            </div>
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              style={{
+                width: btnW,
+                backgroundColor: "#8BBE8A",
+                borderRadius: 12,
+                padding: isLg ? "10px 16px" : isXs ? "10px 12px" : "12px 16px",
+                fontFamily: "Aptos, sans-serif",
+                fontWeight: 700,
+                fontSize: btnFontSize,
+                color: "#000000",
+                textDecoration: "underline",
+                textDecorationStyle: "solid",
+                cursor: "pointer",
+                border: "none",
+                transition: "background-color 0.15s ease",
+                boxSizing: "border-box",
+                letterSpacing: 0,
+                display: "block",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "#7aad79")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "#8BBE8A")
+              }
+              disabled={isPending}
+            >
+              {isPending ? "Logging..." : "Login"}
+            </button>
+          </form>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="flex-shrink-0">
-        <div className="relative flex justify-center">
-          {/* Background Image */}
+      {/* ════════ FOOTER ════════ */}
+      <footer
+        style={{
+          flexShrink: 0,
+          marginTop: footerMt,
+          zIndex: 1,
+          position: "relative",
+        }}
+      >
+        {/* Banner image with overlay text */}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Image
             src={images.landRectangle}
             alt="Footer Rectangle"
-            className="max-h-28 object-cover"
+            style={{
+              // CHANGED: reduced to 75% width on lg/md, full width on mobile
+              width: isLg || isMd ? "75%" : "100%",
+              maxHeight: isLg ? 112 : isMd ? 100 : isSm ? 90 : 82,
+              objectFit: "fill",
+            }}
           />
-
-          {/* Text Overlay - Centered with proper line breaks */}
-          <div className="absolute inset-0 left-[13%] top-[12%]">
+          <div
+            style={{
+              position: "absolute",
+              top: ftTop,
+              left: ftLeft,
+              // CHANGED: right offset keeps text well inside the 75% banner
+              right: isLg || isMd ? "" : "3%",
+              // bottom: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <p
-              className="font-bold"
               style={{
                 fontFamily: "RocaTwo-Bold, serif",
-                fontSize: "18px",
+                fontSize: ftFontSize,
                 color: "#0F4F58",
+                fontWeight: "bold",
+                margin: 0,
+                lineHeight: 1.35,
               }}
             >
               New here? Hi Humaniser!™ is part of Humanising Our Workplaces, a
               movement bringing humanity back into performance.
-              <br />
-              Discover more at{" "}
+              {(isLg || isMd) && <br />} Discover more at{" "}
               <Link
                 href="https://humanisingourworkplaces.com"
                 target="_blank"
-                className="underline hover:text-[#0F4F58] transition-colors"
+                style={{ textDecoration: "underline", color: "inherit" }}
               >
                 HumanisingOurWorkplaces.com
-              </Link>{" "}
+              </Link>
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-2 p-6">
-          <Image src={images.footerDb} alt="footer-db" width={24} height={24} />
+
+        {/* Privacy row */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginTop: 8,
+            padding: footerPad,
+          }}
+        >
+          <Image
+            src={images.footerDb}
+            alt="footer-db"
+            width={footerDbSize}
+            height={footerDbSize}
+            style={{ flexShrink: 0 }}
+          />
           <span
             style={{
               fontFamily: "Aptos, sans-serif",
               fontWeight: 400,
-              fontSize: "20px",
-              lineHeight: "100%",
-              letterSpacing: "0%",
+              fontSize: privacyFontSize,
+              lineHeight: 1.3,
               color: "#567F55",
             }}
           >
@@ -379,10 +761,10 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             <Link
               href="/privacy-policy"
               target="_blank"
-              className="underline hover:text-[#567F55] transition-colors"
+              style={{ textDecoration: "underline", color: "inherit" }}
             >
               Privacy Policy
-            </Link>{" "}
+            </Link>
           </span>
         </div>
       </footer>

@@ -3,8 +3,10 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 
 import styles from "./FirstStepBlock.module.css";
+import { useRouter } from "next/navigation";
 
 function FirstStepBlock() {
+  const router = useRouter();
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Step 1 - Find Your Way Around</h2>
@@ -15,7 +17,10 @@ function FirstStepBlock() {
       </p>
 
       <div className={styles.grid}>
-        <div className={`${styles.card} ${styles.blue}`}>
+        <div
+          className={`${styles.card} ${styles.blue}`}
+          onClick={() => router.push("/personal-pathway")}
+        >
           {/* Image layer */}
           <div className={styles.imageWrapper}>
             <Image

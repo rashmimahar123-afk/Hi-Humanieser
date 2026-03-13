@@ -4,7 +4,7 @@ class SnackbarHandler {
   errorToast = (text: string) => {
     toast(text, {
       position: "bottom-center",
-      autoClose: 500,
+      autoClose: 1000,
       type: "error",
     });
   };

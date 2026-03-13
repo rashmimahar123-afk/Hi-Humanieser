@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import PracticePerspective from "./PracticePerspective/PracticePerspective";
 import styles from "./PersonalPathway.module.css";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import GaugeChart from "react-gauge-chart";
 
 function PersonalPathway() {
   const router = useRouter();
@@ -17,6 +18,7 @@ function PersonalPathway() {
   const [animateText, setAnimateText] = useState(false);
 
   const [enter, setEnter] = useState(false);
+  const [direction, setDirection] = useState<"left" | "right">("right");
 
   useEffect(() => {
     setEnter(true);
@@ -56,7 +58,9 @@ function PersonalPathway() {
   return (
     <div
       className={`relative min-h-screen bg-[#4BA6A6] px-8 py-6 font-sans z-10
-  ${styles.page} ${enter ? styles.enterActive : styles.enter}`}
+  ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
     >
       <Image
         src={images.quizPolygon}
@@ -147,12 +151,17 @@ function PersonalPathway() {
                     />
                   )}
                 </div>
-                <Image
-                  src={images.pathwayTimer}
-                  alt="path-eye"
-                  width={102}
-                  height={102}
-                />{" "}
+                <div className="relative w-[150px]">
+                  <GaugeChart
+                    id="connect-gauge"
+                    nrOfLevels={1}
+                    percent={3.5 / 5}
+                    hideText={true}
+                    arcWidth={0.38} // thicker arc
+                    colors={["#4BA6A6"]}
+                    needleColor="#F28B82"
+                  />
+                </div>
                 <div
                   className="relative flex items-center justify-center cursor-pointer"
                   onClick={() => router.push("/pathway-card")}
@@ -204,13 +213,17 @@ function PersonalPathway() {
                   height={37}
                   className="mb-[20px]"
                 />
-                <Image
-                  src={images.pathwayTimer}
-                  alt="path-eye"
-                  width={102}
-                  height={102}
-                  className="-mb-[16px]"
-                />{" "}
+                <div className="relative w-[150px]">
+                  <GaugeChart
+                    id="connect-gauge"
+                    nrOfLevels={1}
+                    percent={3.5 / 5}
+                    hideText={true}
+                    arcWidth={0.38} // thicker arc
+                    colors={["#4BA6A6"]}
+                    needleColor="#F28B82"
+                  />
+                </div>
                 <div className="relative">
                   <Image
                     src={images.wellBeingPoly}

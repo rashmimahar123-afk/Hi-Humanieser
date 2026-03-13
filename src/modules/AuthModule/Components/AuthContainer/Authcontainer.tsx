@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import LoginForm from "../LoginForm/LoginForm";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import LoginForm from "../LoginForm/LoginForm";
 
 function AuthContainer() {
   const [showForgotPassword, setShowForgotPassword] = useState<boolean>(false);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden pl-8 sm:pl-12 lg:pl-16 xl:pl-20">
       {/* Login Form - Slides Left when Forgot Password is shown */}
       <div
         className={`absolute inset-0 transition-transform duration-500 ease-in-out ${

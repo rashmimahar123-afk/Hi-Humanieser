@@ -66,7 +66,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
         {/* Right Emojis */}
         <div className="relative mt-[80px]">
           {/* choose one arrow */}
-          <div className="w-[200px] absolute right-[61%]">
+          <div className="w-[200px] absolute right-[61%] top-[-96%]">
             <Image
               src={images.emojiArrow} // curved arrow image
               alt="choose-arrow"
@@ -74,7 +74,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
               height={100}
               className="absolute -top-19 left-1/2 -translate-x-1/2"
             />
-            <div className="absolute w-[75px] bottom-[3px] left-[20%] text-[#F2A39C] text-[14px] font-medium">
+            <div className="absolute w-[75px] left-[20%] text-[#F2A39C] text-[14px] font-medium">
               choose one
             </div>
           </div>
@@ -330,11 +330,12 @@ your dashboard is beaming"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
             fontColor="#0f4f58"
-            left="227px"
+            left="300px"
             bottom="130px"
-            rightImgRight="215px"
+            rightImgRight="290px"
             rightImgBottom="125px"
             rotate="-35deg"
+            maxWidth="460px"
           />
           <div className=" mt-[40px] flex justify-between">
             <button

@@ -9,6 +9,7 @@ import FromIdeasPathwayCard from "../FromIdeasPathwayCards/FromIdeasPathwayCards
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import Link from "next/link";
 
 function FromIdeas() {
   const [animateText, setAnimateText] = useState(false);
@@ -302,7 +303,7 @@ function FromIdeas() {
           </div>
         </div>
 
-        <div className="flex justify-center flex-col gap-10 mt-[70px]">
+        <div className="flex justify-center flex-col gap-10 mt-[100px]">
           <Image
             src={images.ritualArrow}
             alt="dotted path"
@@ -335,17 +336,19 @@ function FromIdeas() {
               <div>
                 <p className="font-semibold">Try it</p>
                 <p>
-                  Experience one ritual in everyday work — meetings,
-                  conversations, decisions — without changing everything at
-                  once.
+                  Experience one ritual in everyday work (meetings,
+                  conversations, decisions) without changing everything at once.
                 </p>
               </div>
 
               <div>
                 <p className="font-semibold">Keep it alive</p>
                 <p>
-                  Use short HH! Moments to pause, reflect, and notice how it’s
-                  landing.
+                  As the ritual is being practiced, teams can use short{" "}
+                  <Link href="/moments" className="font-bold mr-1 underline">
+                    HH! Moments
+                  </Link>{" "}
+                  to pause, reflect, and notice how it’s landing.
                 </p>
               </div>
 

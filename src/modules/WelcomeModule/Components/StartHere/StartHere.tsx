@@ -10,6 +10,7 @@ import PathwaySecondComponent from "@/src/modules/OnboardingHomePage/Components/
 import PathwayThirdComponent from "@/src/modules/OnboardingHomePage/Components/PathwayThirdComponent/PathwayThirdComponent";
 import styles from "./StartHere.module.css";
 import { useRouter } from "next/navigation";
+import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 
 export default function StartHere() {
   const [animateText, setAnimateText] = useState(false);
@@ -24,9 +25,9 @@ export default function StartHere() {
 
   return (
     <main
-      className={`relative min-h-screen bg-[#FBE6BF] overflow-hidden ${
-        styles.page
-      } ${enter ? styles.enterActive : styles.enter}`}
+      className={`relative min-h-screen bg-[#FBE6BF] overflow-hidden ${styles.page}
+ ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
     >
       {/* Background Shapes */}
       <Image
@@ -119,12 +120,27 @@ export default function StartHere() {
 
       {/* FOOTER BANNER */}
       <div className={`relative flex justify-center ${styles.footerFrame}`}>
-        <Image src={images.arrowImg} alt="" width={40} height={40} />
+        <SuccessMessage
+          text=" Small, consistent steps matter more than big leaps. Check in often,
+          notice what shifts and let your reflections guide you.
+"
+          fontSize="text-[30px]"
+          leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+          rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+          fontColor="#0F4F58"
+          left="295px"
+          bottom="50px"
+          rightImgRight="285px"
+          rotate="-35deg"
+          rightImgBottom="45px"
+          maxWidth="800px"
+        />
+        {/* <Image src={images.arrowImg} alt="" width={40} height={40} />
         <p className="mx-6 text-[#0F4F58] font-bold text-center">
           Small, consistent steps matter more than big leaps. Check in often,
           notice what shifts and let your reflections guide you.
         </p>
-        <Image src={images.rightArrow} alt="" width={40} height={40} />
+        <Image src={images.rightArrow} alt="" width={40} height={40} /> */}
       </div>
     </main>
   );

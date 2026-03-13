@@ -4,6 +4,7 @@ import styles from "./Home.module.css";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type DASHBOARD_BOX = {
   id: number;
@@ -14,6 +15,11 @@ type DASHBOARD_BOX = {
   badge?: string;
 };
 function Home() {
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   const boxes: DASHBOARD_BOX[] = [
     {
       id: 1,
@@ -64,18 +70,18 @@ function Home() {
   const router = useRouter();
 
   const handleDashboardRouting = (id: number) => {
-    if (id === 1) {
-      router.push("/start-here");
-    } else if (id === 2) {
-      router.push("/choose-pathway");
-      // When the user logs in for the first time and it needs to select a pathways, it should show the ‘ready to choose a pathway?’, which will take them to ‘Start Quiz’ OR ‘Choose Myself’
-    } else if (id === 3) {
-      router.push("/start-team-journey");
-    }
+    if (id === 1) router.push("/start-here");
+    if (id === 2) router.push("/choose-pathway");
+    if (id === 3) router.push("/start-team-journey");
   };
   return (
     <>
-      <div className="min-h-screen bg-[#4BA6A6] px-8 py-6">
+      <div
+        className={`min-h-screen bg-[#4BA6A6] px-8 py-6
+  ${styles.page}
+  ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
+      >
         <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />
 
         <SuccessMessage

@@ -151,7 +151,7 @@ function Milestone1({ onNext }: { onNext: () => void }) {
         {/* Right Emojis */}
         <div className="relative mt-[80px]">
           {/* choose one arrow */}
-          <div className="w-[200px] absolute right-[61%]">
+          <div className="w-[200px] absolute right-[61%] top-[-96%]">
             <Image
               src={images.emojiArrow} // curved arrow image
               alt="choose-arrow"
@@ -159,7 +159,7 @@ function Milestone1({ onNext }: { onNext: () => void }) {
               height={100}
               className="absolute -top-19 left-1/2 -translate-x-1/2"
             />
-            <div className="absolute w-[75px] bottom-[3px] left-[20%] text-[#F2A39C] text-[14px] font-medium">
+            <div className="absolute w-[75px] left-[20%] text-[#F2A39C] text-[14px] font-medium">
               choose one
             </div>
           </div>

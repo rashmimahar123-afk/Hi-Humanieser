@@ -1,5 +1,6 @@
 import images from "@/src/assets/images";
 import Image from "next/image";
+import GaugeChart from "react-gauge-chart";
 
 export default function TeamSnapshot() {
   const Gauge = ({ value }: any) => {
@@ -82,14 +83,25 @@ export default function TeamSnapshot() {
             >
               How you show up — your habits, openness, and self-awareness.
             </p>
-
-            <div className="mt-6">
-              <Image
-                src={images.clockOne}
-                alt="mindset-gauge"
-                width={220}
-                height={120}
+            <div className="mt-6 relative w-[250px]">
+              <GaugeChart
+                id="connect-gauge"
+                nrOfLevels={1}
+                percent={3.5 / 5}
+                hideText={true}
+                arcWidth={0.38} // thicker arc
+                colors={["#D3CBB6"]}
+                needleColor="#F28B82"
               />
+
+              {/* Labels */}
+              <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                1
+              </span>
+
+              <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                5
+              </span>
             </div>
           </div>
 
@@ -109,13 +121,25 @@ export default function TeamSnapshot() {
               How you communicate, listen, and build trust with others.
             </p>
 
-            <div className="mt-6">
-              <Image
-                src={images.clockTwo}
-                alt="connect-gauge"
-                width={220}
-                height={120}
+            <div className="mt-6 relative w-[250px]">
+              <GaugeChart
+                id="connect-gauge"
+                nrOfLevels={1}
+                percent={3.5 / 5}
+                hideText={true}
+                arcWidth={0.38} // thicker arc
+                colors={["#D3CBB6"]}
+                needleColor="#F28B82"
               />
+
+              {/* Labels */}
+              <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                1
+              </span>
+
+              <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                5
+              </span>
             </div>
           </div>
 
@@ -135,20 +159,32 @@ export default function TeamSnapshot() {
               How your actions influence the team environment and wellbeing.
             </p>
 
-            <div className="mt-6">
-              <Image
-                src={images.clockThree}
-                alt="culture-gauge"
-                width={220}
-                height={120}
+            <div className="mt-6 relative w-[250px]">
+              <GaugeChart
+                id="connect-gauge"
+                nrOfLevels={1}
+                percent={3.5 / 5}
+                hideText={true}
+                arcWidth={0.38} // thicker arc
+                colors={["#D3CBB6"]}
+                needleColor="#F28B82"
               />
+
+              {/* Labels */}
+              <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                1
+              </span>
+
+              <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                5
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Participation Pill */}
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-20">
         <div className="bg-[#86c9c9] px-8 py-4 rounded-full">
           <p className="text-[#0F4F58] text-[22px] font-bold">
             Participation: 12/18 have responded to the quiz

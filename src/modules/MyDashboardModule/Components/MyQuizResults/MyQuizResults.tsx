@@ -5,6 +5,7 @@ import ResultPathwayCard from "@/src/modules/ChoosePathwayModule/Components/Show
 import { useState } from "react";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
+import GaugeChart from "react-gauge-chart";
 
 type MY_QUIZ_RESULT_PROPS = {
   pathways: Array<any>;
@@ -141,13 +142,25 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                     How you show up — your habits, openness, and self-awareness.
                   </p>
 
-                  <div className="mt-6">
-                    <Image
-                      src={images.clockOne}
-                      alt="mindset-gauge"
-                      width={220}
-                      height={120}
+                  <div className="mt-6 relative w-[250px]">
+                    <GaugeChart
+                      id="connect-gauge"
+                      nrOfLevels={1}
+                      percent={3.5 / 5}
+                      hideText={true}
+                      arcWidth={0.38} // thicker arc
+                      colors={["#D3CBB6"]}
+                      needleColor="#F28B82"
                     />
+
+                    {/* Labels */}
+                    <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      1
+                    </span>
+
+                    <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      5
+                    </span>
                   </div>
                 </div>
 
@@ -167,13 +180,25 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                     How you communicate, listen, and build trust with others.
                   </p>
 
-                  <div className="mt-6">
-                    <Image
-                      src={images.clockTwo}
-                      alt="connect-gauge"
-                      width={220}
-                      height={120}
+                  <div className="mt-6 relative w-[250px]">
+                    <GaugeChart
+                      id="connect-gauge"
+                      nrOfLevels={1}
+                      percent={3.5 / 5}
+                      hideText={true}
+                      arcWidth={0.38} // thicker arc
+                      colors={["#D3CBB6"]}
+                      needleColor="#F28B82"
                     />
+
+                    {/* Labels */}
+                    <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      1
+                    </span>
+
+                    <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      5
+                    </span>
                   </div>
                 </div>
 
@@ -194,13 +219,25 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                     wellbeing.
                   </p>
 
-                  <div className="mt-6">
-                    <Image
-                      src={images.clockThree}
-                      alt="culture-gauge"
-                      width={220}
-                      height={120}
+                  <div className="mt-6 relative w-[250px]">
+                    <GaugeChart
+                      id="connect-gauge"
+                      nrOfLevels={1}
+                      percent={3.5 / 5}
+                      hideText={true}
+                      arcWidth={0.38} // thicker arc
+                      colors={["#D3CBB6"]}
+                      needleColor="#F28B82"
                     />
+
+                    {/* Labels */}
+                    <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      1
+                    </span>
+
+                    <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      5
+                    </span>
                   </div>
                 </div>
               </div>
@@ -210,7 +247,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
           {/* SKY SHAPE CARD */}
         </div>
 
-        <div>
+        <div className="mt-20">
           {/* TEXT (Always on top) */}
           <div className="relative z-20 text-[#567F55] font-[400]">
             <h3

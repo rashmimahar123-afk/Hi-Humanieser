@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
-import { useQuery } from "react-query";
 import { QUIZ_QUESTIONS_RESPONSE } from "../Types/ResponseTypes";
 import { authFetcher } from "@/src/lib/Helpers";
+import { useQuery } from "@tanstack/react-query";
 
-export const GET_QUIZ_QUESTIONS_QUERY_KEY = () => ["getQuizQuestionsQueryKey"];
+export const GET_QUIZ_QUESTIONS_QUERY_KEY = ["getQuizQuestionsQueryKey"];
 
 const getQuizQuestions = (): Promise<
   AxiosResponse<QUIZ_QUESTIONS_RESPONSE>
@@ -15,13 +15,10 @@ const getQuizQuestions = (): Promise<
 };
 
 function useGetQuestionsQuery() {
-  return useQuery(
-    GET_QUIZ_QUESTIONS_QUERY_KEY(),
-    () => getQuizQuestions()
-    // {
-    //   enabled: true,
-    // }
-  );
+  return useQuery({
+    queryKey: GET_QUIZ_QUESTIONS_QUERY_KEY,
+    queryFn: getQuizQuestions,
+  });
 }
 
 export default useGetQuestionsQuery;

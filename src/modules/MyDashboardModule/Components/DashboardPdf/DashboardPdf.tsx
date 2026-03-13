@@ -7,6 +7,7 @@ import MilestoneTwoActionRow from "@/src/modules/PersonalPathwayModule/Component
 import ReflectionBlock from "../ReflectionBlock/ReflectionBlock";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import DashboardPathwayCard from "../DashboardPathwayCard/DashboardPathwayCard";
+import GaugeChart from "react-gauge-chart";
 
 function DashboardPdf() {
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
@@ -295,13 +296,25 @@ function DashboardPdf() {
                           self-awareness.
                         </p>
 
-                        <div className="mt-6">
-                          <Image
-                            src={images.clockOne}
-                            alt="mindset-gauge"
-                            width={220}
-                            height={120}
+                        <div className="mt-6 relative w-[250px]">
+                          <GaugeChart
+                            id="connect-gauge"
+                            nrOfLevels={1}
+                            percent={3.5 / 5}
+                            hideText={true}
+                            arcWidth={0.38} // thicker arc
+                            colors={["#D3CBB6"]}
+                            needleColor="#F28B82"
                           />
+
+                          {/* Labels */}
+                          <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                            1
+                          </span>
+
+                          <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                            5
+                          </span>
                         </div>
                       </div>
 

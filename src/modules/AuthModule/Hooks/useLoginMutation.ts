@@ -1,25 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { AxiosResponse } from "axios";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { onError } from "@/src/lib/Helpers";
+import { LOGIN_REQUEST_TYPE } from "../Types/RequestTypes";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
-import { authFetcher } from "@/src/lib/Helpers";
-// import useResendOtpMutation from "./useResendOtpMutation";
+const loginUser = async (data: LOGIN_REQUEST_TYPE) => {
+  const response = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/login`,
+    data,
+  );
 
-const login = async (data: any): Promise<AxiosResponse<any>> => {
-  try {
-    const response = await authFetcher({
-      url: "/login",
-      method: "POST",
-      data,
-    });
-    return response;
-  } catch (error: any) {
-    console.error("Login error:", error);
-    throw error;
-  }
+  return response.data;
 };
 
-function useLoginMutation() {
-  return useMutation(login);
-}
-export default useLoginMutation;
+export const useLoginMutation = () => {
+  return useMutation({
+    mutationFn: loginUser,
+    onError: (error: any) => {
+      const message = error?.response?.data?.detail || "Something went wrong";
+
+      SnackbarHandler.errorToast(message);
+    },
+  });
+};
