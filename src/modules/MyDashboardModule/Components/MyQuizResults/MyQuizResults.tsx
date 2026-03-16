@@ -6,6 +6,7 @@ import { useState } from "react";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
 import GaugeChart from "react-gauge-chart";
+import { useRouter } from "next/navigation";
 
 type MY_QUIZ_RESULT_PROPS = {
   pathways: Array<any>;
@@ -22,6 +23,8 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
           : prev,
     );
   };
+
+  const router = useRouter();
   return (
     <>
       <h2 className="font-bold text-[35px] text-[#F5F0EB] font-[RocaTwo]">
@@ -280,7 +283,10 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
           </div>
         </div>
 
-        <div className="flex justify-end mt-[53px] mb-[7px]">
+        <div
+          className="flex justify-end mt-[53px] mb-[7px] cursor-pointer"
+          onClick={() => router.push("/choose-pathway")}
+        >
           <PolygonButton
             width="106px"
             height="107px"

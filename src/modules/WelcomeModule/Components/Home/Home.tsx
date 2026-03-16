@@ -5,6 +5,7 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 type DASHBOARD_BOX = {
   id: number;
@@ -16,10 +17,12 @@ type DASHBOARD_BOX = {
 };
 function Home() {
   const [enter, setEnter] = useState(false);
+  const { user } = useAuthValue();
 
   useEffect(() => {
     setEnter(true);
   }, []);
+
   const boxes: DASHBOARD_BOX[] = [
     {
       id: 1,
@@ -67,6 +70,7 @@ function Home() {
       imageSrc: images.pathwayPoly,
     },
   ];
+
   const router = useRouter();
 
   const handleDashboardRouting = (id: number) => {
@@ -74,6 +78,7 @@ function Home() {
     if (id === 2) router.push("/choose-pathway");
     if (id === 3) router.push("/start-team-journey");
   };
+
   return (
     <>
       <div
@@ -82,7 +87,11 @@ function Home() {
   ${styles.enterRight}
   ${enter ? styles.enterActive : ""}`}
       >
-        <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0F4F58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
 
         <SuccessMessage
           text="Great to see you again — ready to explore?"
@@ -133,7 +142,7 @@ function Home() {
                       paddingLeft: "110px",
                     }}
                   >
-                    <div style={{ maxWidth: "80%" }}>
+                    <div style={{ maxWidth: "100%" }}>
                       <span
                         style={{
                           fontFamily: "RocaTwo-Bold",

@@ -33,6 +33,10 @@ export default function RouteThemeProvider() {
       bg = "#F5F0EB";
       fg = "#0F4F58";
     }
+    if (pathname === "/team-journey") {
+      bg = "#4BA6A6";
+      fg = "#ffffff";
+    }
     if (pathname === "/moments") {
       bg = "#F3EEE7";
       fg = "#0F4F58";

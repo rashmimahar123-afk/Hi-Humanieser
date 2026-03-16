@@ -1,5 +1,16 @@
+export type USER_INFO_TYPE = {
+  company_name: string;
+  exp: number;
+  iat: number;
+  jti: string;
+  org_id: string;
+  sub: string;
+  team_name: string;
+  type: string;
+  user_type: number;
+};
 export type AUTH_STATE = {
-  user?: { id: string; name: string; email: string } | null;
+  user: USER_INFO_TYPE | undefined;
   loggedIn: boolean;
   token: string;
   accountType: string;

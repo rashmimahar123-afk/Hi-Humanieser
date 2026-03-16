@@ -8,15 +8,20 @@ import SuccessQuizMessage from "@/src/components/SuccessQuizMessage/SuccessQuizM
 import SecondEightQuestions from "../QuestionBank/SecondEightQuestions";
 import LastEightQuestions from "../QuestionBank/LastEightQuestions";
 import { useRouter } from "next/navigation";
+import { PILLAR_DATA } from "../../Types/ResponseTypes";
+import { useSubmitQuizMutation } from "../../Hooks/useSubmitQuizMutation";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 type START_QUIZ_THIRD_PROPS_TYPES = {
   questionsRef: React.RefObject<HTMLDivElement | null>;
   trackHeight: number;
+  pillarThree?: PILLAR_DATA;
 };
 
 function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
-  const { questionsRef, trackHeight } = props;
+  const { questionsRef, trackHeight, pillarThree } = props;
   const [animateText, setAnimateText] = useState(false);
+  const { token } = useAuthValue();
 
   const [enter, setEnter] = useState(false);
   const [answers, setAnswers] = useState<Record<number, any>>({});
@@ -37,12 +42,6 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
     setEnter(true);
   }, []);
 
-  const handleCompleteQuiz = () => {
-    setTimeout(() => {
-      router.push("/result");
-    }, 400);
-  };
-
   const handleAnswer = (questionNo: number, value: any) => {
     setAnswers((prev) => ({
       ...prev,
@@ -55,6 +54,75 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
       setAnimateText(true);
     }
   }, [pillar3Answered, animateText]);
+
+  const strengthMap: Record<string, number> = {
+    Never: 1,
+    Rarely: 2,
+    Sometimes: 3,
+    Often: 4,
+    Always: 5,
+  };
+  const situationMap: Record<string, number> = {
+    a: 1,
+    b: 2,
+    c: 3,
+  };
+
+  const buildPayload = () => {
+    const payload: any = {
+      pillar_03: {},
+    };
+
+    const principles = pillarThree?.principles || {};
+
+    let qIndex = 17;
+
+    Object.entries(principles).forEach(([principleKey, principle]: any) => {
+      payload.pillar_03[principleKey] = {};
+
+      principle.questions.forEach((question: any) => {
+        const answer = answers[qIndex];
+
+        if (question.type === "strength") {
+          payload.pillar_03[principleKey].strength = strengthMap[answer] ?? 0;
+        } else {
+          payload.pillar_03[principleKey].situation = situationMap[answer] ?? 0;
+        }
+
+        qIndex++;
+      });
+    });
+
+    return payload;
+  };
+
+  const { mutate: submitQuiz, isPending } = useSubmitQuizMutation();
+  const handleSubmitQuiz = () => {
+    const pillar3Payload = buildPayload();
+
+    localStorage.setItem("quiz_pillar_3", JSON.stringify(pillar3Payload));
+
+    const finalPayload = {
+      ...JSON.parse(localStorage.getItem("quiz_pillar_1") || "{}"),
+      ...JSON.parse(localStorage.getItem("quiz_pillar_2") || "{}"),
+      ...pillar3Payload,
+    };
+
+    submitQuiz(
+      {
+        payload: finalPayload,
+      },
+      {
+        onSuccess: () => {
+          localStorage.removeItem("quiz_pillar_1");
+          localStorage.removeItem("quiz_pillar_2");
+          localStorage.removeItem("quiz_pillar_3");
+
+          router.push("/result");
+        },
+      },
+    );
+  };
   return (
     <div
       className={`${styles.page} ${enter ? styles.enterActive : styles.enter}`}
@@ -99,23 +167,39 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
               {/* Pillar Box */}
               <div className="bg-[#C2E2E2] rounded-[12px] px-4 py-2">
                 <h3 className="text-[23px] font-[400] text-[#737373] font-[RocaTwo-Bold]">
-                  Pillar 3 – The Culture We Shape{" "}
+                  Pillar 3 – {pillarThree?.name}
                 </h3>
 
                 <p className="mt-2 text-[18px] leading-relaxed text-[#737373] font-[Aptos] ">
-                  This last section is about the bigger picture: the culture we
+                  {/* This last section is about the bigger picture: the culture we
                   create together. These questions explore how we design team
                   habits, build belonging, integrate wellbeing, and make our
-                  ways of working sustainable.
+                  ways of working sustainable. */}
+                  {pillarThree?.description}
                 </p>
               </div>
             </header>
 
             {/* Question Bank */}
-            <div className="w-[700px]" ref={questionsRef}>
-              <LastEightQuestions onAnswer={handleAnswer} answers={answers} />
+            <div className="flex gap-[150px] mt-6 w-full">
+              <div className="w-[800px]" ref={questionsRef}>
+                <LastEightQuestions
+                  onAnswer={handleAnswer}
+                  answers={answers}
+                  pillarThree={pillarThree}
+                />
+              </div>
+              <div className="relative">
+                {/* Right Progress Bar */}
+                <div className="absolute right-12 top-[20px] w-[57px] h-[567px] bg-[#BDBDBD] rounded-[77px]">
+                  <VerticalProgressBar
+                    trackHeight={trackHeight}
+                    total={TOTAL_PROGRESS}
+                    answered={progressValue}
+                  />
+                </div>
+              </div>
             </div>
-
             {/* Footer */}
             <div className="flex justify-end relative mt-[51px] mr-[31px]">
               <div className="absolute text-[#E3A45B] text-xl -top-[35%] -right-[2%] -rotate-[18deg]">
@@ -123,7 +207,7 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
               </div>
               <div
                 className={styles.startTriangleWrapper}
-                onClick={() => handleCompleteQuiz()}
+                onClick={() => handleSubmitQuiz()}
               >
                 {/* Polygon Shape */}
                 <div className={styles.clipStartTriangle} />
@@ -134,14 +218,7 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
               </div>
             </div>
           </div>
-          {/* Right Progress Bar */}
-          <div className="absolute right-12 top-[181px] w-[57px] h-[567px] bg-[#BDBDBD] rounded-[77px]">
-            <VerticalProgressBar
-              trackHeight={trackHeight}
-              total={TOTAL_PROGRESS}
-              answered={progressValue}
-            />
-          </div>
+
           <div>
             <SuccessQuizMessage show={animateText} />
           </div>

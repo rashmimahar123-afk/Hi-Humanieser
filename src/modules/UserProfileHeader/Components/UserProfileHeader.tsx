@@ -1,14 +1,21 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
+import { useState } from "react";
+import ProfileDropdown from "../../ProfileDropdown/ProfileDropdown";
+import { AUTH_STATE, USER_INFO_TYPE } from "../../AuthModule/Types/CommonTypes";
 
 type USER_PROFILE_HEADER_PROPS = {
   greetingColor?: string;
   nameColor?: string;
   hideUserProfile?: boolean;
+  userInfo?: USER_INFO_TYPE;
 };
 
 function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
-  const { greetingColor, nameColor, hideUserProfile } = props;
+  const { greetingColor, nameColor, hideUserProfile, userInfo } = props;
+
+  const [openDropdown, setOpenDropdown] = useState(false);
+
   return (
     <>
       {/* Overlay content */}
@@ -35,7 +42,10 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
         </div>
         {/* Right profile */}
         {!hideUserProfile && (
-          <div className="flex items-start gap-3">
+          <div
+            className="flex items-start gap-3 cursor-pointer"
+            onClick={() => setOpenDropdown(!openDropdown)}
+          >
             <div
               className={"text-right font-semibold mt-[28px] "}
               style={{ fontFamily: "Aptos", color: nameColor }}
@@ -69,6 +79,7 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
           </div>
         )}
       </div>
+      {openDropdown && <ProfileDropdown userInfo={userInfo} />}
     </>
   );
 }

@@ -49,22 +49,42 @@ axios.interceptors.response.use(
 );
 // In your Helpers file
 // Helpers.ts
+
+export const fetcher = (config: AxiosRequestConfig) => {
+  const { url, method = "GET", data, headers } = config;
+  const { token, language } = getAuthValue();
+
+  return axios.request({
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    // url,
+    method,
+    data,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Accept-Language": language,
+      ...headers,
+    },
+    ...config,
+  });
+};
+
 export const authFetcher = (config: AxiosRequestConfig) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
+  const token = getCookie("token");
   return axios.request({
-    baseURL: baseURL,
+    baseURL,
     url: config.url,
     method: config.method ?? "GET",
     data: config.data,
     headers: {
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
     },
-    withCredentials: false,
+    withCredentials: true,
     timeout: 10000,
   });
 };
-
 export const secureFetcher = (config: AxiosRequestConfig) => {
   const { language } = getAuthValue();
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
@@ -322,4 +342,19 @@ export const createPatternRows = (data: any[], pattern = [3, 2]) => {
   }
 
   return rows;
+};
+export function decodeJWT(token: string) {
+  try {
+    const payload = token.split(".")[1]; // middle part
+    const decodedPayload = atob(payload); // base64 decode
+    return JSON.parse(decodedPayload);
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+}
+export const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
 };

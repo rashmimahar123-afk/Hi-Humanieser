@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {
+  decodeJWT,
   getEmailValidationRules,
   getPasswordValidationRules,
 } from "@/src/lib/Helpers";
@@ -13,6 +14,7 @@ import { emailMessage, passwordMessage } from "@/src/lib/ErrorMessages";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLoginMutation } from "../../Hooks/useLoginMutation";
+import { setAuthValue } from "../../Hooks/useAuthValue";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -123,7 +125,22 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         onSuccess: (res: any) => {
           console.log("Login success", res);
 
-          localStorage.setItem("token", res?.token);
+          const token = res?.token;
+
+          const decoded = decodeJWT(token);
+
+          // document.cookie = `access_token=${token}; path=/; max-age=86400; samesite=lax`;
+          setAuthValue({
+            loggedIn: true,
+            token: token,
+            user: decoded,
+            accountType: "GOOGLE",
+            latitude: undefined,
+            longitude: undefined,
+            location: undefined,
+            language: "en",
+            isCompleteProfile: true,
+          });
 
           router.push("/home");
         },

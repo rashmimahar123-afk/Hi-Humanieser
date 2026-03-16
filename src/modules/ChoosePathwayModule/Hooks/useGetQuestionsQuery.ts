@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { QUIZ_QUESTIONS_RESPONSE } from "../Types/ResponseTypes";
-import { authFetcher } from "@/src/lib/Helpers";
+import { authFetcher, fetcher } from "@/src/lib/Helpers";
 import { useQuery } from "@tanstack/react-query";
 
 export const GET_QUIZ_QUESTIONS_QUERY_KEY = ["getQuizQuestionsQueryKey"];

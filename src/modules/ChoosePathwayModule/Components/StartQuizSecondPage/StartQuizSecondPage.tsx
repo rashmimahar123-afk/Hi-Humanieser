@@ -7,14 +7,16 @@ import VerticalProgressBar from "@/src/components/VerticalProgressBar/VerticalPr
 import SuccessQuizMessage from "@/src/components/SuccessQuizMessage/SuccessQuizMessage";
 import SecondEightQuestions from "../QuestionBank/SecondEightQuestions";
 import { useRouter } from "next/navigation";
+import { PILLAR_DATA } from "../../Types/ResponseTypes";
 
 type START_QUIZ_SECOND_PROPS_TYPES = {
   questionsRef: React.RefObject<HTMLDivElement | null>;
   trackHeight: number;
+  pillarTwo?: PILLAR_DATA;
 };
 
 function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
-  const { questionsRef, trackHeight } = props;
+  const { questionsRef, trackHeight, pillarTwo } = props;
   const [animateText, setAnimateText] = useState(false);
 
   const [enter, setEnter] = useState(false);
@@ -35,11 +37,6 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
     setEnter(true);
   }, []);
 
-  const handleCompleteQuiz = () => {
-    setTimeout(() => {
-      router.push("/start-quiz?step=3");
-    }, 400);
-  };
   const handleAnswer = (questionNo: number, value: any) => {
     setAnswers((prev) => ({
       ...prev,
@@ -52,6 +49,56 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
     }
   }, [pillar2Answered, animateText]);
 
+  const strengthMap: Record<string, number> = {
+    Never: 1,
+    Rarely: 2,
+    Sometimes: 3,
+    Often: 4,
+    Always: 5,
+  };
+  const situationMap: Record<string, number> = {
+    a: 1,
+    b: 2,
+    c: 3,
+  };
+
+  const buildPayload = () => {
+    const payload: any = {
+      pillar_02: {},
+    };
+
+    const principles = pillarTwo?.principles || {};
+
+    let qIndex = 9;
+
+    Object.entries(principles).forEach(([principleKey, principle]: any) => {
+      payload.pillar_02[principleKey] = {};
+
+      principle.questions.forEach((question: any) => {
+        const answer = answers[qIndex];
+
+        if (question.type === "strength") {
+          payload.pillar_02[principleKey].strength = strengthMap[answer] ?? 0;
+        } else {
+          payload.pillar_02[principleKey].situation = situationMap[answer] ?? 0;
+        }
+
+        qIndex++;
+      });
+    });
+
+    return payload;
+  };
+
+  const handleCompleteQuiz = () => {
+    const payload = buildPayload();
+
+    localStorage.setItem("quiz_pillar_2", JSON.stringify(payload));
+
+    setTimeout(() => {
+      router.push("/start-quiz?step=3");
+    }, 400);
+  };
   return (
     <div
       className={`${styles.page} ${enter ? styles.enterActive : styles.enter} `}
@@ -96,25 +143,44 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
               {/* Pillar Box */}
               <div className="bg-[#C2E2E2] rounded-[12px] px-4 py-2">
                 <h3 className="text-[23px] font-[400] text-[#737373] font-[RocaTwo-Bold]">
-                  Pillar 2 – The Way We Connect
+                  Pillar 2 – {pillarTwo?.name}
                 </h3>
 
                 <p className="mt-2 text-[18px] leading-relaxed text-[#737373] font-[Aptos] ">
-                  This section looks at how we interact with others. It’s about
+                  {/* This section looks at how we interact with others. It’s about
                   the quality of our conversations — recognising people,
                   creating safety, speaking with clarity and listening to
-                  understand.
+                  understand. */}
+                  {pillarTwo?.description}
                 </p>
               </div>
             </header>
 
             {/* Question Bank */}
-            <div className="w-[700px]" ref={questionsRef}>
-              <SecondEightQuestions onAnswer={handleAnswer} answers={answers} />
+            <div className="flex gap-[150px] mt-6 w-full">
+              <div className="w-[800px]" ref={questionsRef}>
+                <SecondEightQuestions
+                  onAnswer={handleAnswer}
+                  answers={answers}
+                  pillarTwo={pillarTwo}
+                />
+              </div>
+              <div className="relative">
+                {/* Right Progress Bar */}
+                <div className="absolute right-12 top-[20px] w-[57px] h-[567px] bg-[#BDBDBD] rounded-[77px]">
+                  <VerticalProgressBar
+                    trackHeight={trackHeight}
+                    total={TOTAL_PROGRESS}
+                    answered={progressValue}
+                  />
+                </div>
+              </div>
             </div>
-
             {/* Footer */}
-            <div className="flex justify-end relative mt-[51px] mr-[31px]">
+            <div
+              className="flex justify-end relative mt-[50px] mr-[31px]"
+              onClick={() => handleCompleteQuiz()}
+            >
               <div className="absolute text-[#E3A45B] text-xl -top-[35%] -right-[2%] -rotate-[18deg]">
                 <Image src={images.rightArrow} alt="arrow-img" width={32} />
               </div>
@@ -131,14 +197,7 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
               </div>
             </div>
           </div>
-          {/* Right Progress Bar */}
-          <div className="absolute right-12 top-[181px] w-[57px] h-[567px] bg-[#BDBDBD] rounded-[77px]">
-            <VerticalProgressBar
-              trackHeight={trackHeight}
-              total={TOTAL_PROGRESS}
-              answered={progressValue}
-            />
-          </div>
+
           <div>
             <SuccessQuizMessage show={animateText} />
           </div>

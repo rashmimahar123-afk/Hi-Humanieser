@@ -198,6 +198,7 @@ your dashboard is beaming"
             rightImgRight="388px"
             rightImgTop="62.8%"
             rotate="-35deg"
+            maxWidth="500px"
           />
         </div>
 

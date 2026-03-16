@@ -43,7 +43,10 @@ function FirstStepBlock() {
           </div>
         </div>
 
-        <div className={`${styles.card} ${styles.green}`}>
+        <div
+          className={`${styles.card} ${styles.green}`}
+          onClick={() => router.push("/team-journey")}
+        >
           <div className={styles.imageWrapper}>
             <Image
               src={images.firstStepGreen}
@@ -63,7 +66,10 @@ function FirstStepBlock() {
           </div>
         </div>
 
-        <div className={`${styles.card} ${styles.pink}`}>
+        <div
+          className={`${styles.card} ${styles.pink}`}
+          onClick={() => router.push("/my-dashboard")}
+        >
           <div className={styles.imageWrapper}>
             <Image
               src={images.firstStepPink}

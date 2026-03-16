@@ -163,6 +163,8 @@ function MyDashboard() {
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
             left="412px"
             top="135px"
+            rotate="-35deg"
+            rightImgTop="125px"
             rightImgRight="407px"
           />
           <h1 className="text-center text-[42px] font-semibold text-[#254C4C] mt-14">
@@ -316,10 +318,12 @@ function MyDashboard() {
               leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
               rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
               fontColor="#0F4F58"
-              left="374px"
-              bottom="317px"
-              rightImgRight="360px"
-              rightImgBottom="299px"
+              left="460px"
+              bottom="320px"
+              rightImgRight="450px"
+              rightImgBottom="315px"
+              rotate="-35deg"
+              maxWidth="450px"
             />
           </div>
           {/* ----------------------------Footer-------------------- */}
