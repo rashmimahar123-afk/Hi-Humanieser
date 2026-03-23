@@ -5,16 +5,18 @@ type PATHWAY_CARD = {
   title: string;
   description: string;
   learnMoreColor: string;
+  onLearnMore: () => void;
 };
 
 type IDEA_PATHWAY_CARD_PROPS = {
   sectionTitle: string;
   bgColor: string;
   cards: PATHWAY_CARD[];
+  type?: string;
 };
 
 function FromIdeasPathwayCard(props: IDEA_PATHWAY_CARD_PROPS) {
-  const { sectionTitle, bgColor, cards } = props;
+  const { sectionTitle, bgColor, cards, type } = props;
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -41,12 +43,23 @@ function FromIdeasPathwayCard(props: IDEA_PATHWAY_CARD_PROPS) {
     >
       {/* LEFT TITLE */}
       <div className="w-64 flex-shrink-0 hidden lg:block">
-        <h2
-          className="text-[42px] text-[#0F4F58] leading-tight"
+        {type === "focus-area" && (
+          <div
+            className="text-[42px] text-[#0F4F58] leading-tight"
+            style={{ fontFamily: "RocaTwo-Bold" }}
+          >
+            Focus Area:
+          </div>
+        )}
+
+        <div
+          className={`text-[42px] text-[#0F4F58] leading-tight ${
+            type === "focus-area" ? "mt-[15px]" : ""
+          }`}
           style={{ fontFamily: "RocaTwo-Bold" }}
         >
           {sectionTitle}
-        </h2>
+        </div>
       </div>
 
       {/* RIGHT CAROUSEL */}
@@ -87,6 +100,7 @@ function FromIdeasPathwayCard(props: IDEA_PATHWAY_CARD_PROPS) {
                   <button
                     className="px-[28px] py-[8px] rounded-full text-[18px] text-[#0F4F58]"
                     style={{ backgroundColor: card.learnMoreColor }}
+                    onClick={card.onLearnMore}
                   >
                     learn more
                   </button>

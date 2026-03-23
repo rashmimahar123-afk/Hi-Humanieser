@@ -33,7 +33,6 @@ function StartQuizPage() {
 
   const { data, isLoading, isError } = useGetQuestionsQuery();
   const quizData = data?.data?.pillars;
-  console.log(quizData, "QUIZzzzzz Data");
   return (
     <div>
       {step === "2" ? (

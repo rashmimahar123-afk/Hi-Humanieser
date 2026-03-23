@@ -23,6 +23,13 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
   const allQuestions: PILLAR_DATA_QUESTIONS[] = Object.values(
     pillarThree?.principles || {},
   ).flatMap((principle: PRINCIPLE_TYPE) => principle.questions);
+
+  const situationScoreByQuestion: Record<number, Record<string, number>> = {
+    18: { a: 1, b: 4, c: 5 },
+    20: { a: 1, b: 3, c: 5 },
+    22: { a: 1, b: 4, c: 5 },
+    24: { a: 1, b: 4, c: 5 },
+  };
   return (
     <>
       {allQuestions.map((item, index) => {
@@ -75,7 +82,13 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
                   <label
                     key={key}
                     className="flex items-center justify-between cursor-pointer"
-                    onClick={() => onAnswer(qNo, key)}
+                    onClick={() => {
+                      const value = situationScoreByQuestion[qNo]?.[key];
+
+                      if (value !== undefined) {
+                        onAnswer(qNo, value);
+                      }
+                    }}
                   >
                     <span className="text-[19px] text-[#737373]">
                       ({key}) {value}
@@ -84,7 +97,8 @@ function LastEightQuestions(props: LAST_EIGHT_QUESTION_PROPS) {
                     <span className="relative w-[21px] h-[23px]">
                       <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
 
-                      {answers[qNo] === key && (
+                      {answers[qNo] ===
+                        situationScoreByQuestion[qNo]?.[key] && (
                         <Image
                           src={images.tickImg}
                           alt="tick"

@@ -7,8 +7,31 @@ import AmplifierThirdDescription from "../AmplifierThirdDescription/AmplifierThi
 import AmplifierForthDescription from "../AmplifierForthDescription/AmplifierForthDescription";
 import AmplifierFifthDescription from "../AmplifierFifthDescription/AmplifierFifthDescription";
 import AmplifierSixDescription from "../AmplifierSixDescription.tsx/AmplifierSixDescription";
+import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import { useRouter, useSearchParams } from "next/navigation";
+import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 function Amplifier() {
+  const { data } = useChooseMyselfQuery();
+
+  const searchParams = useSearchParams();
+
+  const router = useRouter();
+  const pillarNumber = Number(searchParams.get("pillar"));
+  const principleNumber = Number(searchParams.get("principle"));
+  const pillarsData = data?.data?.[1]?.pillars;
+
+  const flatPillars = pillarsData?.map((item: any) => {
+    return item;
+  });
+
+  const selectedPrincipleData: PILLAR_PRINCIPLE_TYPE = flatPillars
+    ?.find((pillar: any) => pillar.pillar_number === Number(pillarNumber))
+    ?.principles?.find(
+      (principle: any) =>
+        principle.principle_number === Number(principleNumber),
+    );
+
   return (
     <div className="bg-[#F5F0EB] min-h-screen ">
       <div className="relative">
@@ -21,26 +44,22 @@ function Amplifier() {
         />
       </div>
       <div className="relative z-10 px-10 py-8">
-        <h1 className="text-[#567F55] text-[46px] font-[700] font-[Aptos] mb-10 mr-[50px]">
-          Hi Humaniser!™
-        </h1>
+        <div onClick={() => router.push("/home")} className="cursor-pointer">
+          <h1 className="text-[#567F55] text-[46px] font-[700] font-[Aptos] mb-10 mr-[50px]">
+            Hi Humaniser!™
+          </h1>
+        </div>
 
         {/* Main Content */}
         <div className=" ml-[38px] mx-auto">
           <h2 className="text-[#0F4F58] text-[42px] font-[700] font-[RocaTwo] mb-6">
-            Pathway: Wellbeing Is Performance Infrastructure
+            Pathway: {selectedPrincipleData?.pathway_title}
           </h2>
 
           {/* Description Card */}
           <div className="bg-white rounded-[14px] px-8 py-6 shadow-[0_8px_24px_rgba(0,0,0,0.06)] max-w-[1000px]">
-            <p className="text-[#567F55] text-[21px] font-bold font-[Roboto]">
-              Make It Sustainable is about ensuring human ways of working don’t
-              disappear under pressure. It recognises that care, clarity and
-              connection often fade when urgency rises, unless consciously
-              protected. This pathway helps you notice when pressure reshapes
-              how work gets done and how people show up. It guides you to
-              protect repeatable, human behaviours, so performance continues
-              without relying on urgency or personal sacrifice.
+            <p className="text-[#567F55] text-[21px] font-bold font-[Roboto] text-center">
+              {selectedPrincipleData?.definition}
             </p>
           </div>
         </div>
@@ -50,19 +69,29 @@ function Amplifier() {
             <AmplifierFirstDescription />
           </AmplifierAccordian>
           <AmplifierAccordian title="Core Behaviours">
-            <AmplifierSecondDescription />
+            <AmplifierSecondDescription
+              coreBehaviour={selectedPrincipleData?.core_behaviours}
+            />
           </AmplifierAccordian>
           <AmplifierAccordian title="Amplifier Behaviours">
-            <AmplifierThirdDescription />
+            <AmplifierThirdDescription
+              amplifierBehaviour={selectedPrincipleData?.amplifier_behaviours}
+            />
           </AmplifierAccordian>
           <AmplifierAccordian title="Common Traps">
-            <AmplifierForthDescription />
+            <AmplifierForthDescription
+              commonTraps={selectedPrincipleData?.common_traps}
+            />
           </AmplifierAccordian>
           <AmplifierAccordian title="Micro-Actions">
-            <AmplifierFifthDescription />
+            <AmplifierFifthDescription
+              microActions={selectedPrincipleData?.micro_actions}
+            />
           </AmplifierAccordian>
           <AmplifierAccordian title="Conversation Starters">
-            <AmplifierSixDescription />
+            <AmplifierSixDescription
+              conversationStarter={selectedPrincipleData?.conversation_starters}
+            />
           </AmplifierAccordian>
         </div>
       </div>

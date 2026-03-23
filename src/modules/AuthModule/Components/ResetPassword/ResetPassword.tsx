@@ -11,7 +11,7 @@ import { useState } from "react";
 import Link from "next/link";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 
-function ChangePassword() {
+function ResetPassword() {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
@@ -102,7 +102,7 @@ function ChangePassword() {
           className="text-2xl sm:text-3xl lg:text-[44px] font-bold text-[#0F4F58]"
           style={{ fontFamily: "Roca-Two" }}
         >
-          Change your password
+          Reset your password{" "}
         </h1>
 
         {/* Center Card */}
@@ -121,7 +121,7 @@ function ChangePassword() {
 
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="space-y-6 lg:space-y-12 mt-6 lg:mt-12"
+              className="space-y-6 lg:space-y-16 mt-6 lg:mt-12"
             >
               {/* Email Row */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
@@ -135,48 +135,36 @@ function ChangePassword() {
                   className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
               </div>
+              <div className="flex flex-col gap-8">
+                {/* New Password */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10 ">
+                  <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                    Add your new password
+                  </label>
+                  <input
+                    type={showNew ? "text" : "password"}
+                    {...register("newPassword", { required: "Required" })}
+                    className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
+                  />
+                </div>
 
-              {/* Current Password */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
-                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] flex-shrink-0">
-                  Current password
-                </label>
-                <input
-                  type={showCurrent ? "text" : "password"}
-                  {...register("currentPassword", { required: "Required" })}
-                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                />
+                {/* Repeat Password */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                  <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                    Repeat your new password
+                  </label>
+                  <input
+                    type={showRepeat ? "text" : "password"}
+                    {...register("repeatPassword", {
+                      required: "Required",
+                      validate: (value) =>
+                        value === watch("newPassword") ||
+                        "Passwords do not match",
+                    })}
+                    className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
+                  />
+                </div>
               </div>
-
-              {/* New Password */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
-                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
-                  Add your new password
-                </label>
-                <input
-                  type={showNew ? "text" : "password"}
-                  {...register("newPassword", { required: "Required" })}
-                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                />
-              </div>
-
-              {/* Repeat Password */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
-                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
-                  Repeat your new password
-                </label>
-                <input
-                  type={showRepeat ? "text" : "password"}
-                  {...register("repeatPassword", {
-                    required: "Required",
-                    validate: (value) =>
-                      value === watch("newPassword") ||
-                      "Passwords do not match",
-                  })}
-                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                />
-              </div>
-
               {/* Button */}
               <div className="flex justify-end">
                 <PolygonButton
@@ -187,10 +175,10 @@ function ChangePassword() {
                   clipPath={`polygon(15% 11%, 81% 0%, 100% 87%, 3% calc(100% - 15px))`}
                   childTop={11}
                 >
-                  <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
-                    Send Reset
+                  <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-[100%] text-center">
+                    Reset
                     <br />
-                    <span className="whitespace-nowrap">Link</span>
+                    <span className="whitespace-nowrap">Password</span>
                   </span>
                 </PolygonButton>
               </div>
@@ -232,4 +220,4 @@ function ChangePassword() {
   );
 }
 
-export default ChangePassword;
+export default ResetPassword;

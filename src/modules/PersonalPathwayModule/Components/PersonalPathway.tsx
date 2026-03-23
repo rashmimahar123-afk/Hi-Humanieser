@@ -3,11 +3,12 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import PracticePerspective from "./PracticePerspective/PracticePerspective";
 import styles from "./PersonalPathway.module.css";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import GaugeChart from "react-gauge-chart";
+import usePersonalPathwayQuery from "../Hooks/usePersonalPathwayQuery";
 
 function PersonalPathway() {
   const router = useRouter();
@@ -54,6 +55,10 @@ function PersonalPathway() {
       }, 200);
     }
   };
+
+  const { data, isLoading, isError } = usePersonalPathwayQuery();
+  const pathwayData = data?.data?.pathways;
+  console.log("datadatadatadata", pathwayData);
 
   return (
     <div

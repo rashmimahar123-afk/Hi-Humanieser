@@ -28,7 +28,7 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
   const answeredCount = Object.keys(answers).length;
   // Pillar-1 contributes 0 → 8
   const progressValue = Math.min(answeredCount, PILLAR_1_MAX);
-
+  const isAllAnswered = answeredCount === PILLAR_1_MAX;
   const router = useRouter();
   const handleAnswer = (questionNo: number, value: any) => {
     setAnswers((prev) => ({
@@ -53,11 +53,6 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
     Often: 4,
     Always: 5,
   };
-  const situationMap: Record<string, number> = {
-    a: 1,
-    b: 2,
-    c: 3,
-  };
 
   const buildPayload = () => {
     const payload: any = {
@@ -66,21 +61,25 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
 
     const principles = pillarOne?.principles || {};
 
-    let qIndex = 1;
+    let globalQIndex = 1; // ✅ IMPORTANT
 
     Object.entries(principles).forEach(([principleKey, principle]: any) => {
-      payload.pillar_01[principleKey] = {};
+      const formattedKey =
+        principleKey.charAt(0).toLowerCase() + principleKey.slice(1);
+
+      payload.pillar_01[formattedKey] = {};
 
       principle.questions.forEach((question: any) => {
-        const answer = answers[qIndex];
+        const answer = answers[globalQIndex];
 
         if (question.type === "strength") {
-          payload.pillar_01[principleKey].strength = strengthMap[answer] ?? 0;
+          payload.pillar_01[formattedKey].strength = strengthMap[answer] ?? 0;
         } else {
-          payload.pillar_01[principleKey].situation = situationMap[answer] ?? 0;
+          payload.pillar_01[formattedKey].situation =
+            typeof answer === "number" ? answer : 0;
         }
 
-        qIndex++;
+        globalQIndex++; // ✅ increment globally
       });
     });
 
@@ -88,6 +87,7 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
   };
 
   const handleCompleteQuiz = () => {
+    if (!isAllAnswered) return;
     const payload = buildPayload();
 
     localStorage.setItem("quiz_pillar_1", JSON.stringify(payload));
@@ -145,7 +145,7 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
                   >
                     <div>
                       This short quiz helps you reflect on how work feels for
-                      you right now — and guides you toward
+                      you right now and guides you toward
                     </div>
                     <div>Pathways that fit where you are.</div>
                     <div className=" mt-2">
@@ -208,11 +208,9 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
                 </h3>
 
                 <p className="mt-2 text-[18px] leading-relaxed text-[#737373] font-[Aptos] ">
-                  {/* This first section is about how we show up as individuals —
-                  the attitudes and habits we carry into our work. These
-                  questions explore self-awareness, curiosity, honesty, and
-                  perspective. */}
-                  {pillarOne?.description}
+                  This first section is about how we show up as individuals, the
+                  attitudes and habits we carry into our work. These questions
+                  explore self-awareness, curiosity, honesty, and perspective.
                 </p>
               </div>
             </header>
@@ -241,16 +239,15 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
 
             {/* Footer */}
             <div
-              className="flex justify-end relative mt-[60px] mr-[31px]"
+              className={`flex justify-end relative mt-[60px] mr-[31px] ${
+                !isAllAnswered ? "opacity-50 pointer-events-none" : ""
+              }`}
               onClick={() => handleCompleteQuiz()}
             >
               <div className="absolute text-[#E3A45B] text-xl -top-[35%] -right-[2%] -rotate-[18deg]">
                 <Image src={images.rightArrow} alt="arrow-img" width={32} />
               </div>
-              <div
-                className={styles.startTriangleWrapper}
-                onClick={() => handleCompleteQuiz()}
-              >
+              <div className={styles.startTriangleWrapper}>
                 {/* Polygon Shape */}
                 <div className={styles.clipStartTriangle} />
 

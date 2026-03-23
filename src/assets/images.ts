@@ -202,6 +202,7 @@ import hubPolyOne from "../../public/profile/images/hubPoly1.png";
 import hubPolyTwo from "../../public/profile/images/hubPoly2.png";
 import hubPolyThree from "../../public/profile/images/hubPoly3.png";
 import hubPolyFour from "../../public/profile/images/hubPoly4.png";
+import waveDivider from "../../public/images/waveDivider.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -407,6 +408,7 @@ type imageTypes = {
   hubPolyTwo: StaticImageData;
   hubPolyThree: StaticImageData;
   hubPolyFour: StaticImageData;
+  waveDivider: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -613,6 +615,7 @@ const Images: imageTypes = {
   hubPolyTwo,
   hubPolyThree,
   hubPolyFour,
+  waveDivider,
 };
 
 export default Images;

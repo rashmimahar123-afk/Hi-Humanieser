@@ -1,7 +1,17 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
+import {
+  CONVERSATION_ITEM_TYPE,
+  CONVERSATION_STARTER_TYPE,
+} from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
-function AmplifierSixDescription() {
+type CONVERSATION_STARTER_PROPS_TYPE = {
+  conversationStarter: CONVERSATION_STARTER_TYPE;
+};
+
+function AmplifierSixDescription(props: CONVERSATION_STARTER_PROPS_TYPE) {
+  const { conversationStarter } = props;
+
   return (
     <div className="relative rounded-[28px] px-[48px] overflow-hidden">
       {/* Top-right dotted arrow */}
@@ -15,42 +25,16 @@ function AmplifierSixDescription() {
       <div className="flex gap-[16px] max-w-[820px]">
         {/* Description */}
         <p className="text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[760px] mb-[18px]">
-          Amplifier behaviours take perspective beyond individual reflection and
-          turn it into a visible leadership practice. They help make multiple
-          viewpoints legitimate, broaden how decisions are made and strengthen
-          collective performance across the system.
+          {conversationStarter?.intro}
         </p>
       </div>
 
-      {/* Divider */}
-      {/* <Image
-        src={images.waveDivider}
-        alt=""
-        className="my-[36px] pointer-events-none"
-      /> */}
-
-      {/* Item 2 */}
-
-      {/* Divider */}
-      {/* <Image
-        src={images.waveDivider}
-        alt=""
-        className="my-[36px] pointer-events-none"
-      /> */}
-
-      {/* Item 3 */}
       <ul className="list-disc pl-[18px] space-y-[10px] text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[820px]">
-        <li>
-          “I might not have this perfectly right, but here’s what I’m thinking…”
-        </li>
-        <li>
-          “I realise I may have rushed my point — here’s the honest version”
-        </li>
-        <li>
-          “I’m open to rethinking this if it didn’t land quite how I meant it”
-        </li>
-        <li>“This is where I am right now, and I’m still working it out”</li>
-        <li>“If I’m missing something here, I’d genuinely like to know”</li>
+        {conversationStarter?.items?.map(
+          (item: CONVERSATION_ITEM_TYPE, index: number) => {
+            return <li key={`item${index}`}>{item?.text}</li>;
+          },
+        )}
       </ul>
     </div>
   );

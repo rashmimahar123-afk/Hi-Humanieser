@@ -3,6 +3,12 @@ import images from "@/src/assets/images";
 import styles from "./LandingPage.module.css";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import AmplifierFirstDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierfirstDescription/AmplifierFirstDescription";
+import AmplifierAccordian from "@/src/modules/PersonalPathwayModule/Components/AmplifierAccordian/AmplifierAccordian";
+import AmplifierSecondDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierSecondDescription/AmplifierSecondDescription";
+import AmplifierThirdDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierThirdDescription/AmplifierThirdDescription";
+import AmplifierForthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierForthDescription/AmplifierForthDescription";
+import AmplifierFifthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierFifthDescription/AmplifierFifthDescription";
 
 function LandingPage() {
   const router = useRouter();
@@ -13,38 +19,40 @@ function LandingPage() {
           {/* Left Section */}
           <div className="space-y-8 ">
             {/* Logo Section - Top */}
-            <div className="flex-shrink-0">
-              <div className="flex items-center gap-2">
-                <Image
-                  src={images.humaniserLogo}
-                  alt="Humanising Our Workplaces Logo"
-                  width={80}
-                  className="object-contain"
-                  priority
-                />
+            <Link href="https://humanisingourworkplaces.com" target="_blank">
+              <div className="flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={images.humaniserLogo}
+                    alt="Humanising Our Workplaces Logo"
+                    width={80}
+                    className="object-contain"
+                    priority
+                  />
+                  <div
+                    style={{
+                      fontSize: "28px",
+                      fontFamily: "Aptos, sans-serif",
+                      fontWeight: "bold",
+                      lineHeight: "1",
+                    }}
+                  >
+                    <span className="block">Humanising our</span>
+                    <span className="block -mt-[2px]">Workplaces</span>
+                  </div>
+                </div>
                 <div
                   style={{
-                    fontSize: "28px",
                     fontFamily: "Aptos, sans-serif",
-                    fontWeight: "bold",
-                    lineHeight: "1",
+                    fontWeight: 400,
+                    marginLeft: "18px",
                   }}
                 >
-                  <span className="block">Humanising our</span>
-                  <span className="block -mt-[2px]">Workplaces</span>
+                  {/* People & Performance Thriving Together */}
+                  Human Habits. Clear Decision. Reliable Execution.
                 </div>
               </div>
-              <div
-                style={{
-                  fontFamily: "Aptos, sans-serif",
-                  fontWeight: 400,
-                  marginLeft: "18px",
-                }}
-              >
-                {/* People & Performance Thriving Together */}
-                Human Habits Clear Decision Reliable Execution.
-              </div>
-            </div>
+            </Link>
             {/* Main Heading */}
             <h1 className={`text-[#0F4F58] font-bold ${styles.mainHeading}`}>
               Hi Humaniser!
@@ -73,7 +81,7 @@ function LandingPage() {
               <p className={`text-base text-[#0F4F58] ${styles.descParagraph}`}>
                 Explore your pathway, connect with your team, and
                 <br />
-                shape a culture where humans thrive — and results
+                shape a culture where humans thrive and results
                 <br />
                 follow.
               </p>
@@ -91,12 +99,12 @@ function LandingPage() {
                 {/* Text with background */}
                 <div
                   className={`bg-white rounded-[20px] px-4 py-2 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center ${styles.goBtnText}`}
-                  onClick={() => router.push("/")}
+                  onClick={() => router.push("/login")}
                 >
                   <span
                     className={`text-black whitespace-nowrap font-bold ${styles.goBtnSpan}`}
                   >
-                    Lets go
+                    Let's go
                   </span>
                 </div>
               </div>
@@ -138,6 +146,23 @@ function LandingPage() {
             </Link>
           </p>
         </div>
+      </div>
+      <div className="max-w-[1100px] mx-auto mt-14 space-y-6">
+        <AmplifierAccordian title="Why This Works">
+          <AmplifierFirstDescription />
+        </AmplifierAccordian>
+        <AmplifierAccordian title="Core Behaviours">
+          <AmplifierSecondDescription />
+        </AmplifierAccordian>
+        <AmplifierAccordian title="Amplifier Behaviours">
+          <AmplifierThirdDescription />
+        </AmplifierAccordian>
+        <AmplifierAccordian title="Common Traps">
+          <AmplifierForthDescription />
+        </AmplifierAccordian>
+        <AmplifierAccordian title="Micro-Actions">
+          <AmplifierFifthDescription />
+        </AmplifierAccordian>
       </div>
     </div>
   );

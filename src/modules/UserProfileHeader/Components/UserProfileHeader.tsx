@@ -3,6 +3,7 @@ import images from "@/src/assets/images";
 import { useState } from "react";
 import ProfileDropdown from "../../ProfileDropdown/ProfileDropdown";
 import { AUTH_STATE, USER_INFO_TYPE } from "../../AuthModule/Types/CommonTypes";
+import { useRouter } from "next/navigation";
 
 type USER_PROFILE_HEADER_PROPS = {
   greetingColor?: string;
@@ -15,14 +16,14 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
   const { greetingColor, nameColor, hideUserProfile, userInfo } = props;
 
   const [openDropdown, setOpenDropdown] = useState(false);
-
+  const router = useRouter();
   return (
     <>
       {/* Overlay content */}
       <div className="flex justify-between">
         {" "}
         {/* Left */}
-        <div>
+        <div onClick={() => router.push("/home")} className="cursor-pointer">
           <div
             style={{
               fontFamily: "Aptos",

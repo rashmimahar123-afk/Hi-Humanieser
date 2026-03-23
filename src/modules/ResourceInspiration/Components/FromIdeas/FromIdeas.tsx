@@ -10,6 +10,8 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import Link from "next/link";
+import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import { CHOOSE_MYSELF_PILLAR_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 function FromIdeas() {
   const [animateText, setAnimateText] = useState(false);
@@ -20,6 +22,9 @@ function FromIdeas() {
   }, []);
 
   const router = useRouter();
+  const { data, isLoading, isError } = useChooseMyselfQuery();
+  const pillarsData = data?.data?.slice(1); // skip pulse_check_config
+  const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
 
   return (
     <div
@@ -109,66 +114,43 @@ function FromIdeas() {
 
           <div className="mt-[70px]">
             <div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Mindset We Bring"
-                  bgColor="#4ba6a6"
-                  cards={[
-                    {
-                      title: "Own Your Impact",
-                      description:
-                        "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#4ba6a6",
-                    },
-                    {
-                      title: "Be Real, Not Right",
-                      description:
-                        "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
-                      learnMoreColor: "#4ba6a6",
-                    },
-                  ]}
-                />
-              </div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Way We Connect"
-                  bgColor="#8BBE8A"
-                  cards={[
-                    {
-                      title: "Make it Safe",
-                      description:
-                        "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
-                      learnMoreColor: "#8BBE8A",
-                    },
-                    {
-                      title: "Be Real, Not Right",
-                      description:
-                        "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#8BBE8A",
-                    },
-                  ]}
-                />
-              </div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Culture We Shape"
-                  bgColor="#F5C882"
-                  cards={[
-                    {
-                      title: "Culture by Design",
-                      description:
-                        "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-                      learnMoreColor: "#F5C882",
-                    },
-                    {
-                      title: "Wellbeing is Performance Infrastructure",
-                      description:
-                        "Learn how energy, recovery, and care directly strengthen performance.",
-                      learnMoreColor: "#F5C882",
-                    },
-                  ]}
-                />
-              </div>
+              {pillarsList?.map(
+                (item: CHOOSE_MYSELF_PILLAR_TYPE, index: any) => {
+                  return (
+                    <>
+                      <div
+                        className="mt-[32px] px-[40px]"
+                        key={`item ${index}`}
+                      >
+                        <FromIdeasPathwayCard
+                          sectionTitle={item?.pillar_name}
+                          bgColor={
+                            item?.pillar_number === 1
+                              ? "#4ba6a6"
+                              : item?.pillar_number === 2
+                                ? "#8BBE8A"
+                                : "#F5C882"
+                          }
+                          cards={item?.principles?.map((principleItem) => ({
+                            title: principleItem?.principle_name,
+                            description: principleItem?.definition,
+                            learnMoreColor:
+                              item?.pillar_number === 1
+                                ? "#4ba6a6"
+                                : item?.pillar_number === 2
+                                  ? "#8BBE8A"
+                                  : "#F5C882",
+                            onLearnMore: () =>
+                              router.push(
+                                `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
+                              ),
+                          }))}
+                        />
+                      </div>
+                    </>
+                  );
+                },
+              )}
             </div>
           </div>
 
@@ -209,14 +191,17 @@ function FromIdeas() {
                       description:
                         "Transform your messages into clear direction that people can actually act on.",
                       learnMoreColor: "#4ba6a6",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                     {
                       title: "Be Real, Not Right",
                       description:
                         "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
                       learnMoreColor: "#4ba6a6",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                   ]}
+                  type="focus-area"
                 />
               </div>
               <div className="mt-[32px] px-[40px]">
@@ -229,14 +214,17 @@ function FromIdeas() {
                       description:
                         "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
                       learnMoreColor: "#f5c882",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                     {
                       title: "Be Real, Not Right",
                       description:
                         "Transform your messages into clear direction that people can actually act on.",
                       learnMoreColor: "#f5c882",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                   ]}
+                  type="focus-area"
                 />
               </div>
               <div className="mt-[32px] px-[40px]">
@@ -249,14 +237,17 @@ function FromIdeas() {
                       description:
                         "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
                       learnMoreColor: "#acd5ab",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                     {
                       title: "Wellbeing is Performance Infrastructure",
                       description:
                         "Learn how energy, recovery, and care directly strengthen performance.",
                       learnMoreColor: "#acd5ab",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                   ]}
+                  type="focus-area"
                 />
               </div>
               <div className="mt-[32px] px-[40px]">
@@ -269,14 +260,17 @@ function FromIdeas() {
                       description:
                         "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
                       learnMoreColor: "#f7c3be",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                     {
                       title: "Wellbeing is Performance Infrastructure",
                       description:
                         "Learn how energy, recovery, and care directly strengthen performance.",
                       learnMoreColor: "#f7c3be",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                   ]}
+                  type="focus-area"
                 />
               </div>
               <div className="mt-[32px] px-[40px]">
@@ -289,14 +283,17 @@ function FromIdeas() {
                       description:
                         "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
                       learnMoreColor: "#4ba6a6",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                     {
                       title: "Wellbeing is Performance Infrastructure",
                       description:
                         "Learn how energy, recovery, and care directly strengthen performance.",
                       learnMoreColor: "#4ba6a6",
+                      onLearnMore: () => router.push(`/conversation`),
                     },
                   ]}
+                  type="focus-area"
                 />
               </div>
             </div>

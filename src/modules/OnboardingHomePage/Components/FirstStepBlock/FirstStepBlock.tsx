@@ -83,13 +83,16 @@ function FirstStepBlock() {
             <p>
               Your progress, all in one place. Track completed milestones, see
               your active micro-actions, and notice patterns in your
-              reflections. You can also download a summary of your journey —
+              reflections. You can also download a summary of your journey,
               ready to bring into your performance review or appraisal.
             </p>
           </div>
         </div>
         <div className={styles.centerRow}>
-          <div className={`${styles.card} ${styles.pink}`}>
+          <div
+            className={`${styles.card} ${styles.pink}`}
+            onClick={() => router.push("/reflection-walls")}
+          >
             <div className={styles.imageWrapper}>
               <Image
                 src={images.firstStepPink}
@@ -109,7 +112,10 @@ function FirstStepBlock() {
             </div>
           </div>
 
-          <div className={`${styles.card} ${styles.blue}`}>
+          <div
+            className={`${styles.card} ${styles.blue}`}
+            onClick={() => router.push("/resource-inspiration")}
+          >
             <div className={styles.imageWrapper}>
               <Image
                 src={images.firstStepImg}

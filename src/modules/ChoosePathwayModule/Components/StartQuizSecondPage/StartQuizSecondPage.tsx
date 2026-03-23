@@ -28,8 +28,11 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
   const PILLAR_2_MAX = 8; // this page questions
 
   const pillar2Answered = Math.min(Object.keys(answers).length, PILLAR_2_MAX);
+  const answeredCount = Object.keys(answers).length;
 
   const progressValue = PILLAR_1_DONE + pillar2Answered;
+
+  const isAllAnswered = answeredCount === PILLAR_2_MAX;
 
   const router = useRouter();
 
@@ -56,11 +59,6 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
     Often: 4,
     Always: 5,
   };
-  const situationMap: Record<string, number> = {
-    a: 1,
-    b: 2,
-    c: 3,
-  };
 
   const buildPayload = () => {
     const payload: any = {
@@ -69,28 +67,35 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
 
     const principles = pillarTwo?.principles || {};
 
-    let qIndex = 9;
+    let globalQIndex = 9;
 
-    Object.entries(principles).forEach(([principleKey, principle]: any) => {
-      payload.pillar_02[principleKey] = {};
+    Object.entries(principles || {}).forEach(
+      ([principleKey, principle]: any) => {
+        const formattedKey =
+          principleKey.charAt(0).toLowerCase() + principleKey.slice(1);
 
-      principle.questions.forEach((question: any) => {
-        const answer = answers[qIndex];
+        payload.pillar_02[formattedKey] = {};
 
-        if (question.type === "strength") {
-          payload.pillar_02[principleKey].strength = strengthMap[answer] ?? 0;
-        } else {
-          payload.pillar_02[principleKey].situation = situationMap[answer] ?? 0;
-        }
+        principle.questions.forEach((question: any) => {
+          const answer = answers[globalQIndex];
 
-        qIndex++;
-      });
-    });
+          if (question.type === "strength") {
+            payload.pillar_02[formattedKey].strength = strengthMap[answer] ?? 0;
+          } else {
+            payload.pillar_02[formattedKey].situation =
+              typeof answer === "number" ? answer : 0;
+          }
+
+          globalQIndex++;
+        });
+      },
+    );
 
     return payload;
   };
 
   const handleCompleteQuiz = () => {
+    if (!isAllAnswered) return;
     const payload = buildPayload();
 
     localStorage.setItem("quiz_pillar_2", JSON.stringify(payload));
@@ -147,11 +152,10 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
                 </h3>
 
                 <p className="mt-2 text-[18px] leading-relaxed text-[#737373] font-[Aptos] ">
-                  {/* This section looks at how we interact with others. It’s about
+                  This section looks at how we interact with others. It’s about
                   the quality of our conversations — recognising people,
                   creating safety, speaking with clarity and listening to
-                  understand. */}
-                  {pillarTwo?.description}
+                  understand.
                 </p>
               </div>
             </header>
@@ -178,16 +182,15 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
             </div>
             {/* Footer */}
             <div
-              className="flex justify-end relative mt-[50px] mr-[31px]"
+              className={`flex justify-end relative mt-[50px] mr-[31px] ${
+                !isAllAnswered ? "opacity-50 pointer-events-none" : ""
+              }`}
               onClick={() => handleCompleteQuiz()}
             >
               <div className="absolute text-[#E3A45B] text-xl -top-[35%] -right-[2%] -rotate-[18deg]">
                 <Image src={images.rightArrow} alt="arrow-img" width={32} />
               </div>
-              <div
-                className={styles.startTriangleWrapper}
-                onClick={() => handleCompleteQuiz()}
-              >
+              <div className={styles.startTriangleWrapper}>
                 {/* Polygon Shape */}
                 <div className={styles.clipStartTriangle} />
 

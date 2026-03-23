@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { getEmailValidationRules } from "@/src/lib/Helpers";
 import { emailMessage } from "@/src/lib/ErrorMessages";
 import Link from "next/link";
+import { useForgotPasswordMutation } from "../../Hooks/useForgotPasswordMutation";
 
 interface ForgotPasswordFormProps {
   onBack: () => void;
@@ -14,6 +15,7 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -22,11 +24,20 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
     },
   });
 
+  const forgotPasswordMutation = useForgotPasswordMutation();
+
   const handleForgotPasswordSubmit = handleSubmit((values: any) => {
     console.log("Forgot Password Email:", values.email);
-    // Add your forgot password API call here
-    // Example:
-    // forgotPasswordMutation.mutate({ email: values.email });
+    forgotPasswordMutation.mutate(
+      {
+        email: values.email,
+      },
+      {
+        onSuccess: () => {
+          reset({ email: "" });
+        },
+      },
+    );
   });
 
   return (
@@ -42,37 +53,39 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
       <header className="relative px-8 pt-8 flex-shrink-0">
         <div className="flex items-start">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <div className="flex items-center gap-2">
-              <Image
-                src={images.humaniserLogo}
-                alt="Humanising Our Workplaces Logo"
-                width={80}
-                className="object-contain"
-                priority
-              />
+          <Link href="https://humanisingourworkplaces.com" target="_blank">
+            <div className="flex-shrink-0">
+              <div className="flex items-center gap-2">
+                <Image
+                  src={images.humaniserLogo}
+                  alt="Humanising Our Workplaces Logo"
+                  width={80}
+                  className="object-contain"
+                  priority
+                />
+                <div
+                  style={{
+                    fontSize: "28px",
+                    fontFamily: "Aptos, sans-serif",
+                    fontWeight: "bold",
+                    lineHeight: "1",
+                  }}
+                >
+                  <span className="block">Humanising our</span>
+                  <span className="block -mt-[2px]">Workplaces</span>
+                </div>
+              </div>
               <div
                 style={{
-                  fontSize: "28px",
                   fontFamily: "Aptos, sans-serif",
-                  fontWeight: "bold",
-                  lineHeight: "1",
+                  fontWeight: 400,
+                  marginLeft: "18px",
                 }}
               >
-                <span className="block">Humanising our</span>
-                <span className="block -mt-[2px]">Workplaces</span>
+                Human Habits. Clear Decision. Reliable Execution.
               </div>
             </div>
-            <div
-              style={{
-                fontFamily: "Aptos, sans-serif",
-                fontWeight: 400,
-                marginLeft: "18px",
-              }}
-            >
-              People & Performance Thriving Together
-            </div>
-          </div>
+          </Link>
           {/* Heading */}
           <div className="absolute" style={{ left: "679px", top: "89px" }}>
             <h1
@@ -199,7 +212,11 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                   </span>
                 </button>
 
-                <button type="submit" className="relative cursor-pointer ">
+                <button
+                  type="button"
+                  className="relative cursor-pointer "
+                  onClick={handleForgotPasswordSubmit}
+                >
                   {/* Polygon */}
                   <Image
                     src={images.resetPolygon}

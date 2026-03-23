@@ -40,6 +40,7 @@ export default function StartHere() {
       />
 
       {/* Header */}
+
       <div className="relative z-10 px-8 py-6">
         <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
       </div>

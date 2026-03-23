@@ -30,7 +30,7 @@ function ChoosePathwayPage() {
           height={830}
           className="absolute top-0 right-0 -z-10 pointer-events-none"
         />
-        <UserProfileHeader greetingColor="#FFFFFF" nameColor="#FFFFFF" />
+        <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
         <SuccessMessage
           text="Your presence is one of your strongest tools
 "
@@ -76,7 +76,7 @@ function ChoosePathwayPage() {
                 This is your space to grow with intention. Whether you follow
                 our guidance or choose your own
                 <br />
-                focus, your Pathway will help you make real, human change – in a
+                focus, your Pathway will help you make real, human change in a
                 way that fits you.
               </p>
               <div className={styles.cardRow}>

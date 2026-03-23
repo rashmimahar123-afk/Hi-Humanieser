@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 type ImageConfig = {
   src: any;
@@ -49,21 +50,26 @@ const SuccessMessage = ({
     <div
       className={`flex items-center justify-center gap-2 ${wrapperClassName}`}
     >
-      {/* Left Image */}
-      {leftImg && (
-        <Image
-          src={leftImg.src}
-          alt={leftImg.alt || "left decoration"}
-          width={leftImg.width || 40}
-          height={leftImg.height || 40}
-          className={`shrink-0 ${leftImg.className || ""} absolute`}
-          style={{ left: left, bottom: bottom, top: top }}
-        />
-      )}
+      <div className="relative inline-block">
+        {/* Left Image */}
+        {leftImg && (
+          <Image
+            src={leftImg.src}
+            alt={leftImg.alt || "left decoration"}
+            width={leftImg.width || 40}
+            height={leftImg.height || 40}
+            className={`shrink-0 ${leftImg.className || ""} absolute`}
+            style={{
+              left: `-${leftImg?.width || 40}px`, // 5px gap from text start
+              bottom: bottom,
+              top: top,
+            }}
+          />
+        )}
 
-      {/* Text */}
-      <h2
-        className={`
+        {/* Text */}
+        <h2
+          className={`
           ${fontSize}
           
           text-center
@@ -71,31 +77,32 @@ const SuccessMessage = ({
           leading-snug
           ${textClassName}
         `}
-        style={{
-          fontFamily: "League Spartan",
-          color: fontColor,
-          maxWidth: maxWidth,
-        }}
-      >
-        {text}
-      </h2>
-
-      {/* Right Image */}
-      {rightImg && (
-        <Image
-          src={rightImg.src}
-          alt={rightImg.alt || "right decoration"}
-          width={rightImg.width || 40}
-          height={rightImg.height || 40}
-          className={`shrink-0 ${rightImg.className || ""} absolute`}
           style={{
-            right: rightImgRight,
-            bottom: rightImgBottom,
-            top: rightImgTop,
-            rotate: rotate,
+            fontFamily: "League Spartan",
+            color: fontColor,
+            maxWidth: maxWidth,
           }}
-        />
-      )}
+        >
+          {text}
+        </h2>
+
+        {/* Right Image */}
+        {rightImg && (
+          <Image
+            src={rightImg.src}
+            alt={rightImg.alt || "right decoration"}
+            width={rightImg.width || 40}
+            height={rightImg.height || 40}
+            className={`shrink-0 ${rightImg.className || ""} absolute`}
+            style={{
+              right: `-${(rightImg?.width || 40) - 8}px`, // 5px gap from text end
+              bottom: rightImgBottom,
+              top: rightImgTop,
+              rotate: rotate,
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

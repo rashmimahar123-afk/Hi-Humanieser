@@ -12,8 +12,8 @@ function SecondStepBlock() {
 
       <p className={styles.subtitle}>
         Pick a Personal Pathway to practice and add your voice to your Team
-        Journey. Your leader will choose a ritual based on your team’s input —
-        so both journeys move forward together.
+        Journey. Your leader will choose a ritual based on your team’s input, so
+        both journeys move forward together.
       </p>
 
       <div className={styles.cardRow}>

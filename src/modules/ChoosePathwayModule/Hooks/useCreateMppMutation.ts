@@ -2,11 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import { authFetcher } from "@/src/lib/Helpers";
 import { SUBMIT_QUIZ_REQUEST_TYPES } from "../Types/RequestTypes";
 
-const submitQuiz = async (data: any) => {
-  const { payload } = data;
-
+const createMpp = async (payload: any) => {
   const response = await authFetcher({
-    url: "/submit-quiz",
+    url: "/create-mpp",
     method: "POST",
     data: payload,
   });
@@ -14,8 +12,8 @@ const submitQuiz = async (data: any) => {
   return response.data;
 };
 
-export const useSubmitQuizMutation = () => {
+export const useCreateMppMutation = () => {
   return useMutation({
-    mutationFn: submitQuiz,
+    mutationFn: createMpp,
   });
 };

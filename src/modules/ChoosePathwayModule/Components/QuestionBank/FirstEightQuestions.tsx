@@ -24,6 +24,14 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
   const allQuestions: PILLAR_DATA_QUESTIONS[] = Object.values(
     pillarOne?.principles || {},
   ).flatMap((principle: PRINCIPLE_TYPE) => principle.questions);
+
+  const situationScoreByQuestion: Record<number, Record<string, number>> = {
+    2: { a: 1, b: 4, c: 5 },
+    4: { a: 1, b: 5, c: 3 },
+    6: { a: 1, b: 4, c: 5 },
+    8: { a: 1, b: 3, c: 5 },
+  };
+
   return (
     <>
       {allQuestions.map((item, index) => {
@@ -72,32 +80,41 @@ function FirstEightQuestions(props: FIRST_EIGHT_QUESTION_PROPS) {
               </div>
             ) : (
               <div className="mt-6 space-y-4 ml-[100px]">
-                {Object.entries(item.option_text).map(([key, value]) => (
-                  <label
-                    key={key}
-                    className="flex items-center justify-between cursor-pointer"
-                    onClick={() => onAnswer(qNo, key)}
-                  >
-                    <span className="text-[19px] text-[#737373]">
-                      ({key}) {value}
-                    </span>
+                {Object.entries(item.option_text).map(([key, value]) => {
+                  return (
+                    <label
+                      key={key}
+                      className="flex items-center justify-between cursor-pointer"
+                      onClick={() => {
+                        const value = situationScoreByQuestion[qNo]?.[key];
 
-                    <span className="relative w-[21px] h-[23px]">
-                      <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
+                        if (value !== undefined) {
+                          onAnswer(qNo, value);
+                        }
+                      }}
+                    >
+                      <span className="text-[19px] text-[#737373]">
+                        ({key}) {value}
+                      </span>
 
-                      {answers[qNo] === key && (
-                        <Image
-                          src={images.tickImg}
-                          alt="tick"
-                          width={12}
-                          height={12}
-                          className="absolute top-1/2 left-1/2
-                    -translate-x-1/2 -translate-y-1/2"
-                        />
-                      )}
-                    </span>
-                  </label>
-                ))}
+                      <span className="relative w-[21px] h-[23px]">
+                        <span className="w-full h-full bg-[#86C9C9] clip-triangle block" />
+
+                        {answers[qNo] ===
+                          situationScoreByQuestion[qNo]?.[key] && (
+                          <Image
+                            src={images.tickImg}
+                            alt="tick"
+                            width={12}
+                            height={12}
+                            className="absolute top-1/2 left-1/2
+            -translate-x-1/2 -translate-y-1/2"
+                          />
+                        )}
+                      </span>
+                    </label>
+                  );
+                })}
               </div>
             )}
           </div>

@@ -6,6 +6,8 @@ import styles from "./MySelfPage.module.css";
 import { useRouter } from "next/navigation";
 import MySelfCard from "./MySelfCard/MySelfCard";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import useChooseMyselfQuery from "../../Hooks/useChooseMyselfQuery";
+import { CHOOSE_MYSELF_PILLAR_TYPE } from "../../Types/ResponseTypes";
 
 function MySelfPage() {
   const [animateText, setAnimateText] = useState(false);
@@ -29,6 +31,12 @@ function MySelfPage() {
       return [...prev, id]; // no limit now
     });
   };
+
+  const { data, isLoading, isError } = useChooseMyselfQuery();
+  const pillarsData = data?.data?.slice(1); // skip pulse_check_config
+  const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
+
+  console.log("pillarsDatapillarsData", pillarsList);
 
   return (
     <div
@@ -78,7 +86,7 @@ function MySelfPage() {
                 think of it as your practical guide to bringing that idea to
                 life through small, real actions.
               </p>
-              <div className="mt-[100px] px-[40px]">
+              <div className="mt-[100px] ">
                 <p
                   className="text-[22px] text-[#0f4f58] "
                   style={{ fontFamily: "Aptos" }}
@@ -129,84 +137,38 @@ function MySelfPage() {
       <div className="ml-[76px] pt-[400px]">
         <div className="mt-[70px]">
           <div>
-            <div className="mt-[32px] px-[40px]">
-              <MySelfCard
-                sectionTitle="The Mindset We Bring"
-                bgColor="#9FD3D1"
-                cards={[
-                  {
-                    title: "Own Your Impact",
-                    description:
-                      "Transform your messages into clear direction that people can actually act on.",
-                    learnMoreColor: "#7EC9C6",
-                    onLearnMore: () => router.push("/pathway-card"),
-                    selected: selectedPathways.includes(1),
-                    onSelect: () => togglePathway(1),
-                  },
-                  {
-                    title: "Be Real, Not Right",
-                    description:
-                      "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
-                    learnMoreColor: "#7EC9C6",
-                    onLearnMore: () => router.push("/pathway-card"),
-                    selected: selectedPathways.includes(2),
-                    onSelect: () => togglePathway(2),
-                  },
-                ]}
-              />
-            </div>
-            <div className="mt-[32px] px-[40px]">
-              <MySelfCard
-                sectionTitle="The Way We Connect"
-                bgColor="#8BBE8A"
-                cards={[
-                  {
-                    title: "Make it Safe",
-                    description:
-                      "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
-                    learnMoreColor: "#8BBE8A",
-                    onLearnMore: () => router.push("/pathway-card"),
-                    selected: selectedPathways.includes(3),
-                    onSelect: () => togglePathway(3),
-                  },
-                  {
-                    title: "Be Real, Not Right",
-                    description:
-                      "Transform your messages into clear direction that people can actually act on.",
-                    learnMoreColor: "#8BBE8A",
-                    onLearnMore: () => router.push("/pathway-card"),
-                    selected: selectedPathways.includes(4),
-                    onSelect: () => togglePathway(4),
-                  },
-                ]}
-              />
-            </div>
-            <div className="mt-[32px] px-[40px]">
-              <MySelfCard
-                sectionTitle="The Culture We Shape"
-                bgColor="#F8E1B8"
-                cards={[
-                  {
-                    title: "Culture by Design",
-                    description:
-                      "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-                    learnMoreColor: "#F8E1B8",
-                    onLearnMore: () => router.push("/pathway-card"),
-                    selected: selectedPathways.includes(5),
-                    onSelect: () => togglePathway(5),
-                  },
-                  {
-                    title: "Wellbeing is Performance Infrastructure",
-                    description:
-                      "Learn how energy, recovery, and care directly strengthen performance.",
-                    learnMoreColor: "#F8E1B8",
-                    onLearnMore: () => router.push("/pathway-card"),
-                    selected: selectedPathways.includes(6),
-                    onSelect: () => togglePathway(6),
-                  },
-                ]}
-              />
-            </div>
+            {pillarsList?.map((item: CHOOSE_MYSELF_PILLAR_TYPE, index: any) => {
+              return (
+                <>
+                  <div className="mt-[32px] " key={`item ${index}`}>
+                    <MySelfCard
+                      sectionTitle={item?.pillar_name}
+                      bgColor={
+                        item?.pillar_number === 1
+                          ? "#9FD3D1"
+                          : item?.pillar_number === 2
+                            ? "#acd5ab"
+                            : "#f8e1b8"
+                      }
+                      cards={item?.principles?.map((principleItem) => ({
+                        title: principleItem?.principle_name,
+                        description: principleItem?.definition,
+                        learnMoreColor: "#7EC9C6",
+                        onLearnMore: () =>
+                          router.push(
+                            `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
+                          ),
+                        selected: selectedPathways.includes(
+                          principleItem?.principle_number,
+                        ),
+                        onSelect: () =>
+                          togglePathway(principleItem?.principle_number),
+                      }))}
+                    />
+                  </div>
+                </>
+              );
+            })}
           </div>
         </div>
       </div>

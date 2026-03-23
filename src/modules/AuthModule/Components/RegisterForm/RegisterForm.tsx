@@ -125,7 +125,7 @@ function RegisterForm() {
             <div className={styles.skyTextInner}>
               <p className={styles.skyBodyText}>
                 You&apos;ll have full access for 10 days to move at your own
-                pace — discovering pathways, micro-actions, dashboards, and the
+                pace. Discover pathways, micro-actions, dashboards, and the
                 rhythms that help teams work in healthier, more human ways.
               </p>
             </div>
@@ -152,9 +152,9 @@ function RegisterForm() {
           />
           <div className={styles.skyBlockMobileInner}>
             <p className={styles.skyBodyTextMobile}>
-              You&apos;ll have full access for 10 days to move at your own pace
-              — discovering pathways, micro-actions, dashboards, and the rhythms
-              that help teams work in healthier, more human ways.
+              You&apos;ll have full access for 10 days to move at your own pace.
+              Discover pathways, micro-actions, dashboards, and the rhythms that
+              help teams work in healthier, more human ways.
             </p>
             <h3 className={styles.skyTitleMobile}>
               No credit card required — just curiosity.

@@ -6,6 +6,12 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import AmplifierAccordian from "@/src/modules/PersonalPathwayModule/Components/AmplifierAccordian/AmplifierAccordian";
+import AmplifierFirstDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierfirstDescription/AmplifierFirstDescription";
+import AmplifierSecondDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierSecondDescription/AmplifierSecondDescription";
+import AmplifierThirdDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierThirdDescription/AmplifierThirdDescription";
+import AmplifierForthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierForthDescription/AmplifierForthDescription";
+import AmplifierFifthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierFifthDescription/AmplifierFifthDescription";
 
 type DASHBOARD_BOX = {
   id: number;
@@ -34,15 +40,14 @@ function Home() {
     {
       id: 2,
       title: "MY PERSONAL PATHWAY",
-      description:
-        "Reflection, actions, and personal growth — at your own pace.",
+      description: "Reflection, actions, and personal growth at your own pace.",
       bgColor: "#F8E1B8",
       imageSrc: images.pathwayPoly,
     },
     {
       id: 3,
       title: "MY TEAM JOURNEY",
-      description: "See what your team is focusing on — and join the ritual.",
+      description: "See what your team is focusing on and join the ritual.",
       bgColor: "#FEF3F2",
       imageSrc: images.startPoly,
       // badge: "new ritual",
@@ -77,6 +82,9 @@ function Home() {
     if (id === 1) router.push("/start-here");
     if (id === 2) router.push("/choose-pathway");
     if (id === 3) router.push("/start-team-journey");
+    if (id === 4) router.push("/my-dashboard");
+    if (id === 5) router.push("/reflection-walls");
+    if (id === 6) router.push("/resource-inspiration");
   };
 
   return (
@@ -99,11 +107,9 @@ function Home() {
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
           fontColor="#0F4F58"
-          left="403px"
-          top="126px"
-          rightImgRight="390px"
           rotate="-35deg"
-          rightImgTop="123px"
+          bottom="3px"
+          rightImgBottom="3px"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-8 py-8">
@@ -136,18 +142,13 @@ function Home() {
                   />
 
                   {/* TEXT INSIDE POLYGON */}
-                  <div
-                    className="absolute inset-0 flex items-center"
-                    style={{
-                      paddingLeft: "110px",
-                    }}
-                  >
-                    <div style={{ maxWidth: "100%" }}>
+                  <div className="absolute inset-0 flex items-center justify-center text-center px-6">
+                    <div className="max-w-[250px]">
                       <span
                         style={{
                           fontFamily: "RocaTwo-Bold",
-                          fontSize: "34px",
-                          lineHeight: "100%",
+                          fontSize: "30px", // thoda reduce for better wrapping
+                          lineHeight: "110%",
                           color: "#0F4F58",
                           textTransform: "uppercase",
                           display: "block",

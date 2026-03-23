@@ -81,11 +81,12 @@ function ReflectionWalls() {
             fontSize="text-[23px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            left="382px"
-            top="175px"
-            rightImgRight="373px"
-            rightImgTop="173px"
+            left="366px"
+            top="170px"
+            rightImgRight="358px"
+            rightImgTop="165px"
             fontColor="#0F4F58"
+            rotate="-35deg"
           />
           <h2 className="text-[52px] font-[RocaTwo] font-bold  text-[#4BA6A6] mt-[30px]">
             Reflection Walls

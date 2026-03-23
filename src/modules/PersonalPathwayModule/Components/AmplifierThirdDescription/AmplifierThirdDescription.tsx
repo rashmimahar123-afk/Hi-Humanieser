@@ -1,7 +1,17 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
+import {
+  AMPLIFIER_BEHAVIOUR_TYPE,
+  AMPLIFIER_ITEMS_TYPE,
+} from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
-function AmplifierThirdDescription() {
+type AMPLIFIER_BEHAVIOUR_PROPS_TYPE = {
+  amplifierBehaviour: AMPLIFIER_BEHAVIOUR_TYPE;
+};
+
+function AmplifierThirdDescription(props: AMPLIFIER_BEHAVIOUR_PROPS_TYPE) {
+  const { amplifierBehaviour } = props;
+
   return (
     <div className="relative  overflow-hidden">
       {/* Right background lightning illustration */}
@@ -15,29 +25,20 @@ function AmplifierThirdDescription() {
       <div className="relative z-10 max-w-[900px]">
         {/* Description */}
         <p className="text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[760px] mb-[18px]">
-          Amplifier behaviours take perspective beyond individual reflection and
-          turn it into a visible leadership practice. They help make multiple
-          viewpoints legitimate, broaden how decisions are made and strengthen
-          collective performance across the system.
+          {amplifierBehaviour?.intro}
         </p>
 
         {/* Bullet Points */}
         <ul className="list-disc pl-[18px] space-y-[10px] text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[820px]">
-          <li>
-            Deliberately invite perspectives that challenge the dominant view,
-            especially from quieter voices or those closest to the work. Treat
-            difference as valuable data, not disruption.
-          </li>
-          <li>
-            Name the unseen pressures in the room — deadlines, risk, politics,
-            capacity — so behaviour is understood in context, not judged in
-            isolation.
-          </li>
-          <li>
-            Model perspective-taking out loud by saying what you’re noticing:
-            “From your role, I imagine this might feel…” This makes systems
-            thinking visible and learnable for others.
-          </li>
+          {amplifierBehaviour?.items?.map(
+            (item: AMPLIFIER_ITEMS_TYPE, index: number) => {
+              return (
+                <li key={item.amplifier_behaviour_number ?? index}>
+                  {item?.text}
+                </li>
+              );
+            },
+          )}
         </ul>
       </div>
     </div>

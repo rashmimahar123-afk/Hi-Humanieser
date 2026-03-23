@@ -8,6 +8,19 @@ import { useRouter } from "next/navigation";
 
 function ResearchRoom() {
   const router = useRouter();
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/researchRoom/ResearchIndex.pdf";
+    link.download = "ResearchIndex.pdf";
+    link.click();
+  };
+
+  const handleRecommendedDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/researchRoom/RecommendedReading.pdf";
+    link.download = "RecommendedReading.pdf";
+    link.click();
+  };
   return (
     <section className="min-h-screen bg-[#f5f0eb]">
       <div className="relative">
@@ -116,8 +129,11 @@ function ResearchRoom() {
                 className: "-left-[44px] -top-[12px]",
               }}
             >
-              <div className="h-full flex items-center justify-center text-center">
-                <span className="text-[#0F4F58] text-[24px] font-[RocaTwo] font-bold leading-[28px]">
+              <div className="h-full flex items-center justify-center text-center pointer-events-none">
+                <span
+                  className="text-[#0F4F58] text-[24px] font-[RocaTwo] font-bold leading-[28px] text-center pointer-events-auto cursor-pointer relative z-10"
+                  onClick={handleDownload}
+                >
                   Research Index
                 </span>
               </div>
@@ -141,7 +157,7 @@ function ResearchRoom() {
                 className: "-right-[27px] -top-[20px]",
               }}
             >
-              <div className="h-full flex items-center justify-center text-center">
+              <div className="h-full flex items-center justify-center text-center pointer-events-none">
                 <span
                   className="
       text-[#0F4F58]
@@ -150,8 +166,9 @@ function ResearchRoom() {
       font-bold
       leading-[28px]
       text-center
-      whitespace-normal
+      pointer-events-auto cursor-pointer relative z-10
     "
+                  onClick={handleRecommendedDownload}
                 >
                   Recommended Reading
                 </span>

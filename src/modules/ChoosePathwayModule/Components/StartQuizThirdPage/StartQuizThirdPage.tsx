@@ -5,12 +5,15 @@ import images from "@/src/assets/images";
 import styles from "./StartQuizThirdPage.module.css";
 import VerticalProgressBar from "@/src/components/VerticalProgressBar/VerticalProgressBar";
 import SuccessQuizMessage from "@/src/components/SuccessQuizMessage/SuccessQuizMessage";
-import SecondEightQuestions from "../QuestionBank/SecondEightQuestions";
 import LastEightQuestions from "../QuestionBank/LastEightQuestions";
 import { useRouter } from "next/navigation";
-import { PILLAR_DATA } from "../../Types/ResponseTypes";
+import {
+  PILLAR_DATA,
+  QUIZ_QUESTIONS_RESPONSE,
+  SUBMIT_QUIZ_RESPONSE_TYPES,
+} from "../../Types/ResponseTypes";
 import { useSubmitQuizMutation } from "../../Hooks/useSubmitQuizMutation";
-import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 type START_QUIZ_THIRD_PROPS_TYPES = {
   questionsRef: React.RefObject<HTMLDivElement | null>;
@@ -21,7 +24,6 @@ type START_QUIZ_THIRD_PROPS_TYPES = {
 function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
   const { questionsRef, trackHeight, pillarThree } = props;
   const [animateText, setAnimateText] = useState(false);
-  const { token } = useAuthValue();
 
   const [enter, setEnter] = useState(false);
   const [answers, setAnswers] = useState<Record<number, any>>({});
@@ -34,9 +36,10 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
   const PILLAR_3_MAX = 8;
 
   const pillar3Answered = Math.min(Object.keys(answers).length, PILLAR_3_MAX);
+  const answeredCount = Object.keys(answers).length;
 
-  // 🔥 OVERALL PROGRESS (16 → 24)
   const progressValue = PILLAR_1_DONE + PILLAR_2_DONE + pillar3Answered;
+  const isAllAnswered = answeredCount === PILLAR_3_MAX;
 
   useEffect(() => {
     setEnter(true);
@@ -62,11 +65,6 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
     Often: 4,
     Always: 5,
   };
-  const situationMap: Record<string, number> = {
-    a: 1,
-    b: 2,
-    c: 3,
-  };
 
   const buildPayload = () => {
     const payload: any = {
@@ -75,29 +73,33 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
 
     const principles = pillarThree?.principles || {};
 
-    let qIndex = 17;
-
+    let globalQIndex = 17;
     Object.entries(principles).forEach(([principleKey, principle]: any) => {
-      payload.pillar_03[principleKey] = {};
+      const formattedKey =
+        principleKey.charAt(0).toLowerCase() + principleKey.slice(1);
+
+      payload.pillar_03[formattedKey] = {};
 
       principle.questions.forEach((question: any) => {
-        const answer = answers[qIndex];
+        const answer = answers[globalQIndex];
 
         if (question.type === "strength") {
-          payload.pillar_03[principleKey].strength = strengthMap[answer] ?? 0;
+          payload.pillar_03[formattedKey].strength = strengthMap[answer] ?? 0;
         } else {
-          payload.pillar_03[principleKey].situation = situationMap[answer] ?? 0;
+          payload.pillar_03[formattedKey].situation =
+            typeof answer === "number" ? answer : 0;
         }
 
-        qIndex++;
+        globalQIndex++;
       });
     });
 
     return payload;
   };
-
   const { mutate: submitQuiz, isPending } = useSubmitQuizMutation();
   const handleSubmitQuiz = () => {
+    if (!isAllAnswered) return;
+
     const pillar3Payload = buildPayload();
 
     localStorage.setItem("quiz_pillar_3", JSON.stringify(pillar3Payload));
@@ -113,11 +115,11 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
         payload: finalPayload,
       },
       {
-        onSuccess: () => {
+        onSuccess: (res: SUBMIT_QUIZ_RESPONSE_TYPES) => {
           localStorage.removeItem("quiz_pillar_1");
           localStorage.removeItem("quiz_pillar_2");
           localStorage.removeItem("quiz_pillar_3");
-
+          SnackbarHandler.successToast(res?.message);
           router.push("/result");
         },
       },
@@ -171,11 +173,10 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
                 </h3>
 
                 <p className="mt-2 text-[18px] leading-relaxed text-[#737373] font-[Aptos] ">
-                  {/* This last section is about the bigger picture: the culture we
+                  This last section is about the bigger picture: the culture we
                   create together. These questions explore how we design team
                   habits, build belonging, integrate wellbeing, and make our
-                  ways of working sustainable. */}
-                  {pillarThree?.description}
+                  ways of working sustainable.
                 </p>
               </div>
             </header>
@@ -201,7 +202,11 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
               </div>
             </div>
             {/* Footer */}
-            <div className="flex justify-end relative mt-[51px] mr-[31px]">
+            <div
+              className={`flex justify-end relative mt-[51px] mr-[31px] ${
+                !isAllAnswered ? "opacity-50 pointer-events-none" : ""
+              }`}
+            >
               <div className="absolute text-[#E3A45B] text-xl -top-[35%] -right-[2%] -rotate-[18deg]">
                 <Image src={images.rightArrow} alt="arrow-img" width={32} />
               </div>

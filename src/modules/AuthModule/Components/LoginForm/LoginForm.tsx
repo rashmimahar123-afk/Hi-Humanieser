@@ -306,42 +306,43 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
       >
         <div style={headerRowStyle}>
           {/* Logo */}
-          <div style={{ flexShrink: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Image
-                src={images.humaniserLogo}
-                alt="Humanising Our Workplaces Logo"
-                width={logoW}
-                style={{ objectFit: "contain", flexShrink: 0 }}
-                priority
-              />
+          <Link href="https://humanisingourworkplaces.com" target="_blank">
+            <div style={{ flexShrink: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Image
+                  src={images.humaniserLogo}
+                  alt="Humanising Our Workplaces Logo"
+                  width={logoW}
+                  style={{ objectFit: "contain", flexShrink: 0 }}
+                  priority
+                />
+                <div
+                  style={{
+                    fontSize: logoFontSize,
+                    fontFamily: "Aptos, sans-serif",
+                    fontWeight: "bold",
+                    lineHeight: 1,
+                  }}
+                >
+                  <span style={{ display: "block" }}>Humanising our</span>
+                  <span style={{ display: "block", marginTop: -2 }}>
+                    Workplaces
+                  </span>
+                </div>
+              </div>
               <div
                 style={{
-                  fontSize: logoFontSize,
                   fontFamily: "Aptos, sans-serif",
-                  fontWeight: "bold",
-                  lineHeight: 1,
+                  fontWeight: 400,
+                  marginLeft: 18,
+                  fontSize: taglineSize,
+                  marginTop: 4,
                 }}
               >
-                <span style={{ display: "block" }}>Humanising our</span>
-                <span style={{ display: "block", marginTop: -2 }}>
-                  Workplaces
-                </span>
+                Human Habits. Clear Decision. Reliable Execution.
               </div>
             </div>
-            <div
-              style={{
-                fontFamily: "Aptos, sans-serif",
-                fontWeight: 400,
-                marginLeft: 18,
-                fontSize: taglineSize,
-                marginTop: 4,
-              }}
-            >
-              People &amp; Performance Thriving Together
-            </div>
-          </div>
-
+          </Link>
           {/* "Hi Humaniser!" heading */}
           <div style={hiStyle}>
             <h1

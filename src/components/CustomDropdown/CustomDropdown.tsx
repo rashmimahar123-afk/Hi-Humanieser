@@ -49,12 +49,12 @@ function CustomDropdown({
   return (
     <div
       ref={dropdownRef}
-      className="grid grid-cols-[180px_1fr] items-center gap-6"
+      className="grid grid-cols-[180px_1fr] items-center gap-[48px]"
     >
       {/* Label */}
       <label
-        className="text-[20px] whitespace-nowrap"
-        style={{ fontFamily: "RocaTwo", color: textColor }}
+        className="text-[22px] whitespace-nowrap w-[200px]"
+        style={{ fontFamily: "Roboto, sans-serif", color: textColor }}
       >
         {label}
       </label>
