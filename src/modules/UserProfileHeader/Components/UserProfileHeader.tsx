@@ -2,7 +2,7 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import { useState } from "react";
 import ProfileDropdown from "../../ProfileDropdown/ProfileDropdown";
-import { AUTH_STATE, USER_INFO_TYPE } from "../../AuthModule/Types/CommonTypes";
+import { USER_INFO_TYPE } from "../../AuthModule/Types/CommonTypes";
 import { useRouter } from "next/navigation";
 
 type USER_PROFILE_HEADER_PROPS = {
@@ -17,6 +17,7 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const router = useRouter();
+
   return (
     <>
       {/* Overlay content */}

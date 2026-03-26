@@ -45,11 +45,12 @@ export default function ProfilePathway() {
           arrowImg={images.leftArrowImg}
           arrowPosition="-right-[40px] -top-[27px]"
           rotate="-21deg"
+          onClick={() => router.push("/choose-myself")}
         />
 
         {/* Card 3 */}
         <ProfilePathwayCard
-          title="Change my Pathway"
+          title="Manage My Pathway"
           description="Switch to a different focus whenever you’re ready"
           shapeImg={images.profileChange}
           arrowImg={images.leftArrowImg}

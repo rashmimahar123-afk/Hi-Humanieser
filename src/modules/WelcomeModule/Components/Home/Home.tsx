@@ -12,6 +12,8 @@ import AmplifierSecondDescription from "@/src/modules/PersonalPathwayModule/Comp
 import AmplifierThirdDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierThirdDescription/AmplifierThirdDescription";
 import AmplifierForthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierForthDescription/AmplifierForthDescription";
 import AmplifierFifthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierFifthDescription/AmplifierFifthDescription";
+import { useGetMppMessagesQuery } from "../../Hooks/useGetMppMessagesQuery";
+import { useGetHomeMessageQuery } from "../../Hooks/useGetHomeMessageQuery";
 
 type DASHBOARD_BOX = {
   id: number;
@@ -87,6 +89,8 @@ function Home() {
     if (id === 6) router.push("/resource-inspiration");
   };
 
+  const { data: randomMessage } = useGetHomeMessageQuery();
+
   return (
     <>
       <div
@@ -102,7 +106,7 @@ function Home() {
         />
 
         <SuccessMessage
-          text="Great to see you again — ready to explore?"
+          text={randomMessage || ""}
           fontSize="text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}

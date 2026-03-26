@@ -228,6 +228,7 @@ export type PILLAR_PRINCIPLE_TYPE = {
     prompt: string;
   };
   conversation_starters: CONVERSATION_STARTER_TYPE;
+  pulse_check_question: string;
 };
 export type CHOOSE_MYSELF_PILLAR_TYPE = {
   pillar_id: string;
@@ -258,3 +259,8 @@ export type CHOOSE_MYSELF_RESPONSE_TYPES = [
     ];
   },
 ];
+
+export type GET_LIST_MPP_RESPONSE_TYPES = {
+  email: string;
+  pathways: Array<any>;
+};

@@ -11,6 +11,7 @@ function ProfilePathwayCard({
   arrowPosition,
   width,
   rotate,
+  onClick,
 }: {
   title: string;
   description: string;
@@ -19,11 +20,15 @@ function ProfilePathwayCard({
   arrowPosition?: string;
   width?: string;
   rotate?: string;
+  onClick?: () => void;
 }) {
   return (
     <div className="flex flex-col items-center text-center">
       {/* Shape Wrapper */}
-      <div className="relative w-[170px] h-[170px] flex items-center justify-center">
+      <div
+        className="relative w-[170px] h-[170px] flex items-center justify-center cursor-pointer"
+        onClick={onClick}
+      >
         {/* Background Shape Image */}
         <Image
           src={shapeImg}

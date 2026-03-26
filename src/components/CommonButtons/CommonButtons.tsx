@@ -9,6 +9,7 @@ type COMMON_BUTTON_PROPS = {
   bgColor: string;
   height?: string;
   disabled?: boolean;
+  textColor?: string;
 };
 
 function CommonButtons({
@@ -17,11 +18,12 @@ function CommonButtons({
   bgColor,
   height,
   disabled = false,
+  textColor,
 }: COMMON_BUTTON_PROPS) {
   const pathname = usePathname();
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const isChangePathway = pathname === "/change-pathway";
+  const isChangePathway = pathname === "/manage-pathway";
   const isBehindScene = pathname === "/behind-scene";
   const isFormIdeas = pathname === "/from-ideas";
   const isTeamSetting = pathname === "/team-setting";
@@ -65,7 +67,12 @@ function CommonButtons({
           height: height ?? "54px",
         }}
       >
-        <span className="pr-[48px] leading-[120%] text-left">{label}</span>
+        <span
+          className="pr-[48px] leading-[120%] text-left"
+          style={{ color: `${textColor}` }}
+        >
+          {label}
+        </span>
 
         <span
           className={`absolute right-[8px] ${disabled ? "opacity-40" : ""}`}

@@ -1,24 +1,25 @@
+import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 import { useSearchParams } from "next/navigation";
 
-function StartPracticePerspective() {
+type START_PRACTICE_PERSPECTIVE_PROPS = {
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
+};
+
+function StartPracticePerspective(props: START_PRACTICE_PERSPECTIVE_PROPS) {
+  const { pathwayDetails } = props;
   const searchParams = useSearchParams();
   const pathname = searchParams.get("step");
   return (
     <div className="animate-slideInRight">
       {/* Heading */}
       <h1 className="text-[30px] text-[#567F55] font-[RocaTwo-Bold] font-[700]">
-        Welcome To Practice Perspective.
+        Welcome To {pathwayDetails?.pathway_title}.
       </h1>
 
       {/* Description Box */}
       <div className="mt-10 bg-[#F8E1B8] rounded-xl px-12 py-8 text-center">
         <p className="text-[#567F55] text-[18px] leading-relaxed font-[Roboto]">
-          This pathway helps you create working environments where people can
-          speak up, ask questions, challenge ideas and admit uncertainty without
-          fear of blame or negative repercussions. Make it Safe focuses on
-          reducing hidden threat in everyday interactions so that issues surface
-          early and responsibility is shared. When safety is present, teams
-          think more clearly and perform more consistently.
+          {pathwayDetails?.definition}
         </p>
       </div>
 

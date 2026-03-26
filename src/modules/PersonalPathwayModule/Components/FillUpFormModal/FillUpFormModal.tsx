@@ -7,22 +7,119 @@ import images from "@/src/assets/images";
 import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
+import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
 
 const EVENT = "FILL_UP_FORM_MODAL_EVENT";
 
-export const openFillupModal = () => {
-  emitEvent(EVENT);
+export const openFillupModal = (
+  microActionType: string,
+  uuid: string,
+  selectedPulse?: number,
+) => {
+  emitEvent(EVENT, { microActionType, uuid, selectedPulse });
 };
 
 function FillUpFormModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [reflection, setReflection] = useState("");
   const [share, setShare] = useState(false);
+  const [actionKey, setActionKey] = useState<string>("");
+  const [pulseCheck, setPulseCheck] = useState<number>();
+  const [id, setId] = useState("");
+  const charCount = reflection.length;
+  useEventEmitter(EVENT, ({ microActionType, uuid, selectedPulse }) => {
+    setTimeout(() => {
+      setActionKey(microActionType);
+      setId(uuid);
+      setPulseCheck(selectedPulse);
 
-  useEventEmitter(EVENT, () => {
-    setIsOpen(true);
+      setReflection("");
+      setShare(false);
+
+      setIsOpen(true);
+    }, 0);
   });
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useUpdateMppMilestoneMutation();
 
+  const handleSave = async () => {
+    const newReflection = { reflection, share };
+
+    // ✅ ===== MILESTONE 3 =====
+    if (actionKey === "milestone3") {
+      const payload = {
+        uuid: id,
+        milestone_key: "m3",
+        data: {
+          kind: "m3",
+          reflection: newReflection,
+          pulse_check: pulseCheck,
+          pin_to_dash: true,
+        },
+      };
+
+      mutate(payload, {
+        onSuccess: async () => {
+          setReflection("");
+          setShare(false);
+          setIsOpen(false);
+
+          await queryClient.refetchQueries({
+            queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+            type: "active",
+          });
+        },
+      });
+
+      return; //  IMPORTANT (stop m2 execution)
+    }
+    // STEP 1: Always get fresh data
+    await queryClient.refetchQueries({
+      queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+      type: "active",
+    });
+
+    const freshData = queryClient.getQueryData<any>(
+      GET_PERSONAL_PATHWAY_QUERY_KEY,
+    );
+
+    const pathways = freshData?.data?.pathways || [];
+    const currentPathway = pathways.find((p: any) => p.uuid === id);
+
+    const firstKey = Object.keys(currentPathway || {}).find(
+      (k) => !["uuid", "created", "active"].includes(k),
+    );
+
+    const existingM2 = currentPathway?.[firstKey]?.m2 || {};
+
+    const { micro_actions, ...cleanM2 } = existingM2 || {};
+
+    // STEP 2: Merge properly
+    const finalPayload = {
+      uuid: id,
+      milestone_key: "m2",
+      data: {
+        kind: "m2",
+        ...cleanM2, //  ALL previous micro_actions preserved
+        [actionKey]: [...(existingM2[actionKey] || []), newReflection],
+      },
+    };
+
+    mutate(finalPayload, {
+      onSuccess: async () => {
+        setReflection("");
+        setShare(false);
+        setIsOpen(false);
+
+        // optional but recommended
+        await queryClient.refetchQueries({
+          queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+        });
+      },
+    });
+  };
   return (
     <Dialog
       open={isOpen}
@@ -62,6 +159,7 @@ function FillUpFormModal() {
           <textarea
             value={reflection}
             onChange={(e) => setReflection(e.target.value)}
+            maxLength={400}
             placeholder="Write your reflection here…"
             className="
               w-full
@@ -79,9 +177,12 @@ function FillUpFormModal() {
               focus:ring-[#A7D3CB]
             "
           />
+          <p className="text-[12px] text-right text-[#567F55]">
+            {charCount}/400 characters
+          </p>
 
           {/* ===== Checkbox Section ===== */}
-          <div className="mt-[10px] flex items-start justify-between gap-3">
+          {/* <div className="mt-[10px] flex items-start justify-between gap-3">
             <div>
               <p className="text-[14px] text-[#0F4F58]">
                 Share your insights with your team?
@@ -106,14 +207,12 @@ function FillUpFormModal() {
                 cursor-pointer
               "
             />
-          </div>
+          </div> */}
 
           {/* ===== Save Button ===== */}
           <button
-            onClick={() => {
-              console.log({ reflection, share });
-              setIsOpen(false);
-            }}
+            onClick={handleSave}
+            disabled={isPending || reflection.trim().length === 0}
             className="
               mt-4
               w-full
@@ -127,7 +226,7 @@ function FillUpFormModal() {
               transition
             "
           >
-            Save reflection
+            {isPending ? "Saving..." : "Save reflection"}
           </button>
         </DialogPanel>
       </div>

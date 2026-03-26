@@ -15,6 +15,18 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import ShowMaxTwoMppModal, {
   openShowMaxTwoMpp,
 } from "../ShowMaxTwoMppModal/ShowMaxTwoMppModal";
+import ActivePathwayModal, {
+  openActivePathwayModal,
+} from "../ActivePathwayModal/ActivePathwayModal";
+import useGetListMppQuery from "../../Hooks/useGetListMppQuery";
+import { useDeletePathwayMutation } from "../../Hooks/useDeletePathwayMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
+import { useGetPathwaySelectMssgQuery } from "@/src/modules/WelcomeModule/Hooks/useGetPathwaySelectMssgQuery";
+import DeletePathwayModal, {
+  openDeletePathwayModal,
+} from "../DeletePathwayModal/DeletePathwayModal";
+import useEventEmitter from "@/src/components/Hooks/useEventEmitter";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 type Principle = {
   key: string;
@@ -32,6 +44,8 @@ type PillarDataType = Record<string, PillarItem>;
 
 function ShowResultPage() {
   const [animateText, setAnimateText] = useState(false);
+  const { user } = useAuthValue();
+
   const [resultData, setResultData] = useState<{
     pillarData: PillarDataType;
     pillarAvg: Record<string, number>;
@@ -40,10 +54,13 @@ function ShowResultPage() {
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [topMessage, setTopMessage] = useState<any>(null);
   const [selectedWeakMessage, setSelectedWeakMessage] = useState<any>(null);
-  console.log("resultDataresultDataresultData", resultData);
+  const [pathwayUuids, setPathwayUuids] = useState<Record<number, string>>({});
   const [enter] = useState(true);
   const router = useRouter();
-
+  console.log(
+    "weakStrengthDetailsweakStrengthDetailsweakStrengthDetails",
+    weakStrengthDetails,
+  );
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
   const isPathwaySelected = selectedPathways.length > 0;
 
@@ -63,12 +80,30 @@ function ShowResultPage() {
 
   const { mutate, isPending } = useCreateMppMutation();
 
-  const handleSelectPathway = (pathway: any) => {
+  const handleSelectPathway = (
+    pathway: number,
+    index: number,
+    messageObj?: any,
+  ) => {
     const payload = {
       pathways: [pathway],
     };
 
-    mutate(payload);
+    mutate(payload, {
+      onSuccess: (res) => {
+        const uuid = res?.new_uuids?.[0];
+
+        if (uuid) {
+          setPathwayUuids((prev) => ({
+            ...prev,
+            [index]: uuid,
+          }));
+
+          // latest message use karo
+          openActivePathwayModal(uuid, messageObj, index);
+        }
+      },
+    });
   };
   const sortFn = (a: any, b: any, asc = false) => {
     // 1. Score comparison
@@ -182,14 +217,7 @@ function ShowResultPage() {
 
     return "";
   };
-  const getWeakMessage = (item: any, messages: any[]) => {
-    if (!item || !messages?.length) return null;
 
-    const number = item.key.split("_")[1]; // principle_04 → 04
-    const targetId = `PSM_${number}`;
-
-    return messages.find((m) => m.id === targetId);
-  };
   useEffect(() => {
     if (resultData?.pillarData && quizDetails?.data) {
       const topStrengths = Object.values(resultData.pillarData).map(
@@ -218,6 +246,10 @@ function ShowResultPage() {
     growthTargets.forEach((item) => {
       const formattedKey = item.key.replace("principle", "Principle");
 
+      // 👇 extract numbers
+      const principle_number = parseInt(item.key.split("_")[1], 10);
+      const pillar_number = parseInt(item.pillar.split("_")[1], 10);
+
       Object.values(quizData.pillars).forEach((pillar: any) => {
         const principle = pillar.principles?.[formattedKey];
 
@@ -226,6 +258,8 @@ function ShowResultPage() {
             key: item.key,
             title: principle.display_name,
             description: principle.description,
+            principle_number,
+            pillar_number,
           });
         }
       });
@@ -247,6 +281,91 @@ function ShowResultPage() {
       setWeakStrengthDetails(weakDetails);
     }
   }, [resultData, quizDetails]);
+
+  const { data: mppList } = useGetListMppQuery();
+  const { mutate: deleteMutate } = useDeletePathwayMutation();
+
+  const handleDelete = (uuid: string, index: number) => {
+    deleteMutate(
+      { uuid }, //  payload (adjust if API needs different key)
+      {
+        onSuccess: (res) => {
+          SnackbarHandler.successToast(res?.message);
+
+          // remove from state
+          setPathwayUuids((prev) => {
+            const updated = { ...prev };
+            delete updated[index];
+            return updated;
+          });
+        },
+        onError: (err) => {
+          console.log("Delete API error", err);
+        },
+      },
+    );
+  };
+  useEffect(() => {
+    if (!mppList?.data?.pathways) return;
+
+    const activeIndexes: number[] = [];
+    const uuidMap: Record<number, string> = {};
+
+    mppList.data.pathways.forEach((item: any) => {
+      if (item.active) {
+        const pathwayKey = Object.keys(item).find(
+          (key) => !["uuid", "created", "active"].includes(key),
+        );
+
+        if (pathwayKey) {
+          const pathwayNumber = parseInt(pathwayKey, 10);
+
+          const index = weakStrengthDetails.findIndex((_, i) => {
+            const weakPrinciples = Object.values(resultData?.pillarData || {});
+            const selectedTarget = weakPrinciples[i]?.weak;
+
+            if (!selectedTarget) return false;
+
+            const principleNumber = parseInt(
+              selectedTarget.key.split("_")[1],
+              10,
+            );
+
+            return principleNumber === pathwayNumber;
+          });
+
+          if (index !== -1) {
+            activeIndexes.push(index);
+
+            // ✅ UUID mapping
+            uuidMap[index] = item.uuid;
+          }
+        }
+      }
+    });
+
+    setSelectedPathways(activeIndexes);
+    setPathwayUuids(uuidMap); // 👈 VERY IMPORTANT
+  }, [mppList, weakStrengthDetails, resultData]);
+
+  const { data: pathwayMessage, refetch: getRandomMessage } =
+    useGetPathwaySelectMssgQuery();
+
+  useEventEmitter("DELETE_PATHWAY_SUCCESS", ({ index }) => {
+    // remove from selected
+    setSelectedPathways((prev) => prev.filter((i) => i !== index));
+
+    // remove uuid mapping
+    setPathwayUuids((prev) => {
+      const updated = { ...prev };
+      delete updated[index];
+      return updated;
+    });
+  });
+  useEventEmitter("PATHWAY_CONFIRMED", ({ principleNumber }) => {
+    // here principleNumber = index (we passed index)
+    setSelectedPathways((prev) => [...prev, principleNumber]);
+  });
   return (
     <>
       <div
@@ -549,8 +668,12 @@ function ShowResultPage() {
                           title={item.title}
                           description={item.description}
                           selected={selectedPathways.includes(index)}
-                          onLearnMore={() => router.push(`/pathway-card`)}
-                          onSelect={() => {
+                          onLearnMore={() =>
+                            router.push(
+                              `/pathway-card?pillar=${item?.pillar_number}&principle=${item?.principle_number}`,
+                            )
+                          }
+                          onSelect={async () => {
                             const weakPrinciples = Object.values(
                               resultData?.pillarData || {},
                             );
@@ -563,18 +686,35 @@ function ShowResultPage() {
                               10,
                             );
 
+                            // ✅ CASE 1: Already selected → DELETE
                             if (selectedPathways.includes(index)) {
-                              togglePathway(index);
-                              setSelectedWeakMessage(null);
-                            } else if (selectedPathways.length < 2) {
-                              handleSelectPathway(principleNumber);
-                              togglePathway(index);
+                              const uuid = pathwayUuids[index];
+                              if (!uuid) return;
 
-                              const msg = getWeakMessage(
-                                selectedTarget,
-                                messagesData?.data,
-                              );
-                              setSelectedWeakMessage(msg);
+                              openDeletePathwayModal({ uuid, index });
+                            }
+
+                            // ✅ CASE 2: Select new
+                            else if (selectedPathways.length < 2) {
+                              try {
+                                const res = await getRandomMessage();
+
+                                const messageObj = {
+                                  message: res?.data || "",
+                                };
+
+                                setSelectedWeakMessage(messageObj);
+
+                                handleSelectPathway(
+                                  principleNumber,
+                                  index,
+                                  messageObj,
+                                );
+
+                                // ❌ DO NOT SELECT HERE
+                              } catch (err) {
+                                console.log(err);
+                              }
                             } else {
                               openShowMaxTwoMpp();
                             }
@@ -584,24 +724,7 @@ function ShowResultPage() {
                     </div>
                   </div>
                 </div>
-                {selectedWeakMessage && (
-                  <div className="relative mt-10">
-                    <SuccessMessage
-                      text={selectedWeakMessage?.message}
-                      fontSize="text-[22px]"
-                      leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-                      rightImg={{
-                        src: images.leftArrowImg,
-                        width: 60,
-                        height: 60,
-                      }}
-                      fontColor="#0F4F58"
-                      bottom="-1px"
-                      rightImgBottom="-1px"
-                      rotate="-35deg"
-                    />
-                  </div>
-                )}
+
                 {/* SKY SHAPE CARD */}
               </div>
               {/* CTA BUTTONS */}
@@ -613,14 +736,14 @@ function ShowResultPage() {
                 label="Return to My Personal Pathway"
                 bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
                 disabled={!isPathwaySelected}
-                onClick={() => router.push("/choose-pathway")}
+                onClick={() => router.push("/personal-pathway")}
               />
 
               <CommonButtons
-                label="Choose my Own Pathway"
+                label="Go to Dashboard"
                 bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
                 disabled={!isPathwaySelected}
-                onClick={() => router.push("/choose-myself")}
+                onClick={() => router.push("/dashboar")}
               />
             </div>
           </div>
@@ -628,6 +751,8 @@ function ShowResultPage() {
       </div>
 
       <ShowMaxTwoMppModal />
+      <ActivePathwayModal />
+      <DeletePathwayModal />
     </>
   );
 }

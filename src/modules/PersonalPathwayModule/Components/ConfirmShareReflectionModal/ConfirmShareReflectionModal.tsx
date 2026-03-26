@@ -7,20 +7,33 @@ import images from "@/src/assets/images";
 import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
+import { queryClient } from "@/src/lib/ReactQueryConfig";
+import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
+import { useMilestoneDataContext } from "@/src/context/MilestoneDataContextProvider";
 
-const EVENT = "SHOW_MAX_TWO_MPP_MODAL";
+const EVENT = "CONFIRM_SHARE_REFLECTION_MODAL";
 
-export const openShowMaxTwoMpp = () => {
-  emitEvent(EVENT);
+export const openConfirmShareReflectionModal = (data: string) => {
+  emitEvent(EVENT, data);
 };
 
-function ShowMaxTwoMppModal() {
+function ConfirmShareReflectionModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [id, setId] = useState();
+  const { milestoneData, setMilestoneData } = useMilestoneDataContext();
 
-  useEventEmitter(EVENT, () => {
+  useEventEmitter(EVENT, (data) => {
+    setId(data);
     setIsOpen(true);
   });
+  const handleOkButton = async () => {
+    await queryClient.refetchQueries({
+      queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+      type: "active",
+    });
 
+    setIsOpen(false);
+  };
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
@@ -29,43 +42,36 @@ function ShowMaxTwoMppModal() {
       {/* Modal wrapper */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-[520px] rounded-[28px] bg-[#FBE6BF] p-8 text-center space-y-6">
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute left-[65%] font-bold cursor-pointer"
-          >
-            ✕
-          </button>
-
           {/* Timer Image */}
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               src={images.signupTimer} // hourglass / timer image
               alt="timer"
               width={80}
               height={80}
             />
-          </div> */}
+          </div>
 
           {/* Title */}
-          {/* <DialogTitle className="text-[28px] font-[700] text-[#567F55]">
-            Before we continue...
-          </DialogTitle> */}
+          <DialogTitle className="text-[28px] font-[700] text-[#567F55]">
+            Congratulations!!
+          </DialogTitle>
 
           {/* Description */}
           <p className="text-[18px] leading-[1.4] text-[#567F55] px-2">
-            You can select a maximum of 2 Pathways only.
+            You have share Reflection Successfully
           </p>
 
-          {/* <button
-            onClick={() => setIsOpen(false)}
+          <button
+            onClick={() => handleOkButton()}
             className="border border-[#567F55] text-[#567F55] px-6 py-3 rounded-full cursor-pointer"
           >
-            No, go back
-          </button> */}
+            Ok
+          </button>
         </DialogPanel>
       </div>
     </Dialog>
   );
 }
 
-export default ShowMaxTwoMppModal;
+export default ConfirmShareReflectionModal;

@@ -1,0 +1,19 @@
+/* wrapper for spacing */
+.reflectionWrapper {
+  padding: 6px 0;
+}
+
+/* notebook-style dotted lines */
+.reflectionText {
+  font-size: 15px;
+  color: #0F4F58;
+  line-height: 28px;
+  white-space: pre-wrap;
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 26px,
+    #000000 27px
+  );
+}

@@ -2,6 +2,10 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useState } from "react";
+import { useCreateMppMutation } from "../../../Hooks/useCreateMppMutation";
+import { useDeletePathwayMutation } from "../../../Hooks/useDeletePathwayMutation";
+import { useGetPathwaySelectMssgQuery } from "@/src/modules/WelcomeModule/Hooks/useGetPathwaySelectMssgQuery";
 
 type PATHWAY_CARD = {
   title: string;
@@ -20,6 +24,7 @@ type MYSELF_CARD_PROPS = {
 
 function MySelfCard(props: MYSELF_CARD_PROPS) {
   const { sectionTitle, bgColor, cards } = props;
+  console.log("cards", cards);
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -68,7 +73,7 @@ function MySelfCard(props: MYSELF_CARD_PROPS) {
         >
           {cards.map((card, index) => (
             <div
-              key={index}
+              key={`card${index}`}
               className="relative bg-[#F7F3ED] rounded-3xl p-8 shadow-lg h-full flex flex-col justify-between min-h-[320px]"
             >
               <div>
@@ -98,7 +103,7 @@ function MySelfCard(props: MYSELF_CARD_PROPS) {
                   </button>
 
                   <div
-                    className="flex items-center gap-[10px] text-[#0F4F58]"
+                    className="flex items-center gap-[10px] text-[#0F4F58] cursor-pointer"
                     onClick={card.onSelect}
                   >
                     <span>choose pathway</span>

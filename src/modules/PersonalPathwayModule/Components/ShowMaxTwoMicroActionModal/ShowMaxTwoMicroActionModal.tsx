@@ -8,13 +8,13 @@ import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
 
-const EVENT = "SHOW_MAX_TWO_MPP_MODAL";
+const EVENT = "SHOW_MAX_TWO_MICRO_ACTION_MODAL";
 
-export const openShowMaxTwoMpp = () => {
+export const openShowMaxTwoMicroAction = () => {
   emitEvent(EVENT);
 };
 
-function ShowMaxTwoMppModal() {
+function ShowMaxTwoMicroActionModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEventEmitter(EVENT, () => {
@@ -37,35 +37,35 @@ function ShowMaxTwoMppModal() {
           </button>
 
           {/* Timer Image */}
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <Image
               src={images.signupTimer} // hourglass / timer image
               alt="timer"
               width={80}
               height={80}
             />
-          </div> */}
+          </div>
 
           {/* Title */}
-          {/* <DialogTitle className="text-[28px] font-[700] text-[#567F55]">
-            Before we continue...
-          </DialogTitle> */}
+          <DialogTitle className="text-[28px] font-[700] text-[#567F55]">
+            Limit reached
+          </DialogTitle>
 
           {/* Description */}
           <p className="text-[18px] leading-[1.4] text-[#567F55] px-2">
-            You can select a maximum of 2 Pathways only.
+            You can select maximum 2 micro-actions only.
           </p>
 
-          {/* <button
+          <button
             onClick={() => setIsOpen(false)}
             className="border border-[#567F55] text-[#567F55] px-6 py-3 rounded-full cursor-pointer"
           >
-            No, go back
-          </button> */}
+            Ok
+          </button>
         </DialogPanel>
       </div>
     </Dialog>
   );
 }
 
-export default ShowMaxTwoMppModal;
+export default ShowMaxTwoMicroActionModal;

@@ -6,24 +6,134 @@ import ArrowSquare from "@/src/components/ArrowSquare/ArrowSquare";
 import styles from "./Milestone1.module.css";
 import { useRouter } from "next/navigation";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
+import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
+import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import { queryClient } from "@/src/lib/ReactQueryConfig";
+import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
+import { MILESTONE_ONE_DATA } from "../../Types/ResponseTypes";
 
-function Milestone1({ onNext }: { onNext: () => void }) {
+type MILESTONE_ONE_PROPS = {
+  onNext: () => void;
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
+  pillarNumber: number;
+  id: string;
+  m1Data: MILESTONE_ONE_DATA;
+};
+function Milestone1(props: MILESTONE_ONE_PROPS) {
+  const { onNext, pathwayDetails, pillarNumber, id, m1Data } = props;
   const router = useRouter();
   const [selectedBehaviours, setSelectedBehaviours] = useState<number[]>([]);
-
+  const [selectedPulse, setSelectedPulse] = useState<number | null>(null);
+  // const [pulseMessage, setPulseMessage] = useState<string>("");
+  const [showCompMilestoneError, setShowCompMilestoneError] = useState(false);
+  const [initialData, setInitialData] = useState<{
+    behaviours: number[];
+    pulse: number | null;
+  } | null>(null);
+  const { mutate: updateMpp } = useUpdateMppMilestoneMutation();
   const toggleBehaviour = (index: number) => {
-    setSelectedBehaviours(
-      (prev) =>
-        prev.includes(index)
-          ? prev.filter((item) => item !== index) // remove if already selected
-          : [...prev, index], // add if not selected
+    setSelectedBehaviours((prev) =>
+      prev.includes(index)
+        ? prev.filter((item) => item !== index)
+        : [...prev, index],
     );
   };
 
+  const handlePulseSelect = (value: number) => {
+    setSelectedPulse(value);
+  };
+  const handleNext = () => {
+    if (isDisabled) return;
+
+    // ✅ check if data changed
+    const isSameBehaviour =
+      JSON.stringify(initialData?.behaviours.sort()) ===
+      JSON.stringify([...selectedBehaviours].sort());
+
+    const isSamePulse = initialData?.pulse === selectedPulse;
+
+    if (isSameBehaviour && isSamePulse) {
+      // 🚫 NO API CALL
+      router.push("?step=2");
+      onNext();
+      return;
+    }
+
+    const behaviourValues = selectedBehaviours.map(
+      (i) => pathwayDetails?.core_behaviours?.items[i]?.core_behaviour_number,
+    );
+
+    updateMpp(
+      {
+        uuid: id,
+        milestone_key: "m1",
+        data: {
+          kind: "m1",
+          behaviour_selection: behaviourValues,
+          pulse_check: selectedPulse,
+        },
+      },
+      {
+        onSuccess: async () => {
+          await queryClient.refetchQueries({
+            queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+            type: "active",
+          });
+
+          router.push("?step=2");
+          onNext();
+        },
+      },
+    );
+  };
+  const isDisabled = selectedBehaviours.length === 0 || selectedPulse === null;
+
+  const { data: chooseMyselfData } = useChooseMyselfQuery();
+
+  const getErrorMessage = () => {
+    if (selectedBehaviours.length === 0 && selectedPulse === null) {
+      return "Please select at least one behaviour and a pulse check";
+    }
+    if (selectedBehaviours.length === 0) {
+      return "Please select at least one behaviour";
+    }
+    if (selectedPulse === null) {
+      return "Please select a pulse check";
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    if (!m1Data || !pathwayDetails?.core_behaviours?.items) return;
+
+    const selectedIndexes = pathwayDetails.core_behaviours.items
+      .map((item, index) =>
+        m1Data.behaviour_selection?.includes(item.core_behaviour_number)
+          ? index
+          : null,
+      )
+      .filter((i) => i !== null) as number[];
+
+    setSelectedBehaviours(selectedIndexes);
+
+    const pulseValue =
+      m1Data?.pulse_check !== undefined && m1Data?.pulse_check !== null
+        ? m1Data.pulse_check
+        : null;
+
+    setSelectedPulse(pulseValue);
+
+    // ✅ store initial state
+    setInitialData({
+      behaviours: selectedIndexes,
+      pulse: pulseValue,
+    });
+  }, [m1Data, pathwayDetails]);
   return (
     <div className="animate-slideInRight">
-      <StartPracticePerspective />
+      <StartPracticePerspective pathwayDetails={pathwayDetails} />
       <h2 className="text-[34px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
         Milestone 1: Understand & Commit
       </h2>
@@ -41,9 +151,7 @@ function Milestone1({ onNext }: { onNext: () => void }) {
         CORE BEHAVIOURS
       </h3>
       <p className="font-[Roboto] text-[#567F55] text-[17px] font-[400] ml-[20px]">
-        Core Behaviours turn this pathway into consistent practice — clear,
-        simple habits that improve trust, reduce friction, and support better
-        results.
+        {pathwayDetails?.core_behaviours?.intro}
       </p>
       {/* Cards */}
 
@@ -57,17 +165,11 @@ function Milestone1({ onNext }: { onNext: () => void }) {
         </p>
       </div>
       <div className="mt-10 flex justify-center gap-10">
-        {[0, 1, 2].map((item, index) => (
+        {pathwayDetails?.core_behaviours?.items.map((item, index) => (
           <BehaviourCard
-            key={index}
+            key={item?.core_behaviour_number}
             image={index === 1 ? images.coreTwo : images.coreOne}
-            text={
-              index === 0
-                ? "Listen to their meaning, not your assumptions, by noticing tone, context and emotion."
-                : index === 1
-                  ? "Notice when you’re tightening up inside, and give yourself a moment before responding."
-                  : "Distinguish between your assumptions, others’ intent, and the wider context influencing behaviour."
-            }
+            text={item?.text}
             isSelected={selectedBehaviours.includes(index)}
             onClick={() => toggleBehaviour(index)}
           />
@@ -77,7 +179,7 @@ function Milestone1({ onNext }: { onNext: () => void }) {
       {/* Footer */}
       <MilestoneFooter
         nextLabel="Amplifier Behaviours"
-        nextRoute="/pathway-card"
+        nextRoute={`/pathway-card?pillar=${pillarNumber}&principle=${pathwayDetails?.principle_number}`}
         helperText={
           <>
             <strong>Lead or influence others?</strong> Explore Amplifier
@@ -94,48 +196,30 @@ function Milestone1({ onNext }: { onNext: () => void }) {
 
         {/* Intro text */}
         <p className="mt-4 text-[20px] text-[#567F55] leading-relaxed font-[Roboto] font-[400] ml-[20px]">
-          Even with the best intentions, it’s easy to slip into habits that
-          shrink our perspective without us noticing.
-          <br />
-          Watch out for these:
+          {pathwayDetails?.common_traps?.intro}
         </p>
 
+        {pathwayDetails?.common_traps?.items?.map((item) => {
+          return (
+            <ul
+              className="mt-6 space-y-4  ml-[150px]"
+              key={item?.common_trap_number}
+            >
+              <li className="relative flex items-start gap-5">
+                <div className="absolute mt-[4px]  z-20">
+                  <ArrowSquare width={"24"} height={"19"} />
+                </div>
+                <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
+                  {item?.text}
+                </p>
+              </li>
+            </ul>
+          );
+        })}
         {/* List */}
-
-        <ul className="mt-6 space-y-4 max-w-[620px] ml-[208px]">
-          <li className="relative flex items-start gap-5">
-            <div className="absolute mt-[4px]  z-20">
-              <ArrowSquare width={"24"} height={"19"} />
-            </div>
-            <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
-              Confusing harmony with safety — people appear agreeable, but real
-              concerns stay unspoken.
-            </p>
-          </li>
-
-          <li className="relative flex items-start gap-3">
-            <div className="absolute mt-[4px]  z-20">
-              <ArrowSquare width={"24"} height={"19"} />
-            </div>
-            <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
-              Saying “it’s safe to speak” while reacting defensively when
-              someone actually does.
-            </p>
-          </li>
-
-          <li className="relative flex items-start gap-3">
-            <div className="absolute mt-[4px]  z-20">
-              <ArrowSquare width={"24"} height={"19"} />
-            </div>
-            <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
-              Relying on individual bravery instead of designing safety into
-              everyday ways of working.
-            </p>
-          </li>
-        </ul>
       </div>
       {/* PULSE CHECK */}
-      <div className="mt-24 flex items-start justify-between max-w-[900px]">
+      <div className="mt-24 flex items-start justify-between max-w-[1000px]">
         {/* Left Content */}
         <div className="max-w-[420px]">
           <h3 className="text-[22px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
@@ -143,15 +227,14 @@ function Milestone1({ onNext }: { onNext: () => void }) {
           </h3>
 
           <p className="mt-4 text-[23px] font-[Roboto] font-[400] leading-snug text-[#567F55] ml-[20px]">
-            Right now, how clear am I when I communicate — and how often do I
-            pause to check that meaning has really landed?
+            {pathwayDetails?.pulse_check_question}
           </p>
         </div>
 
         {/* Right Emojis */}
         <div className="relative mt-[80px]">
           {/* choose one arrow */}
-          <div className="w-[200px] absolute right-[61%] top-[-96%]">
+          <div className="w-[200px] absolute right-[81%] top-[-96%]">
             <Image
               src={images.emojiArrow} // curved arrow image
               alt="choose-arrow"
@@ -164,35 +247,78 @@ function Milestone1({ onNext }: { onNext: () => void }) {
             </div>
           </div>
           {/* Emoji row */}
-          <div className="flex items-center gap-4 rounded-[12px] border border-[#A7D3CB] px-4 py-2 bg-transparent">
-            <Image src={images.emojiImg} alt="emoji" width={200} height={200} />
-            {/* <Image
-              src={images.emojiOrange}
-              alt="unclear"
-              width={48}
-              height={48}
-            />
-            <Image
-              src={images.emojiYellow}
-              alt="neutral"
-              width={48}
-              height={48}
-            />
-            <Image
-              src={images.emojiLightGreen}
-              alt="clear"
-              width={48}
-              height={48}
-            />
-            <Image
-              src={images.emojiGreen}
-              alt="very clear"
-              width={48}
-              height={48}
-            /> */}
+          <div className="flex items-center gap-4 bg-transparent relative">
+            {[1, 2, 3, 4, 5].map((val, index) => {
+              const colors = [
+                "#FF2D55",
+                "#FF7A1A",
+                "#FFC300",
+                "#1FAA59",
+                "#6BCB77",
+              ];
+              const isSelected = selectedPulse === val;
+
+              return (
+                <div
+                  key={val}
+                  className="cursor-pointer relative"
+                  onClick={() => handlePulseSelect(val)}
+                >
+                  <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="36"
+                      stroke={colors[index]}
+                      strokeWidth="3"
+                      fill="none"
+                    />
+                    <circle cx="26" cy="30" r="4" fill={colors[index]} />
+                    <circle cx="54" cy="30" r="4" fill={colors[index]} />
+
+                    {val === 3 ? (
+                      <line
+                        x1="26"
+                        y1="52"
+                        x2="54"
+                        y2="52"
+                        stroke={colors[index]}
+                        strokeWidth="3"
+                      />
+                    ) : val < 3 ? (
+                      <path
+                        d="M24 52 Q40 40 56 52"
+                        stroke={colors[index]}
+                        strokeWidth="3"
+                        fill="none"
+                      />
+                    ) : (
+                      <path
+                        d="M24 48 Q40 60 56 48"
+                        stroke={colors[index]}
+                        strokeWidth="3"
+                        fill="none"
+                      />
+                    )}
+                  </svg>
+
+                  {/* ✅ ORANGE TICK ONLY IF SELECTED */}
+                  {isSelected && (
+                    <Image
+                      src={images.orangeTick}
+                      alt="tick"
+                      width={60}
+                      height={60}
+                      className="absolute top-[0.75rem] right-1"
+                    />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
+
       <div className="flex justify-end mt-[126px]">
         <div className={styles.cardWrapper}>
           {/* Arrow */}
@@ -206,11 +332,12 @@ function Milestone1({ onNext }: { onNext: () => void }) {
 
           {/* Card */}
           <div
-            className={`${styles.card} ${styles.leftCard} cursor-pointer`}
-            onClick={() => {
-              router.push("?step=2");
-              onNext();
-            }}
+            className={`${styles.card} ${styles.leftCard} ${
+              isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+            }`}
+            onMouseEnter={() => isDisabled && setShowCompMilestoneError(true)}
+            onMouseLeave={() => setShowCompMilestoneError(false)}
+            onClick={handleNext}
           >
             {/* Card shape (SMALL) */}
             <Image
@@ -228,6 +355,11 @@ function Milestone1({ onNext }: { onNext: () => void }) {
           </div>
         </div>
       </div>
+      {showCompMilestoneError && isDisabled && (
+        <p className="text-red-500 text-[14px] mt-3 text-right mr-[20px]">
+          {getErrorMessage()}
+        </p>
+      )}
     </div>
   );
 }

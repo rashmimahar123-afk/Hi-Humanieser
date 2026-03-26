@@ -5,14 +5,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ChoosePathwayPage() {
   const router = useRouter();
   const [enter, setEnter] = useState(false);
+  const { user } = useAuthValue();
 
   useEffect(() => {
     setEnter(true);
   }, []);
+
+  const { data: randomMessage, isLoading } = useGetMppMessagesQuery();
 
   return (
     <>
@@ -30,19 +35,20 @@ function ChoosePathwayPage() {
           height={830}
           className="absolute top-0 right-0 -z-10 pointer-events-none"
         />
-        <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#FFFFFF"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
         <SuccessMessage
-          text="Your presence is one of your strongest tools
-"
+          text={randomMessage || ""}
           fontSize="text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
           fontColor="#0F4F58"
-          left="403px"
-          top="126px"
-          rightImgRight="390px"
+          bottom="7px"
           rotate="-35deg"
-          rightImgTop="123px"
+          rightImgBottom="4px"
         />
 
         <div className={`flex justify-center mt-[40px]`}>

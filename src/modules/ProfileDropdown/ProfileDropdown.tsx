@@ -28,7 +28,12 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
         >
           Organisation Settings
         </li>
-        <li className="cursor-pointer hover:underline">My Pathways</li>
+        <li
+          className="cursor-pointer hover:underline"
+          onClick={() => router.push("/my-pathways")}
+        >
+          My Pathways
+        </li>
         <li className="cursor-pointer hover:underline">
           Champion Hub (if applicable)
         </li>

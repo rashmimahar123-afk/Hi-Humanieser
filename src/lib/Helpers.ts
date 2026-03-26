@@ -19,7 +19,6 @@ import { emitEvent } from "../components/Hooks/useEventEmitter";
 // Request interceptor
 axios.interceptors.request.use(
   (config) => {
-    console.log("Making request to:", config.url);
     return config;
   },
   (error) => {
@@ -357,4 +356,76 @@ export const getCookie = (name: string) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop()?.split(";").shift();
+};
+
+export const renderBoldQuotesText = (text: string): string[] => {
+  const parts = text.split(/(“[^”]+”)/g);
+  return parts; // array of strings, JSX return nahi karta
+};
+export const getPulseMessage = (
+  m3Value: number,
+  m1Value: number | undefined,
+  pulseConfig:
+    | {
+        better: string[];
+        same: string[];
+        worse: string[];
+      }
+    | undefined,
+) => {
+  if (!pulseConfig || !m1Value) return "";
+
+  let messages: string[] = [];
+
+  if (m3Value > m1Value) {
+    messages = pulseConfig.better;
+  } else if (m3Value === m1Value) {
+    messages = pulseConfig.same;
+  } else {
+    messages = pulseConfig.worse;
+  }
+
+  if (!messages.length) return "";
+
+  return messages[Math.floor(Math.random() * messages.length)];
+};
+
+// helpers.ts
+
+export type ProgressResult = {
+  steps: number;
+  percentage: number;
+};
+
+export const getPathwayProgress = (data: any): ProgressResult => {
+  let percentage = 0;
+  let completedSteps = 0;
+
+  // ✅ m1 → 30%
+  if (data?.m1?.behaviour_selection || data?.m1?.pulse_check) {
+    percentage += 30;
+    completedSteps += 1;
+  }
+
+  // ✅ m2 → 30%
+  if (
+    data?.m2 &&
+    Object.values(data.m2).some(
+      (val: any) => Array.isArray(val) && val.length > 0,
+    )
+  ) {
+    percentage += 30;
+    completedSteps += 1;
+  }
+
+  // ✅ m3 → 40%
+  if (data?.m3?.reflection || data?.m3?.pulse_check) {
+    percentage += 40;
+    completedSteps += 1;
+  }
+
+  return {
+    steps: completedSteps,
+    percentage,
+  };
 };

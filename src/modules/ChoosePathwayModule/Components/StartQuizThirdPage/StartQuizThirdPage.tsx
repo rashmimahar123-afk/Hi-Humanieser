@@ -203,7 +203,7 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
             </div>
             {/* Footer */}
             <div
-              className={`flex justify-end relative mt-[51px] mr-[31px] ${
+              className={`flex justify-end relative mt-[61px] mr-[31px] ${
                 !isAllAnswered ? "opacity-50 pointer-events-none" : ""
               }`}
             >
