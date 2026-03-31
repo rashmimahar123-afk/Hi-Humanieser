@@ -138,10 +138,6 @@ function MySelfPage() {
       })
       .filter(Boolean) as ActivePathwayType[];
   }, [activePathways]);
-  console.log(
-    "formattedActivePathwaysformattedActivePathways",
-    formattedActivePathways,
-  );
 
   const activeFromAPI = (formattedActivePathways || []).map((item) =>
     Number(item.pathwayNumber),

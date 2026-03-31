@@ -11,91 +11,257 @@ import MyActivePractice from "./MyActivePractice/MyActivePractice";
 import MyTeamProgress from "./MyTeamProgress/MyTeamProgress";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import useMyQuizResultQuery from "../../ChoosePathwayModule/Hooks/useMyQuizResultQuery";
+import useQuizDetailsQuery from "../../ChoosePathwayModule/Hooks/useQuizDetailsQuery";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
+import DashboardPdf from "./DashboardPdf/DashboardPdf";
+import usePersonalPathwayQuery from "../../PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
+import useChooseMyselfQuery from "../../ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import { enrichProgressWithPractice } from "@/src/lib/Helpers";
+
+type Principle = {
+  key: string;
+  score: number;
+  situation: number;
+  pillar: string;
+};
+
+type PillarItem = {
+  top: Principle;
+  weak: Principle;
+};
+
+type PillarDataType = Record<string, PillarItem>;
 
 function MyDashboard() {
+  const [resultData, setResultData] = useState<{
+    pillarData: PillarDataType;
+    pillarAvg: Record<string, number>;
+  } | null>(null);
+  const [progressList, setProgressList] = useState<any>([]);
+  console.log("progressListprogressListprogressList", progressList);
+  const currentYear = new Date().getFullYear().toString();
+  const [selected, setSelected] = useState(currentYear);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
+  const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
+  const [practiceList, setPracticeList] = useState<any[]>([]);
+  console.log("practiceListpracticeList", practiceList);
+  const [showPdf, setShowPdf] = useState(false);
+  const [enter] = useState(true);
   const router = useRouter();
-  const progressList = [
-    {
-      id: 1,
-      title: "Practice Perspective",
-      status: "Completed",
-      date: "15/01/2026",
-      icon: images.perspectiveImg,
-    },
-    {
-      id: 2,
-      title: "Wellbeing is Performance Infrastructure",
-      status: "Completed",
-      date: "29/01/2026",
-      icon: images.wellbeingSmallPoly,
-    },
-    {
-      id: 3,
-      title: "Speak with Clarity",
-      status: "Completed",
-      date: "25/02/2026",
-      icon: images.clarityImg,
-    },
-    {
-      id: 4,
-      title: "Stay Curious",
-      status: "Completed",
-      date: "19/03/2026",
-      icon: images.curiousImg,
-    },
-    {
-      id: 5,
-      title: "Listen to Understand",
-      status: "In Progress",
-      icon: images.listenImg,
-    },
-  ];
+  const { data, isLoading } = useMyQuizResultQuery();
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const waitForElement = async (ref: any, timeout = 3000) => {
+    const start = Date.now();
 
-  const pathways = [
-    {
-      id: 1,
-      title: "Notice Your Ripple Effect",
-      description:
-        "Your actions create ripples in the workplace. This pathway helps you make them intentional and constructive.",
-    },
-    {
-      id: 2,
-      title: "Build Everyday Safety",
-      description:
-        "Even with good intent, people don’t always speak up — this pathway helps you create small signals of safety in daily moments.",
-    },
-    {
-      id: 3,
-      title: "Fuel Performance with Wellbeing",
-      description:
-        "When workloads rise, wellbeing often drops — this pathway helps you see how balance fuels stronger performance.",
-    },
-  ];
+    while (!ref.current) {
+      if (Date.now() - start > timeout) return false;
+      await new Promise((r) => setTimeout(r, 100));
+    }
 
-  const practiceList = [
-    {
-      id: 1,
-      title: "Ask yourself: “What else could be true?”",
-      description:
-        "Next time you feel sure about what’s going on, take a breath and imagine 2–3 other possibilities. You might uncover something that shifts the conversation — and the outcome.",
-      pathway: "Practice Perspective Pathway",
-    },
-    {
-      id: 2,
-      title: "Borrow someone else’s lens",
-      description:
-        "In your next meeting, try seeing the situation through another person’s priorities or pressures. Notice how it changes your take — sometimes the biggest performance boost comes from truly understanding the players.",
-      pathway: "Wellbeing is Performance Infrastructure Pathway",
-    },
-    {
-      id: 3,
-      title:
-        "Before acting, ask: “How will this land for people — and performance?”",
-      description:
-        "If the answer tilts too far in one direction, make one tweak to balance it. This might mean clarifying context, looping someone in, or slowing the pace.",
-      pathway: "Build Care & Belonging Pathway",
-    },
-  ];
+    return true;
+  };
+
+  useEffect(() => {
+    if (!showPdf) return;
+
+    const generatePDF = async () => {
+      try {
+        // wait for DOM paint
+        await new Promise((r) => setTimeout(r, 500));
+
+        if (!pdfRef.current) {
+          console.error("PDF element still not found");
+          return;
+        }
+
+        const dataUrl = await toPng(pdfRef.current, {
+          cacheBust: true,
+          pixelRatio: 2,
+        });
+
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        let heightLeft = pdfHeight;
+        let position = 0;
+
+        pdf.addImage(dataUrl, "PNG", 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pdf.internal.pageSize.getHeight();
+
+        while (heightLeft > 0) {
+          position = heightLeft - pdfHeight;
+          pdf.addPage();
+          pdf.addImage(dataUrl, "PNG", 0, position, pdfWidth, pdfHeight);
+          heightLeft -= pdf.internal.pageSize.getHeight();
+        }
+
+        pdf.save("MyDashboard.pdf");
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setShowPdf(false);
+        setIsDownloading(false);
+      }
+    };
+
+    generatePDF();
+  }, [showPdf]);
+  const handleDownloadPDF = () => {
+    setIsDownloading(true);
+    setShowPdf(true);
+  };
+  const sortFn = (a: any, b: any, asc = false) => {
+    // 1. Score comparison
+    if (a.score !== b.score) {
+      return asc ? a.score - b.score : b.score - a.score;
+    }
+
+    // 2. Tie-breaker → lower situation wins
+    if (a.situation !== b.situation) {
+      return a.situation - b.situation;
+    }
+
+    // 3. Final fallback (stable sort)
+    return a.key.localeCompare(b.key);
+  };
+  const processQuizResults = (results: any) => {
+    const wS = 0.5;
+    const wZ = 0.5;
+
+    const pillarData: any = {};
+    const pillarAvg: any = {};
+
+    Object.keys(results).forEach((pillarKey) => {
+      const principles = results[pillarKey];
+
+      const arr: any[] = [];
+
+      Object.keys(principles).forEach((pKey) => {
+        const item = principles[pKey];
+
+        const score = wS * item.strength + wZ * item.situation;
+
+        arr.push({
+          key: pKey,
+          score,
+          situation: item.situation,
+          pillar: pillarKey,
+        });
+      });
+
+      const sortedDesc = [...arr].sort((a, b) => sortFn(a, b, false));
+      const sortedAsc = [...arr].sort((a, b) => sortFn(a, b, true));
+
+      //  Store per pillar
+      pillarData[pillarKey] = {
+        top: sortedDesc[0],
+        weak: sortedAsc[0],
+      };
+
+      // Avg
+      pillarAvg[pillarKey] =
+        arr.reduce((sum, p) => sum + p.score, 0) / arr.length;
+    });
+
+    return {
+      pillarData,
+      pillarAvg,
+    };
+  };
+
+  const getTopStrengthDetails = (topStrengths: any[], quizData: any) => {
+    if (!quizData?.pillars) return [];
+
+    const result: any[] = [];
+
+    topStrengths.forEach((item) => {
+      const formattedKey = item.key.replace("principle", "Principle");
+
+      Object.values(quizData.pillars).forEach((pillar: any) => {
+        const principle = pillar.principles?.[formattedKey];
+
+        if (principle) {
+          result.push({
+            key: item.key,
+            title: principle.display_name,
+            description: principle.description,
+          });
+        }
+      });
+    });
+
+    return result;
+  };
+  const { data: quizDetails } = useQuizDetailsQuery();
+
+  const getWeakStrengthDetails = (growthTargets: any[], quizData: any) => {
+    if (!quizData?.pillars) return [];
+
+    const result: any[] = [];
+
+    growthTargets.forEach((item) => {
+      const formattedKey = item.key.replace("principle", "Principle");
+
+      // 👇 extract numbers
+      const principle_number = parseInt(item.key.split("_")[1], 10);
+      const pillar_number = parseInt(item.pillar.split("_")[1], 10);
+
+      Object.values(quizData.pillars).forEach((pillar: any) => {
+        const principle = pillar.principles?.[formattedKey];
+
+        if (principle) {
+          result.push({
+            key: item.key,
+            title: principle.display_name,
+            description: principle.description,
+            principle_number,
+            pillar_number,
+          });
+        }
+      });
+    });
+
+    return result;
+  };
+
+  useEffect(() => {
+    if (resultData?.pillarData && quizDetails?.data) {
+      const topStrengths = Object.values(resultData.pillarData).map(
+        (p: any) => p.top,
+      );
+
+      const details = getTopStrengthDetails(topStrengths, quizDetails.data);
+
+      setTopStrengthDetails(details);
+
+      // agar overall message chahiye
+      const allScores = topStrengths.map((p: any) => p.score);
+      const avg =
+        allScores.reduce((a: number, b: number) => a + b, 0) / allScores.length;
+    }
+  }, [resultData, quizDetails]);
+
+  useEffect(() => {
+    if (resultData?.pillarData && quizDetails?.data) {
+      const weakPrinciples = Object.values(resultData.pillarData).map(
+        (p: any) => p.weak,
+      );
+
+      const weakDetails = getWeakStrengthDetails(
+        weakPrinciples,
+        quizDetails.data,
+      );
+
+      setWeakStrengthDetails(weakDetails);
+    }
+  }, [resultData, quizDetails]);
 
   const teamProgressList = [
     {
@@ -134,6 +300,227 @@ function MyDashboard() {
     },
   ];
 
+  const quizRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const practiceRef = useRef<HTMLDivElement>(null);
+  const teamRef = useRef<HTMLDivElement>(null);
+
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
+    ref.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+  // const formattedDate = formatDate(data?.data?.quiz?.created_at ?? "");
+  const { data: chooseMyselfData } = useChooseMyselfQuery();
+
+  const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
+
+  // ------------------------------->Latest Quiz<-----------------------
+  const getLatestQuizByYear = (quizList: any[], selectedYear: string) => {
+    if (!Array.isArray(quizList)) return null;
+
+    // 1. Filter by year
+    const filtered = quizList.filter((item) => {
+      const year = new Date(item.created_at).getFullYear().toString();
+      return year === selectedYear;
+    });
+
+    if (filtered.length === 0) return null;
+
+    // 2. Sort by timestamp DESC (latest first)
+    const sorted = filtered.sort((a, b) => b.timestamp - a.timestamp);
+
+    // 3. Return latest
+    return sorted[0];
+  };
+
+  const latestQuiz = getLatestQuizByYear(
+    data?.data?.quiz || [],
+    selected || new Date().getFullYear().toString(),
+  );
+
+  const formattedDate = latestQuiz ? formatDate(latestQuiz.created_at) : "";
+  useEffect(() => {
+    if (latestQuiz?.results) {
+      const processed = processQuizResults(latestQuiz.results);
+      setResultData(processed);
+    } else {
+      setResultData(null); // optional clear
+    }
+  }, [latestQuiz]);
+
+  //----------------------------> Latest Progress List data of active and complete <-----------------------
+
+  const generateStructuredProgressList = (mppData: any[]) => {
+    if (!Array.isArray(mppData)) return [];
+
+    return mppData
+      .filter((item: any) => item.active || item.completed) // only active/completed
+      .map((item: any) => {
+        // 🔍 find dynamic key like "The Mindset We Bring"
+        const pathwayKey = Object.keys(item).find(
+          (key) =>
+            ![
+              "created",
+              "uuid",
+              "active",
+              "completed",
+              "pathway_id",
+              "id",
+            ].includes(key),
+        );
+
+        if (!pathwayKey) return null;
+
+        return {
+          [pathwayKey]: item[pathwayKey], // 👈 main structured data
+          created: item.created,
+          uuid: item.uuid,
+          active: item.active,
+          ...(item.completed && { completed: item.completed }),
+        };
+      })
+      .filter(Boolean);
+  };
+
+  const getPathwayMap = (chooseData: any[]) => {
+    const map: Record<number, string> = {};
+
+    chooseData?.forEach((item: any) => {
+      item?.pillars?.forEach((pillar: any) => {
+        pillar?.principles?.forEach((principle: any) => {
+          map[principle.pathway_number] = principle.pathway_title;
+        });
+      });
+    });
+
+    return map;
+  };
+  const transformProgressList = (progressList: any[], pathwayMap: any) => {
+    return progressList.map((item) => {
+      const dynamicKey = Object.keys(item).find(
+        (key) => !["created", "uuid", "active", "completed"].includes(key),
+      );
+
+      if (!dynamicKey) return item;
+
+      const pathwayNumber = Number(dynamicKey);
+      const pathwayName = pathwayMap[pathwayNumber] || dynamicKey;
+
+      return {
+        [pathwayName]: item[dynamicKey], // 👈 replaced key
+        created: item.created,
+        uuid: item.uuid,
+        active: item.active,
+        ...(item.completed && { completed: item.completed }),
+      };
+    });
+  };
+
+  useEffect(() => {
+    if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+      const structuredList = generateStructuredProgressList(
+        getListMppData.data.pathways,
+      );
+
+      const pathwayMap = getPathwayMap(chooseMyselfData.data);
+
+      const updatedList = transformProgressList(structuredList, pathwayMap);
+
+      // 🔽 Sort by latest created date
+      const sortedList = updatedList.sort(
+        (a: any, b: any) =>
+          new Date(b.created).getTime() - new Date(a.created).getTime(),
+      );
+
+      // 🔽 Take latest 20
+      const latest20 = sortedList.slice(0, 20);
+
+      setProgressList(latest20);
+    }
+  }, [getListMppData, chooseMyselfData]);
+  // Extract pindash from get list mpp and microaction details from choose myself and merge them to create a new list for practice perspective pathway progress
+  const getSelectedMicroActions = (pathways: any[]) => {
+    if (!Array.isArray(pathways)) return [];
+
+    let selected: string[] = [];
+
+    pathways.forEach((item) => {
+      const dynamicKey = Object.keys(item).find(
+        (key) =>
+          ![
+            "created",
+            "uuid",
+            "active",
+            "completed",
+            "pathway_id",
+            "id",
+          ].includes(key),
+      );
+
+      if (!dynamicKey) return;
+
+      const m3 = item?.[dynamicKey]?.m3;
+
+      if (m3?.pin_to_dash?.length) {
+        selected.push(...m3.pin_to_dash);
+      }
+    });
+
+    return [...new Set(selected)];
+  };
+
+  useEffect(() => {
+    if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+      const selectedKeys = getSelectedMicroActions(
+        getListMppData.data.pathways,
+      );
+
+      const list: any[] = [];
+
+      chooseMyselfData.data.forEach((item: any) => {
+        item?.pillars?.forEach((pillar: any) => {
+          pillar?.principles?.forEach((principle: any) => {
+            principle?.micro_actions?.forEach((action: any, index: number) => {
+              const key = `ma${index + 1}`;
+
+              list.push({
+                id: key,
+                title: action.title,
+                description: action.description,
+                pathway: principle.pathway_title,
+                checked: selectedKeys.includes(key), //  MAIN
+              });
+            });
+          });
+        });
+      });
+
+      setPracticeList(list);
+    }
+  }, [getListMppData, chooseMyselfData]);
+
+  //Active practice list for dashboard pdf
+  const activePracticeListForPdf = practiceList.filter((item) => item.checked);
+  const enrichedProgressList = enrichProgressWithPractice(
+    progressList,
+    practiceList,
+  );
+  console.log(
+    "enrichedProgressListenrichedProgressListenrichedProgressList",
+    enrichedProgressList,
+  );
   return (
     <>
       <div className="min-h-screen bg-[#4BA6A6] relative font-sans">
@@ -153,7 +540,7 @@ function MyDashboard() {
           className="absolute top-45 right-0 z-0"
         />
 
-        <div className="px-10 py-8 absolute">
+        <div className="px-10 py-8 absolute w-screen">
           <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />{" "}
           <SuccessMessage
             text="Great to see you again — ready to explore?"
@@ -161,11 +548,9 @@ function MyDashboard() {
             fontColor="#0F4F58"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            left="412px"
-            top="135px"
+            bottom="3px"
+            rightImgBottom="3px"
             rotate="-35deg"
-            rightImgTop="125px"
-            rightImgRight="407px"
           />
           <h1 className="text-center text-[42px] font-semibold text-[#254C4C] mt-14">
             My Dashboard
@@ -177,18 +562,49 @@ function MyDashboard() {
               quiz results, see your progress, track what you’re practising, and
               notice your impact in the team.
             </p>
+          </div>
+          <div className="flex justify-end w-full mx-auto mt-10">
+            <div className="flex items-center gap-4 relative">
+              <label className="text-[22px] text-[#0F4F58] font-[RocaTwo]">
+                Select Period
+              </label>
 
-            <button className="flex flex-col items-center gap-2">
-              <Image src={images.downloadImg} alt="download" />
+              <div className="relative">
+                <select
+                  value={selected || "2026"}
+                  onChange={(e) => setSelected(e.target.value)}
+                  className="
+        appearance-none
+        bg-[#EDEDED]
+        text-[#254C4C]
+        text-[18px]
+        px-6 pr-14
+        h-[48px]
+        rounded-full
+        outline-none
+        cursor-pointer
+      "
+                >
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+                </select>
 
-              <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
-            </button>
+                {/* Arrow Block */}
+                <div className="absolute right-0 top-0 h-full w-[50px] flex items-center justify-center pointer-events-none">
+                  <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-t-[12px] border-l-transparent border-r-transparent border-t-[#254C4C]" />
+                </div>
+              </div>
+            </div>
           </div>
           {/* Cards */}
           <div
             className={`flex justify-between items-center mx-auto mt-[90px]`}
           >
-            <div className={`${styles.card} bg-[#F5F0EB]`}>
+            <div
+              className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
+              onClick={() => scrollToSection(quizRef)}
+            >
               {/* Image layer */}
               <div className={styles.imageWrapper}>
                 <Image
@@ -205,7 +621,10 @@ function MyDashboard() {
               </div>
             </div>
 
-            <div className={`${styles.card} bg-[#F5F0EB]`}>
+            <div
+              className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
+              onClick={() => scrollToSection(progressRef)}
+            >
               <div className={styles.imageWrapper}>
                 <Image
                   src={images.personalPoly}
@@ -219,7 +638,10 @@ function MyDashboard() {
               </div>
             </div>
 
-            <div className={`${styles.card} bg-[#F5F0EB]`}>
+            <div
+              className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
+              onClick={() => scrollToSection(practiceRef)}
+            >
               <div className={styles.imageWrapper}>
                 <Image
                   src={images.activePoly}
@@ -233,7 +655,10 @@ function MyDashboard() {
               </div>
             </div>
 
-            <div className={`${styles.card} bg-[#F5F0EB]`}>
+            <div
+              className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
+              onClick={() => scrollToSection(teamRef)}
+            >
               <div className={styles.imageWrapper}>
                 <Image
                   src={images.progressPoly}
@@ -247,27 +672,52 @@ function MyDashboard() {
               </div>
             </div>
           </div>
+          <div className="flex justify-end w-full mx-auto mt-10 gap-10">
+            <div className="text-[18px] text-[#0F4F58] font-bold items-center flex">
+              Download your journey and use it in your next performance or
+              development review
+            </div>
+            <div>
+              {" "}
+              <button
+                className="flex flex-col items-center gap-2"
+                onClick={handleDownloadPDF}
+                disabled={isDownloading}
+              >
+                <Image src={images.downloadImg} alt="download" />
+
+                <span className="text-sm text-[#3E5F5F]">
+                  {isDownloading ? "Preparing PDF..." : "Download in PDF"}
+                </span>
+              </button>
+            </div>
+          </div>
           <div className={`items-center mx-auto mt-14`}>
             {/* ---------------------My Quiz Results--------------- */}
-            <div className="mx-auto mt-14">
-              <MyQuizResults pathways={pathways} />
+            <div className="mx-auto mt-14" ref={quizRef}>
+              <MyQuizResults
+                topStrengthDetails={topStrengthDetails}
+                formattedDate={formattedDate}
+                resultData={resultData}
+                weakStrengthDetails={weakStrengthDetails}
+              />
             </div>
             {/* ------------------------------------------------------ */}
 
             {/* ----------------------My Personal Progress--------------- */}
-            <div className="mx-auto mt-14">
+            <div className="mx-auto mt-14" ref={progressRef}>
               <MyPersonalProgress progressList={progressList} />
             </div>
             {/* ----------------------------------------------------------- */}
 
             {/* ----------------------My Personal Progress--------------- */}
-            <div className="mx-auto mt-14">
+            <div className="mx-auto mt-14" ref={practiceRef}>
               <MyActivePractice practiceList={practiceList} />
             </div>
             {/* ----------------------------------------------------------- */}
 
             {/* ------------------------My Team Progress-------------------- */}
-            <div className="mx-auto mt-14">
+            <div className="mx-auto mt-14" ref={teamRef}>
               <MyTeamProgress teamProgressList={teamProgressList} />
             </div>
             {/* ------------------------------------------------------------- */}
@@ -275,11 +725,20 @@ function MyDashboard() {
           <div className="flex justify-between mt-[50px]">
             {/* -------------------------------Download PDF------------ */}
             <div className="flex justify-end">
-              <button className="flex flex-col items-center gap-2">
-                <Image src={images.downloadImg} alt="download" />
+              <div>
+                {" "}
+                <button
+                  className="flex flex-col items-center gap-2"
+                  onClick={handleDownloadPDF}
+                  disabled={isDownloading}
+                >
+                  <Image src={images.downloadImg} alt="download" />
 
-                <span className="text-sm text-[#3E5F5F]">Download in PDF</span>
-              </button>
+                  <span className="text-sm text-[#3E5F5F]">
+                    {isDownloading ? "Preparing PDF..." : "Download in PDF"}
+                  </span>
+                </button>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-10">
               {/* -------slant Left Btn-------- */}
@@ -318,10 +777,8 @@ function MyDashboard() {
               leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
               rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
               fontColor="#0F4F58"
-              left="460px"
-              bottom="320px"
-              rightImgRight="450px"
-              rightImgBottom="315px"
+              top="-28px"
+              rightImgTop="-35px"
               rotate="-35deg"
               maxWidth="450px"
             />
@@ -372,6 +829,28 @@ Journey"
           </div>
         </div>
       </div>
+      {showPdf && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            opacity: 0,
+            pointerEvents: "none",
+            zIndex: -1,
+          }}
+        >
+          <div ref={pdfRef}>
+            <DashboardPdf
+              resultData={resultData}
+              topStrengthDetails={topStrengthDetails}
+              weakStrengthDetails={weakStrengthDetails}
+              activePracticeListForPdf={activePracticeListForPdf}
+              enrichedProgressList={enrichedProgressList}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }

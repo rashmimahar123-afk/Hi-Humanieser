@@ -50,6 +50,7 @@ function ShowResultPage() {
     pillarData: PillarDataType;
     pillarAvg: Record<string, number>;
   } | null>(null);
+
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [topMessage, setTopMessage] = useState<any>(null);
@@ -57,26 +58,18 @@ function ShowResultPage() {
   const [pathwayUuids, setPathwayUuids] = useState<Record<number, string>>({});
   const [enter] = useState(true);
   const router = useRouter();
-  console.log(
-    "weakStrengthDetailsweakStrengthDetailsweakStrengthDetails",
-    weakStrengthDetails,
-  );
+
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
   const isPathwaySelected = selectedPathways.length > 0;
 
-  const togglePathway = (principleNumber: number) => {
-    setSelectedPathways((prev) => {
-      if (prev.includes(principleNumber)) {
-        return prev.filter((p) => p !== principleNumber); // deselect
-      }
-      if (prev.length < 2) {
-        return [...prev, principleNumber]; // add
-      }
-      return prev; // do nothing if already 2 selected
-    });
-  };
-
   const { data, isLoading } = useMyQuizResultQuery();
+  const getLatestResult = (data: any[]) => {
+    if (!data || data.length === 0) return null;
+
+    return data.reduce((latest, current) =>
+      current.timestamp > latest.timestamp ? current : latest,
+    );
+  };
 
   const { mutate, isPending } = useCreateMppMutation();
 
@@ -165,10 +158,14 @@ function ShowResultPage() {
   };
 
   useEffect(() => {
-    if (data?.data?.quiz?.results) {
-      const processed = processQuizResults(data.data.quiz.results);
+    if (data && data?.data?.quiz.length > 0) {
+      const latest = getLatestResult(data?.data?.quiz);
+      console.log("LATEST RESULT", latest);
 
-      setResultData(processed);
+      if (latest?.results) {
+        const processed = processQuizResults(latest.results);
+        setResultData(processed);
+      }
     }
   }, [data]);
 
@@ -196,7 +193,6 @@ function ShowResultPage() {
     return result;
   };
   const { data: quizDetails } = useQuizDetailsQuery();
-  const { data: messagesData } = useResultMessagesQuery();
 
   const getRangeMessage = (score: number) => {
     if (score >= 1 && score <= 2) {

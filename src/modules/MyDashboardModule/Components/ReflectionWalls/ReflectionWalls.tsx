@@ -8,39 +8,6 @@ import { createPatternRows } from "@/src/lib/Helpers";
 import ViewAllReflectionCard from "../ViewAllReflectionCard/ViewAllReflectionCard";
 
 function ReflectionWalls() {
-  // const reflections = [
-  //   {
-  //     text: "This week I tried explaining why before asking what. The shift was instant — people leaned in instead of shutting down. Clarity really is kindness, especially when everyone’s moving fast",
-  //     time: "3 hours ago",
-  //     likes: "you and 11 others felt this",
-  //   },
-  //   {
-  //     text: "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
-  //     time: "2 days ago",
-  //     likes: "you and 7 others felt this",
-  //   },
-  //   {
-  //     text: "Noticed how much clarity helps when things get tense. One honest question can calm a whole meeting.",
-  //     time: "5 days ago",
-  //     likes: "you and 7 others felt this",
-  //   },
-  //   {
-  //     text: "This week I tried explaining why before asking what. The shift was instant — people leaned in instead of shutting down. Clarity really is kindness, especially when everyone’s moving fast",
-  //     time: "1 day ago",
-  //     likes: "you and 4 others felt this",
-  //   },
-  //   {
-  //     text: "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
-  //     time: "4 days ago",
-  //     likes: "you and 9 others felt this",
-  //   },
-  //   {
-  //     text: "Noticed how much clarity helps when things get tense. One honest question can calm a whole meeting.",
-  //     time: "6 days ago",
-  //     likes: "you and 6 others felt this",
-  //   },
-  // ];
-
   const router = useRouter();
   const reflectionTexts = [
     "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",

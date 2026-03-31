@@ -18,6 +18,7 @@ import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useCho
 import { useGetCompPathwayQuery } from "@/src/modules/WelcomeModule/Hooks/useGetCompPathwayQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { MILESTONE_THREE_DATA } from "../../Types/ResponseTypes";
+import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
 
 type MILESTONE_THREE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -45,6 +46,10 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
   const [showPulseError, setShowPulseError] = useState(false);
   const [completionMessage, setCompletionMessage] = useState<string>("");
   const [showCompleteError, setShowCompleteError] = useState(false);
+  const [selectedMicroActions, setSelectedMicroActions] = useState<string[]>(
+    [],
+  );
+  console.log("pathwayDetailspathwayDetailspathwayDetails", pathwayDetails);
 
   const microActions = [
     "Ask yourself: “What else could be true?”",
@@ -106,6 +111,40 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     }
   }, [m3Data, pulseConfig]);
 
+  const { mutate: updateM3 } = useUpdateMppMilestoneMutation();
+
+  const handleCheckboxChange = (index: number) => {
+    const key = `ma${index + 1}`;
+
+    setSelectedMicroActions((prev) => {
+      let updated;
+
+      if (prev.includes(key)) {
+        updated = prev.filter((item) => item !== key); //  remove
+      } else {
+        updated = [...prev, key]; //  add
+      }
+
+      // API CALL
+      const payload = {
+        uuid: id,
+        milestone_key: "m3",
+        data: {
+          kind: "m3",
+          reflection: m3Data?.reflection || {
+            reflection: "",
+            share: false,
+          },
+          pulse_check: selectedPulse || m3Data?.pulse_check || 1,
+          pin_to_dash: updated,
+        },
+      };
+
+      updateM3(payload);
+
+      return updated;
+    });
+  };
   return (
     <div className="animate-slideInRight">
       <StartPracticePerspective pathwayDetails={pathwayDetails} />
@@ -327,7 +366,12 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                 onMouseLeave={() => setShowPulseError(false)}
                 onClick={() => {
                   if (!selectedPulse) return;
-                  openFillupModal("milestone3", id, selectedPulse);
+                  openFillupModal(
+                    "milestone3",
+                    id,
+                    selectedPulse,
+                    selectedMicroActions,
+                  );
                 }}
               >
                 <PolygonButton
@@ -389,7 +433,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
 
               {/* Rows */}
               <div className="space-y-6">
-                {microActions.map((item, index) => (
+                {pathwayDetails?.micro_actions.map((item, index) => (
                   <div
                     key={index}
                     className="grid grid-cols-[1fr_72px] items-center"
@@ -401,7 +445,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                       </div>
 
                       <p className="text-[#567F55] text-[18px] leading-[1.5] font-[Roboto] font-[400]">
-                        {item}
+                        {item?.description}
                       </p>
                     </div>
 
@@ -409,6 +453,10 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
+                        checked={selectedMicroActions.includes(
+                          `ma${index + 1}`,
+                        )}
+                        onChange={() => handleCheckboxChange(index)}
                         className="w-[22px] h-[22px] rounded-[6px] border-2 border-[#0F4F58]"
                       />
                     </div>

@@ -8,6 +8,28 @@ type MY_PERSONAL_PROGRESS_PROPS = {
 };
 function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
   const { progressList } = props;
+
+  const chunkArray = (arr: any[], size: number) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
+  };
+
+  // 5 items per card
+  const cards = chunkArray(progressList, 5);
+
+  // 2 cards per row
+  const rows = chunkArray(cards, 2);
+
+  const iconList = [
+    images.perspectiveImg,
+    images.wellbeingSmallPoly,
+    images.clarityImg,
+    images.curiousImg,
+    images.listenImg,
+  ];
   return (
     <>
       {/* Heading */}
@@ -21,60 +43,63 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
       </p>
 
       {/* Cards */}
-      <div className="mt-[20px] grid grid-cols-2 gap-10">
-        {/* LEFT CARD */}
-        <div className="bg-[#F5F0EB] rounded-2xl p-8">
-          <ul className="space-y-6">
-            {progressList.map((item) => (
-              <li key={item.id} className="flex items-center justify-between">
-                {/* Left */}
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 flex items-center justify-center">
-                    <Image src={item.icon} alt="" width={80} height={80} />
-                  </div>
-                  <span className="text-[#000000] text-[17px] font-[Canva Sans] font-[400]">
-                    {item.title}
-                  </span>
-                </div>
+      <div className="mt-[20px] space-y-10">
+        {rows.map((row, rowIndex) => (
+          <div key={rowIndex} className="grid grid-cols-2 gap-10">
+            {row.map((cardItems, cardIndex) => (
+              <div key={cardIndex} className="bg-[#F5F0EB] rounded-2xl p-8">
+                <ul className="space-y-6">
+                  {cardItems.map((item: any, index: number) => {
+                    const pathwayName = Object.keys(item).find(
+                      (key) =>
+                        !["created", "uuid", "active", "completed"].includes(
+                          key,
+                        ),
+                    );
 
-                {/* Right */}
-                <div className="flex items-center gap-3 text-sm">
-                  {/* <Image src={images.compImg} alt="complete-img" /> */}
-                  <div className="text-right">
-                    <p className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
-                      {item.status === "Completed"
-                        ? "Completed on"
-                        : "In Progress"}
-                    </p>
-                    {item.date && (
-                      <p className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
-                        {item.date}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                    return (
+                      <li
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
+                        {/* LEFT */}
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 flex items-center justify-center">
+                            <Image
+                              src={iconList[index % 5]}
+                              alt=""
+                              width={80}
+                              height={80}
+                            />
+                          </div>
 
-        {/* RIGHT CARD */}
-        <div className="bg-[#F5F0EB] rounded-2xl p-8 ">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 flex items-center justify-center">
-                <Image src={images.sustainImg} alt="" width={34} height={34} />
+                          <span className="text-[#000000] text-[17px] font-[Canva Sans]">
+                            {pathwayName}
+                          </span>
+                        </div>
+
+                        {/* RIGHT */}
+                        <div className="text-right">
+                          <p className="text-[#000000] text-[17px]">
+                            {item.completed ? "Completed on" : "In Progress"}
+                          </p>
+
+                          {item.completed && (
+                            <p className="text-[#000000] text-[17px]">
+                              {new Date(
+                                item.completed * 1000,
+                              ).toLocaleDateString()}
+                            </p>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-              <h3 className="text-[#000000] text-[18px] font-[400] text-[17px] font-[Canva Sans]">
-                Make it Sustainable
-              </h3>
-            </div>
-
-            {/* <span className="text-[#000000] font-[400] font-[Aptos] text-[17px]">
-              add 5 trofeos
-            </span> */}
+            ))}
           </div>
-        </div>
+        ))}
       </div>
       <div className=" flex justify-center mt-[50px]">
         <div className="grid grid-cols-2 gap-10">

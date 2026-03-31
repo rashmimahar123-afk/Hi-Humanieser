@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
@@ -8,87 +8,47 @@ import ReflectionBlock from "../ReflectionBlock/ReflectionBlock";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import DashboardPathwayCard from "../DashboardPathwayCard/DashboardPathwayCard";
 import GaugeChart from "react-gauge-chart";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
+import useQuizDetailsQuery from "@/src/modules/ChoosePathwayModule/Hooks/useQuizDetailsQuery";
+import useMyQuizResultQuery from "@/src/modules/ChoosePathwayModule/Hooks/useMyQuizResultQuery";
+import { useRouter } from "next/navigation";
+import {
+  ENRICH_PROGRESS_LIST,
+  PRACTICE_LIST_ITEM,
+} from "../../Types/ResponseTypes";
 
-function DashboardPdf() {
-  const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
-  const togglePathway = (id: any) => {
-    setSelectedPathways((prev: any) =>
-      prev.includes(id)
-        ? prev.filter((p: any) => p !== id)
-        : prev.length < 2
-          ? [...prev, id]
-          : prev,
-    );
-  };
+type Principle = {
+  key: string;
+  score: number;
+  situation: number;
+  pillar: string;
+};
+
+type PillarItem = {
+  top: Principle;
+  weak: Principle;
+};
+
+type PillarDataType = Record<string, PillarItem>;
+
+type DASHBOARD_PDF_PROPS = {
+  resultData: any;
+  topStrengthDetails: any;
+  weakStrengthDetails: any;
+  activePracticeListForPdf: Array<PRACTICE_LIST_ITEM>;
+  enrichedProgressList: Array<ENRICH_PROGRESS_LIST>;
+};
+function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
+  const {
+    resultData,
+    topStrengthDetails = [],
+    weakStrengthDetails = [],
+    activePracticeListForPdf,
+    enrichedProgressList = [],
+  } = props;
+
   const reflections = Array.from({ length: 3 });
-
-  const pathways = [
-    {
-      id: 1,
-      title: "Notice Your Ripple Effect",
-      description:
-        "Your actions create ripples in the workplace. This pathway helps you make them intentional and constructive.",
-    },
-    {
-      id: 2,
-      title: "Build Everyday Safety",
-      description:
-        "Even with good intent, people don’t always speak up — this pathway helps you create small signals of safety in daily moments.",
-    },
-    {
-      id: 3,
-      title: "Fuel Performance with Wellbeing",
-      description:
-        "When workloads rise, wellbeing often drops — this pathway helps you see how balance fuels stronger performance.",
-    },
-  ];
-
-  const practiceList = [
-    {
-      id: 1,
-      title: "Ask yourself: “What else could be true?””",
-      description:
-        "Next time you feel sure about what’s going on, take a breath and imagine 2–3 other possibilities. You might uncover something that shifts the conversation — and the outcome.",
-      pathway: "Shift the Lens Pathway",
-    },
-    {
-      id: 2,
-      title: "Borrow someone else’s lens",
-      description:
-        "In your next meeting, try seeing the situation through another person’s priorities or pressures. Notice how it changes your take — sometimes the biggest performance boost comes from truly understanding the players.",
-      pathway: "Fuel Performance with Wellbeing  Pathway",
-    },
-    {
-      id: 3,
-      title:
-        "Before acting, pause and ask: “How will this land for people — and for performance?’’",
-      description:
-        "If the answer tilts too far one way, make one tweak to balance it. This might mean clarifying your ask, looping someone in, or holding back to get more context.",
-      pathway: "Shift the Lens Pathway",
-    },
-    {
-      id: 4,
-      title: "Ask yourself: “What else could be true?”",
-      description:
-        "Next time you feel sure about what’s going on, take a breath and imagine 2–3 other possibilities. You might uncover something that shifts the conversation — and the outcome.",
-      pathway: "Shift the Lens Pathway",
-    },
-    {
-      id: 5,
-      title: "Borrow someone else’s lens",
-      description:
-        "In your next meeting, try seeing the situation through another person’s priorities or pressures. Notice how it changes your take — sometimes the biggest performance boost comes from truly understanding the players.",
-      pathway: "Fuel Performance with Wellbeing  Pathway",
-    },
-    {
-      id: 6,
-      title:
-        "Before acting, pause and ask: “How will this land for people — and for performance?’’",
-      description:
-        "If the answer tilts too far one way, make one tweak to balance it. This might mean clarifying your ask, looping someone in, or holding back to get more context.",
-      pathway: "Shift the Lens Pathway",
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-[#F5F0EB] font-sans">
@@ -99,6 +59,7 @@ function DashboardPdf() {
           width={630}
           height={630}
           className="absolute top-0 right-0 z-0"
+          priority
         />
       </div>
       {/* Header */}
@@ -191,68 +152,29 @@ function DashboardPdf() {
                 </p>
                 <div className="mt-[20px] ml-14">
                   <div className=" mt-2 ml-[65px]">
-                    <div className="relative " style={{ fontFamily: "Aptos" }}>
-                      {/* Highlighted text */}
-                      <span className="relative z-10 px-2 py-1 rounded text-[#737373] text-[20px]">
-                        <span className="font-[700]">Stay Curious — </span>you
-                        naturally look beyond the obvious
-                      </span>
-
-                      {/* Callout square */}
-                      <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
-                        <div className="relative bg-[#4BA6A6] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
-                          {/* Arrow */}
-                          <div
-                            className="absolute right-[-6px] w-0 h-0 
-"
-                          />
-                          <Image src={images.smallArrow} alt="small-arrow" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="relative " style={{ fontFamily: "Aptos" }}>
-                      {/* Highlighted text */}
-                      <span className="relative z-10 px-2 py-1 rounded text-[#737373] text-[20px]">
-                        <span className="font-[700]"> Make it Safe — </span>
-                        people around you feel they can share ideas because of
-                        the space you create.
-                      </span>
-
-                      {/* Callout square */}
-                      <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
-                        <div className="relative bg-[#4BA6A6] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
-                          {/* Arrow */}
-                          <div
-                            className="absolute right-[-6px] w-0 h-0 
-"
-                          />
-                          <Image src={images.smallArrow} alt="small-arrow" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="relative " style={{ fontFamily: "Aptos" }}>
-                      {/* Highlighted text */}
-                      <span className="relative z-10 px-2 py-1 rounded text-[#737373] text-[20px]">
-                        <span className="font-[700]">
-                          {" "}
-                          Build Care & Belonging In —{" "}
+                    {topStrengthDetails.map((item: any, index: number) => (
+                      <div
+                        key={index}
+                        className="relative"
+                        style={{ fontFamily: "Aptos" }}
+                      >
+                        <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[20px]">
+                          <span className="font-[700]">{item.title} — </span>
+                          {item.description}
                         </span>
-                        you put effort into making others feel part of something
-                        bigger.
-                      </span>
 
-                      {/* Callout square */}
-                      <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
-                        <div className="relative bg-[#4BA6A6] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
-                          {/* Arrow */}
-                          <div
-                            className="absolute right-[-6px] w-0 h-0 
-"
-                          />
-                          <Image src={images.smallArrow} alt="small-arrow" />
+                        {/* Arrow */}
+                        <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
+                          <div className="relative bg-[#4BA6A6] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
+                            <Image
+                              src={images.smallArrow}
+                              alt="small-arrow"
+                              priority
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
                   <div className="w-full flex justify-center">
                     <div className="text-[#0F4F58] text-[20px] font-[700] font-[Roboto] max-w-[823px] flex justify-center mt-[40px]">
@@ -300,13 +222,15 @@ function DashboardPdf() {
                           <GaugeChart
                             id="connect-gauge"
                             nrOfLevels={1}
-                            percent={3.5 / 5}
+                            percent={
+                              (resultData?.pillarData?.pillar_03?.top?.score ||
+                                0) / 5
+                            }
                             hideText={true}
                             arcWidth={0.38} // thicker arc
                             colors={["#D3CBB6"]}
                             needleColor="#F28B82"
                           />
-
                           {/* Labels */}
                           <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
                             1
@@ -335,13 +259,27 @@ function DashboardPdf() {
                           others.
                         </p>
 
-                        <div className="mt-6">
-                          <Image
-                            src={images.clockTwo}
-                            alt="connect-gauge"
-                            width={220}
-                            height={120}
+                        <div className="mt-6 relative w-[250px]">
+                          <GaugeChart
+                            id="connect-gauge"
+                            nrOfLevels={1}
+                            percent={
+                              (resultData?.pillarData?.pillar_02?.top?.score ||
+                                0) / 5
+                            }
+                            hideText={true}
+                            arcWidth={0.38} // thicker arc
+                            colors={["#D3CBB6"]}
+                            needleColor="#F28B82"
                           />
+                          {/* Labels */}
+                          <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                            1
+                          </span>
+
+                          <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                            5
+                          </span>
                         </div>
                       </div>
 
@@ -362,13 +300,27 @@ function DashboardPdf() {
                           wellbeing.
                         </p>
 
-                        <div className="mt-6">
-                          <Image
-                            src={images.clockThree}
-                            alt="culture-gauge"
-                            width={220}
-                            height={120}
+                        <div className="mt-6 relative w-[250px]">
+                          <GaugeChart
+                            id="connect-gauge"
+                            nrOfLevels={1}
+                            percent={
+                              (resultData?.pillarData?.pillar_03?.top?.score ||
+                                0) / 5
+                            }
+                            hideText={true}
+                            arcWidth={0.38} // thicker arc
+                            colors={["#D3CBB6"]}
+                            needleColor="#F28B82"
                           />
+                          {/* Labels */}
+                          <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                            1
+                          </span>
+
+                          <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                            5
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -378,7 +330,7 @@ function DashboardPdf() {
                 {/* SKY SHAPE CARD */}
               </div>
 
-              <div>
+              <div className="mt-[60px]">
                 {/* TEXT (Always on top) */}
                 <div className="relative z-20 text-[#567F55] font-[400]">
                   <h3
@@ -396,13 +348,11 @@ function DashboardPdf() {
                   </p>
                   <div className="mt-[40px] ml-[28px]">
                     <div className="grid grid-cols-3 gap-[40px]">
-                      {pathways.map((item) => (
+                      {weakStrengthDetails.map((item: any, index: any) => (
                         <QuizPathwayCards
-                          key={item.id}
+                          key={`item${index}`}
                           title={item.title}
                           description={item.description}
-                          selected={selectedPathways.includes(item?.id)}
-                          onSelect={() => togglePathway(item?.id)}
                           onLearnMore={() =>
                             console.log("Learn more:", item.title)
                           }
@@ -455,158 +405,96 @@ function DashboardPdf() {
           </p>
 
           {/* Highlight Box */}
+
           <div className="relative rounded-2xl p-8 bg-white">
-            <div className="flex items-center justify-between rounded-xl ">
-              <div className="flex items-center gap-4">
-                <Image
-                  src={images.pathEye}
-                  alt="path-eye"
-                  width={93}
-                  height={83}
-                />
-                <div className="flex flex-col">
-                  <h3 className="font-[700] font-[Canva Sans] text-[19px] text-[#3C4C59]">
-                    Practice Perspective
-                  </h3>
-                  <p className="text-[#567F55] font-[Roboto] text-[17px] font-[400]">
-                    Every new view opens a new way forward.
-                  </p>
+            {enrichedProgressList.map((item: any, index: number) => {
+              const titleKey = Object.keys(item).find(
+                (key) =>
+                  key !== "created" &&
+                  key !== "uuid" &&
+                  key !== "active" &&
+                  key !== "completed",
+              );
+
+              const data = item[titleKey as string];
+              const microActions = [
+                ...(data?.m2?.micro_action_1 || []),
+                ...(data?.m2?.micro_action_2 || []),
+              ];
+              const groupedMicroActions = Object.values(
+                microActions.reduce((acc: any, curr: any) => {
+                  if (!acc[curr.title]) {
+                    acc[curr.title] = {
+                      title: curr.title,
+                      description: curr.description,
+                      reflections: [],
+                    };
+                  }
+
+                  acc[curr.title].reflections.push({
+                    reflection: curr.reflection,
+                    share: curr.share,
+                  });
+
+                  return acc;
+                }, {}),
+              );
+              return (
+                <div key={`item${index}`} className="mb-10">
+                  {/* Header */}
+                  <div className="flex items-center justify-between rounded-xl">
+                    <div className="flex items-center gap-4">
+                      <Image
+                        src={images.pathEye}
+                        alt="path-eye"
+                        width={93}
+                        height={83}
+                        priority
+                      />
+                      <div className="flex flex-col">
+                        <h3 className="font-[700] text-[19px] text-[#3C4C59]">
+                          {titleKey}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col mr-[230px]">
+                      <span className="text-[#567F55] text-[17px]">
+                        Completed on
+                      </span>
+                      <p className="text-[#567F55] text-[17px]">
+                        {item.completed
+                          ? new Date(item.completed * 1000).toLocaleDateString()
+                          : "-"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Micro Actions */}
+                  <div className="mt-6 bg-[#F6E7C3] rounded-[20px] px-10 py-6">
+                    <div className="flex justify-between mb-4">
+                      <span className="text-[#567F55] font-bold ml-[115px]">
+                        MICRO-ACTIONS
+                      </span>
+                      <span className="text-[#567F55] font-bold mr-[340px]">
+                        REFLECTION
+                      </span>
+                    </div>
+
+                    <div className="space-y-6">
+                      {groupedMicroActions.map((ma: any, i: number) => (
+                        <DashboardPathwayCard
+                          key={i}
+                          title={ma.title}
+                          description={ma.description}
+                          reflections={ma.reflections}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex items-center mr-[230px]">
-                <div className="flex flex-col">
-                  <span className="text-[#567F55] font-[Roboto] font-[400] text-[17px]">
-                    Completed on
-                  </span>
-                  <p className="text-[#567F55] font-[Roboto] font-[400] text-[17px]">
-                    15/01/2026
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-6 relative">
-              {/* Top labels */}
-              <div className="flex justify-between mb-4">
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTIONS
-                </span>
-
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[340px]">
-                  REFLECTION
-                </span>
-              </div>
-
-              {/* Action Rows */}
-              <div className="space-y-8">
-                {/* Row */}
-                <DashboardPathwayCard
-                  title="Ask yourself: “What else could be true?”"
-                  description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
-“Let’s hear their full thinking before we respond.”
-It takes courage — but it quietly protects trust, dignity and voice in the room.`}
-                />
-              </div>
-            </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-6 relative">
-              {/* Top labels */}
-              <div className="flex justify-between mb-4">
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTIONS
-                </span>
-
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[340px]">
-                  REFLECTION
-                </span>
-              </div>
-
-              {/* Action Rows */}
-              <div className="space-y-8">
-                <DashboardPathwayCard
-                  title="Borrow someone else’s lens"
-                  description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
-                />
-              </div>
-            </div>
-            <div className="flex items-center justify-between rounded-xl p-5 mt-[40px]">
-              <div className="flex items-center gap-4">
-                <Image
-                  src={images.wellbeingImg}
-                  alt="path-eye"
-                  width={93}
-                  height={83}
-                />
-                <div className="flex flex-col">
-                  <h3 className="font-[700] font-[Canva Sans] text-[19px] text-[#3C4C59] max-w-[350]">
-                    Wellbeing is Performance Infraestructure
-                  </h3>
-                  <p className="text-[#567F55] font-[Roboto] text-[17px] font-[400]">
-                    Every new view opens a new way forward.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6">
-                <div className="flex flex-col mr-[230px]">
-                  <span className="text-[#567F55] font-[Roboto] font-[400] text-[17px]">
-                    Completed on
-                  </span>
-                  <p className="text-[#567F55] font-[Roboto] font-[400] text-[17px]">
-                    15/01/2026
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-6 relative">
-              {/* Top labels */}
-              <div className="flex justify-between mb-6">
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTIONS
-                </span>
-
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[340px]">
-                  REFLECTION{" "}
-                </span>
-              </div>
-
-              {/* Action Rows */}
-              <div className="space-y-8">
-                {/* Row */}
-                <DashboardPathwayCard
-                  title="Ask yourself: “What else could be true?”"
-                  description={`If someone is corrected or dismissed publicly, intervene gently to restore safety:
-“Let’s hear their full thinking before we respond.”
-It takes courage — but it quietly protects trust, dignity and voice in the room.`}
-                />
-              </div>
-            </div>
-            <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-12 relative">
-              {/* Top labels */}
-              <div className="flex justify-between mb-4">
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
-                  MICRO-ACTIONS
-                </span>
-
-                <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[180px]">
-                  REFLECTION{" "}
-                </span>
-              </div>
-
-              {/* Action Rows */}
-              <div className="space-y-8">
-                <DashboardPathwayCard
-                  title="Borrow someone else’s lens"
-                  description={`Begin your next interaction with a light, human check-in that invites but never pressures. Try something like: “Good to see you — how’s your day going so far?”. Let their tone guide how you move forward.`}
-                />
-              </div>
-            </div>
-            {/* Footer line */}
-            {/* <div className="w-full flex justify-center">
-              <p className="mt-12 text-center text-[#567F55] text-[23px] font-bold font-[RocaTwo] max-w-[576px]">
-                Tiny pivots, big shifts. Each action is a chance to see more,
-                connect better, and boost performance in the moment.
-              </p>
-            </div> */}
+              );
+            })}
           </div>
         </div>
 
@@ -649,9 +537,9 @@ It takes courage — but it quietly protects trust, dignity and voice in the roo
           <div className="relative rounded-2xl p-8 bg-white">
             <div>
               <div className=" grid grid-cols-2 gap-8">
-                {practiceList.map((item: any) => (
+                {activePracticeListForPdf?.map((item: any, index: number) => (
                   <div
-                    key={item.id}
+                    key={`item${index}`}
                     className="bg-[#CDE3CC] rounded-2xl px-8 py-10 flex flex-col justify-between "
                   >
                     {/* Content */}

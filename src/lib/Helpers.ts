@@ -429,3 +429,48 @@ export const getPathwayProgress = (data: any): ProgressResult => {
     percentage,
   };
 };
+
+export const enrichProgressWithPractice = (
+  progressList: any[],
+  practiceList: any[],
+) => {
+  return progressList.map((item) => {
+    const dynamicKey = Object.keys(item).find(
+      (key) => !["created", "uuid", "active", "completed"].includes(key),
+    );
+
+    if (!dynamicKey) return item;
+
+    const pathwayName = dynamicKey;
+    const pathwayData = item[dynamicKey];
+
+    const m2 = pathwayData?.m2 || {};
+
+    const updatedM2: any = {};
+
+    Object.keys(m2).forEach((key) => {
+      // key = micro_action_1 → ma1
+      const maId = `ma${key.split("_").pop()}`;
+
+      // find matching practice item
+      const practiceItem = practiceList.find(
+        (p) => p.id === maId && p.pathway === pathwayName,
+      );
+
+      updatedM2[key] = m2[key].map((entry: any) => ({
+        ...entry,
+        title: practiceItem?.title || null,
+        description: practiceItem?.description || null,
+        id: maId,
+      }));
+    });
+
+    return {
+      ...item,
+      [pathwayName]: {
+        ...pathwayData,
+        m2: updatedM2,
+      },
+    };
+  });
+};

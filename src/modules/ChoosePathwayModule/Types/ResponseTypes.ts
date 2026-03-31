@@ -134,12 +134,14 @@ export type MY_QUIZ_RESULT_DATA = {
 };
 export type MY_QUIZ_RESULT_RESPONSE_TYPES = {
   message: string;
-  quiz: {
-    email: string;
-    results: MY_QUIZ_RESULT_DATA;
-    timestamp: number;
-    created_at: string;
-  };
+  quiz: [
+    {
+      email: string;
+      results: MY_QUIZ_RESULT_DATA;
+      timestamp: number;
+      created_at: string;
+    },
+  ];
 };
 
 export type RESULT_MESSAGE_RESPONSE_TYPES = [

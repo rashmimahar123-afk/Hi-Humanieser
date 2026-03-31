@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-function DashboardPathwayCard({
-  title,
-  description,
-  showSaveReflection = true,
-}: {
+type DASHBOARD_PATHWAY_CARD_PROPS = {
   title: string;
   description: string;
-  showSaveReflection?: boolean;
-}) {
+  reflections?: Array<any>;
+};
+function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
+  const { title, description, reflections } = props;
+
+  const safeReflections = reflections || [];
   function renderBoldQuotes(text: string) {
     const parts = text.split(/(“[^”]+”)/g);
 
@@ -38,30 +38,48 @@ function DashboardPathwayCard({
       </div>
 
       {/* Right Practice Box */}
-      <div className="bg-[#F5F0EB] rounded-[16px] p-6">
-        {/* Row */}
-        <div className="flex gap-6 items-center">
-          {/* Left text */}
+      <div className="grid grid-cols-2 gap-6">
+        {[0, 1].map((_item: any, idx: any) => {
+          const data = safeReflections[idx]; // 👈 key line
 
-          {/* Right dotted lines */}
-          <div className="w-[100%] relative">
-            <div className="space-y-5">
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className="border-b border-dotted border-[#000000]"
-                />
-              ))}
+          return (
+            <div className="bg-[#F5F0EB] rounded-[16px] p-4 relative overflow-hidden">
+              {/* Reflection Text */}
+              {data?.reflection ? (
+                <p
+                  className="text-[#0F4F58] text-[14px] font-[Roboto] whitespace-pre-wrap break-words"
+                  style={{
+                    lineHeight: "28px",
+                    backgroundImage:
+                      "repeating-linear-gradient(to bottom, transparent, transparent 27px, #000 28px)",
+                    backgroundSize: "100% 28px",
+                    paddingTop: "2px",
+                  }}
+                >
+                  {data.reflection}
+                </p>
+              ) : (
+                <div className="space-y-4 mt-2">
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="border-b border-dotted border-[#000000]"
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Share Text */}
+              {data?.share && (
+                <div className="flex justify-end mt-[12px]">
+                  <span className="text-[12px] font-[RocaTwo] font-bold text-[#0F4F58]">
+                    (Shared in reflection Wall)
+                  </span>
+                </div>
+              )}
             </div>
-          </div>
-        </div>
-        {showSaveReflection && (
-          <div className="flex justify-end mt-[20px]">
-            <button className=" text-[14px] font-[RocaTwo] font-bold text-[#0F4F58]">
-              (Shared in reflection Wall)
-            </button>
-          </div>
-        )}
+          );
+        })}
       </div>
     </div>
   );

@@ -9,30 +9,25 @@ import GaugeChart from "react-gauge-chart";
 import { useRouter } from "next/navigation";
 
 type MY_QUIZ_RESULT_PROPS = {
-  pathways: Array<any>;
+  topStrengthDetails: any;
+  formattedDate: string;
+  resultData: any;
+  weakStrengthDetails: any;
 };
 function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
-  const { pathways } = props;
-  const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
-  const togglePathway = (id: any) => {
-    setSelectedPathways((prev: any) =>
-      prev.includes(id)
-        ? prev.filter((p: any) => p !== id)
-        : prev.length < 2
-          ? [...prev, id]
-          : prev,
-    );
-  };
+  const { topStrengthDetails, formattedDate, resultData, weakStrengthDetails } =
+    props;
 
   const router = useRouter();
+
   return (
     <>
       <h2 className="font-bold text-[35px] text-[#F5F0EB] font-[RocaTwo]">
         My Quiz Results
       </h2>
       <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[22px] ml-[40px] mt-[15px]">
-        Based on your answers taken on date, these are the strengths you bring,
-        your pillar scores, and the 3 pathways recommended for you.
+        {`Based on your answers taken on ${formattedDate}, these are the strengths you bring,
+        your pillar scores, and the 3 pathways recommended for you.`}
       </p>
       <div className="bg-[#f5f0eb] pt-[1px] px-[45px] pb-[12px] mt-[20px] border rounded-[10px]">
         <div className="mt-[30px]  ">
@@ -44,65 +39,25 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
           </p>
           <div className="mt-[20px] ml-14">
             <div className=" mt-2 ml-[65px]">
-              <div className="relative " style={{ fontFamily: "Aptos" }}>
-                {/* Highlighted text */}
-                <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[20px]">
-                  <span className="font-[700]">Stay Curious — </span>you
-                  naturally look beyond the obvious
-                </span>
-
-                {/* Callout square */}
-                <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
-                  <div className="relative bg-[#E6A757] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
-                    {/* Arrow */}
-                    <div className="absolute right-[-6px] w-0 h-0 " />
-                    <Image src={images.smallArrow} alt="small-arrow" />
-                  </div>
-                </div>
-              </div>
-              <div className="relative " style={{ fontFamily: "Aptos" }}>
-                {/* Highlighted text */}
-                <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[20px]">
-                  <span className="font-[700]"> Make it Safe — </span>
-                  people around you feel they can share ideas because of the
-                  space you create.
-                </span>
-
-                {/* Callout square */}
-                <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
-                  <div className="relative bg-[#E6A757] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
-                    {/* Arrow */}
-                    <div
-                      className="absolute right-[-6px] w-0 h-0 
-"
-                    />
-                    <Image src={images.smallArrow} alt="small-arrow" />
-                  </div>
-                </div>
-              </div>
-              <div className="relative " style={{ fontFamily: "Aptos" }}>
-                {/* Highlighted text */}
-                <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[20px]">
-                  <span className="font-[700]">
-                    {" "}
-                    Build Care & Belonging In —{" "}
+              {topStrengthDetails.map((item: any, index: number) => (
+                <div
+                  key={index}
+                  className="relative"
+                  style={{ fontFamily: "Aptos" }}
+                >
+                  <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[20px]">
+                    <span className="font-[700]">{item.title} — </span>
+                    {item.description}
                   </span>
-                  you put effort into making others feel part of something
-                  bigger.
-                </span>
 
-                {/* Callout square */}
-                <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
-                  <div className="relative bg-[#E6A757] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
-                    {/* Arrow */}
-                    <div
-                      className="absolute right-[-6px] w-0 h-0 
-"
-                    />
-                    <Image src={images.smallArrow} alt="small-arrow" />
+                  {/* Arrow */}
+                  <div className="absolute -left-8 top-1/2 -translate-y-1/2 z-20">
+                    <div className="relative bg-[#E6A757] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
+                      <Image src={images.smallArrow} alt="small-arrow" />
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
             <div className="w-full flex justify-center">
               <div className="text-[#0F4F58] text-[20px] font-[700] font-[Roboto] max-w-[823px] flex justify-center mt-[20px]">
@@ -149,7 +104,9 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                     <GaugeChart
                       id="connect-gauge"
                       nrOfLevels={1}
-                      percent={3.5 / 5}
+                      percent={
+                        (resultData?.pillarData?.pillar_01?.top?.score || 0) / 5
+                      }
                       hideText={true}
                       arcWidth={0.38} // thicker arc
                       colors={["#D3CBB6"]}
@@ -187,7 +144,9 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                     <GaugeChart
                       id="connect-gauge"
                       nrOfLevels={1}
-                      percent={3.5 / 5}
+                      percent={
+                        (resultData?.pillarData?.pillar_02?.top?.score || 0) / 5
+                      }
                       hideText={true}
                       arcWidth={0.38} // thicker arc
                       colors={["#D3CBB6"]}
@@ -226,13 +185,14 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                     <GaugeChart
                       id="connect-gauge"
                       nrOfLevels={1}
-                      percent={3.5 / 5}
+                      percent={
+                        (resultData?.pillarData?.pillar_03?.top?.score || 0) / 5
+                      }
                       hideText={true}
                       arcWidth={0.38} // thicker arc
                       colors={["#D3CBB6"]}
                       needleColor="#F28B82"
                     />
-
                     {/* Labels */}
                     <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
                       1
@@ -267,15 +227,17 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
             </p>
             <div className="mt-[40px] ml-[65px]">
               <div className="grid grid-cols-3 gap-[40px]">
-                {pathways.map((item) => (
+                {weakStrengthDetails.map((item: any, index: any) => (
                   <QuizPathwayCards
-                    key={item.id}
+                    key={`item${index}`}
                     title={item.title}
                     description={item.description}
-                    selected={selectedPathways.includes(item?.id)}
-                    onSelect={() => togglePathway(item?.id)}
-                    onLearnMore={() => console.log("Learn more:", item.title)}
                     bgColor={"#F5C882"}
+                    onLearnMore={() =>
+                      router.push(
+                        `/pathway-card?pillar=${item?.pillar_number}&principle=${item?.principle_number}`,
+                      )
+                    }
                   />
                 ))}
               </div>
@@ -283,36 +245,38 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
           </div>
         </div>
 
-        <div
-          className="flex justify-end mt-[53px] mb-[7px] cursor-pointer"
-          onClick={() => router.push("/choose-pathway")}
-        >
-          <PolygonButton
-            width="106px"
-            height="107px"
-            bgColor="#F6E3BF"
-            radius={14}
-            clipPath={`polygon(
+        <div className="flex justify-end mt-[53px] mb-[7px] ">
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/start-quiz")}
+          >
+            <PolygonButton
+              width="106px"
+              height="107px"
+              bgColor="#F6E3BF"
+              radius={14}
+              clipPath={`polygon(
     15% 11%,
     81% 0%,
     100% 87%,
     3% calc(100% - 15px)
   )`}
-            decorationImg={{
-              src: images.arrowImg,
-              width: 48,
-              height: 48,
-            }}
-            decorationPosition={{
-              className: "-left-[31px] -top-[25px]",
-            }}
-          >
-            <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
-              Retake
-              <br />
-              <span className="whitespace-nowrap">The Quiz</span>
-            </span>
-          </PolygonButton>
+              decorationImg={{
+                src: images.arrowImg,
+                width: 48,
+                height: 48,
+              }}
+              decorationPosition={{
+                className: "-left-[31px] -top-[25px]",
+              }}
+            >
+              <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
+                Retake
+                <br />
+                <span className="whitespace-nowrap">The Quiz</span>
+              </span>
+            </PolygonButton>
+          </div>
         </div>
       </div>
     </>

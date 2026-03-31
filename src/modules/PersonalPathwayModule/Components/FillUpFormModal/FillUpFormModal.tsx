@@ -17,8 +17,9 @@ export const openFillupModal = (
   microActionType: string,
   uuid: string,
   selectedPulse?: number,
+  pinToDash?: string[],
 ) => {
-  emitEvent(EVENT, { microActionType, uuid, selectedPulse });
+  emitEvent(EVENT, { microActionType, uuid, selectedPulse, pinToDash });
 };
 
 function FillUpFormModal() {
@@ -29,12 +30,15 @@ function FillUpFormModal() {
   const [pulseCheck, setPulseCheck] = useState<number>();
   const [id, setId] = useState("");
   const charCount = reflection.length;
+
+  const [pinToDash, setPinToDash] = useState<string[]>([]);
+
   useEventEmitter(EVENT, ({ microActionType, uuid, selectedPulse }) => {
     setTimeout(() => {
       setActionKey(microActionType);
       setId(uuid);
       setPulseCheck(selectedPulse);
-
+      setPinToDash(pinToDash || []);
       setReflection("");
       setShare(false);
 
@@ -56,7 +60,7 @@ function FillUpFormModal() {
           kind: "m3",
           reflection: newReflection,
           pulse_check: pulseCheck,
-          pin_to_dash: true,
+          pin_to_dash: pinToDash,
         },
       };
 

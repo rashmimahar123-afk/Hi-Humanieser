@@ -3,15 +3,12 @@ import { usePathname } from "next/navigation";
 type RESULT_PATHWAY_CARD_PROPS = {
   title: string;
   description: string;
-  selected: boolean;
-  onSelect: () => void;
   onLearnMore: () => void;
   bgColor: string;
 };
 
 function QuizPathwayCards(props: RESULT_PATHWAY_CARD_PROPS) {
-  const { title, description, onLearnMore, selected, onSelect, bgColor } =
-    props;
+  const { title, description, onLearnMore, bgColor } = props;
   const pathname = usePathname();
 
   const hideLearnMore = pathname.includes("dashboard-pdf");
@@ -23,7 +20,6 @@ function QuizPathwayCards(props: RESULT_PATHWAY_CARD_PROPS) {
         px-6 py-8
         flex flex-col justify-between
       
-        ${selected ? "ring-2 ring-[#0F4F58]" : ""}
       `}
       style={{ backgroundColor: bgColor }}
     >
