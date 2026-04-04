@@ -17,6 +17,10 @@ import {
   ENRICH_PROGRESS_LIST,
   PRACTICE_LIST_ITEM,
 } from "../../Types/ResponseTypes";
+import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
+import { enrichProgressWithPractice } from "@/src/lib/Helpers";
+import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
 
 type Principle = {
   key: string;
@@ -32,25 +36,375 @@ type PillarItem = {
 
 type PillarDataType = Record<string, PillarItem>;
 
-type DASHBOARD_PDF_PROPS = {
-  resultData: any;
-  topStrengthDetails: any;
-  weakStrengthDetails: any;
-  activePracticeListForPdf: Array<PRACTICE_LIST_ITEM>;
-  enrichedProgressList: Array<ENRICH_PROGRESS_LIST>;
-  randomMessage?: string;
-};
-function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
-  const {
-    resultData,
-    topStrengthDetails = [],
-    weakStrengthDetails = [],
-    activePracticeListForPdf,
-    enrichedProgressList = [],
-    randomMessage,
-  } = props;
-
+function AllDashboardData() {
+  const [resultData, setResultData] = useState<{
+    pillarData: PillarDataType;
+    pillarAvg: Record<string, number>;
+  } | null>(null);
+  const [progressList, setProgressList] = useState<any>([]);
+  const currentYear = new Date().getFullYear().toString();
+  const [selected, setSelected] = useState(currentYear);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
+  const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
+  const [practiceList, setPracticeList] = useState<any[]>([]);
+  const [showPdf, setShowPdf] = useState(false);
+  const [enter] = useState(true);
+  const router = useRouter();
+  const { data, isLoading } = useMyQuizResultQuery();
   const reflections = Array.from({ length: 3 });
+
+  const sortFn = (a: any, b: any, asc = false) => {
+    // 1. Score comparison
+    if (a.score !== b.score) {
+      return asc ? a.score - b.score : b.score - a.score;
+    }
+
+    // 2. Tie-breaker → lower situation wins
+    if (a.situation !== b.situation) {
+      return a.situation - b.situation;
+    }
+
+    // 3. Final fallback (stable sort)
+    return a.key.localeCompare(b.key);
+  };
+  const processQuizResults = (results: any) => {
+    const wS = 0.5;
+    const wZ = 0.5;
+
+    const pillarData: any = {};
+    const pillarAvg: any = {};
+
+    Object.keys(results).forEach((pillarKey) => {
+      const principles = results[pillarKey];
+
+      const arr: any[] = [];
+
+      Object.keys(principles).forEach((pKey) => {
+        const item = principles[pKey];
+
+        const score = wS * item.strength + wZ * item.situation;
+
+        arr.push({
+          key: pKey,
+          score,
+          situation: item.situation,
+          pillar: pillarKey,
+        });
+      });
+
+      const sortedDesc = [...arr].sort((a, b) => sortFn(a, b, false));
+      const sortedAsc = [...arr].sort((a, b) => sortFn(a, b, true));
+
+      //  Store per pillar
+      pillarData[pillarKey] = {
+        top: sortedDesc[0],
+        weak: sortedAsc[0],
+      };
+
+      // Avg
+      pillarAvg[pillarKey] =
+        arr.reduce((sum, p) => sum + p.score, 0) / arr.length;
+    });
+
+    return {
+      pillarData,
+      pillarAvg,
+    };
+  };
+
+  const getTopStrengthDetails = (topStrengths: any[], quizData: any) => {
+    if (!quizData?.pillars) return [];
+
+    const result: any[] = [];
+
+    topStrengths.forEach((item) => {
+      const formattedKey = item.key.replace("principle", "Principle");
+
+      Object.values(quizData.pillars).forEach((pillar: any) => {
+        const principle = pillar.principles?.[formattedKey];
+
+        if (principle) {
+          result.push({
+            key: item.key,
+            title: principle.display_name,
+            description: principle.description,
+          });
+        }
+      });
+    });
+
+    return result;
+  };
+  const { data: quizDetails } = useQuizDetailsQuery();
+
+  const getWeakStrengthDetails = (growthTargets: any[], quizData: any) => {
+    if (!quizData?.pillars) return [];
+
+    const result: any[] = [];
+
+    growthTargets.forEach((item) => {
+      const formattedKey = item.key.replace("principle", "Principle");
+
+      // 👇 extract numbers
+      const principle_number = parseInt(item.key.split("_")[1], 10);
+      const pillar_number = parseInt(item.pillar.split("_")[1], 10);
+
+      Object.values(quizData.pillars).forEach((pillar: any) => {
+        const principle = pillar.principles?.[formattedKey];
+
+        if (principle) {
+          result.push({
+            key: item.key,
+            title: principle.display_name,
+            description: principle.description,
+            principle_number,
+            pillar_number,
+          });
+        }
+      });
+    });
+
+    return result;
+  };
+
+  useEffect(() => {
+    if (resultData?.pillarData && quizDetails?.data) {
+      const topStrengths = Object.values(resultData.pillarData).map(
+        (p: any) => p.top,
+      );
+
+      const details = getTopStrengthDetails(topStrengths, quizDetails.data);
+
+      setTopStrengthDetails(details);
+
+      // agar overall message chahiye
+      const allScores = topStrengths.map((p: any) => p.score);
+      const avg =
+        allScores.reduce((a: number, b: number) => a + b, 0) / allScores.length;
+    }
+  }, [resultData, quizDetails]);
+
+  useEffect(() => {
+    if (resultData?.pillarData && quizDetails?.data) {
+      const weakPrinciples = Object.values(resultData.pillarData).map(
+        (p: any) => p.weak,
+      );
+
+      const weakDetails = getWeakStrengthDetails(
+        weakPrinciples,
+        quizDetails.data,
+      );
+
+      setWeakStrengthDetails(weakDetails);
+    }
+  }, [resultData, quizDetails]);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+  // const formattedDate = formatDate(data?.data?.quiz?.created_at ?? "");
+  const { data: chooseMyselfData } = useChooseMyselfQuery();
+
+  const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
+
+  // ------------------------------->Latest Quiz<-----------------------
+  const getLatestQuizByYear = (quizList: any[], selectedYear: string) => {
+    if (!Array.isArray(quizList)) return null;
+
+    // 1. Filter by year
+    const filtered = quizList.filter((item) => {
+      const year = new Date(item.created_at).getFullYear().toString();
+      return year === selectedYear;
+    });
+
+    if (filtered.length === 0) return null;
+
+    // 2. Sort by timestamp DESC (latest first)
+    const sorted = filtered.sort((a, b) => b.timestamp - a.timestamp);
+
+    // 3. Return latest
+    return sorted[0];
+  };
+
+  const latestQuiz = getLatestQuizByYear(
+    data?.data?.quiz || [],
+    selected || new Date().getFullYear().toString(),
+  );
+
+  useEffect(() => {
+    if (latestQuiz?.results) {
+      const processed = processQuizResults(latestQuiz.results);
+      setResultData(processed);
+    } else {
+      setResultData(null); // optional clear
+    }
+  }, [latestQuiz]);
+
+  const generateStructuredProgressList = (mppData: any[]) => {
+    if (!Array.isArray(mppData)) return [];
+
+    return mppData
+      .filter((item: any) => item.active || item.completed) // only active/completed
+      .map((item: any) => {
+        // 🔍 find dynamic key like "The Mindset We Bring"
+        const pathwayKey = Object.keys(item).find(
+          (key) =>
+            ![
+              "created",
+              "uuid",
+              "active",
+              "completed",
+              "pathway_id",
+              "id",
+            ].includes(key),
+        );
+
+        if (!pathwayKey) return null;
+
+        return {
+          [pathwayKey]: item[pathwayKey], // 👈 main structured data
+          created: item.created,
+          uuid: item.uuid,
+          active: item.active,
+          ...(item.completed && { completed: item.completed }),
+        };
+      })
+      .filter(Boolean);
+  };
+
+  const getPathwayMap = (chooseData: any[]) => {
+    const map: Record<number, string> = {};
+
+    chooseData?.forEach((item: any) => {
+      item?.pillars?.forEach((pillar: any) => {
+        pillar?.principles?.forEach((principle: any) => {
+          map[principle.pathway_number] = principle.pathway_title;
+        });
+      });
+    });
+
+    return map;
+  };
+  const transformProgressList = (progressList: any[], pathwayMap: any) => {
+    return progressList.map((item) => {
+      const dynamicKey = Object.keys(item).find(
+        (key) => !["created", "uuid", "active", "completed"].includes(key),
+      );
+
+      if (!dynamicKey) return item;
+
+      const pathwayNumber = Number(dynamicKey);
+      const pathwayName = pathwayMap[pathwayNumber] || dynamicKey;
+
+      return {
+        [pathwayName]: item[dynamicKey],
+        created: item.created,
+        uuid: item.uuid,
+        active: item.active,
+        ...(item.completed && { completed: item.completed }),
+      };
+    });
+  };
+
+  useEffect(() => {
+    if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+      const structuredList = generateStructuredProgressList(
+        getListMppData.data.pathways,
+      );
+
+      const pathwayMap = getPathwayMap(chooseMyselfData.data);
+
+      const updatedList = transformProgressList(structuredList, pathwayMap);
+
+      // 🔽 Sort by latest created date
+      const sortedList = updatedList.sort(
+        (a: any, b: any) =>
+          new Date(b.created).getTime() - new Date(a.created).getTime(),
+      );
+
+      // 🔽 Take latest 20
+      const latest20 = sortedList.slice(0, 20);
+
+      setProgressList(latest20);
+    }
+  }, [getListMppData, chooseMyselfData]);
+  // Extract pindash from get list mpp and microaction details from choose myself and merge them to create a new list for practice perspective pathway progress
+  const getSelectedMicroActions = (pathways: any[]) => {
+    if (!Array.isArray(pathways)) return [];
+
+    let selected: string[] = [];
+
+    pathways.forEach((item) => {
+      const dynamicKey = Object.keys(item).find(
+        (key) =>
+          ![
+            "created",
+            "uuid",
+            "active",
+            "completed",
+            "pathway_id",
+            "id",
+          ].includes(key),
+      );
+
+      if (!dynamicKey) return;
+
+      const m3 = item?.[dynamicKey]?.m3;
+
+      if (m3?.pin_to_dash?.length) {
+        selected.push(...m3.pin_to_dash);
+      }
+    });
+
+    return [...new Set(selected)];
+  };
+
+  useEffect(() => {
+    if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+      const selectedKeys = getSelectedMicroActions(
+        getListMppData.data.pathways,
+      );
+
+      const list: any[] = [];
+
+      chooseMyselfData.data.forEach((item: any) => {
+        item?.pillars?.forEach((pillar: any) => {
+          pillar?.principles?.forEach((principle: any) => {
+            principle?.micro_actions?.forEach((action: any, index: number) => {
+              const key = `ma${index + 1}`;
+
+              list.push({
+                id: key,
+                title: action.title,
+                description: action.description,
+                pathway: principle.pathway_title,
+                checked: selectedKeys.includes(key), //  MAIN
+              });
+            });
+          });
+        });
+      });
+
+      setPracticeList(list);
+    }
+  }, [getListMppData, chooseMyselfData]);
+
+  //Active practice list for dashboard pdf
+  const activePracticeList = practiceList.filter((item) => item.checked);
+
+  const enrichedProgressList = enrichProgressWithPractice(
+    progressList,
+    practiceList,
+  );
+
+  const { data: randomMessage } = useGetMppMessagesQuery();
 
   return (
     <div className="min-h-screen bg-[#F5F0EB] font-sans">
@@ -156,7 +510,7 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
                   <div className=" mt-2 ml-[65px]">
                     {topStrengthDetails.map((item: any, index: number) => (
                       <div
-                        key={index}
+                        key={`item${index}`}
                         className="relative"
                         style={{ fontFamily: "Aptos" }}
                       >
@@ -486,7 +840,7 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
                     <div className="space-y-6">
                       {groupedMicroActions.map((ma: any, i: number) => (
                         <DashboardPathwayCard
-                          key={i}
+                          key={`ma${i}`}
                           title={ma.title}
                           description={ma.description}
                           reflections={ma.reflections}
@@ -539,7 +893,7 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
           <div className="relative rounded-2xl p-8 bg-white">
             <div>
               <div className=" grid grid-cols-2 gap-8">
-                {activePracticeListForPdf?.map((item: any, index: number) => (
+                {activePracticeList?.map((item: any, index: number) => (
                   <div
                     key={`item${index}`}
                     className="bg-[#CDE3CC] rounded-2xl px-8 py-10 flex flex-col justify-between "
@@ -629,8 +983,8 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
             </div>
 
             {/* Repeating reflection blocks */}
-            {reflections.map((_, index) => (
-              <ReflectionBlock key={index} />
+            {reflections.map((_item, index) => (
+              <ReflectionBlock key={`_item${index}`} />
             ))}
           </div>
         </div>
@@ -650,4 +1004,4 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
     </div>
   );
 }
-export default DashboardPdf;
+export default AllDashboardData;

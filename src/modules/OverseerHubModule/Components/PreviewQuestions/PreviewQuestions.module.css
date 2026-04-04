@@ -1,0 +1,78 @@
+
+.leftArrow{
+        position: absolute;
+    left: 19%;
+    top: -13%;
+
+}
+.rightArrow{
+        position: absolute;
+    right: 19%;
+    top: -13%;
+
+}
+.startTriangleWrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  overflow: visible; 
+  cursor: pointer;
+}
+
+.clipStartTriangle {
+  width: 80px;
+  height: 80px;
+  background: #86C9C9;
+
+  clip-path: polygon(
+    0% 31%,
+    71% 0%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+.startTriangleText {
+  position: absolute;
+  top: 59%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+  font-family: "RocaTwo-Bold";
+  font-size: 24px;
+  line-height: 100%; /* Figma */
+  color: #0F4F58;
+
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.page {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.enterActive {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.exitActive {
+  transform: translateX(-100%);
+  opacity: 0;
+}

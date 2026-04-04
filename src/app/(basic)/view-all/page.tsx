@@ -1,15 +1,16 @@
 "use client";
+import AllDashboardData from "@/src/modules/MyDashboardModule/Components/AllDashboardData/AllDashboardData";
 import DashboardPdf from "@/src/modules/MyDashboardModule/Components/DashboardPdf/DashboardPdf";
 import React, { Suspense } from "react";
 
-function DashboardPdfPage() {
+function AllDashboardDataPage() {
   return (
     <>
       <Suspense fallback={"Loading..."}>
-        <DashboardPdf />
+        <AllDashboardData />
       </Suspense>
     </>
   );
 }
 
-export default DashboardPdfPage;
+export default AllDashboardDataPage;

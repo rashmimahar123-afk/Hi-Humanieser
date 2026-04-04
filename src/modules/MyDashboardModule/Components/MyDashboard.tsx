@@ -20,6 +20,7 @@ import DashboardPdf from "./DashboardPdf/DashboardPdf";
 import usePersonalPathwayQuery from "../../PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import useChooseMyselfQuery from "../../ChoosePathwayModule/Hooks/useChooseMyselfQuery";
 import { enrichProgressWithPractice } from "@/src/lib/Helpers";
+import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessagesQuery";
 
 type Principle = {
   key: string;
@@ -54,16 +55,6 @@ function MyDashboard() {
   const router = useRouter();
   const { data, isLoading } = useMyQuizResultQuery();
   const pdfRef = useRef<HTMLDivElement>(null);
-  const waitForElement = async (ref: any, timeout = 3000) => {
-    const start = Date.now();
-
-    while (!ref.current) {
-      if (Date.now() - start > timeout) return false;
-      await new Promise((r) => setTimeout(r, 100));
-    }
-
-    return true;
-  };
 
   useEffect(() => {
     if (!showPdf) return;
@@ -517,10 +508,8 @@ function MyDashboard() {
     progressList,
     practiceList,
   );
-  console.log(
-    "enrichedProgressListenrichedProgressListenrichedProgressList",
-    enrichedProgressList,
-  );
+  const { data: randomMessage } = useGetMppMessagesQuery();
+
   return (
     <>
       <div className="min-h-screen bg-[#4BA6A6] relative font-sans">
@@ -744,7 +733,10 @@ function MyDashboard() {
               {/* -------slant Left Btn-------- */}
               <div></div>
               {/* -------slant Right Btn-------- */}
-              <div>
+              <div
+                className="cursor-pointer"
+                onClick={() => router.push("/reflection-walls")}
+              >
                 <PolygonButton
                   width="137px"
                   height="129px"
@@ -847,6 +839,7 @@ Journey"
               weakStrengthDetails={weakStrengthDetails}
               activePracticeListForPdf={activePracticeListForPdf}
               enrichedProgressList={enrichedProgressList}
+              randomMessage={randomMessage}
             />
           </div>
         </div>

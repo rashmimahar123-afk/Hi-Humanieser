@@ -2,6 +2,7 @@
 import Image, { StaticImageData } from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import { useRouter } from "next/navigation";
 
 type MY_PERSONAL_PROGRESS_PROPS = {
   progressList: Array<any>;
@@ -30,6 +31,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
     images.curiousImg,
     images.listenImg,
   ];
+  const router = useRouter();
   return (
     <>
       {/* Heading */}
@@ -102,9 +104,12 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
         ))}
       </div>
       <div className=" flex justify-center mt-[50px]">
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid grid-cols-2 gap-10 ">
           {/* -------slant Left Btn-------- */}
-          <div>
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/view-all")}
+          >
             <PolygonButton
               height="129px"
               bgColor="#F6E3BF"
@@ -123,7 +128,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
                 className: "-left-[44px] -top-[12px]",
               }}
             >
-              <div className="h-full flex items-center justify-center text-center">
+              <div className="h-full flex items-center justify-center text-center ">
                 <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[28px]">
                   See all Micro-Actions I’ve tried
                 </span>
@@ -131,7 +136,10 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
             </PolygonButton>
           </div>
           {/* -------slant Right Btn-------- */}
-          <div>
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/view-all")}
+          >
             <PolygonButton
               height="129px"
               bgColor="#acd5ab"

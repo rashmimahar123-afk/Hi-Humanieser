@@ -43,7 +43,10 @@ function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
           const data = safeReflections[idx]; // 👈 key line
 
           return (
-            <div className="bg-[#F5F0EB] rounded-[16px] p-4 relative overflow-hidden">
+            <div
+              className="bg-[#F5F0EB] rounded-[16px] p-4 relative overflow-hidden"
+              key={`_item${idx}`}
+            >
               {/* Reflection Text */}
               {data?.reflection ? (
                 <p

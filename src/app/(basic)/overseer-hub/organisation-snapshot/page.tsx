@@ -1,5 +1,5 @@
 "use client";
-import OrganizationSnapshot from "@/src/modules/OverseerHubModule/OrganizationSnapshot/OrganizationSnapshot";
+import OrganizationSnapshot from "@/src/modules/OverseerHubModule/Components/OrganizationSnapshot/OrganizationSnapshot";
 import React, { Suspense } from "react";
 
 function OrganizationSnapshotPage() {

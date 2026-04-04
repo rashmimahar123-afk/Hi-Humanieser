@@ -1,14 +1,15 @@
 "use client";
 
+import PreviewQuestions from "@/src/modules/OverseerHubModule/Components/PreviewQuestions/PreviewQuestions";
 import ToolsSupport from "@/src/modules/OverseerHubModule/Components/ToolsSupport/ToolsSupport";
 import React, { Suspense } from "react";
 
-function ToolsSupportPage() {
+function PreviewQuestionsPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ToolsSupport />
+      <PreviewQuestions />
     </Suspense>
   );
 }
 
-export default ToolsSupportPage;
+export default PreviewQuestionsPage;
