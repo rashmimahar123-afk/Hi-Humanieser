@@ -13,11 +13,24 @@ import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGet
 import { useEffect, useMemo, useState } from "react";
 import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import FillUpFormModal, {
+  openFillupModal,
+} from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
+import styles from "./ReflectionWalls.module.css";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function ReflectionWalls() {
   const [progressList, setProgressList] = useState<any>([]);
   const [practiceList, setPracticeList] = useState<any[]>([]);
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   const router = useRouter();
+  const { user } = useAuthValue();
   const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
   const { data: chooseMyselfData } = useChooseMyselfQuery();
   const generateStructuredProgressList = (mppData: any[]) => {
@@ -217,7 +230,7 @@ function ReflectionWalls() {
 
     const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
 
-    return extracted.sort((a, b) => b.created - a.created).slice(0, 5); // ✅ latest 5 only
+    return extracted.sort((a, b) => b.created - a.created).slice(0, 5);
   }, [enrichedProgressList]);
   const reflections = reflectionList.map((item, i) => ({
     id: i + 1,
@@ -228,57 +241,66 @@ function ReflectionWalls() {
   const rows = createPatternRows(reflections, [3, 2]);
 
   return (
-    <div className="min-h-screen bg-[#F5F0EB] ">
-      <div className="relative">
-        <Image
-          src={images.quizPolygon}
-          alt="login-rectangle"
-          width={630}
-          height={630}
-          className="absolute top-0 right-0 z-0"
-        />
-      </div>
-      <div className="relative z-10 px-10 py-8">
-        {/* Header */}
-        <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />
-
-        {/* Center Heading */}
-        <div className="text-center mt-10">
-          <SuccessMessage
-            text={randomMessage || ""}
-            fontSize="text-[23px]"
-            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            bottom="3px"
-            rightImgBottom="-3px"
-            fontColor="#0F4F58"
-            rotate="-35deg"
+    <>
+      <div
+        className={`min-h-screen bg-[#F5F0EB] ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""} `}
+      >
+        <div className="relative">
+          <Image
+            src={images.quizPolygon}
+            alt="login-rectangle"
+            width={630}
+            height={630}
+            className="absolute top-0 right-0 z-0"
           />
-          <h2 className="text-[52px] font-[RocaTwo] font-bold  text-[#4BA6A6] mt-[30px]">
-            Reflection Walls
-          </h2>
         </div>
+        <div className="relative z-10 px-10 py-8">
+          {/* Header */}
+          <UserProfileHeader
+            greetingColor="#0F4F58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
 
-        {/* Description + Filters */}
+          {/* Center Heading */}
+          <div className="text-center mt-10">
+            <SuccessMessage
+              text={randomMessage || ""}
+              fontSize="text-[23px]"
+              leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+              rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+              bottom="3px"
+              rightImgBottom="-3px"
+              fontColor="#0F4F58"
+              rotate="-35deg"
+            />
+            <h2 className="text-[52px] font-[RocaTwo] font-bold  text-[#4BA6A6] mt-[30px]">
+              Reflection Walls
+            </h2>
+          </div>
 
-        {/* Left text */}
-        <div className="mt-10">
-          <h3 className="text-[25px] font-bold font-[Roboto] text-[#4BA6A6]">
-            Small Reflections. Big Shifts.
-          </h3>
+          {/* Description + Filters */}
 
-          <p className="mt-2 text-[22px] text-[#0F4F58] leading-[23px] font-[Roboto] ml-[36px]">
-            Every reflection adds a piece to the bigger picture of how your team
-            works and grows. These walls capture the real, everyday moments that
-            shape your culture — one insight at a time.
-          </p>
-        </div>
+          {/* Left text */}
+          <div className="mt-10">
+            <h3 className="text-[25px] font-bold font-[Roboto] text-[#4BA6A6]">
+              Small Reflections. Big Shifts.
+            </h3>
 
-        {/* Right select */}
-        <div className="mt-6 flex justify-end">
-          <div className="relative">
-            <select
-              className="
+            <p className="mt-2 text-[22px] text-[#0F4F58] leading-[23px] font-[Roboto] ml-[36px]">
+              Every reflection adds a piece to the bigger picture of how your
+              team works and grows. These walls capture the real, everyday
+              moments that shape your culture — one insight at a time.
+            </p>
+          </div>
+
+          {/* Right select */}
+          <div className="mt-6 flex justify-end">
+            <div className="relative">
+              <select
+                className="
           appearance-none
           bg-[#86C9C9]
           text-[#0F4F58]
@@ -293,124 +315,102 @@ function ReflectionWalls() {
           font-[Roboto]
 
         "
-            >
-              <option>Choose Team</option>
-            </select>
-
-            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-              <Image src={images.dropdownImg} alt="dropdown-img" width={25} />
-            </div>
-          </div>
-        </div>
-
-        {/* Cards Section */}
-        <div className="bg-[#F8E1B8] rounded-[32px] mt-10 px-4 py-4 relative max-w-[1150px] h-[873px] ml-[95px] ">
-          {/* <div
-          className="grid grid-cols-3 gap-x-[65px] gap-y-[40px]
-"
-        >
-          {reflections.map((item, index) => (
-            <div
-              key={index}
-              className="
-       bg-[#CDE3CC]
-        rounded-[16px]
-       
-        h-[266px]
-        px-[10px]
-        py-[20px]
-        flex
-        flex-col
-        justify-between
-      "
-            >
-              <p className="text-[18px] leading-[20px] text-[#0F4F58] text-center font-[Roboto] font-[400]">
-                {item.text}
-              </p>
-
-              <div className="flex items-center justify-between text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
-                <span className="flex items-center gap-1">⏱ {item.time}</span>
-
-                <span className="flex items-center gap-1">❤️ {item.likes}</span>
-              </div>
-            </div>
-          ))}
-        </div> */}
-          <div className="absolute -left-[53px]">
-            <div className="flex flex-col items-center">
-              {rows.map((row: any, rowIndex: any) => (
-                <div key={rowIndex} className={`flex gap-10`}>
-                  {row.map((item: any) => (
-                    <ViewAllReflectionCard
-                      key={item.id}
-                      text={item.text}
-                      rotate={item.rotate}
-                      imageKey={item.imageKey}
-                      index={item.id}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-            {/* Buttons */}
-            <div className="flex justify-end gap-8 mr-[95px]">
-              {/* -------- Add Reflection -------- */}
-              <div className="relative w-[80px] h-[85px]">
-                <PolygonButton
-                  width="80px"
-                  height="85px"
-                  bgColor="#F7C3BE"
-                  clipPath={`polygon(
-    0% 18px,
-    100% 0%,
-    100% 100%,
-    0% calc(100% - 14px)
-  )`}
-                  radius={14}
-                />
-
-                {/* TEXT OUTSIDE / OVER POLYGON */}
-                <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none">
-                  <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[26px]">
-                    Add
-                    <br />
-                    Reflection
-                  </span>
-                </div>
-              </div>
-
-              {/* -------- View Full Wall -------- */}
-              <div
-                className="relative w-[80px] h-[85px]  cursor-pointer"
-                onClick={() => router.push("/view-reflection-wall")}
               >
-                <PolygonButton
-                  width="80px"
-                  height="85px"
-                  bgColor="#86C9C9"
-                  radius={14}
-                  clipPath={`polygon(
+                <option>Choose Team</option>
+              </select>
+
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
+                <Image src={images.dropdownImg} alt="dropdown-img" width={25} />
+              </div>
+            </div>
+          </div>
+
+          {/* Cards Section */}
+          <div className="bg-[#F8E1B8] rounded-[32px] mt-10 px-4 py-4 relative max-w-[1150px] h-[873px] ml-[95px] ">
+            <div className="absolute -left-[53px]">
+              <div className="flex flex-col items-center">
+                {rows.map((row: any, rowIndex: any) => (
+                  <div key={rowIndex} className={`flex gap-10`}>
+                    {row.map((item: any) => (
+                      <ViewAllReflectionCard
+                        key={item.id}
+                        text={item.text}
+                        rotate={item.rotate}
+                        imageKey={item.imageKey}
+                        index={item.id}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+              {/* Buttons */}
+              <div className="flex justify-end gap-8 mr-[95px]">
+                {/* -------- Add Reflection -------- */}
+                <div
+                  className="relative w-[80px] h-[85px] cursor-pointer"
+                  onClick={() => {
+                    if (!progressList?.length) return; // safety
+                    openFillupModal("micro_action_1", progressList[0].uuid);
+                  }}
+                >
+                  <PolygonButton
+                    width="80px"
+                    height="85px"
+                    bgColor="#F7C3BE"
+                    clipPath={`polygon(
     0% 18px,
     100% 0%,
     100% 100%,
     0% calc(100% - 14px)
   )`}
-                />
+                    radius={14}
+                  />
 
-                {/* TEXT OUTSIDE / OVER POLYGON */}
-                <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none ">
-                  <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[26px]">
-                    View Full
-                    <br />
-                    Wall
-                  </span>
+                  {/* TEXT OUTSIDE / OVER POLYGON */}
+                  <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none">
+                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[26px]">
+                      Add
+                      <br />
+                      Reflection
+                    </span>
+                  </div>
+                </div>
+
+                {/* -------- View Full Wall -------- */}
+                <div
+                  className="relative w-[80px] h-[85px]  cursor-pointer"
+                  onClick={() => router.push("/view-reflection-wall")}
+                >
+                  <PolygonButton
+                    width="80px"
+                    height="85px"
+                    bgColor="#86C9C9"
+                    radius={14}
+                    clipPath={`polygon(
+    0% 18px,
+    100% 0%,
+    100% 100%,
+    0% calc(100% - 14px)
+  )`}
+                  />
+
+                  {/* TEXT OUTSIDE / OVER POLYGON */}
+                  <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none ">
+                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[26px]">
+                      View Full
+                      <br />
+                      Wall
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <FillUpFormModal />
       </div>
-    </div>
+      <LogoutModal />
+    </>
   );
 }
 export default ReflectionWalls;

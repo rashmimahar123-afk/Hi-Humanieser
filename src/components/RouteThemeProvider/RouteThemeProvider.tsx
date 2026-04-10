@@ -56,6 +56,22 @@ export default function RouteThemeProvider() {
       bg = "#F5F0EB";
       fg = "#0F4F58";
     }
+    if (pathname === "/reflection-walls") {
+      bg = "#F5F0EB";
+      fg = "#F5F0EB";
+    }
+    if (pathname === "/resource-inspiration") {
+      bg = "#6FAFB0";
+      fg = "#6FAFB0";
+    }
+    if (pathname === "/my-team") {
+      bg = "#4BA6A6";
+      fg = "#4BA6A6";
+    }
+    if (pathname === "/view-reflection-wall") {
+      bg = "#F5F0EB";
+      fg = "#F5F0EB";
+    }
     root.style.setProperty("--background", bg);
     root.style.setProperty("--foreground", fg);
   }, [pathname]);

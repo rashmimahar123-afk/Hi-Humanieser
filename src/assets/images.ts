@@ -204,6 +204,9 @@ import hubPolyThree from "../../public/profile/images/hubPoly3.png";
 import hubPolyFour from "../../public/profile/images/hubPoly4.png";
 import waveDivider from "../../public/images/waveDivider.png";
 import planWave from "../../public/images/planWave.png";
+import landFooter from "../../public/images/landFooter.png";
+import baseLineImg from "../../public/images/baseLineImg.png";
+import dummyUser from "../../public/images/dummyUser.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -411,6 +414,9 @@ type imageTypes = {
   hubPolyFour: StaticImageData;
   waveDivider: StaticImageData;
   planWave: StaticImageData;
+  landFooter: StaticImageData;
+  baseLineImg: StaticImageData;
+  dummyUser: StaticImageData;
 };
 
 const Images: imageTypes = {
@@ -619,6 +625,9 @@ const Images: imageTypes = {
   hubPolyFour,
   waveDivider,
   planWave,
+  landFooter,
+  baseLineImg,
+  dummyUser,
 };
 
 export default Images;

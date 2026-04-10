@@ -144,10 +144,10 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
                     style={{ fontFamily: "RocaRwo-Bold" }}
                   >
                     <div>
-                      This short quiz helps you reflect on how work feels for
-                      you right now and guides you toward
+                      This short check-in to reflect on how work feels for you
+                      right now. It will guide you towards a few Pathways that
+                      might help.
                     </div>
-                    <div>Pathways that fit where you are.</div>
                     <div className=" mt-2">
                       <ul
                         className="ml-[76px] space-y-3 text-[#567F55] text-[20px]"
@@ -161,12 +161,13 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
 
                         <li className="flex items-start gap-2">
                           <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#567F55]" />
-                          It takes around 10 minutes to complete
+                          It takes around 10 minutes to complete{" "}
                         </li>
 
                         <li className="flex items-start gap-2">
                           <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#567F55]" />
-                          There are no right or wrong answers — just honest one
+                          There are no right or wrong answers, just what feels
+                          true for you
                         </li>
                       </ul>
                     </div>
@@ -180,18 +181,18 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
                 >
                   <div>
                     Your responses are anonymous: no one will see your
-                    individual answers.
+                    individual answers. (Champions may see overall, anonymised
+                    data across the team to help shape better workplaces, but{" "}
+                    never your personal responses.)
                   </div>
-                  <div>
-                    (Champions may see overall, anonymised data across the team
-                    to help shape better workplaces, but{" "}
-                  </div>
-                  <div>never your personal responses.)</div>
                 </div>
               </div>
             </div>
             <div className="flex justify-center mt-[40px] text-[22px] font-bold font-['Aptos'] text-[#0F4F58]">
-              <h2>So share what feels real for you today — this is for you.</h2>
+              <h2>
+                Take a minute, answer honestly, and see what emerges. This is
+                your space.
+              </h2>
             </div>
           </div>
         </div>

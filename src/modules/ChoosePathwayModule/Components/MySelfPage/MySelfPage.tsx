@@ -32,12 +32,9 @@ type ActivePathwayType = {
 };
 
 function MySelfPage() {
-  const [animateText, setAnimateText] = useState(false);
   const [enter, setEnter] = useState(false);
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
   const { user } = useAuthValue();
-
-  const isPathwaySelected = selectedPathways.length > 0;
 
   useEffect(() => {
     setEnter(true);
@@ -80,7 +77,7 @@ function MySelfPage() {
       return;
     }
 
-    // ✅ CASE 2: MAX LIMIT (including prefilled)
+    // CASE 2: MAX LIMIT (including prefilled)
     if (totalSelectedCount >= 2) {
       openShowMaxTwoMpp();
       return;
@@ -148,6 +145,7 @@ function MySelfPage() {
   );
 
   const totalSelectedCount = finalSelectedPathways.length;
+  const isPathwaySelected = finalSelectedPathways.length > 0;
 
   const pathwayUuids = useMemo(() => {
     const map: Record<number, string> = {};

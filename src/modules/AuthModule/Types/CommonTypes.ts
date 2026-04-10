@@ -23,5 +23,5 @@ export type AUTH_STATE = {
 export type REMEMBER_ME = {
   email: string;
   password: string;
-  checkRemember: boolean;
+  rememberMe: boolean;
 };

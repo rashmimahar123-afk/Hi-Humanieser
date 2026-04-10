@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import Home from "@/src/modules/WelcomeModule/Components/Home/Home";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default withProtectedRoute(HomePage);

@@ -53,7 +53,7 @@ export default function Faq() {
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-30">
+        <div className="mt-[100px]">
           <FAQCard
             title="What is Hi Humaniser™ ?"
             content={`Hi Humaniser™ (HH) is a digital platform that helps people and teams work better — by making work feel more human and perform better.

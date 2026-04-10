@@ -79,11 +79,9 @@ function ChoosePathwayPage() {
                 className="mt-3 text-[#0F4F58] text-[20px] leading-relaxed"
                 style={{ fontFamily: "Roboto" }}
               >
-                This is your space to grow with intention. Whether you follow
-                our guidance or choose your own
-                <br />
-                focus, your Pathway will help you make real, human change in a
-                way that fits you.
+                This is your space to grow in a way that works for you. You can
+                follow our guidance or choose your own focus. Your Pathway helps
+                you make small changes that add up over time.
               </p>
               <div className={styles.cardRow}>
                 {/* LEFT CARD */}
@@ -108,9 +106,9 @@ function ChoosePathwayPage() {
                     />
 
                     <div className={styles.cardText}>
-                      Take a
+                      Guide
                       <br />
-                      Quiz
+                      Me
                     </div>
                   </div>
                 </div>

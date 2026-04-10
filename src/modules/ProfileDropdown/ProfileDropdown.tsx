@@ -4,6 +4,7 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import { USER_INFO_TYPE } from "../AuthModule/Types/CommonTypes";
 import { useRouter } from "next/navigation";
+import { openLogoutModal } from "../WelcomeModule/Components/LogoutModal/LogoutModal";
 
 type PROFILE_DROPDOWN_PROPS = {
   userInfo?: USER_INFO_TYPE;
@@ -34,13 +35,16 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
         >
           My Pathways
         </li>
-        <li className="cursor-pointer hover:underline">
-          Champion Hub (if applicable)
-        </li>
-        <li className="cursor-pointer hover:underline">Overseer Hub</li>
+        <li className="cursor-pointer hover:underline">Champion Hub</li>
+        <li className="cursor-pointer hover:underline">Partner Hub</li>
         <li className="cursor-pointer hover:underline">Notifications</li>
         <li className="cursor-pointer hover:underline">Spread the Ripple</li>
-        <li className="cursor-pointer hover:underline">Logout</li>
+        <li
+          className="cursor-pointer hover:underline"
+          onClick={() => openLogoutModal()}
+        >
+          Logout
+        </li>
       </ul>
     </div>
   );

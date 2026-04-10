@@ -34,12 +34,12 @@ function BehindScene() {
   ];
 
   const router = useRouter();
-  const [animateText, setAnimateText] = useState(false);
   const [enter, setEnter] = useState(false);
 
   useEffect(() => {
     setEnter(true);
   }, []);
+
   return (
     <div
       className={`min-h-screen bg-[#F5F0EB] font-sans ${styles.page} ${
@@ -379,7 +379,7 @@ Team Rituals"
               label="Explore the
 Research Room"
               bgColor="#4BA6A6"
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/research-room")}
             />
           </div>
         </div>
@@ -391,10 +391,8 @@ Research Room"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
             fontColor="#0F4F58"
-            left="387px"
-            bottom="210px"
-            rightImgRight="377px"
-            rightImgBottom="200px"
+            bottom="3px"
+            rightImgBottom="3px"
             rotate="-35deg"
           />
         </div>

@@ -7,7 +7,6 @@ import styles from "./MilestoneTwo.module.css";
 import images from "@/src/assets/images";
 import { useRouter } from "next/navigation";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
-import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { useEffect, useState } from "react";
 import FillUpFormModal from "../FillUpFormModal/FillUpFormModal";
 import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
@@ -15,7 +14,6 @@ import { MILESTONE_TWO_DATA } from "../../Types/ResponseTypes";
 import ShowMaxTwoMicroActionModal, {
   openShowMaxTwoMicroAction,
 } from "../ShowMaxTwoMicroActionModal/ShowMaxTwoMicroActionModal";
-import { useMilestoneDataContext } from "@/src/context/MilestoneDataContextProvider";
 import ConfirmShareReflectionModal from "../ConfirmShareReflectionModal/ConfirmShareReflectionModal";
 import RemoveShareReflectionModal from "../RemoveShareReflectionModal/RemoveShareReflectionModal";
 

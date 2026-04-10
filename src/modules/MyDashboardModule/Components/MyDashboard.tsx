@@ -21,6 +21,8 @@ import usePersonalPathwayQuery from "../../PersonalPathwayModule/Hooks/usePerson
 import useChooseMyselfQuery from "../../ChoosePathwayModule/Hooks/useChooseMyselfQuery";
 import { enrichProgressWithPractice } from "@/src/lib/Helpers";
 import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessagesQuery";
+import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
+import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
 
 type Principle = {
   key: string;
@@ -42,19 +44,23 @@ function MyDashboard() {
     pillarAvg: Record<string, number>;
   } | null>(null);
   const [progressList, setProgressList] = useState<any>([]);
-  console.log("progressListprogressListprogressList", progressList);
   const currentYear = new Date().getFullYear().toString();
   const [selected, setSelected] = useState(currentYear);
   const [isDownloading, setIsDownloading] = useState(false);
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [practiceList, setPracticeList] = useState<any[]>([]);
-  console.log("practiceListpracticeList", practiceList);
   const [showPdf, setShowPdf] = useState(false);
-  const [enter] = useState(true);
+
   const router = useRouter();
+  const { user } = useAuthValue();
   const { data, isLoading } = useMyQuizResultQuery();
   const pdfRef = useRef<HTMLDivElement>(null);
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
 
   useEffect(() => {
     if (!showPdf) return;
@@ -182,7 +188,7 @@ function MyDashboard() {
           result.push({
             key: item.key,
             title: principle.display_name,
-            description: principle.description,
+            description: principle.why_this_strength,
           });
         }
       });
@@ -512,7 +518,11 @@ function MyDashboard() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#4BA6A6] relative font-sans">
+      <div
+        className={`min-h-screen bg-[#4BA6A6] relative font-sans ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
+      >
         <Image
           src={images.myDashGreenPoly}
           alt="dash-green-rectangle"
@@ -530,9 +540,13 @@ function MyDashboard() {
         />
 
         <div className="px-10 py-8 absolute w-screen">
-          <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />{" "}
+          <UserProfileHeader
+            greetingColor="#0F4F58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />{" "}
           <SuccessMessage
-            text="Great to see you again — ready to explore?"
+            text={randomMessage || ""}
             fontSize="text-[28px]"
             fontColor="#0F4F58"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
@@ -541,15 +555,15 @@ function MyDashboard() {
             rightImgBottom="3px"
             rotate="-35deg"
           />
-          <h1 className="text-center text-[42px] font-semibold text-[#254C4C] mt-14">
+          <h1 className="text-center text-[45px] font-semibold text-[#254C4C] mt-14 font-[RocaTwo]">
             My Dashboard
           </h1>
           {/* Description + Download */}
           <div className="flex justify-between items-center max-w-[1000px] mx-auto mt-10">
             <p className=" text-[#0F4F58] text-[20px] leading-7 max-w-[800px]">
-              This is your hub — a snapshot of your journey so far. Explore your
-              quiz results, see your progress, track what you’re practising, and
-              notice your impact in the team.
+              This is your hub — a snapshot of your journey so far. Revisit your
+              check-in, see what you’re building, track what you’re practicing,
+              and notice how it’s showing up in your team.
             </p>
           </div>
           <div className="flex justify-end w-full mx-auto mt-10">
@@ -588,7 +602,7 @@ function MyDashboard() {
           </div>
           {/* Cards */}
           <div
-            className={`flex justify-between items-center mx-auto mt-[90px]`}
+            className={`flex gap-[47px] justify-center items-center mx-auto mt-[90px]`}
           >
             <div
               className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
@@ -606,7 +620,7 @@ function MyDashboard() {
 
               {/* Text on top of image */}
               <div className={styles.cardContent}>
-                <h3>My Quiz Results</h3>
+                <h3>My Check-In Space</h3>
               </div>
             </div>
 
@@ -802,20 +816,20 @@ function MyDashboard() {
               <CommonButtons
                 label="Change my Pathway"
                 bgColor="#F5F0EB"
-                onClick={() => router.push("/choose-pathway")}
+                onClick={() => router.push("/choose-myself")}
               />
 
               <CommonButtons
                 label="Return to
 My Personal Pathway"
                 bgColor="#F5F0EB"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/personal-pathway")}
               />
               <CommonButtons
                 label="Return to My Team
 Journey"
                 bgColor="#F5F0EB"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/team-journey")}
               />
             </div>
           </div>
@@ -844,6 +858,7 @@ Journey"
           </div>
         </div>
       )}
+      <LogoutModal />
     </>
   );
 }

@@ -38,12 +38,12 @@ export default function ViewAllReflectionCard({
       {text && (
         <div
           className={`absolute inset-0 flex items-center justify-center px-10 text-center ${
-            isReflectionWall2 ? "mt-[60px]" : ""
+            isReflectionWall2 ? "mt-[80px]" : ""
           }`}
         >
           <p
             className={`${textColors[index % textColors.length]}
-              text-[18px] leading-[20px] font-[Roboto] font-[400]`}
+              text-[17px] leading-[20px] font-[Roboto] font-[400] max-w-[280px] `}
           >
             {text}
           </p>

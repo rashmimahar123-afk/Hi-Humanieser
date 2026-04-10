@@ -184,14 +184,14 @@ function ResearchRoom() {
               <CommonButtons
                 label="Return to Home"
                 bgColor="#C2E2E2"
-                onClick={() => router.push("/choose-pathway")}
+                onClick={() => router.push("/home")}
               />
             </div>
             <div className="mt-2">
               <CommonButtons
                 label="Return to My Personal Pathway"
                 bgColor="#F8E1B8"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/personal-pathway")}
               />
             </div>
           </div>

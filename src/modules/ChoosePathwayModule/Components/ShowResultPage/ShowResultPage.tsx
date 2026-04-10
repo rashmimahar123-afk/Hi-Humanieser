@@ -184,7 +184,7 @@ function ShowResultPage() {
           result.push({
             key: item.key,
             title: principle.display_name,
-            description: principle.description,
+            description: principle.why_this_strength,
           });
         }
       });
@@ -412,22 +412,23 @@ function ShowResultPage() {
                 className=" text-[42px] text-[#567F55] font-bold"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                Great stuff! Your results are in.{" "}
+                Great stuff! Here’s what’s coming through
               </h2>
               <div>
                 {/* TEXT (Always on top) */}
                 <div className="relative z-20 text-[#567F55 mt-[20px]  ml-[43px] font-[400]">
                   <h3
-                    className="text-[#737373] text-[26px]"
+                    className="text-[#5A5656] text-[26px] font-bold"
                     style={{ fontFamily: "RocaRwo-Bold" }}
                   >
-                    Your Strenghts
+                    What’s already working well
                   </h3>
                   <p
                     className="text-[22px] text-[#737373] ml-[20px] "
                     style={{ fontFamily: "Aptos" }}
                   >
-                    Maria, your results show clear strengths in:
+                    Maria, from what you shared, a few things are already coming
+                    through strongly:{" "}
                   </p>
                   <div className="mt-2 ml-[65px]">
                     {topStrengthDetails.map((item, index) => (
@@ -437,7 +438,7 @@ function ShowResultPage() {
                         style={{ fontFamily: "Aptos" }}
                       >
                         <span className="relative z-10 px-2 py-1 rounded text-[#737373] text-[20px]">
-                          <span className="font-[700]">{item.title} — </span>
+                          {/* <span className="font-[700]">{item.title} — </span> */}
                           {item.description}
                         </span>
 
@@ -451,14 +452,25 @@ function ShowResultPage() {
                     ))}
                   </div>
                 </div>
-                <div className="relative z-20 flex justify-center mt-[40px] mr-[295px]">
+                <div className="relative z-20 flex justify-center mt-[80px] mr-[295px]">
+                  <Image
+                    src={images.arrowImg}
+                    alt={"left decoration"}
+                    width={40}
+                    height={40}
+                    className={`shrink-0  absolute`}
+                    style={{
+                      left: `60px`, // 5px gap from text start
+                      bottom: "24px",
+                    }}
+                  />
                   <p
                     className="
       w-[945px]
       text-center
-      text-[22px]
+      text-[24px]
       leading-[100%]
-      text-[#737373]
+      text-[#4BA6A6]
       font-[700]
     
     "
@@ -468,12 +480,24 @@ function ShowResultPage() {
                     traits you have — they’re the foundations you can keep
                     building on as you grow in your Pathway.
                   </p>
+                  <Image
+                    src={images.leftArrowImg}
+                    alt="right decoration"
+                    width={60}
+                    height={40}
+                    className={`shrink-0  absolute`}
+                    style={{
+                      right: "48px", // 5px gap from text end
+                      bottom: "24px",
+                      rotate: "-35deg",
+                    }}
+                  />
                 </div>
                 {/* SKY SHAPE CARD */}
               </div>
 
-              <div>
-                {/* TEXT (Always on top) */}
+              {/* Pillar Score */}
+              {/* <div>
                 <div className="relative z-20 text-[#567F55]  ml-[43px] font-[400] mt-[60px]">
                   <h3
                     className="text-[#737373] text-[26px]"
@@ -488,10 +512,8 @@ function ShowResultPage() {
                     Here’s how you scored across the 3 pillars — showing where
                     your strengths shine, and where there’s room to grow:
                   </p>
-                  {/* PILLARS GRID */}
                   <div className="mt-[40px]">
                     <div className="grid grid-cols-3 gap-[60px] text-center ">
-                      {/* Pillar 1 */}
                       <div className="flex flex-col items-center">
                         <h4
                           className="text-[#4BA6A6] text-[22px] leading-[100%] font-[700]"
@@ -517,12 +539,11 @@ function ShowResultPage() {
                                 0) / 5
                             }
                             hideText={true}
-                            arcWidth={0.38} // thicker arc
+                            arcWidth={0.38} 
                             colors={["#D3CBB6"]}
                             needleColor="#F28B82"
                           />
 
-                          {/* Labels */}
                           <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
                             1
                           </span>
@@ -533,7 +554,6 @@ function ShowResultPage() {
                         </div>
                       </div>
 
-                      {/* Pillar 2 */}
                       <div className="flex flex-col items-center">
                         <h4
                           className="text-[#4BA6A6] text-[22px] leading-[100%] font-[700]"
@@ -559,12 +579,12 @@ function ShowResultPage() {
                                 0) / 5
                             }
                             hideText={true}
-                            arcWidth={0.38} // thicker arc
+                            arcWidth={0.38} 
                             colors={["#D3CBB6"]}
                             needleColor="#F28B82"
                           />
 
-                          {/* Labels */}
+                          
                           <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
                             1
                           </span>
@@ -575,7 +595,7 @@ function ShowResultPage() {
                         </div>
                       </div>
 
-                      {/* Pillar 3 */}
+                     
                       <div className="flex flex-col items-center">
                         <h4
                           className="text-[#4BA6A6] text-[22px] leading-[100%] font-[700]"
@@ -601,12 +621,12 @@ function ShowResultPage() {
                                 0) / 5
                             }
                             hideText={true}
-                            arcWidth={0.38} // thicker arc
+                            arcWidth={0.38} 
                             colors={["#D3CBB6"]}
                             needleColor="#F28B82"
                           />
 
-                          {/* Labels */}
+                          
                           <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
                             1
                           </span>
@@ -620,9 +640,9 @@ function ShowResultPage() {
                   </div>
                 </div>
 
-                {/* SKY SHAPE CARD */}
-              </div>
-              <div className={`relative  mt-20`}>
+               
+              </div> */}
+              {/* <div className={`relative  mt-20`}>
                 <SuccessMessage
                   text={topMessage?.message}
                   fontSize="text-[22px]"
@@ -634,27 +654,27 @@ function ShowResultPage() {
                   rotate="-35deg"
                   maxWidth="800px"
                 />
-              </div>
+              </div> */}
               <div>
                 {/* TEXT (Always on top) */}
                 <div className="relative z-20 text-[#567F55]  ml-[43px] font-[400] mt-[60px]">
                   <h3
-                    className="text-[#737373] text-[26px]"
-                    style={{ fontFamily: "RocaRwo-Bold" }}
+                    className="text-[#5A5656] text-[26px] font-bold"
+                    style={{ fontFamily: "RocaRwo" }}
                   >
-                    Your 3 Recommended Pathways
+                    A few places you could start{" "}
                   </h3>
                   <p
                     className="text-[22px] text-[#737373] ml-[20px] w-[900px] "
                     style={{ fontFamily: "Aptos" }}
                   >
-                    Here are a few Pathways that could be a powerful place to
-                    start.
+                    Based on what you shared, these Pathways could be a helpful
+                    next step.
                     <br />
                     <br />
                     Choose up to 2 to work on. Each Pathway takes you through 3
-                    milestones — understand the habit, choose your
-                    micro-actions, and build it into your everyday.{" "}
+                    milestones: understand the habit, choose your micro-actions,
+                    and build it into your everyday.
                   </p>
                   <div className="mt-[40px]">
                     <div className="grid grid-cols-3 gap-[40px]">

@@ -10,7 +10,7 @@
   justify-content: center;
   gap: 10px;
   position: relative;
-  margin-left: 25%;
+
 }
 
 .cardWrapper {
@@ -73,7 +73,7 @@
 .infoBarInside {
   position: absolute;
   bottom: -9px;          
-  left: 59%;
+  left: 50%;
   transform: translateX(-50%);
   width: 100%;
   display: flex;

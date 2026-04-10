@@ -1,6 +1,17 @@
 import { BehaviorSubject } from "rxjs";
 
 class PersistStorage<T> {
+  static get<T>(key: string): T | null {
+    if (typeof window === "undefined") return null;
+
+    try {
+      const data = window.localStorage.getItem(key);
+      return data ? (JSON.parse(data) as T) : null;
+    } catch (error) {
+      console.error("Error parsing storage:", error);
+      return null;
+    }
+  }
   private keyName: string;
   private observer: BehaviorSubject<T>;
 

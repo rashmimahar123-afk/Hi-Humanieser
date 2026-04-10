@@ -18,12 +18,25 @@ class AuthService {
   initialRememberMe: REMEMBER_ME = {
     email: "",
     password: "",
-    checkRemember: false,
+    rememberMe: false,
   };
 
   authState$ = new BehaviorSubject<AUTH_STATE>(this.initialAuthState);
   rememberMe$ = new BehaviorSubject<REMEMBER_ME>(this.initialRememberMe);
   constructor() {
+    const storedAuth = PersistStorage.get<AUTH_STATE>("authState");
+
+    const safeAuthState =
+      storedAuth && storedAuth.token ? storedAuth : this.initialAuthState;
+
+    this.authState$ = new BehaviorSubject<AUTH_STATE>(safeAuthState);
+
+    const storedRemember = PersistStorage.get<REMEMBER_ME>("rememberMe");
+
+    this.rememberMe$ = new BehaviorSubject<REMEMBER_ME>(
+      storedRemember || this.initialRememberMe,
+    );
+
     new PersistStorage("authState", this.authState$);
     new PersistStorage("rememberMe", this.rememberMe$);
   }

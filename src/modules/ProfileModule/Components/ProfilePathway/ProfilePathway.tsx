@@ -26,10 +26,12 @@ export default function ProfilePathway() {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-3 gap-[120px] mt-[120px]">
+      <div className="grid grid-cols-3 mt-[120px]">
         {/* Card 1 */}
         <ProfilePathwayCard
-          title="Take the Quiz"
+          title="
+          Retake the
+Check-In "
           description="Find your best Pathway in a few questions"
           shapeImg={images.profileQuiz}
           arrowImg={images.arrowImg}

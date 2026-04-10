@@ -16,13 +16,13 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-import ProgressPill from "../../ChampionHubModule/Components/ProgressPill/ProgressPill";
 import styles from "./OrganizationSnapshot.module.css";
-import ViewAllReflectionCard from "../../MyDashboardModule/Components/ViewAllReflectionCard/ViewAllReflectionCard";
 import { createPatternRows } from "@/src/lib/Helpers";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import GaugeChart from "react-gauge-chart";
+import ProgressPill from "@/src/modules/ChampionHubModule/Components/ProgressPill/ProgressPill";
+import ViewAllReflectionCard from "@/src/modules/MyDashboardModule/Components/ViewAllReflectionCard/ViewAllReflectionCard";
 
 function OrganizationSnapshot() {
   const [isOpen, setIsOpen] = useState(false);

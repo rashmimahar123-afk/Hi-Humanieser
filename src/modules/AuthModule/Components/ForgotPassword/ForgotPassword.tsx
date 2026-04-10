@@ -145,7 +145,8 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
               you a secure link to reset your password
             </p>
 
-            <form>
+            <form onSubmit={handleForgotPasswordSubmit}>
+              {" "}
               {/* Email Input */}
               <div
                 className={`flex items-center gap-3 bg-[#F3E6D2] rounded-lg px-4 py-4 border ${
@@ -166,13 +167,11 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                   className="w-full bg-transparent outline-none text-lg"
                 />
               </div>
-
               {errors.email && (
                 <p className="text-red-500 text-sm mt-2">
                   {errors.email.message}
                 </p>
               )}
-
               {/* Actions */}
               <div className="flex justify-between mt-6 relative">
                 {/* <button
@@ -213,9 +212,9 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                 </button>
 
                 <button
-                  type="button"
-                  className="relative cursor-pointer "
-                  onClick={handleForgotPasswordSubmit}
+                  type="submit"
+                  className="relative cursor-pointer"
+                  disabled={forgotPasswordMutation.isPending}
                 >
                   {/* Polygon */}
                   <Image
@@ -230,8 +229,10 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
                     className="absolute inset-0 flex flex-col items-center justify-center text-[#0F4F58] font-bold top-[20%] right-[15%]"
                     style={{ fontFamily: "RocaTwo" }}
                   >
-                    <span className="text-[22px] leading-none whitespace-nowrap ">
-                      Send Reset
+                    <span className="text-[22px] leading-none whitespace-nowrap">
+                      {forgotPasswordMutation.isPending
+                        ? "Sending..."
+                        : "Send Reset"}
                     </span>
                     <span className="text-[22px] leading-none mt-1">Link</span>
                   </div>

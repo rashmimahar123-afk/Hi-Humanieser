@@ -2,13 +2,7 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
-import { useRouter } from "next/navigation";
-import {
-  createPatternRows,
-  enrichProgressWithPractice,
-} from "@/src/lib/Helpers";
-import ViewAllReflectionCard from "../ViewAllReflectionCard/ViewAllReflectionCard";
+import { enrichProgressWithPractice } from "@/src/lib/Helpers";
 import { useEffect, useMemo, useRef, useState } from "react";
 import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
@@ -16,6 +10,7 @@ import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGet
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
   return (
@@ -136,6 +131,7 @@ function ReflectionWalls() {
 
     return [...new Set(selected)];
   };
+
   useEffect(() => {
     if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
       // -------- Progress List --------
@@ -392,61 +388,61 @@ function ReflectionWalls() {
     }
   };
 
-  console.log("filteredReflectionsfilteredReflections", filteredReflections);
   return (
-    <div className="min-h-screen bg-[#F5F0EB] " ref={pdfRef}>
-      <div className="relative">
-        <PdfSafeImage
-          src={images.quizPolygon}
-          alt="login-rectangle"
-          width={630}
-          height={630}
-          className="absolute top-0 right-0 z-0"
-          priority
-        />
-      </div>
-      <div className="px-10 py-8">
-        {/* Header */}
-        <UserProfileHeader
-          greetingColor="#0F4F58"
-          nameColor="#0F4F58"
-          userInfo={user}
-        />
-        {/* Center Heading */}
-        <div className="text-center mt-10">
-          <SuccessMessage
-            text={randomMessage || ""}
-            fontSize="text-[23px]"
-            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            bottom="3px"
-            rightImgBottom="-3px"
-            fontColor="#0F4F58"
-            rotate="-35deg"
+    <>
+      <div className="min-h-screen bg-[#F5F0EB] " ref={pdfRef}>
+        <div className="relative">
+          <PdfSafeImage
+            src={images.quizPolygon}
+            alt="login-rectangle"
+            width={630}
+            height={630}
+            className="absolute top-0 right-0 z-0"
+            priority
           />
-          <h2 className="text-[52px] font-[RocaTwo] font-bold  text-[#4BA6A6] mt-[30px]">
-            Reflection Walls
-          </h2>
         </div>
+        <div className="px-10 py-8">
+          {/* Header */}
+          <UserProfileHeader
+            greetingColor="#0F4F58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
+          {/* Center Heading */}
+          <div className="text-center mt-10">
+            <SuccessMessage
+              text={randomMessage || ""}
+              fontSize="text-[23px]"
+              leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+              rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+              bottom="3px"
+              rightImgBottom="-3px"
+              fontColor="#0F4F58"
+              rotate="-35deg"
+            />
+            <h2 className="text-[52px] font-[RocaTwo] font-bold  text-[#4BA6A6] mt-[30px]">
+              Reflection Walls
+            </h2>
+          </div>
 
-        {/* Description + Filters */}
+          {/* Description + Filters */}
 
-        {/* Left text */}
-        <div className="mt-10">
-          <p className=" text-[22px] text-[#276b6b] leading-[23px] font-[Roboto] ">
-            This wall brings together reflections over time — offering a wider
-            view of what’s emerging across the team.
-          </p>
-        </div>
+          {/* Left text */}
+          <div className="mt-10">
+            <p className=" text-[22px] text-[#276b6b] leading-[23px] font-[Roboto] ">
+              This wall brings together reflections over time — offering a wider
+              view of what’s emerging across the team.
+            </p>
+          </div>
 
-        {/* Right select */}
-        {/* Filter Section */}
-        <div className="mt-20 flex items-start justify-end px-[36px]">
-          {/* Left: Filter text */}
+          {/* Right select */}
+          {/* Filter Section */}
+          <div className="mt-20 flex items-start justify-end px-[36px]">
+            {/* Left: Filter text */}
 
-          {/* Right: Button + Download */}
-          <div className="flex items-center gap-10">
-            {/* <div className="text-[#0F4F58] font-[Roboto]">
+            {/* Right: Button + Download */}
+            <div className="flex items-center gap-10">
+              {/* <div className="text-[#0F4F58] font-[Roboto]">
               <p className="text-[18px] font-[500] mb-2">Filter by</p>
               <ul className="list-disc ml-6 text-[18px] leading-[28px]">
                 <li>All reflections</li>
@@ -455,114 +451,116 @@ function ReflectionWalls() {
                 <li>Custom range</li>
               </ul>
             </div> */}
-            {/* Filter Button */}
-            <div className="relative" ref={filterRef}>
-              {" "}
-              <button
-                onClick={() => setIsFilterOpen((prev) => !prev)}
-                className="bg-[#86C9C9] text-[#0F4F58] text-[18px] font-[Roboto] px-10 h-[44px] rounded-full flex items-center gap-3"
-              >
-                {getFilterLabel()}
-                <PdfSafeImage
-                  src={images.dropdownImg}
-                  alt="dropdown"
-                  width={20}
-                  priority
-                />
-              </button>
-              {isFilterOpen && (
-                <div className="absolute right-0 mt-2 w-[220px] bg-white rounded-xl shadow-lg p-4 z-50">
-                  <ul className="text-[#0F4F58] text-[16px] font-[Roboto] space-y-2">
-                    <li
-                      className="cursor-pointer hover:text-[#4BA6A6]"
-                      onClick={() => {
-                        setSelectedFilter("all");
-                        setIsFilterOpen(false);
-                      }}
-                    >
-                      All reflections
-                    </li>
+              {/* Filter Button */}
+              <div className="relative" ref={filterRef}>
+                {" "}
+                <button
+                  onClick={() => setIsFilterOpen((prev) => !prev)}
+                  className="bg-[#86C9C9] text-[#0F4F58] text-[18px] font-[Roboto] px-10 h-[44px] rounded-full flex items-center gap-3"
+                >
+                  {getFilterLabel()}
+                  <PdfSafeImage
+                    src={images.dropdownImg}
+                    alt="dropdown"
+                    width={20}
+                    priority
+                  />
+                </button>
+                {isFilterOpen && (
+                  <div className="absolute right-0 mt-2 w-[220px] bg-white rounded-xl shadow-lg p-4 z-50">
+                    <ul className="text-[#0F4F58] text-[16px] font-[Roboto] space-y-2">
+                      <li
+                        className="cursor-pointer hover:text-[#4BA6A6]"
+                        onClick={() => {
+                          setSelectedFilter("all");
+                          setIsFilterOpen(false);
+                        }}
+                      >
+                        All reflections
+                      </li>
 
-                    <li
-                      className="cursor-pointer hover:text-[#4BA6A6]"
-                      onClick={() => {
-                        setSelectedFilter("7days");
-                        setIsFilterOpen(false);
-                      }}
-                    >
-                      Last 7 days
-                    </li>
+                      <li
+                        className="cursor-pointer hover:text-[#4BA6A6]"
+                        onClick={() => {
+                          setSelectedFilter("7days");
+                          setIsFilterOpen(false);
+                        }}
+                      >
+                        Last 7 days
+                      </li>
 
-                    <li
-                      className="cursor-pointer hover:text-[#4BA6A6]"
-                      onClick={() => {
-                        setSelectedFilter("30days");
-                        setIsFilterOpen(false);
-                      }}
-                    >
-                      Last 30 days
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+                      <li
+                        className="cursor-pointer hover:text-[#4BA6A6]"
+                        onClick={() => {
+                          setSelectedFilter("30days");
+                          setIsFilterOpen(false);
+                        }}
+                      >
+                        Last 30 days
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
 
-            {/* Download PDF */}
+              {/* Download PDF */}
 
-            <div className="flex justify-end">
-              <button
-                className="flex flex-col items-center gap-2"
-                onClick={handleDownloadPDF}
-                disabled={isDownloading}
-              >
-                <PdfSafeImage
-                  src={images.downloadImg}
-                  alt="download"
-                  priority
-                />
+              <div className="flex justify-end">
+                <button
+                  className="flex flex-col items-center gap-2"
+                  onClick={handleDownloadPDF}
+                  disabled={isDownloading}
+                >
+                  <PdfSafeImage
+                    src={images.downloadImg}
+                    alt="download"
+                    priority
+                  />
 
-                <span className="text-sm text-[#3E5F5F]">
-                  {" "}
-                  {isDownloading ? "Preparing PDF..." : "Download in PDF"}
-                </span>
-              </button>
+                  <span className="text-sm text-[#3E5F5F]">
+                    {" "}
+                    {isDownloading ? "Preparing PDF..." : "Download in PDF"}
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Cards Section */}
-        <div className="bg-[#F8E1B8] rounded-[32px] mt-10 px-8 py-4 relative ">
-          <div className="mt-[20px] flex flex-col gap-6">
-            {filteredReflections.length === 0 ? (
-              <div className="text-center text-[#0F4F58] text-[18px] font-[Roboto] py-10">
-                No reflections found
-              </div>
-            ) : (
-              filteredReflections.map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-[#CDE3CC] rounded-[16px] px-[10px] py-[20px] flex flex-col justify-between"
-                >
-                  <p className="text-[18px] leading-[20px] text-[#0F4F58] text-center font-[Roboto] font-[400] mb-[40px]">
-                    {item.text}
-                  </p>
-
-                  <div className="flex items-center text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
-                    <span className="flex items-center ">
-                      ⏱ {getTimeAgo(item.created)}
-                    </span>
-                    <span className="flex items-center ml-[29px]">
-                      {/* ❤️ {item.likes} */}
-                      ❤️ you and 7 others felt this
-                    </span>
-                  </div>
+          {/* Cards Section */}
+          <div className="bg-[#F8E1B8] rounded-[32px] mt-10 px-8 py-4 relative ">
+            <div className="mt-[20px] flex flex-col gap-6">
+              {filteredReflections.length === 0 ? (
+                <div className="text-center text-[#0F4F58] text-[18px] font-[Roboto] py-10">
+                  No reflections found
                 </div>
-              ))
-            )}
+              ) : (
+                filteredReflections.map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-[#CDE3CC] rounded-[16px] px-[10px] py-[20px] flex flex-col justify-between"
+                  >
+                    <p className="text-[18px] leading-[20px] text-[#0F4F58] font-[Roboto] font-[400] mb-[40px]">
+                      {item.text}
+                    </p>
+
+                    <div className="flex items-center text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
+                      <span className="flex items-center ">
+                        ⏱ {getTimeAgo(item.created)}
+                      </span>
+                      <span className="flex items-center ml-[29px]">
+                        {/* ❤️ {item.likes} */}
+                        ❤️ you and 7 others felt this
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <LogoutModal />
+    </>
   );
 }
 export default ReflectionWalls;

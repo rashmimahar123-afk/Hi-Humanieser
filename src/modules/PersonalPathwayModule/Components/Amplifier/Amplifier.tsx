@@ -10,6 +10,8 @@ import AmplifierSixDescription from "../AmplifierSixDescription.tsx/AmplifierSix
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
+import { useEffect, useState } from "react";
+import styles from "./Amplifier.module.css";
 
 function Amplifier() {
   const { data } = useChooseMyselfQuery();
@@ -17,6 +19,12 @@ function Amplifier() {
   const searchParams = useSearchParams();
 
   const router = useRouter();
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   const pillarNumber = Number(searchParams.get("pillar"));
   const principleNumber = Number(searchParams.get("principle"));
   const pillarsData = data?.data?.[1]?.pillars;
@@ -33,7 +41,11 @@ function Amplifier() {
     );
 
   return (
-    <div className="bg-[#F5F0EB] min-h-screen ">
+    <div
+      className={`bg-[#F5F0EB] min-h-screen  ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
+    >
       <div className="relative">
         <Image
           src={images.quizPolygon}

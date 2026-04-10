@@ -189,7 +189,7 @@ function PreviewQuestions() {
   const isAllAnswered = progressValue === TOTAL_PROGRESS;
 
   return (
-    <div className={`${styles.page}  `}>
+    <div>
       <div className="relative">
         <Image
           src={images.quizPolygon}
@@ -219,10 +219,13 @@ function PreviewQuestions() {
             >
               Hi Maria!
             </h1>
-            <div className="flex justify-center mt-[40px]">
+            <div
+              className="flex justify-center mt-6
+"
+            >
               <div>
                 <h2
-                  className=" text-[45px] text-[#567F55] font-bold"
+                  className="relative z-20 text-[45px] text-[#567F55] font-bold"
                   style={{ fontFamily: "RocaTwo-Bold", marginLeft: "76px" }}
                 >
                   Let’s find your starting point
@@ -230,7 +233,8 @@ function PreviewQuestions() {
                 <div>
                   {/* TEXT (Always on top) */}
                   <div
-                    className="relative z-20 text-[#567F55] text-[24px] ml-[110px] font-[400]"
+                    className="relative z-20 text-[#567F55] text-[24px] ml-4
+ font-[400]"
                     style={{ fontFamily: "RocaRwo-Bold" }}
                   >
                     <div>
@@ -280,14 +284,14 @@ function PreviewQuestions() {
                 </div>
               </div>
             </div>
-            <div className="flex justify-center mt-[40px] text-[22px] font-bold font-['Aptos'] text-[#0F4F58]">
+            <div className="flex justify-center mt-6 text-[22px] font-bold font-['Aptos'] text-[#0F4F58]">
               <h2>So share what feels real for you today — this is for you.</h2>
             </div>
           </div>
         </div>
       </div>
       <div className="w-full flex justify-center">
-        <div className="max-w-[1000px] bg-white rounded-2xl px-8 py-8 relative">
+        <div className="max-w-[800px] bg-white rounded-2xl px-8 py-8 relative">
           <div className="w-full">
             <header>
               {" "}
@@ -306,8 +310,8 @@ function PreviewQuestions() {
             </header>
 
             {/* Question Bank */}
-            <div className="flex gap-[150px] mt-6 w-full">
-              <div className="w-[800px] " ref={questionsRef}>
+            <div className="flex gap-8 mt-6 w-full">
+              <div className="w-full " ref={questionsRef}>
                 <>
                   {allQuestions.map((item, index) => {
                     const qNo = index + 1;
@@ -358,7 +362,7 @@ function PreviewQuestions() {
               </div>
               <div className="relative">
                 {/* Right Progress Bar */}
-                <div className="absolute right-12 top-[20px] w-[57px] h-[567px] bg-[#BDBDBD] rounded-[77px]">
+                <div className="hidden md:block absolute  top-[20px] w-[57px] h-[567px] bg-[#BDBDBD] rounded-[77px]">
                   <VerticalProgressBar
                     trackHeight={trackHeight}
                     total={TOTAL_PROGRESS}
@@ -370,11 +374,11 @@ function PreviewQuestions() {
 
             {/* Footer */}
             <div
-              className={`flex justify-end relative mt-[60px] mr-[31px] ${
+              className={`flex justify-end relative mt-10  ${
                 !isAllAnswered ? "opacity-50 pointer-events-none" : ""
               }`}
             >
-              <div className="absolute text-[#E3A45B] text-xl -top-[35%] -right-[2%] -rotate-[18deg]">
+              <div className="absolute text-[#E3A45B] text-xl -top-[35%] -rotate-[18deg]">
                 <Image src={images.rightArrow} alt="arrow-img" width={32} />
               </div>
               <div className={styles.startTriangleWrapper}>

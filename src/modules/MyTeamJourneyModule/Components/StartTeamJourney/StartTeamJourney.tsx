@@ -3,11 +3,21 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./StartTeamJourney.module.css";
+import { useEffect, useState } from "react";
 
 function StartTeamJourney() {
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
     <>
-      <div className="min-h-screen bg-[#4BA6A6] relative font-sans">
+      <div
+        className={`min-h-screen bg-[#4BA6A6] relative font-sans ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
+      >
         <Image
           src={images.myDashGreenPoly}
           alt="dash-green-rectangle"

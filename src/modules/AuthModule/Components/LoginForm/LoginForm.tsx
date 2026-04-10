@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLoginMutation } from "../../Hooks/useLoginMutation";
 import { setAuthValue } from "../../Hooks/useAuthValue";
+import AuthService from "../../Services/AuthService";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -47,55 +48,12 @@ function useBP(): BP {
   return bp;
 }
 
-/* ── Standalone controlled checkbox (replaces Tailwind peer trick) ── */
-function CheckboxVisual() {
-  const [checked, setChecked] = useState(false);
-  return (
-    <div
-      role="checkbox"
-      aria-checked={checked}
-      tabIndex={0}
-      onClick={() => setChecked((c) => !c)}
-      onKeyDown={(e) => e.key === " " && setChecked((c) => !c)}
-      style={{
-        width: 38,
-        height: 26,
-        backgroundColor: checked ? "#3b82f6" : "#fff",
-        border: `2px solid ${checked ? "#3b82f6" : "#d1d5db"}`,
-        borderRadius: 7,
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexShrink: 0,
-        transition: "background-color 0.15s, border-color 0.15s",
-        outline: "none",
-      }}
-    >
-      {checked && (
-        <svg
-          style={{ width: 18, height: 18, color: "#fff" }}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="3"
-            d="M5 13l4 4L19 7"
-          />
-        </svg>
-      )}
-    </div>
-  );
-}
-
 /* ════════════════════════════════════════════
    Main LoginForm
 ════════════════════════════════════════════ */
 function LoginForm({ onForgotPassword }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
   const bp = useBP();
 
   const isLg = bp === "lg";
@@ -106,10 +64,11 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", rememberMe: false },
   });
 
   const router = useRouter();
@@ -123,13 +82,16 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
       },
       {
         onSuccess: (res: any) => {
-          console.log("Login success", res);
-
           const token = res?.token;
-
           const decoded = decodeJWT(token);
 
-          // document.cookie = `access_token=${token}; path=/; max-age=86400; samesite=lax`;
+          //  USE rememberMe HERE
+          if (values.rememberMe) {
+            localStorage.setItem("token", token);
+          } else {
+            sessionStorage.setItem("token", token);
+          }
+
           setAuthValue({
             loggedIn: true,
             token: token,
@@ -141,13 +103,38 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             language: "en",
             isCompleteProfile: true,
           });
+          if (values.rememberMe) {
+            localStorage.setItem("token", token);
 
+            AuthService.rememberMe$.next({
+              email: values.email,
+              password: values.password,
+              rememberMe: true,
+            });
+          } else {
+            sessionStorage.setItem("token", token);
+
+            AuthService.rememberMe$.next({
+              email: "",
+              password: "",
+              rememberMe: false,
+            });
+          }
           router.push("/home");
         },
       },
     );
   });
 
+  useEffect(() => {
+    const rememberData = AuthService.rememberMe$.getValue();
+
+    if (rememberData?.rememberMe) {
+      setValue("email", rememberData.email);
+      setValue("password", rememberData.password);
+      setValue("rememberMe", true);
+    }
+  }, []);
   /* ── Corner image ── */
   const cornerW = isLg ? 630 : isMd ? 460 : isSm ? 280 : 150;
 
@@ -602,7 +589,11 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                   flexShrink: 0,
                 }}
               >
-                <CheckboxVisual />
+                <input
+                  type="checkbox"
+                  {...register("rememberMe")}
+                  style={{ width: 18, height: 18, cursor: "pointer" }}
+                />{" "}
                 <span
                   style={{
                     color: "#E6A757",

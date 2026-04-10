@@ -66,10 +66,10 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
               />
 
               {/* Circular profile image */}
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center mr-[11px]">
                 <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white">
                   <Image
-                    src={images.userProfile}
+                    src={images.dummyUser}
                     alt="Profile Picture"
                     width={80}
                     height={80}

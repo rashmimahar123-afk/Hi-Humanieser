@@ -10,6 +10,8 @@ import RemovePathwayModal, {
   openRemovePathwayModal,
 } from "../RemovePathwayModal/RemovePathwayModal";
 import { getPathwayProgress } from "@/src/lib/Helpers";
+import styles from "./ChangeMyPathway.module.css";
+import { useEffect, useState } from "react";
 
 type ActivePathwayType = {
   pathwayNumber: string;
@@ -19,6 +21,13 @@ type ActivePathwayType = {
 
 function ChangeMyPathway() {
   const router = useRouter();
+
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   const { data: randomMessage } = useGetMppMessagesQuery();
 
   const { data, isLoading, isError } = usePersonalPathwayQuery();
@@ -67,7 +76,11 @@ function ChangeMyPathway() {
   };
   return (
     <>
-      <div className="min-h-screen bg-[#F5F0EB] p-6 font-sans">
+      <div
+        className={`min-h-screen bg-[#F5F0EB] p-6 font-sans ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
+      >
         <Image
           src={images.recGreen}
           alt="login-rectangle"
@@ -232,7 +245,7 @@ function ChangeMyPathway() {
 Pathway"
                 bgColor="#86c9c9"
                 textColor="#ffffff"
-                onClick={() => router.push("/choose-pathway")}
+                onClick={() => router.push("/choose-myself")}
               />
             )}
             <CommonButtons

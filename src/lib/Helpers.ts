@@ -13,6 +13,7 @@ import {
   resetAuthValue,
 } from "../modules/AuthModule/Hooks/useAuthValue";
 import { emitEvent } from "../components/Hooks/useEventEmitter";
+import AuthService from "../modules/AuthModule/Services/AuthService";
 
 // const router = useRouter();
 
@@ -28,21 +29,24 @@ axios.interceptors.request.use(
 
 // Response interceptor
 axios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    if (error.response) {
-      console.error(
-        "Response error:",
-        error.response.status,
-        error.response.data,
-      );
-    } else if (error.request) {
-      console.error("Request error - no response received:", error.request);
-    } else {
-      console.error("Error:", error.message);
+    const status = error?.response?.status;
+
+    if (status === 401) {
+      console.warn("Unauthorized - logging out");
+
+      // Clear auth state
+      AuthService.resetAuthValue();
+
+      // Optional: clear storage
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
+
+      // Redirect to login
+      window.location.href = "/login";
     }
+
     return Promise.reject(error);
   },
 );
@@ -434,6 +438,8 @@ export const enrichProgressWithPractice = (
   progressList: any[],
   practiceList: any[],
 ) => {
+  if (!Array.isArray(progressList)) return [];
+
   return progressList.map((item) => {
     const dynamicKey = Object.keys(item).find(
       (key) => !["created", "uuid", "active", "completed"].includes(key),
@@ -445,19 +451,19 @@ export const enrichProgressWithPractice = (
     const pathwayData = item[dynamicKey];
 
     const m2 = pathwayData?.m2 || {};
-
     const updatedM2: any = {};
 
     Object.keys(m2).forEach((key) => {
-      // key = micro_action_1 → ma1
       const maId = `ma${key.split("_").pop()}`;
 
-      // find matching practice item
-      const practiceItem = practiceList.find(
+      const practiceItem = practiceList?.find(
         (p) => p.id === maId && p.pathway === pathwayName,
       );
 
-      updatedM2[key] = m2[key].map((entry: any) => ({
+      // ✅ FIX: safe array handling
+      const entries = Array.isArray(m2[key]) ? m2[key] : [];
+
+      updatedM2[key] = entries.map((entry: any) => ({
         ...entry,
         title: practiceItem?.title || null,
         description: practiceItem?.description || null,

@@ -6,14 +6,10 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
-import AmplifierAccordian from "@/src/modules/PersonalPathwayModule/Components/AmplifierAccordian/AmplifierAccordian";
-import AmplifierFirstDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierfirstDescription/AmplifierFirstDescription";
-import AmplifierSecondDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierSecondDescription/AmplifierSecondDescription";
-import AmplifierThirdDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierThirdDescription/AmplifierThirdDescription";
-import AmplifierForthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierForthDescription/AmplifierForthDescription";
-import AmplifierFifthDescription from "@/src/modules/PersonalPathwayModule/Components/AmplifierFifthDescription/AmplifierFifthDescription";
-import { useGetMppMessagesQuery } from "../../Hooks/useGetMppMessagesQuery";
 import { useGetHomeMessageQuery } from "../../Hooks/useGetHomeMessageQuery";
+import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
+import Loader from "@/src/components/Loader/Loader";
+import LogoutModal from "../LogoutModal/LogoutModal";
 
 type DASHBOARD_BOX = {
   id: number;
@@ -79,20 +75,32 @@ function Home() {
   ];
 
   const router = useRouter();
+  const { data: randomMessage, isLoading: isMessageLoading } =
+    useGetHomeMessageQuery();
+
+  const { data, isLoading: isPathwayLoading } = usePersonalPathwayQuery();
+
+  const pathwayData = data?.data?.pathways;
+  const activePathways = pathwayData?.filter((item) => item.active);
 
   const handleDashboardRouting = (id: number) => {
     if (id === 1) router.push("/start-here");
-    if (id === 2) router.push("/choose-pathway");
+    if (id === 2) {
+      if (activePathways?.length === 0) {
+        router.push("/choose-pathway");
+      } else {
+        router.push("/personal-pathway");
+      }
+    }
     if (id === 3) router.push("/start-team-journey");
     if (id === 4) router.push("/my-dashboard");
     if (id === 5) router.push("/reflection-walls");
     if (id === 6) router.push("/resource-inspiration");
   };
-
-  const { data: randomMessage } = useGetHomeMessageQuery();
-
+  const isLoading = isMessageLoading || isPathwayLoading;
   return (
     <>
+      {isLoading && <Loader />}
       <div
         className={`min-h-screen bg-[#4BA6A6] px-8 py-6
   ${styles.page}
@@ -164,45 +172,6 @@ function Home() {
                     </div>
                   </div>
                 </div>
-
-                {/* BADGE (optional) */}
-                {/* {box.badge && (
-                  <div
-                    className="absolute z-20"
-                    style={{
-                      bottom: box.id === 5 ? "79px" : "107px",
-                      right: box.id === 5 ? "-11px" : "3px",
-                    }}
-                  >
-                    <Image
-                      src={images.whiteArrow}
-                      alt="white-arrow"
-                      style={{
-                        width: "28px",
-                        height: "28px",
-                        transform: "rotate(0deg)",
-                        position: "absolute",
-                        bottom: "6px",
-                        right: box.id === 5 ? "45px" : "30px",
-                      }}
-                    />
-
-                    <div
-                      style={{
-                        transform: "rotate(-26deg)",
-                        textAlign: "center",
-                        marginTop: "-4px",
-                      }}
-                    >
-                      <span className="text-[#0F4F58] text-[14px] font-bold block leading-3">
-                        {box.badge.split(" ")[0]}
-                      </span>
-                      <span className="text-[#0F4F58] text-[14px] font-bold block leading-3">
-                        {box.badge.split(" ")[1]}
-                      </span>
-                    </div>
-                  </div>
-                )} */}
               </div>
 
               {/* TEXT SECTION */}
@@ -222,6 +191,7 @@ function Home() {
           ))}
         </div>
       </div>
+      <LogoutModal />
     </>
   );
 }

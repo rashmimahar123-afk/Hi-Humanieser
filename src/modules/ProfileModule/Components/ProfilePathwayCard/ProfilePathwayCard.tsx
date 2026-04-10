@@ -53,7 +53,7 @@ function ProfilePathwayCard({
       </div>
 
       {/* Description */}
-      <p className="text-[#0F4F58] text-[18px] mt-[24px] leading-[26px]">
+      <p className="text-[#0F4F58] text-[18px] mt-[24px] leading-[26px] max-w-[250px]">
         {description}
       </p>
     </div>

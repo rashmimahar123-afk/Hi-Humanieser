@@ -1,11 +1,11 @@
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import TeamJourneyPoll from "../TeamJourneyPoll/TeamJourneyPoll";
+import styles from "./TeamJourney.module.css";
 
 function TeamJourney() {
   const router = useRouter();
@@ -64,7 +64,9 @@ function TeamJourney() {
 
   return (
     <div
-      className={`relative min-h-screen bg-[#4BA6A6] px-8 py-6 font-sans z-10
+      className={`relative min-h-screen bg-[#4BA6A6] px-8 py-6 font-sans z-10 ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""} 
 `}
     >
       <Image

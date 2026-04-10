@@ -49,7 +49,6 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
   const [selectedMicroActions, setSelectedMicroActions] = useState<string[]>(
     [],
   );
-  console.log("pathwayDetailspathwayDetailspathwayDetails", pathwayDetails);
 
   const microActions = [
     "Ask yourself: “What else could be true?”",

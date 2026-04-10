@@ -3,17 +3,27 @@ import UserProfileHeader from "../../UserProfileHeader/Components/UserProfileHea
 import Image from "next/image";
 import images from "@/src/assets/images";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ResourceInspiration.module.css";
+import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessagesQuery";
 
 function ResourceInspiration() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const router = useRouter();
   const [enter, setEnter] = useState(false);
 
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+  const { data: randomMessage, isLoading } = useGetMppMessagesQuery();
+
   return (
-    <div className={`relative min-h-screen bg-[#6FAFB0] font-sans`}>
+    <div
+      className={`relative min-h-screen bg-[#6FAFB0] font-sans ${styles.page}
+   ${styles.enterRight}
+  ${enter ? styles.enterActive : ""}`}
+    >
       {/* Background Shapes */}
       <Image
         src={images.resourcePolygon1}
@@ -24,13 +34,13 @@ function ResourceInspiration() {
       <Image
         src={images.resourceArrow}
         alt="shape"
-        className="absolute top-10 right-0 z-0"
+        className="absolute top-0 right-0 z-0"
       />
 
       <Image
         src={images.resourcePolygon2}
         alt="shape"
-        className="absolute top-50 left-0 z-0"
+        className="absolute top-[180px] left-0 z-0"
         width={630}
       />
 
@@ -99,7 +109,7 @@ function ResourceInspiration() {
                 />
 
                 {/* Text on top */}
-                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
                   The three pillars and twelve principles behind Hi Humaniser!
                   The foundation for how people, performance and purpose
                   connect.
@@ -137,7 +147,7 @@ function ResourceInspiration() {
                   className="object-contain"
                 />
 
-                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
                   Explore pathways and team rituals that turn principles into
                   living practice — growing people, strengthening teams, and
                   making performance more human.
@@ -176,7 +186,7 @@ function ResourceInspiration() {
                   className="object-contain"
                 />
 
-                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-sm text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
+                <p className="absolute inset-0 z-10 flex items-center justify-center text-center px-4 text-[#0F4F58] font-[Roboto] font-[400] text-[20px]">
                   Here’s a list of research and recommended books if you want to
                   take curiosity one step head!
                 </p>
@@ -185,19 +195,17 @@ function ResourceInspiration() {
           </div>
         </div>
         {/* Footer Section */}
-        <div className="mt-12">
+        <div className="mt-[80px]">
           <SuccessMessage
-            text="Learning is not a one-time thing — it’s a practice.
-Keep exploring, keep reflecting, and keep humanising the way you work."
+            text={randomMessage || ""}
             fontSize="text-[21px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            left="380px"
-            bottom="52px"
-            rightImgBottom="42px"
-            rightImgRight="368px"
+            bottom="3px"
+            rightImgBottom="3px"
             rotate="-35deg"
             fontColor="#0F4F58"
+            maxWidth="600px"
           />
         </div>
       </div>

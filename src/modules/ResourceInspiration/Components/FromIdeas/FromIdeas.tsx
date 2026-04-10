@@ -23,7 +23,6 @@ function FromIdeas() {
 
   const router = useRouter();
   const { data, isLoading, isError } = useChooseMyselfQuery();
-  const pillarsData = data?.data?.slice(1); // skip pulse_check_config
   const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
 
   return (
@@ -432,7 +431,7 @@ function FromIdeas() {
               <CommonButtons
                 label="Go to Dashboard"
                 bgColor="#4BA6A6"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/my-dashboard")}
               />
               <CommonButtons
                 label="Explore
