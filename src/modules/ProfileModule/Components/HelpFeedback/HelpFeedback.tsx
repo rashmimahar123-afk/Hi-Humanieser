@@ -11,16 +11,22 @@ import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import SendFeedbackModal, {
   openSendFeedbackModal,
 } from "../SendFeedbackModal/SendFeedbackModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function HelpFeedback() {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [selected, setSelected] = useState("");
+  const { user } = useAuthValue();
   return (
     <>
       <div className="relative min-h-screen bg-[#F7F2EA] px-12 pt-10 pb-20">
         {/* Header */}
-        <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#567F55"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
 
         <Image
           src={images.feedbackBg}

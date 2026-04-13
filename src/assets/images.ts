@@ -6,7 +6,6 @@ import humanLogo from "../../public/images/humanLogo.png";
 import email from "../../public/images/email.png";
 import lock from "../../public/images/lock.png";
 import landPeople from "../../public/images/landPeople.png";
-import peopleImg from "../../public/images/peopleImg.png";
 import arrowImg from "../../public/images/arrowImg.png";
 import landRectangle from "../../public/images/landRectangle.png";
 import humaniserLogo from "../../public/images/humaniserLogo.png";
@@ -165,7 +164,6 @@ import spreadImg from "../../public/profile/images/spreadImg.png";
 import researchImg from "../../public/images/researchImg.png";
 import researchPoly from "../../public/images/researchPoly.png";
 import teamDots from "../../public/profile/images/teamDots.png";
-import people from "../../public/images/peopleImg.png";
 import shadowPoly from "../../public/images/shadowPoly.png";
 import dottedArrow from "../../public/images/dottedArrow.png";
 import labImg from "../../public/images/labImg.png";
@@ -207,6 +205,7 @@ import planWave from "../../public/images/planWave.png";
 import landFooter from "../../public/images/landFooter.png";
 import baseLineImg from "../../public/images/baseLineImg.png";
 import dummyUser from "../../public/images/dummyUser.png";
+import people from "../../public/images/people.png";
 
 type imageTypes = {
   logo: StaticImageData;
@@ -216,7 +215,6 @@ type imageTypes = {
   email: StaticImageData;
   lock: StaticImageData;
   landPeople: StaticImageData;
-  peopleImg: StaticImageData;
   arrowImg: StaticImageData;
   landRectangle: StaticImageData;
   humaniserLogo: StaticImageData;
@@ -427,7 +425,6 @@ const Images: imageTypes = {
   email,
   lock,
   landPeople,
-  peopleImg,
   arrowImg,
   landRectangle,
   humaniserLogo,

@@ -12,6 +12,7 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import Link from "next/link";
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
 import { CHOOSE_MYSELF_PILLAR_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function FromIdeas() {
   const [animateText, setAnimateText] = useState(false);
@@ -24,7 +25,7 @@ function FromIdeas() {
   const router = useRouter();
   const { data, isLoading, isError } = useChooseMyselfQuery();
   const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
-
+  const { user } = useAuthValue();
   return (
     <div
       className={`bg-[#F5F0EB] min-h-screen ${styles.page} ${
@@ -41,7 +42,11 @@ function FromIdeas() {
         />
       </div>
       <div className="px-8 py-6">
-        <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0F4F58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
       <div className="relative text-center z-10">

@@ -5,15 +5,21 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import EasePressureList from "../EasePressureList/EasePressureList";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function EasePressure() {
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
 
       <div>
-        <UserProfileHeader greetingColor="#4ba6a6" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#4ba6a6"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
       <Image

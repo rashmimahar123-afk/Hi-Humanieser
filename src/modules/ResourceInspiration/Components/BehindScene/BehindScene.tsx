@@ -7,6 +7,7 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { useEffect, useState } from "react";
 import styles from "./BehindScene.module.css";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function BehindScene() {
   const column1Data = [
@@ -34,6 +35,7 @@ function BehindScene() {
   ];
 
   const router = useRouter();
+  const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
 
   useEffect(() => {
@@ -53,7 +55,11 @@ function BehindScene() {
         className="absolute top-0 right-0 z-0"
       />
       <div className="relative z-10 px-8 py-6">
-        <UserProfileHeader greetingColor="#0F4F58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0F4F58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
         <div className=" text-center mt-20 px-4">
           <h1 className="text-[#0F4F58] text-[45px] font-[RocaTwo] leading-tight mb-10 font-bold">
             Behind The Scenes Of

@@ -6,18 +6,24 @@ import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function TeamWorkshops() {
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
 
       <div>
-        <UserProfileHeader greetingColor="#4ba6a6" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#4ba6a6"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
       <Image

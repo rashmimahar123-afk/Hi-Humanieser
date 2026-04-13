@@ -2,17 +2,33 @@
 
 import images from "@/src/assets/images";
 import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 function ChampionHub() {
   const router = useRouter();
+  const { user } = useAuthValue();
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
-    <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+    <div
+      className={`relative min-h-screen bg-[#F5F0EB] px-10 py-10 z-10 font-serif page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       {/* TOP LEFT SHAPE */}
 
-      <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+      <UserProfileHeader
+        greetingColor="#0f4f58"
+        nameColor="#0F4F58"
+        userInfo={user}
+      />
 
       <Image
         src={images.homeRec}

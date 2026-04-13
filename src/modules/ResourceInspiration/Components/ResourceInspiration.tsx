@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ResourceInspiration.module.css";
 import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessagesQuery";
+import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
 
 function ResourceInspiration() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
@@ -17,7 +18,7 @@ function ResourceInspiration() {
     setEnter(true);
   }, []);
   const { data: randomMessage, isLoading } = useGetMppMessagesQuery();
-
+  const { user } = useAuthValue();
   return (
     <div
       className={`relative min-h-screen bg-[#6FAFB0] font-sans ${styles.page}
@@ -46,7 +47,11 @@ function ResourceInspiration() {
 
       {/* Content */}
       <div className="relative z-10 px-8 py-6">
-        <UserProfileHeader greetingColor="#F5F0EB" nameColor="#0F4F58" />{" "}
+        <UserProfileHeader
+          greetingColor="#F5F0EB"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />{" "}
         <h1 className="text-center text-[45px] font-bold text-[#0F4F58] font-[RocaTwo-Bold] mt-4">
           Resources & Inspiration
         </h1>

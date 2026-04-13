@@ -5,6 +5,7 @@ import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ResearchRoom() {
   const router = useRouter();
@@ -21,6 +22,7 @@ function ResearchRoom() {
     link.download = "RecommendedReading.pdf";
     link.click();
   };
+  const { user } = useAuthValue();
   return (
     <section className="min-h-screen bg-[#f5f0eb]">
       <div className="relative">
@@ -34,7 +36,11 @@ function ResearchRoom() {
       </div>
       <div className="relative z-[10] px-8 py-6 ">
         {/* ================= Top Header ================= */}
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
 
         {/* ================= Title ================= */}
         <div className="mt-10 flex flex-col items-center text-center">

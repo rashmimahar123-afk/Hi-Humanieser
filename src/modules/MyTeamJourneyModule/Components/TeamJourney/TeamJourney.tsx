@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import TeamJourneyPoll from "../TeamJourneyPoll/TeamJourneyPoll";
 import styles from "./TeamJourney.module.css";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function TeamJourney() {
   const router = useRouter();
@@ -13,8 +14,7 @@ function TeamJourney() {
     "firstTeamJourney" | "secondTeamJourney" | null
   >(null);
 
-  const [animateText, setAnimateText] = useState(false);
-
+  const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
 
   useEffect(() => {
@@ -78,7 +78,11 @@ function TeamJourney() {
       />
 
       {/* Header */}
-      <UserProfileHeader greetingColor="#FFFFFF" nameColor="#0F4F58" />
+      <UserProfileHeader
+        greetingColor="#FFFFFF"
+        nameColor="#0F4F58"
+        userInfo={user}
+      />
 
       <SuccessMessage
         text="Great to see you again — ready to explore?"

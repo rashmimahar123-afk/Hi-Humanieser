@@ -23,12 +23,14 @@ import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import GaugeChart from "react-gauge-chart";
 import ProgressPill from "@/src/modules/ChampionHubModule/Components/ProgressPill/ProgressPill";
 import ViewAllReflectionCard from "@/src/modules/MyDashboardModule/Components/ViewAllReflectionCard/ViewAllReflectionCard";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function OrganizationSnapshot() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
 
   const router = useRouter();
+  const { user } = useAuthValue();
   const data = [
     { name: "Own Your Impact", value: 32 },
     { name: "Stay Curious", value: 21 },
@@ -129,7 +131,11 @@ function OrganizationSnapshot() {
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
-      <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+      <UserProfileHeader
+        greetingColor="#0f4f58"
+        nameColor="#0F4F58"
+        userInfo={user}
+      />
       <Image
         src={images.orgSnapBg}
         alt="left-bg"

@@ -5,11 +5,23 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ProfileNotification() {
   const router = useRouter();
+  const [enter, setEnter] = useState(false);
+  const { user } = useAuthValue();
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
-    <div className="min-h-screen bg-[#F5F0EB] px-10 py-8">
+    <div
+      className={`min-h-screen bg-[#F5F0EB] px-10 py-8 page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       {/* Left Green Shape */}
       <Image
         src={images.notificationPolygon}
@@ -28,7 +40,11 @@ function ProfileNotification() {
       />
 
       <div className="relative z-20 ">
-        <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#567F55"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
       {/* Header */}
@@ -84,7 +100,7 @@ function ProfileNotification() {
         <CommonButtons
           label="Return to Home"
           bgColor="#FBE1DE"
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push("/home")}
         />
       </div>
     </div>

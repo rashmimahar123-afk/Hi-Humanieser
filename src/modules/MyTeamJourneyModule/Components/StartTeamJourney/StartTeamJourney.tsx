@@ -4,10 +4,11 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./StartTeamJourney.module.css";
 import { useEffect, useState } from "react";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function StartTeamJourney() {
   const [enter, setEnter] = useState(false);
-
+  const { user } = useAuthValue();
   useEffect(() => {
     setEnter(true);
   }, []);
@@ -34,7 +35,11 @@ function StartTeamJourney() {
           className="absolute top-0 right-0 z-0"
         />
         <div className="relative z-20 px-10 py-8 ">
-          <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#0f4f58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
         <div className="relative z-20  ">
           <SuccessMessage

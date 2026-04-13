@@ -9,15 +9,21 @@ import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import Link from "next/link";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ThingsTricky() {
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
 
       <div>
-        <UserProfileHeader greetingColor="#4ba6a6" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#4ba6a6"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
       <Image

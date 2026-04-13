@@ -18,6 +18,7 @@ import FinishEarlyModal, {
   openFinishEarlyModal,
 } from "../FinishEarlyModal/FinishEarlyModal";
 import YesCompleteRitualModal from "../YesCompleteRitualModal/YesCompleteRitualModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function PressurePointRecord() {
   const teamMembers = [
@@ -71,7 +72,7 @@ function PressurePointRecord() {
   const rows = chunkByPattern(teamMembers);
 
   const router = useRouter();
-
+  const { user } = useAuthValue();
   const [openPreviousPoll, setOpenPreviousPoll] = useState(false);
   const [selectedPreviousPoll, setSelectedPreviousPoll] = useState<
     string | null
@@ -106,7 +107,11 @@ function PressurePointRecord() {
         {/* TOP LEFT SHAPE */}
 
         <div>
-          <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#0f4f58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
 
         <Image

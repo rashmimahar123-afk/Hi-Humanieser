@@ -12,11 +12,12 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import MyNotes from "../MyNotes/MyNotes";
 import ProfilePathwayCard from "@/src/modules/ProfileModule/Components/ProfilePathwayCard/ProfilePathwayCard";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ChampionNotes() {
   const [openCurrent, setOpenCurrent] = useState(false);
   const [openPrevious, setOpenPrevious] = useState(false);
-
+  const { user } = useAuthValue();
   const chunkByPattern = (arr: any, pattern = [8, 6]) => {
     const chunks = [];
     let i = 0;
@@ -46,7 +47,11 @@ function ChampionNotes() {
       </div>
 
       <div className="px-8 py-6">
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
       <div className="px-8">
         <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo]">

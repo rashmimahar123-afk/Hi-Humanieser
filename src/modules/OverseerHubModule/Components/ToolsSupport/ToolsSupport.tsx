@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import styles from "./ToolsSupport.module.css";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ToolsSupport() {
   const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
@@ -15,11 +16,16 @@ function ToolsSupport() {
   const weekOptions = ["1 Week", "2 Weeks", "4 Weeks", "8 Weeks"];
 
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
 
-      <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+      <UserProfileHeader
+        greetingColor="#0f4f58"
+        nameColor="#0F4F58"
+        userInfo={user}
+      />
 
       <Image
         src={images.homeRec}

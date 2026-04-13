@@ -1,16 +1,19 @@
 import UserProfileHeader from "../../UserProfileHeader/Components/UserProfileHeader";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import images from "@/src/assets/images";
+import { useEffect, useRef, useState } from "react";
+import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
+import styles from "./Profile.module.css";
 
 function Profile() {
-  const members = [
-    { name: "Matthew Richardson", img: "/m1.jpg" },
-    { name: "Daniella James-Daniels", img: "/m2.jpg" },
-    { name: "Bibil Baby Paramathatil", img: "/m3.jpg" },
-    { name: "Lorenzo DiCaprio", img: "/m4.jpg" },
-    { name: "George Brown", img: "/m5.jpg" },
-  ];
+  const [enter, setEnter] = useState(false);
 
+  const [profileImage, setProfileImage] = useState<string | StaticImageData>(
+    images.dummyUser,
+  );
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const { user } = useAuthValue();
   const teamMembers = [
     { name: "Matthew Richardson", image: images.userProfile },
     { name: "Daniella James-Daniels", image: images.userProfile },
@@ -45,6 +48,10 @@ function Profile() {
     { name: "Bibil Baby Paramatthatil", image: images.userProfile },
   ];
 
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   const chunkByPattern = (arr: any, pattern = [8, 6]) => {
     const chunks = [];
     let i = 0;
@@ -60,106 +67,137 @@ function Profile() {
   };
 
   const rows = chunkByPattern(teamMembers);
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+    }
+  };
   return (
-    <div className="relative min-h-screen bg-[#F5F0EB] overflow-hidden">
+    <div
+      className={`relative min-h-screen bg-[#F5F0EB] overflow-hidden  ${styles.page} ${
+        enter ? styles.enterActive : styles.enter
+      }`}
+    >
       {/* Header */}
       <div className="px-8 py-6">
-        <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
-      </div>
-      <div className="absolute top-175 left-20 z-10 ">
-        <Image src={images.sixDots} alt="dots" width={116} height={116} />
-      </div>
-      {/* Page Title */}
-      <div className="px-24 mt-4">
-        <h2 className="text-[45px] font-[RocaTwo-Bold] font-bold text-[#0F4F58]">
-          Profile
-        </h2>
+        <UserProfileHeader
+          greetingColor="#567F55"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
-      {/* Profile Card */}
-      <section className="relative mx-14 rounded-[24px] bg-[#F8E1B8] px-14 py-12 overflow-hidden">
-        {/* Right dotted pattern */}
-        <div className="absolute right-12 top-12 ">
-          <Image
-            src={images.dotsPattern}
-            alt="pattern"
-            width={270}
-            height={270}
-          />
+      {/* Page Title */}
+      <div className="relative">
+        <div className="px-24 mt-4">
+          <h2 className="text-[45px] font-[RocaTwo-Bold] font-bold text-[#0F4F58]">
+            Profile
+          </h2>
         </div>
 
-        {/* Top content */}
-        <div className="flex gap-16">
-          {/* Avatar */}
-          <div className="flex flex-col items-center">
-            <div className="h-[96px] w-[96px] rounded-full overflow-hidden">
-              <Image
-                src={images.maria}
-                alt="Profile"
-                width={168}
-                height={168}
-                className="object-cover"
+        {/* Profile Card */}
+        <section className="relative mx-14 rounded-[24px] bg-[#F8E1B8] px-14 py-12 overflow-hidden">
+          {/* Right dotted pattern */}
+          <div className="absolute right-12 top-12 ">
+            <Image
+              src={images.dotsPattern}
+              alt="pattern"
+              width={270}
+              height={270}
+            />
+          </div>
+
+          {/* Top content */}
+          <div className="flex gap-16">
+            {/* Avatar */}
+            <div className="flex flex-col items-center">
+              <div className="h-[96px] w-[96px] rounded-full overflow-hidden">
+                <Image
+                  src={profileImage}
+                  alt="Profile"
+                  width={168}
+                  height={168}
+                  className="object-cover"
+                />
+              </div>
+              <p
+                className="mt-2 text-[16px] text-[#0F4F58] font-[Roboto]  cursor-pointer"
+                onClick={handleImageClick}
+              >
+                add/edit picture
+              </p>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              className="hidden"
+            />
+            {/* Details */}
+            <div className="flex-1">
+              <h3 className="text-[45px] font-[RocaTwo] font-bold text-[#0F4F58]">
+                Maria Palacios
+              </h3>
+
+              <p className="mt-1 text-[19px] font-400 text-[#0F4F58] font-[Roboto] ">
+                Joined Jan 2026
+              </p>
+              <p className="text-[14px] text-[#0F4F58]">
+                Active Member In Hi Humaniser!
+              </p>
+
+              <div className="mt-5 text-[22px] text-[#0F4F58] font-[Roboto] font-[400] leading-6">
+                <p>Company: TXM Ltd</p>
+                <p>Team: Systems Engineering - UK</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Inputs */}
+          <div className="mt-10  max-w-3xl space-y-4">
+            <div className="flex items-center gap-8">
+              <span className="w-40 text-[15px] text-[#567F55]">
+                First Name
+              </span>
+              <input
+                disabled
+                placeholder="not able to modify"
+                className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
               />
             </div>
-            <p className="mt-2 text-[16px] text-[#0F4F58] font-[Roboto]  cursor-pointer">
-              add/edit picture
-            </p>
-          </div>
 
-          {/* Details */}
-          <div className="flex-1">
-            <h3 className="text-[45px] font-[RocaTwo] font-bold text-[#0F4F58]">
-              Maria Palacios
-            </h3>
+            <div className="flex items-center gap-8">
+              <span className="w-40 text-[15px] text-[#567F55]">Last Name</span>
+              <input
+                disabled
+                placeholder="not able to modify"
+                className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
+              />
+            </div>
 
-            <p className="mt-1 text-[19px] font-400 text-[#0F4F58] font-[Roboto] ">
-              Joined Jan 2026
-            </p>
-            <p className="text-[14px] text-[#0F4F58]">
-              Active Member In Hi Humaniser!
-            </p>
-
-            <div className="mt-5 text-[22px] text-[#0F4F58] font-[Roboto] font-[400] leading-6">
-              <p>Company: TXM Ltd</p>
-              <p>Team: Systems Engineering - UK</p>
+            <div className="flex items-center gap-8">
+              <span className="w-40 text-[15px] text-[#567F55]">
+                email/username
+              </span>
+              <input
+                disabled
+                value={user?.sub || ""}
+                className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#5E8C84] outline-none"
+              />
             </div>
           </div>
+        </section>
+        <div className="absolute -bottom-[20px] left-20 z-10 ">
+          <Image src={images.sixDots} alt="dots" width={116} height={116} />
         </div>
-
-        {/* Inputs */}
-        <div className="mt-10  max-w-3xl space-y-4">
-          <div className="flex items-center gap-8">
-            <span className="w-40 text-[15px] text-[#567F55]">First Name</span>
-            <input
-              disabled
-              placeholder="not able to modify"
-              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
-            />
-          </div>
-
-          <div className="flex items-center gap-8">
-            <span className="w-40 text-[15px] text-[#567F55]">Last Name</span>
-            <input
-              disabled
-              placeholder="not able to modify"
-              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#567F55] outline-none"
-            />
-          </div>
-
-          <div className="flex items-center gap-8">
-            <span className="w-40 text-[15px] text-[#567F55]">
-              email/username
-            </span>
-            <input
-              disabled
-              placeholder="not able to modify"
-              className="w-full rounded-[14px] bg-white px-5 py-3 text-[14px] text-[#5E8C84] outline-none"
-            />
-          </div>
-        </div>
-      </section>
-
+      </div>
       <div className=" px-14 py-12">
         {/* Header */}
         <h2 className="ml-10 text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">

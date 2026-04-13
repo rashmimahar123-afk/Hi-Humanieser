@@ -3,17 +3,31 @@ import images from "@/src/assets/images";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import ProfileCommonDropdown from "@/src/components/ProfileCommonDropdown/ProfileCommonDropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function AccountSetting() {
   const [selected, setSelected] = useState("");
+  const { user } = useAuthValue();
+  const [enter, setEnter] = useState(false);
 
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
-    <div className="min-h-screen bg-[#F5F0EB] ">
+    <div
+      className={`min-h-screen bg-[#F5F0EB]  page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       {/* Header */}
       <div className="px-8 py-6">
         <div>
-          <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#567F55"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
         {/* Title */}
         <h2 className="mt-14 ml-10 text-[36px] font-[RocaTwo] font-bold text-[#0F4F58]">

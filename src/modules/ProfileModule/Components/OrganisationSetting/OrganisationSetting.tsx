@@ -1,5 +1,5 @@
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
@@ -8,14 +8,29 @@ import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import AddMemberModal, {
   openAddMemberModal,
 } from "../AddMemberModal/AddMemberModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function OrganisationSetting() {
   const router = useRouter();
+  const { user } = useAuthValue();
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
     <>
-      <div className=" relative min-h-screen bg-[#F8F4EE] px-8 py-10 font-serif  z-10">
+      <div
+        className={`relative min-h-screen bg-[#F8F4EE] px-8 py-10 font-serif  z-10 page ${
+          enter ? "enterActive" : "enter"
+        }`}
+      >
         <div>
-          <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#0f4f58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
         <Image
           src={images.quizPolygon}

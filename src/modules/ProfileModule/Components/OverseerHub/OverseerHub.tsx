@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import styles from "./OverseerHub.module.css";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import { useEffect, useState } from "react";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function OverseerHub() {
   const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
@@ -14,11 +16,26 @@ function OverseerHub() {
   const weekOptions = ["1 Week", "2 Weeks", "4 Weeks", "8 Weeks"];
 
   const router = useRouter();
+  const { user } = useAuthValue();
+
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
-    <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+    <div
+      className={`relative min-h-screen bg-[#F5F0EB] px-10 py-10 z-10 font-serif page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       {/* TOP LEFT SHAPE */}
 
-      <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+      <UserProfileHeader
+        greetingColor="#0f4f58"
+        nameColor="#0F4F58"
+        userInfo={user}
+      />
 
       <Image
         src={images.homeRec}

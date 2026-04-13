@@ -9,6 +9,7 @@ import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import TeamSnapshot from "../TeamSnapshot/TeamSnapshot";
 import TeamWorkingOn from "../TeamWorkingOn/TeamWorkingOn";
 import TeamSayingSection from "../TeamSayingSection/TeamSayingSection";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function TeamInsight() {
   const teamMembers = [
@@ -46,6 +47,7 @@ function TeamInsight() {
 
   const rows = chunkByPattern(teamMembers);
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className=" min-h-screen bg-[#F5F0EB] ">
       {/* TOP LEFT SHAPE */}
@@ -60,7 +62,11 @@ function TeamInsight() {
       </div>
 
       <div className="px-8 py-6">
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
       <div className="px-8">
         <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo]">

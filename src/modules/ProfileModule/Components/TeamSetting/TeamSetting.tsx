@@ -8,14 +8,20 @@ import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import AddMemberModal, {
   openAddMemberModal,
 } from "../AddMemberModal/AddMemberModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function TeamSetting() {
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <>
       <div className=" relative min-h-screen bg-[#F8F4EE] px-8 py-10 font-serif  z-10">
         <div>
-          <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#567F55"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
         <Image
           src={images.quizPolygon}

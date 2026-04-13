@@ -2,15 +2,31 @@ import Image from "next/image";
 import SharedCard from "../SharedCard/SharedCard";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import SendInvitationModal from "../SendInvitationModal/SendInvitationModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { useEffect, useState } from "react";
 
 function SpreadRipple() {
+  const { user } = useAuthValue();
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
     <>
-      <main className="min-h-screen bg-[#FBF6EE]">
+      <main
+        className={`min-h-screen bg-[#F5F0EB]  page ${
+          enter ? "enterActive" : "enter"
+        }`}
+      >
         <div className="px-8 py-6">
           {/* Header */}
           <div>
-            <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+            <UserProfileHeader
+              greetingColor="#567F55"
+              nameColor="#0F4F58"
+              userInfo={user}
+            />
           </div>
 
           {/* Title */}

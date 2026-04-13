@@ -9,14 +9,19 @@ import TransferSection from "../TransferSection/TransferSection";
 import DeactivateSection from "../DeactivateSection/DeactivateSection";
 import ActivateSection from "../ActivateSection/ActivateSection";
 import DeleteSection from "../DeleteSection/DeleteSection";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function EditMembers() {
   const router = useRouter();
   const [action, setAction] = useState("edit");
-
+  const { user } = useAuthValue();
   return (
     <div className="relative z-10 min-h-screen bg-[#F8F4EE] px-8 py-10 font-serif">
-      <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+      <UserProfileHeader
+        greetingColor="#0f4f58"
+        nameColor="#0F4F58"
+        userInfo={user}
+      />
 
       {/* Background Shape */}
       <Image

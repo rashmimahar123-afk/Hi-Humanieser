@@ -4,9 +4,10 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import HoverOption from "./HoverOptions/HoverOptions";
 import AddVoiceModal, { openVoiceModal } from "../AddVoiceModal/AddVoiceModal";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import styles from "./MyTeamJourney.module.css";
 import { useRouter } from "next/navigation";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function MyTeamJourney() {
   const [animateText, setAnimateText] = useState(false);
@@ -18,7 +19,7 @@ function MyTeamJourney() {
   }, []);
 
   const router = useRouter();
-
+  const { user } = useAuthValue();
   return (
     <div
       className={`min-h-screen bg-[#4BA6A6] font-sans ${styles.page} ${
@@ -41,7 +42,11 @@ function MyTeamJourney() {
         className="absolute top-0 right-0 z-0"
       />
       <div className="relative z-20 px-10 py-8 ">
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
       <div className="relative z-20  ">
         <SuccessMessage

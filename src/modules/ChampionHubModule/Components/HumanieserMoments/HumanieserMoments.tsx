@@ -4,11 +4,13 @@ import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 function HumanieserMoments() {
+  const { user } = useAuthValue();
   const momentsList = [
     {
       title: "Weather Check",
@@ -75,7 +77,11 @@ function HumanieserMoments() {
       {/* TOP LEFT SHAPE */}
 
       <div>
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
 
       <Image

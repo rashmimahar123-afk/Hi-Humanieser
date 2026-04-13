@@ -105,13 +105,12 @@ function LandingPage() {
                 </div>
               </div>
               {/* Image with rounded background */}
-              <div className="relative">
-                <Image
-                  src={images.people}
-                  alt="Team collaborating"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
+
+              <Image
+                src={images.people}
+                alt="Team collaborating"
+                className="w-full h-auto object-cover"
+              />
             </div>
 
             {/* Footer Info Box */}
@@ -153,8 +152,13 @@ function LandingPage() {
             </div>
             <div className=" text-[#0f4f58] text-[20px] font-[Roboto] flex items-end ">
               Find answers to common questions below, read the full FAQs{" "}
-              <span className="text-[#4ba6a6] ml-1 mr-1">here</span> or pop us
-              an email at
+              <Link
+                href="/faq"
+                className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
+              >
+                here
+              </Link>
+              or pop us an email at
             </div>
             <div className="font-[Roboto] text-[20px] text-[#0f4f58] text-center">
               {" "}
@@ -289,7 +293,13 @@ And when that moment comes, it will still be here."
         <div className="mt-16 ">
           <div className=" text-[#0f4f58] text-[20px] font-[Roboto] flex items-end ">
             Want to go deeper? Explore the full FAQs{" "}
-            <span className="text-[#4ba6a6] ml-1 mr-1">here</span>.
+            <Link
+              href="/faq"
+              className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
+            >
+              here
+            </Link>
+            .
           </div>
           <div className="font-[Roboto] text-[20px] text-[#0f4f58] flex mt-8">
             Still not sure, or just want to talk it through?

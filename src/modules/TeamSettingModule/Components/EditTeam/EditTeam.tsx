@@ -5,13 +5,19 @@ import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function EditTeam() {
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className=" relative z-10 min-h-screen bg-[#F8F4EE] px-8 py-10 font-serif">
       <div>
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
       <Image
         src={images.quizPolygon}

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import SuggestPressurePointModal, {
   openSuggestPressurePointModal,
 } from "../SuggestPressurePointModal/SuggestPressurePointModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function TeamFocus() {
   const teamMembers = [
@@ -62,13 +63,18 @@ function TeamFocus() {
   const rows = chunkByPattern(teamMembers);
 
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
         {/* TOP LEFT SHAPE */}
 
         <div>
-          <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#0f4f58"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
 
         <Image

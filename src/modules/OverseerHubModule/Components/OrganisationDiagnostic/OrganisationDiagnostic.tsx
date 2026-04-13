@@ -16,12 +16,14 @@ import RunSurveyModal, {
   openRunSurveyModal,
 } from "../RunSurveyModal/RunSurveyModal";
 import PreviewContentModal from "../PreviewContentModal/PreviewContentModal";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function OrganisationDiagnostic() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
 
   const router = useRouter();
+  const { user } = useAuthValue();
   const data = [
     { name: "Own Your Impact", value: 32 },
     { name: "Stay Curious", value: 21 },
@@ -82,7 +84,11 @@ function OrganisationDiagnostic() {
         />
 
         <div className="relative z-20 ">
-          <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+          <UserProfileHeader
+            greetingColor="#567F55"
+            nameColor="#0F4F58"
+            userInfo={user}
+          />
         </div>
         <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo] ml-[80px]">
           Partner Hub

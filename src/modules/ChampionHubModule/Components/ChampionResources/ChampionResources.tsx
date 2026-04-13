@@ -9,6 +9,7 @@ import styles from "./ChampionResources.module.css";
 import FromIdeasPathwayCard from "@/src/modules/ResourceInspiration/Components/FromIdeasPathwayCards/FromIdeasPathwayCards";
 import ChampionResourceCards from "../ChampionResourceCards/ChampionResourceCards";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function ChampionResources() {
   const teamMembers = [
@@ -46,6 +47,7 @@ function ChampionResources() {
 
   const rows = chunkByPattern(teamMembers);
   const router = useRouter();
+  const { user } = useAuthValue();
   return (
     <div className="relative bg-[#F5F0EB] min-h-screen ">
       {/* TOP LEFT SHAPE */}
@@ -58,7 +60,11 @@ function ChampionResources() {
       />
 
       <div className="px-8 py-6 relative z-10">
-        <UserProfileHeader greetingColor="#0f4f58" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#0f4f58"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
       <div className="px-8">
         <div>

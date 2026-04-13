@@ -4,13 +4,29 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 export default function ProfilePathway() {
   const router = useRouter();
+  const [enter, setEnter] = useState(false);
+  const { user } = useAuthValue();
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   return (
-    <div className="min-h-screen bg-[#F5F0EB] px-[64px] py-[40px] ">
+    <div
+      className={`min-h-screen bg-[#F5F0EB] px-[64px] py-[40px] page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       <div>
-        <UserProfileHeader greetingColor="#567F55" nameColor="#0F4F58" />
+        <UserProfileHeader
+          greetingColor="#567F55"
+          nameColor="#0F4F58"
+          userInfo={user}
+        />
       </div>
       {/* Header */}
 
@@ -30,13 +46,13 @@ export default function ProfilePathway() {
         {/* Card 1 */}
         <ProfilePathwayCard
           title="
-          Retake the
-Check-In "
+          Retake the Check-In "
           description="Find your best Pathway in a few questions"
           shapeImg={images.profileQuiz}
           arrowImg={images.arrowImg}
           arrowPosition="-left-[28px] -top-[20px]"
           width="44px"
+          onClick={() => router.push("/start-quiz")}
         />
 
         {/* Card 2 */}
@@ -58,6 +74,7 @@ Check-In "
           arrowImg={images.leftArrowImg}
           arrowPosition="-right-[40px] -top-[27px]"
           rotate="-21deg"
+          onClick={() => router.push("/manage-pathway")}
         />
       </div>
 

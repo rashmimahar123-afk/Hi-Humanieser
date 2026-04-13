@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import path from "path";
 import { useEffect } from "react";
 
 export default function RouteThemeProvider() {
@@ -56,10 +57,7 @@ export default function RouteThemeProvider() {
       bg = "#F5F0EB";
       fg = "#0F4F58";
     }
-    if (pathname === "/reflection-walls") {
-      bg = "#F5F0EB";
-      fg = "#F5F0EB";
-    }
+
     if (pathname === "/resource-inspiration") {
       bg = "#6FAFB0";
       fg = "#6FAFB0";
@@ -68,9 +66,24 @@ export default function RouteThemeProvider() {
       bg = "#4BA6A6";
       fg = "#4BA6A6";
     }
-    if (pathname === "/view-reflection-wall") {
+
+    if (
+      pathname === "/profile" ||
+      pathname === "/account-setting" ||
+      pathname === "/reflection-walls" ||
+      pathname === "/view-reflection-wall" ||
+      pathname === "/champion-hub" ||
+      pathname === "/overseer-hub" ||
+      pathname === "/notification" ||
+      pathname === "/spread-ripple"
+    ) {
       bg = "#F5F0EB";
       fg = "#F5F0EB";
+    }
+
+    if (pathname === "/organisation-setting") {
+      bg = "#F8F4EE";
+      fg = "#F8F4EE";
     }
     root.style.setProperty("--background", bg);
     root.style.setProperty("--foreground", fg);
