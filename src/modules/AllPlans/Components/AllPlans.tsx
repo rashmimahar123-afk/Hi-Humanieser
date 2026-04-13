@@ -1,12 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import PlanCard from "./PlanCards/PlanCards";
 
 export default function AllPlans() {
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   const plans = [
     {
       title: "Exploration",
@@ -75,7 +80,11 @@ export default function AllPlans() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5F0EB] px-12 py-8 relative">
+    <div
+      className={`min-h-screen bg-[#F5F0EB] px-12 py-8 relative page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       {/* Top Right Shapes */}
       <Image
         src={images.loginRectangle}

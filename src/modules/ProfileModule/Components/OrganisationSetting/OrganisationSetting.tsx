@@ -14,7 +14,7 @@ function OrganisationSetting() {
   const router = useRouter();
   const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
-
+  const [teamAction, setTeamAction] = useState("create");
   useEffect(() => {
     setEnter(true);
   }, []);
@@ -102,99 +102,19 @@ function OrganisationSetting() {
               </div>
             </div>
 
-            {/* Tier */}
-            <div className="flex items-center">
-              <label className="text-[#567F55] text-[20px] font-[Roboto]">
-                Tier
+            {/* Plan */}
+            <div className="flex items-center  mt-4">
+              {/* Label */}
+              <label className="w-[200px] text-[#567F55] text-[20px] font-[Roboto]">
+                Plan
               </label>
 
+              {/* Input + Button */}
               <div className="flex items-center gap-6 flex-1">
-                <input
-                  type="text"
-                  placeholder="Explore / Core / Launch / Partnership"
-                  className="flex-1 bg-[#ffffff] text-[#567F55] text-[18px]
-              px-6
-          pr-10
-          h-[41px]
-          w-[416px] rounded-[12px] outline-none font-[Roboto] ml-[170px]"
-                />
-
-                {/* Info Icon */}
-                <div
-                  className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] 
-            flex items-center justify-center"
-                >
-                  <span className="text-[#1D5C63] text-[28px] font-semibold">
-                    i
-                  </span>
-                </div>
-
-                <button className="text-[#567F55] text-[17px] font-[Roboto]">
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-[#F6E3BB] rounded-3xl p-10 mt-10">
-          <div className="flex items-center gap-6 mt-4">
-            <h2 className="text-[32px] font-[RocaTwo] text-[#567F55]">
-              Create Teams
-            </h2>
-
-            {/* Info Icon */}
-            <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center">
-              <span className="text-[#1D5C63] text-[30px] font-semibold">
-                i
-              </span>
-            </div>
-          </div>
-
-          {/* Name Row */}
-          <div className="flex items-start gap-12 mt-4">
-            <label className="text-[#567F55] text-[20px] font-[Roboto]">
-              Name
-            </label>
-
-            <div className="flex items-center gap-8 flex-1">
-              <input
-                type="text"
-                className="flex-1 bg-[#ffffff] rounded-[12px]
-             px-6
-          pr-10
-          h-[41px]
-          w-[416px] text-[18px] text-[#0F4F58] outline-none font-[Roboto] ml-[105px]"
-              />
-
-              <button
-                className="px-6
-          pr-10
-          h-[41px]
-          w-[200px] bg-[#ffffff] rounded-[12px]
-            text-[18px] text-[#567F55] font-[Roboto]"
-              >
-                Add Team
-              </button>
-            </div>
-          </div>
-
-          {/* Helper Text */}
-          <p className="ml-[192px] max-w-[900px] text-[20px] text-[#567F55] leading-[40px] font-[Roboto] mt-2">
-            Teams help you run rituals and track progress. Add as many as you
-            like. Each team must have a unique name so they’re easy to find and
-            track.
-          </p>
-
-          {/* List of Teams */}
-          <div className="flex items-center gap-12 mt-4">
-            <label className="w-[150px] text-[#567F55] text-[20px] font-[Roboto] leading-tight">
-              List of teams created
-            </label>
-
-            <div className="relative flex-1">
-              <select
-                className="appearance-none
+                {/* Plan Input */}
+                <div className="relative flex-1">
+                  <select
+                    className="appearance-none
             bg-[#ffffff] rounded-[12px]
             px-6
           pr-10
@@ -202,17 +122,228 @@ function OrganisationSetting() {
           w-full
             text-[18px] text-[#4E6E5D]
             outline-none font-[Roboto]"
-              >
-                <option>it can only show the Champion’s teams (max 2)</option>
-              </select>
+                  >
+                    <option>Exploration </option>
+                    <option>Starter </option>
 
-              {/* Custom Dropdown Arrow */}
-              <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2">
-                <div className="w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[22px] border-t-[#0F4F58]" />
+                    <option>Growth </option>
+
+                    <option>Scale </option>
+
+                    <option>Organisation </option>
+                    <option>Enterprise </option>
+                  </select>
+
+                  {/* Custom Dropdown Arrow */}
+                  <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2">
+                    <div className="w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[22px] border-t-[#0F4F58]" />
+                  </div>
+                </div>
+
+                {/* Learn More Button */}
+                <button
+                  className="bg-[#ffffff] px-6 h-[41px] rounded-[12px]
+      text-[#567F55] text-[17px] font-[Roboto] whitespace-nowrap"
+                  onClick={() => router.push("/plans")}
+                >
+                  Learn More
+                </button>
               </div>
             </div>
           </div>
         </div>
+        {/* Manage Team Heading */}
+        <div className="mt-10">
+          <h1 className="text-[42px] font-[RocaTwo] text-[#1D5C63]">
+            Manage Team
+          </h1>
+
+          <p className="text-[20px] text-[#1D5C63] mt-4 max-w-[900px] font-[Roboto]">
+            Create your teams so people can be invited into the right place.
+            Teams are where rituals happen, progress is tracked, and people are
+            grouped for shared activity.
+          </p>
+        </div>
+
+        {/* What would you like to do */}
+        <div className="bg-[#F6E3BB] rounded-2xl px-8 py-6 mt-8 flex items-center gap-8">
+          {/* Label */}
+          <p className="text-[#567F55] text-[20px] font-[Roboto] w-[260px] leading-snug">
+            What would you like to do?
+          </p>
+
+          {/* Dropdown */}
+          <div className="relative flex-1">
+            <select
+              value={teamAction}
+              onChange={(e) => setTeamAction(e.target.value)}
+              className="appearance-none bg-[#ffffff] rounded-[12px]
+      px-6 pr-10 h-[41px] w-full text-[18px]
+      text-[#4E6E5D] outline-none font-[Roboto]"
+            >
+              <option value="create">Create Team</option>
+              <option value="edit">Edit Team</option>
+              <option value="delete">Delete Team</option>
+            </select>
+
+            {/* Custom Arrow */}
+            <div className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2">
+              <div className="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-t-[18px] border-t-[#0F4F58]" />
+            </div>
+          </div>
+        </div>
+        {teamAction === "create" && (
+          <div className="bg-[#F6E3BB] rounded-3xl p-10 mt-10">
+            <div className="flex items-center gap-6 mt-4">
+              <h2 className="text-[32px] font-[RocaTwo] text-[#567F55]">
+                Create Teams
+              </h2>
+
+              {/* Info Icon */}
+              <div className="relative group">
+                {/* Icon */}
+                <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center cursor-pointer">
+                  <span className="text-[#1D5C63] text-[30px] font-semibold">
+                    i
+                  </span>
+                </div>
+
+                {/* Tooltip */}
+                <div className="absolute top-[50px] left-0 w-[420px] bg-white text-[#567F55] text-[16px] font-[Roboto] p-5 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50 leading-relaxed">
+                  <p className="mb-3">
+                    Teams help you organise people into smaller working groups
+                    so they can take part in rituals, track progress, and build
+                    shared habits over time.
+                  </p>
+
+                  <p className="mb-3">
+                    Create your teams here before inviting users. Each team must
+                    have a unique name.
+                  </p>
+
+                  <p>Organisations can have up to 30 teams.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Name Row */}
+            <div className="flex items-start gap-12 mt-4">
+              <label className="text-[#567F55] text-[20px] font-[Roboto]">
+                Name
+              </label>
+
+              <div className="flex items-center gap-8 flex-1">
+                <input
+                  type="text"
+                  className="flex-1 bg-[#ffffff] rounded-[12px]
+             px-6
+          pr-10
+          h-[41px]
+          w-[416px] text-[18px] text-[#0F4F58] outline-none font-[Roboto] ml-[105px]"
+                />
+
+                <button
+                  className="px-6
+          pr-10
+          h-[41px]
+          w-[200px] bg-[#ffffff] rounded-[12px]
+            text-[18px] text-[#567F55] font-[Roboto]"
+                >
+                  Add Team
+                </button>
+              </div>
+            </div>
+
+            {/* Helper Text */}
+            <p className="ml-[192px] max-w-[900px] text-[20px] text-[#567F55] leading-[40px] font-[Roboto] mt-2">
+              Teams help you run rituals and track progress. Add as many as you
+              like. Each team must have a unique name so they’re easy to find
+              and track.
+            </p>
+
+            {/* List of Teams */}
+            <div className="flex items-center gap-12 mt-4">
+              <label className="w-[150px] text-[#567F55] text-[20px] font-[Roboto] leading-tight">
+                List of teams created
+              </label>
+
+              <div className="relative flex-1">
+                <select
+                  className="appearance-none
+            bg-[#ffffff] rounded-[12px]
+            px-6
+          pr-10
+          h-[41px]
+          w-full
+            text-[18px] text-[#4E6E5D]
+            outline-none font-[Roboto]"
+                >
+                  <option>it can only show the Champion’s teams (max 2)</option>
+                </select>
+
+                {/* Custom Dropdown Arrow */}
+                <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2">
+                  <div className="w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[22px] border-t-[#0F4F58]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {teamAction === "edit" && (
+          <div className="bg-[#F6E3BB] rounded-3xl p-10 mt-10">
+            <h2 className="text-[32px] font-[RocaTwo] text-[#567F55]">
+              Edit Team
+            </h2>
+
+            {/* List of Teams */}
+            <div className="flex items-center gap-12 mt-4">
+              <label className="w-[150px] text-[#567F55] text-[20px] font-[Roboto] leading-tight">
+                List of all Teams{" "}
+              </label>
+
+              <div className="relative flex-1">
+                <select
+                  className="appearance-none
+            bg-[#ffffff] rounded-[12px]
+            px-6
+          pr-10
+          h-[41px]
+          w-full
+            text-[18px] text-[#4E6E5D]
+            outline-none font-[Roboto]"
+                >
+                  <option>it can only show the Champion’s teams (max 2)</option>
+                </select>
+
+                {/* Custom Dropdown Arrow */}
+                <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2">
+                  <div className="w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[22px] border-t-[#0F4F58]" />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-start mt-4">
+              <label className="text-[#567F55] text-[20px] font-[Roboto]">
+                Edit Team Name
+              </label>
+
+              <div className="flex items-center flex-1">
+                <input
+                  type="text"
+                  className="flex-1 bg-[#ffffff] rounded-[12px]
+           
+          h-[41px]
+          w-[416px] text-[18px] text-[#0F4F58] outline-none font-[Roboto] ml-[56px]"
+                />
+              </div>
+            </div>
+            <p className="ml-[192px] text-[20px] text-[#567F55] leading-[40px] font-[Roboto] mt-2">
+              Teams help you run rituals and track progress. Add as many as you
+              like. Each team must have a unique name so they’re easy to find
+              and track.
+            </p>
+          </div>
+        )}
         {/* Invite Members */}
         <div className="bg-[#F6E3BB] rounded-3xl p-10 mt-10">
           <div className="flex justify-between items-start ">
@@ -303,11 +434,38 @@ function OrganisationSetting() {
                 </div>
 
                 {/* Info Icon */}
-                <div className="mt-6">
-                  <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center">
+                <div className="mt-6 relative group">
+                  {/* Icon */}
+                  <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center cursor-pointer">
                     <span className="text-[#1D5C63] text-[28px] font-semibold">
                       i
                     </span>
+                  </div>
+
+                  {/* Tooltip */}
+                  <div className="absolute left-[50px] top-0 w-[360px] bg-white text-[#567F55] text-[16px] font-[Roboto] p-4 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
+                    <p className="mb-2">
+                      Each person needs a role to define how they take part in
+                      Hi Humaniser!™.
+                    </p>
+
+                    <p>
+                      <strong>Member:</strong> takes part in pathways, rituals,
+                      and personal progress
+                    </p>
+                    <p>
+                      <strong>Champion:</strong> leads a team, selects focus
+                      areas, and supports team rituals
+                    </p>
+                    <p>
+                      <strong>Partner:</strong> sets up the organisation,
+                      manages teams and users, and supports progress across the
+                      system
+                    </p>
+
+                    <p className="mt-2">
+                      You can change roles later if needed.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -336,13 +494,6 @@ function OrganisationSetting() {
                 <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2">
                   <div className="w-0 h-0 border-l-[18px] border-l-transparent border-r-[18px] border-r-transparent border-t-[22px] border-t-[#0F4F58]" />
                 </div>
-              </div>
-
-              {/* Info Icon */}
-              <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center">
-                <span className="text-[#1D5C63] text-[30px] font-semibold">
-                  i
-                </span>
               </div>
             </div>
           </div>
