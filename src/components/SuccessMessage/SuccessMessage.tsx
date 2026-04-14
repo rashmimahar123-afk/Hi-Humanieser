@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
 type ImageConfig = {
   src: any;
@@ -15,8 +14,8 @@ type SUCCESS_MESSAGE_PROPS = {
   text: string;
   leftImg?: ImageConfig;
   rightImg?: ImageConfig;
-  fontSize?: string; // e.g. "text-[30px]"
-  maxWidth?: string; // e.g. "max-w-[520px]"
+  fontSize?: string;
+  maxWidth?: string;
   textClassName?: string;
   wrapperClassName?: string;
   fontColor?: string;
@@ -46,23 +45,37 @@ const SuccessMessage = ({
   top,
   rotate,
 }: SUCCESS_MESSAGE_PROPS) => {
+  const leftImgWidth = leftImg?.width || 40;
+  const leftImgHeight = leftImg?.height || 40;
+  const rightImgWidth = rightImg?.width || 40;
+  const rightImgHeight = rightImg?.height || 40;
+
   return (
     <div
-      className={`flex items-center justify-center gap-2 ${wrapperClassName}`}
+      className={`flex items-center justify-center ${wrapperClassName}`}
+      style={{ overflow: "visible" }}
     >
-      <div className="relative inline-block">
-        {/* Left Image */}
+      <div
+        className="relative flex items-center justify-center"
+        // style={{
+        //   paddingLeft: `${leftImgWidth + 12}px`,
+        //   paddingRight: `${rightImgWidth + 12}px`,
+        //   overflow: "visible",
+        // }}
+      >
+        {/* Left Image — anchored to top of text with slight upward offset */}
         {leftImg && (
           <Image
             src={leftImg.src}
             alt={leftImg.alt || "left decoration"}
-            width={leftImg.width || 40}
-            height={leftImg.height || 40}
+            width={leftImgWidth}
+            height={leftImgHeight}
             className={`shrink-0 ${leftImg.className || ""} absolute`}
             style={{
-              left: `-${leftImg?.width || 40}px`, // 5px gap from text start
-              bottom: bottom,
-              top: top,
+              left: `-${leftImgWidth}px`,
+              top: top ?? "-8px",
+              bottom: bottom ?? undefined,
+              transform: undefined,
             }}
           />
         )}
@@ -70,34 +83,34 @@ const SuccessMessage = ({
         {/* Text */}
         <h2
           className={`
-          ${fontSize}
-          
-          text-center
-          font-bold
-          leading-snug
-          ${textClassName}
-        `}
+            text-center
+            font-bold
+            leading-snug
+            ${textClassName}
+          `}
           style={{
             fontFamily: "League Spartan",
             color: fontColor,
+            fontSize: "clamp(16px, 4vw, 30px)",
             maxWidth: maxWidth,
           }}
         >
           {text}
         </h2>
 
-        {/* Right Image */}
+        {/* Right Image — anchored to top of text with slight upward offset */}
         {rightImg && (
           <Image
             src={rightImg.src}
             alt={rightImg.alt || "right decoration"}
-            width={rightImg.width || 40}
-            height={rightImg.height || 40}
+            width={rightImgWidth}
+            height={rightImgHeight}
             className={`shrink-0 ${rightImg.className || ""} absolute`}
             style={{
-              right: `-${(rightImg?.width || 40) - 8}px`, // 5px gap from text end
-              bottom: rightImgBottom,
-              top: rightImgTop,
+              right: `-${rightImgWidth}px`,
+              top: rightImgTop ?? "-8px",
+              bottom: rightImgBottom ?? undefined,
+              transform: undefined,
               rotate: rotate,
             }}
           />

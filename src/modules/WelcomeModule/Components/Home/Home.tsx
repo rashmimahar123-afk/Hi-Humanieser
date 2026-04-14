@@ -19,6 +19,7 @@ type DASHBOARD_BOX = {
   imageSrc: StaticImageData;
   badge?: string;
 };
+
 function Home() {
   const [enter, setEnter] = useState(false);
   const { user } = useAuthValue();
@@ -97,15 +98,17 @@ function Home() {
     if (id === 5) router.push("/reflection-walls");
     if (id === 6) router.push("/resource-inspiration");
   };
+
   const isLoading = isMessageLoading || isPathwayLoading;
+
   return (
     <>
       {isLoading && <Loader />}
       <div
-        className={`min-h-screen bg-[#4BA6A6] px-8 py-6
-  ${styles.page}
-  ${styles.enterRight}
-  ${enter ? styles.enterActive : ""}`}
+        className={`min-h-screen bg-[#4BA6A6] px-4 md:px-8 py-4 md:py-6
+          ${styles.page}
+          ${styles.enterRight}
+          ${enter ? styles.enterActive : ""}`}
       >
         <UserProfileHeader
           greetingColor="#0F4F58"
@@ -115,16 +118,17 @@ function Home() {
 
         <SuccessMessage
           text={randomMessage || ""}
-          fontSize="text-[30px]"
+          fontSize="text-lg md:text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
           fontColor="#0F4F58"
           rotate="-35deg"
-          bottom="3px"
-          rightImgBottom="3px"
+          top="-22px"
+          rightImgTop="-27px"
+          wrapperClassName="mt-8"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 px-4 md:px-8 py-6 md:py-8">
           {boxes.map((box) => (
             <div
               key={box.id}
@@ -138,7 +142,7 @@ function Home() {
                 className="rounded-3xl overflow-hidden"
                 style={{
                   backgroundColor: box.bgColor,
-                  height: "220px",
+                  height: "clamp(140px, 40vw, 220px)",
                 }}
               >
                 <div className="relative w-full h-full">
@@ -147,7 +151,7 @@ function Home() {
                     src={box.imageSrc}
                     alt={box.title}
                     fill
-                    className="object-contain "
+                    className="object-contain"
                     style={{
                       transform: "scaleX(1.10)",
                     }}
@@ -159,7 +163,7 @@ function Home() {
                       <span
                         style={{
                           fontFamily: "RocaTwo-Bold",
-                          fontSize: "30px", // thoda reduce for better wrapping
+                          fontSize: "clamp(18px, 4vw, 30px)",
                           lineHeight: "110%",
                           color: "#0F4F58",
                           textTransform: "uppercase",
@@ -175,12 +179,12 @@ function Home() {
               </div>
 
               {/* TEXT SECTION */}
-              <div className="mt-4 flex justify-center text-center">
+              <div className="mt-3 md:mt-4 flex justify-center text-center">
                 <p
-                  className="mt-1 font-bold "
+                  className="mt-1 font-bold"
                   style={{
                     fontFamily: "Roboto",
-                    fontSize: "24px",
+                    fontSize: "clamp(14px, 3vw, 24px)",
                     color: "#0F4F58",
                   }}
                 >

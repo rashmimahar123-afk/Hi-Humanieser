@@ -9,15 +9,37 @@ import AddMemberModal, {
   openAddMemberModal,
 } from "../AddMemberModal/AddMemberModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { useCreateTeamMutation } from "../../Hooks/useCreateTeamMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 function OrganisationSetting() {
   const router = useRouter();
   const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
   const [teamAction, setTeamAction] = useState("create");
+  const [teamName, setTeamName] = useState("");
+
   useEffect(() => {
     setEnter(true);
   }, []);
+
+  const { mutate: createTeam, isPending } = useCreateTeamMutation();
+
+  const handleCreateTeam = () => {
+    if (!teamName.trim()) {
+      SnackbarHandler.errorToast("Please enter team name");
+      return;
+    }
+
+    createTeam(
+      { team_name: teamName, champion_id: "" },
+      {
+        onSuccess: () => {
+          setTeamName(""); // reset input
+        },
+      },
+    );
+  };
   return (
     <>
       <div
@@ -200,28 +222,28 @@ function OrganisationSetting() {
               </h2>
 
               {/* Info Icon */}
-              <div className="relative group">
-                {/* Icon */}
-                <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center cursor-pointer">
+              <div className="relative inline-block">
+                {/* Icon Wrapper = group */}
+                <div className="group w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center cursor-pointer">
                   <span className="text-[#1D5C63] text-[30px] font-semibold">
                     i
                   </span>
-                </div>
 
-                {/* Tooltip */}
-                <div className="absolute top-[50px] left-0 w-[420px] bg-white text-[#567F55] text-[16px] font-[Roboto] p-5 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50 leading-relaxed">
-                  <p className="mb-3">
-                    Teams help you organise people into smaller working groups
-                    so they can take part in rituals, track progress, and build
-                    shared habits over time.
-                  </p>
+                  {/* Tooltip */}
+                  <div className="absolute top-[50px] left-0 w-[420px] bg-white text-[#567F55] text-[16px] font-[Roboto] p-5 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50 leading-relaxed pointer-events-none">
+                    <p className="mb-3">
+                      Teams help you organise people into smaller working groups
+                      so they can take part in rituals, track progress, and
+                      build shared habits over time.
+                    </p>
 
-                  <p className="mb-3">
-                    Create your teams here before inviting users. Each team must
-                    have a unique name.
-                  </p>
+                    <p className="mb-3">
+                      Create your teams here before inviting users. Each team
+                      must have a unique name.
+                    </p>
 
-                  <p>Organisations can have up to 30 teams.</p>
+                    <p>Organisations can have up to 30 teams.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -235,21 +257,20 @@ function OrganisationSetting() {
               <div className="flex items-center gap-8 flex-1">
                 <input
                   type="text"
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
                   className="flex-1 bg-[#ffffff] rounded-[12px]
-             px-6
-          pr-10
-          h-[41px]
-          w-[416px] text-[18px] text-[#0F4F58] outline-none font-[Roboto] ml-[105px]"
+  px-6 pr-10 h-[41px] w-[416px]
+  text-[18px] text-[#0F4F58] outline-none font-[Roboto] ml-[105px]"
                 />
 
                 <button
-                  className="px-6
-          pr-10
-          h-[41px]
-          w-[200px] bg-[#ffffff] rounded-[12px]
-            text-[18px] text-[#567F55] font-[Roboto]"
+                  onClick={handleCreateTeam}
+                  disabled={isPending}
+                  className="px-6 pr-10 h-[41px] w-[200px] bg-[#ffffff] rounded-[12px]
+  text-[18px] text-[#567F55] font-[Roboto]"
                 >
-                  Add Team
+                  {isPending ? "Adding..." : "Add Team"}
                 </button>
               </div>
             </div>
@@ -434,38 +455,38 @@ function OrganisationSetting() {
                 </div>
 
                 {/* Info Icon */}
-                <div className="mt-6 relative group">
-                  {/* Icon */}
-                  <div className="w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center cursor-pointer">
+                <div className="mt-6 relative inline-block">
+                  {/* Icon Wrapper = group */}
+                  <div className="group w-[40px] h-[40px] rounded-full border-2 border-[#1D5C63] flex items-center justify-center cursor-pointer">
                     <span className="text-[#1D5C63] text-[28px] font-semibold">
                       i
                     </span>
-                  </div>
 
-                  {/* Tooltip */}
-                  <div className="absolute left-[50px] top-0 w-[360px] bg-white text-[#567F55] text-[16px] font-[Roboto] p-4 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
-                    <p className="mb-2">
-                      Each person needs a role to define how they take part in
-                      Hi Humaniser!™.
-                    </p>
+                    {/* Tooltip */}
+                    <div className="absolute left-[50px] top-0 w-[360px] bg-white text-[#567F55] text-[16px] font-[Roboto] p-4 rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50 pointer-events-none">
+                      <p className="mb-2">
+                        Each person needs a role to define how they take part in
+                        Hi Humaniser!™.
+                      </p>
 
-                    <p>
-                      <strong>Member:</strong> takes part in pathways, rituals,
-                      and personal progress
-                    </p>
-                    <p>
-                      <strong>Champion:</strong> leads a team, selects focus
-                      areas, and supports team rituals
-                    </p>
-                    <p>
-                      <strong>Partner:</strong> sets up the organisation,
-                      manages teams and users, and supports progress across the
-                      system
-                    </p>
+                      <p>
+                        <strong>Member:</strong> takes part in pathways,
+                        rituals, and personal progress
+                      </p>
+                      <p>
+                        <strong>Champion:</strong> leads a team, selects focus
+                        areas, and supports team rituals
+                      </p>
+                      <p>
+                        <strong>Partner:</strong> sets up the organisation,
+                        manages teams and users, and supports progress across
+                        the system
+                      </p>
 
-                    <p className="mt-2">
-                      You can change roles later if needed.
-                    </p>
+                      <p className="mt-2">
+                        You can change roles later if needed.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

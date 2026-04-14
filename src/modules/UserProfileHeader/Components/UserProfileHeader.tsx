@@ -14,49 +14,67 @@ type USER_PROFILE_HEADER_PROPS = {
 
 function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
   const { greetingColor, nameColor, hideUserProfile, userInfo } = props;
-
   const [openDropdown, setOpenDropdown] = useState(false);
   const router = useRouter();
 
   return (
     <>
-      {/* Overlay content */}
-      <div className="flex justify-between">
-        {" "}
+      <div className="flex justify-between items-start gap-2">
         {/* Left */}
-        <div onClick={() => router.push("/home")} className="cursor-pointer">
+        <div
+          onClick={() => router.push("/home")}
+          className="cursor-pointer min-w-0 flex-1"
+        >
           <div
             style={{
               fontFamily: "Aptos",
               fontSize: "22px",
               color: greetingColor,
+              whiteSpace: "nowrap",
             }}
           >
-            Hi Humaniser! <span className="align-super text-[0.7em]">™</span>
+            Hi Humaniser!{" "}
+            <span
+              style={{
+                fontSize: "0.55em",
+                verticalAlign: "super",
+                lineHeight: 0,
+              }}
+            >
+              ™
+            </span>
           </div>
-
           <h1
-            className="mt-4 text-[56px]  font-bold leading-[40%]"
-            style={{ fontFamily: "RocaTwo-Bold", color: nameColor }}
+            className="mt-2 font-bold leading-none"
+            style={{
+              fontFamily: "RocaTwo-Bold",
+              color: nameColor,
+              fontSize: "clamp(32px, 8vw, 56px)",
+            }}
           >
             Hi Maria!
           </h1>
         </div>
+
         {/* Right profile */}
         {!hideUserProfile && (
           <div
-            className="flex items-start gap-3 cursor-pointer"
+            className="flex items-start gap-2 cursor-pointer flex-shrink-0"
             onClick={() => setOpenDropdown(!openDropdown)}
           >
             <div
-              className={"text-right font-semibold mt-[28px] "}
-              style={{ fontFamily: "Aptos", color: nameColor }}
+              className="text-right font-semibold mt-[28px]"
+              style={{
+                fontFamily: "Aptos",
+                color: nameColor,
+                fontSize: "clamp(12px, 3vw, 16px)",
+              }}
             >
               Maria
               <br />
               Palacios
             </div>
-            <div className="relative w-[120px] h-[120px]">
+            <div className="relative w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] flex-shrink-0">
               {/* Green shape */}
               <Image
                 src={images.greenRec}
@@ -64,10 +82,9 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
                 fill
                 className="object-contain"
               />
-
               {/* Circular profile image */}
-              <div className="absolute inset-0 flex items-center justify-center mr-[11px]">
-                <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-white">
+              <div className="absolute inset-0 flex items-center justify-center mr-[8px] sm:mr-[11px]">
+                <div className="w-[52px] h-[52px] sm:w-[80px] sm:h-[80px] rounded-full overflow-hidden bg-white">
                   <Image
                     src={images.dummyUser}
                     alt="Profile Picture"
@@ -85,4 +102,5 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
     </>
   );
 }
+
 export default UserProfileHeader;
