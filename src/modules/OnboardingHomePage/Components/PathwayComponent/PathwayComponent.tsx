@@ -4,52 +4,113 @@ import images from "@/src/assets/images";
 
 function PathwayComponent() {
   return (
-    <div className="relative w-full h-[240px] mt-20">
-      <Image
-        src={images.pathImg}
-        alt="path-img"
-        fill
-        className="object-contain scale-85"
-        priority
-      />
+    <>
+      {/* ── Desktop / tablet pathway strip (md+) ── */}
+      <div className="relative w-full h-[180px] sm:h-[210px] md:h-[240px] lg:h-[240px] mt-10 md:mt-20 hidden sm:block">
+        <Image
+          src={images.pathImg}
+          alt="path-img"
+          fill
+          className="object-contain scale-85"
+          priority
+        />
 
-      {/* LEFT TEXT */}
-      <div
-        className="absolute left-[18%] top-[5%] z-10 text-[#0F4F58] text-[34px] text-center "
-        style={{ fontFamily: "Roboto" }}
-      >
-        {/* Arrow icon */}
-        <div className="absolute top-[-12px] left-[-36px]">
-          <Image src={images.arrowImg} alt="arrow" width={30} height={30} />
+        {/* LEFT TEXT — active */}
+        <div
+          className="absolute z-10 text-[#0F4F58] text-center"
+          style={{
+            fontFamily: "Roboto",
+            left: "clamp(12%, 15%, 18%)",
+            top: "clamp(2%, 5%, 8%)",
+            fontSize: "clamp(16px, 3vw, 34px)",
+          }}
+        >
+          <div className="absolute top-[-12px] left-[-36px]">
+            <Image src={images.arrowImg} alt="arrow" width={30} height={30} />
+          </div>
+          Find Your Way
+          <br />
+          Around
+          <div className="absolute bottom-[-20px] right-[-5px]">
+            <Image
+              src={images.leftArrowImg}
+              alt="arrow"
+              width={45}
+              height={45}
+            />
+          </div>
         </div>
-        Find Your Way
-        <br />
-        Around
-        <div className="absolute bottom-[-20px] right-[-5px]">
-          <Image src={images.leftArrowImg} alt="arrow" width={45} height={45} />
+
+        {/* CENTER TEXT */}
+        <div
+          className="absolute z-10 text-[#9E9E9E] text-center"
+          style={{
+            fontFamily: "Roboto",
+            left: "50%",
+            top: "clamp(4%, 7%, 10%)",
+            transform: "translateX(-50%)",
+            fontSize: "clamp(16px, 3vw, 34px)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Choose Your
+          <br />
+          Starting Point
+        </div>
+
+        {/* RIGHT TEXT */}
+        <div
+          className="absolute z-10 text-[#9E9E9E] text-center"
+          style={{
+            fontFamily: "Roboto",
+            right: "clamp(15%, 18%, 23%)",
+            top: "clamp(8%, 11%, 13%)",
+            fontSize: "clamp(16px, 3vw, 34px)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Get Stuck
+          <br />
+          In!
         </div>
       </div>
 
-      {/* CENTER TEXT */}
-      <div
-        className="absolute left-[47%] top-[7%] -translate-x-1/2 z-10 text-[#9E9E9E] text-[34px] text-center"
-        style={{ fontFamily: "Roboto" }}
-      >
-        Choose Your
-        <br />
-        Starting Point
+      {/* ── Mobile step indicator (< sm) ── */}
+      <div className="sm:hidden flex items-center justify-center gap-3 mt-8 px-4">
+        <div className="flex flex-col items-center">
+          <div className="w-9 h-9 rounded-full bg-[#0F4F58] text-white flex items-center justify-center font-bold text-sm">
+            1
+          </div>
+          <span className="mt-1 text-[11px] text-[#0F4F58] font-semibold text-center leading-tight">
+            Find Your
+            <br />
+            Way Around
+          </span>
+        </div>
+        <div className="flex-1 h-[2px] bg-[#9E9E9E] rounded" />
+        <div className="flex flex-col items-center">
+          <div className="w-9 h-9 rounded-full bg-[#9E9E9E] text-white flex items-center justify-center font-bold text-sm">
+            2
+          </div>
+          <span className="mt-1 text-[11px] text-[#9E9E9E] text-center leading-tight">
+            Choose Your
+            <br />
+            Starting Point
+          </span>
+        </div>
+        <div className="flex-1 h-[2px] bg-[#9E9E9E] rounded" />
+        <div className="flex flex-col items-center">
+          <div className="w-9 h-9 rounded-full bg-[#9E9E9E] text-white flex items-center justify-center font-bold text-sm">
+            3
+          </div>
+          <span className="mt-1 text-[11px] text-[#9E9E9E] text-center leading-tight">
+            Get Stuck
+            <br />
+            In!
+          </span>
+        </div>
       </div>
-
-      {/* RIGHT TEXT */}
-      <div
-        className="absolute right-[23%] top-[13%] z-10 text-[#9E9E9E] text-[34px] text-center"
-        style={{ fontFamily: "Roboto" }}
-      >
-        Get Stuck
-        <br />
-        In!
-      </div>
-    </div>
+    </>
   );
 }
 

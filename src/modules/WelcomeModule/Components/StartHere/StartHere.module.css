@@ -1,72 +1,57 @@
-.chatbotWrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 40px;
-  padding-right: 60px;
-}
 
-.chatbotInner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
-/* BOT IMAGE */
-.chatbotIcon img {
-  width: 48px;
-  height: auto;
-}
-
-/* TEXT — NO WHITE BG */
-.chatbotText {
-  font-size: 14px;
-  line-height: 1.4;
-  color: #000000;
-  max-width: 223px;
-}
-
-.chatbotText strong {
-  font-weight: 600;
-  font-family: 'Aptos';
-}
-.footerFrame{
-        margin-top: 50px;
-    align-items: center;
-    font-family: "League Spartan";
-    
-}
-.footerFrame p{
-    font-family: "RocaTwo-Bl";
-    font-size: 28px;
-    width: 840px;
-}
-.leftArrow{
-        position: absolute;
-    left: 19%;
-    top: -13%;
-
-}
-.rightArrow{
-        position: absolute;
-    right: 19%;
-    top: -13%;
-
-}
-
-.page {
+/* Make SuccessMessage work on all devices with desktop layout */
+.footerFrame {
   position: relative;
-  transition: transform 0.6s ease, opacity 0.6s ease;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 40px 0;
 }
 
-.enterRight {
-  transform: translateX(100%);
+/* Responsive adjustments for the SuccessMessage on all devices */
+@media (max-width: 1024px) {
+  .footerFrame :global(.successMessageContainer) {
+    max-width: 90% !important;
+    margin: 0 auto !important;
+  }
+  
+  .footerFrame :global(.successMessageText) {
+    font-size: 16px !important;
+    padding: 0 20px !important;
+  }
 }
 
-.enterLeft {
-  transform: translateX(-100%);
+@media (max-width: 768px) {
+  .footerFrame :global(.successMessageContainer) {
+    max-width: 95% !important;
+  }
+  
+  .footerFrame :global(.successMessageText) {
+    font-size: 14px !important;
+    padding: 0 15px !important;
+  }
 }
 
-.enterActive {
-  transform: translateX(0);
+@media (max-width: 640px) {
+  .footerFrame {
+    margin: 30px 0;
+  }
+  
+  .footerFrame :global(.successMessageContainer) {
+    max-width: 98% !important;
+  }
+  
+  .footerFrame :global(.successMessageText) {
+    font-size: 12px !important;
+    padding: 0 10px !important;
+    line-height: 1.4 !important;
+  }
 }
 
+@media (max-width: 480px) {
+  .footerFrame :global(.successMessageText) {
+    font-size: 11px !important;
+    padding: 0 8px !important;
+  }
+}

@@ -32,7 +32,7 @@ function OrganisationSetting() {
     }
 
     createTeam(
-      { team_name: teamName, champion_id: "" },
+      { team_name: teamName },
       {
         onSuccess: () => {
           setTeamName(""); // reset input

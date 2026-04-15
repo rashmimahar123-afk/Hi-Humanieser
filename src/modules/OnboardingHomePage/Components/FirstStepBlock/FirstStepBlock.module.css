@@ -26,17 +26,28 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
+  justify-items: center;
+  align-items: start;
 }
 
 .card {
   position: relative;
-  width: 330px;
-  height: 330px;
+  width: 100%;
+  max-width: 330px;
+  height: auto;
+  aspect-ratio: 1 / 0.85; /* Reduced from 1/1 to 1/0.85 (85% of original height) */
   border-radius: 20px;
   overflow: hidden;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* image layer */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
 .imageWrapper {
   position: absolute;
   inset: 0;
@@ -46,23 +57,22 @@
 
 .cardImage {
   object-fit: contain;
-  opacity: 0.35; /* text readable */
+  opacity: 0.35;
 }
 
-/* text layer – MUST be above image */
 .cardContent {
   position: relative;
   z-index: 2;
- text-align: center;        /* ✅ center text */
-  display: flex; 
+  text-align: center;
+  display: flex;
   justify-content: center;
   flex-direction: column;
-    padding: 20px;
+  padding: 20px;
   color: #0F4F58;
   font-family: RocaTwo-Bold;
-  pointer-events: none; /* optional */
+  pointer-events: none;
+  height: 100%;
 }
-
 
 .card::before {
   content: "";
@@ -73,32 +83,15 @@
   opacity: 0.6;
   z-index: -1;
 }
+
 .centerRow {
-  grid-column: 1 / -1;       /* ✅ full width row */
+  grid-column: 1 / -1;
   display: flex;
-  justify-content: center;   /* ✅ center cards */
+  justify-content: center;
   gap: 32px;
+  flex-wrap: wrap;
 }
 
-.custom-shape {
-  width: 260px;
-  height: 360px;
-  background-color: #9ecfd0;
-  border-radius: 26px;
-
-  clip-path: polygon(
-    8% 0%,     /* top-left slant */
-    90% 0%,    /* top-right */
-    100% 10%,  /* right top curve feel */
-    100% 92%,  /* right bottom */
-    92% 100%,  /* bottom-right curve */
-    8% 100%,   /* bottom-left */
-    0% 92%,    /* left bottom curve */
-    0% 12%     /* left top */
-  );
-}
-
-/* COLOR VARIANTS */
 .blue {
   background: #C2E2E2;
 }
@@ -117,72 +110,624 @@
   background: #FBE1DE;
 }
 .pink::before {
-  background:#FBE1DE;
+  background: #FBE1DE;
 }
 
 .card h3 {
-  font-size: 25px;
-  margin-bottom: 14px;
+  font-size: 22px; /* Reduced from 25px */
+  margin-bottom: 10px; /* Reduced from 14px */
   font-weight: bold;
 }
 
 .card p {
-  font-size: 20px;
+  font-size: 16px; /* Reduced from 20px */
   font-family: "Roboto";
-  font-weight: "400"
+  font-weight: 400;
+  line-height: 1.3; /* Reduced from 1.4 */
+}
+
+/* ============================================ */
+/* FOOTER STYLES */
+/* ============================================ */
+
+/* Desktop Only - visible only on desktop */
+.desktopOnly {
+  display: block;
+}
+
+/* Mobile/Tablet Footer - hidden on desktop by default */
+.mobileFooter {
+  display: none;
 }
 
 .footerWrapper {
-  position: relative;
-  margin-bottom: 150px;
   margin-top: 30px;
-
+  margin-bottom: 30px;
 }
 
-.footer {
-  position: absolute;
-  left: 50%;
-  text-align: center;
-  color: #567F55;
-  font-size: 21px;
-  font-family: "RocaTwo-Bl";
-  font-weight: bold;
-  margin-top: 19px;
-}
+/* ============================================ */
+/* TABLET LANDSCAPE (769px to 1024px)          */
+/* ============================================ */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .wrapper {
+    padding: 25px;
+    margin: 15px 20px;
+    max-width: 95%;
+  }
 
-/* LEFT arrow (UPPER LEFT of text) */
-.footerLeftArrowIcon {
-      position: absolute;
-  top: -4px;
-  right: -2%;
-  z-index: 1;
-      transform: rotate(-37deg);
- 
-}
+  .title {
+    font-size: 24px;
+    text-align: center;
+  }
 
-/* RIGHT arrow (UPPER RIGHT of text) */
-.footerArrowIcon {
-  position: absolute;
-  top: 10%;      
-  left: 49%;     
-  z-index: 1;
+  .subtitle {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 35px;
+    padding: 0 20px;
+  }
 
-}
-
-
-/* ✅ Responsive */
-@media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    max-width: 100%;
+    aspect-ratio: 1 / 0.8; /* Even shorter on tablet */
+  }
+
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .cardContent {
+    padding: 12px;
+  }
+
+  .centerRow {
+    gap: 20px;
+  }
+
+  .centerRow .card {
+    max-width: calc(50% - 10px);
+  }
+
+  /* Hide desktop success message on tablet */
+  .desktopOnly {
+    display: none !important;
+  }
+
+  /* Show mobile/tablet footer */
+  .mobileFooter {
+    display: block;
+  }
+
+  .footerWrapper {
+    margin-bottom: 60px;
+    margin-top: 30px;
+    position: relative;
+  }
+
+  .topArrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 0 15px;
+  }
+
+  .mobileLeftArrow {
+    transform: none;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .mobileRightArrow {
+    transform: rotate(-30deg);
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mobileLeftArrow img,
+  .mobileRightArrow img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  /* Same text styles as desktop */
+  .mobileFooterText {
+    text-align: center;
+    color: #567F55;
+    font-size: 21px;
+    font-family: "RocaTwo-Bl";
+    font-weight: bold;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 }
 
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
+/* ============================================ */
+/* TABLET PORTRAIT (641px to 768px)            */
+/* Keep 2 columns with smaller cards           */
+/* ============================================ */
+@media (min-width: 641px) and (max-width: 768px) {
+  .wrapper {
+    padding: 20px;
+    margin: 15px;
   }
 
+  .title {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 15px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px;
+  }
+  
+  .centerRow {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .centerRow .card {
+    max-width: calc(50% - 7.5px) !important;
+    width: calc(50% - 7.5px);
+  }
+  
+  .card {
+    aspect-ratio: 1 / 0.75; /* Much shorter on tablet portrait */
+  }
+  
+  .card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  
+  .card p {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+  
+  .cardContent {
+    padding: 8px;
+  }
+  
+  /* Hide desktop success message on tablet */
+  .desktopOnly {
+    display: none !important;
+  }
+
+  /* Show mobile/tablet footer */
+  .mobileFooter {
+    display: block;
+  }
+  
+  .topArrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+  
+  .mobileLeftArrow {
+    transform: none;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .mobileRightArrow {
+    transform: rotate(-30deg);
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .mobileLeftArrow img,
+  .mobileRightArrow img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  /* Same text styles as desktop */
+  .mobileFooterText {
+    text-align: center;
+    color: #567F55;
+    font-size: 21px;
+    font-family: "RocaTwo-Bl";
+    font-weight: bold;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .footerWrapper {
+    margin-bottom: 50px;
+    margin-top: 25px;
+  }
+}
+
+/* ============================================ */
+/* LARGE MOBILE / SMALL TABLET (600px to 640px)*/
+/* Fixed for 633px - 1 column with smaller cards */
+/* ============================================ */
+@media (min-width: 600px) and (max-width: 640px) {
   .wrapper {
-    padding: 32px;
+    padding: 15px;
+    margin: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 0 15px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .card {
+    max-width: 100%;
+    aspect-ratio: 1 / 0.7;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .card p {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .cardContent {
+    padding: 10px;
+  }
+
+  .centerRow {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .centerRow .card {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  /* Hide desktop success message */
+  .desktopOnly {
+    display: none !important;
+  }
+
+  /* Show mobile footer */
+  .mobileFooter {
+    display: block;
+  }
+
+  .footerWrapper {
+    margin-bottom: 45px;
+    margin-top: 25px;
+    position: relative;
+  }
+
+  .topArrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+
+  .mobileLeftArrow {
+    transform: none;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .mobileRightArrow {
+    transform: rotate(-30deg);
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mobileLeftArrow img {
+    rotate: 30deg;
+  }
+  
+  .mobileRightArrow img {
+    rotate: -30deg;
+  }
+
+  .mobileLeftArrow img,
+  .mobileRightArrow img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* Text styles for this range */
+  .mobileFooterText {
+    text-align: center;
+    color: #567F55;
+    font-size: 18px;
+    font-family: "RocaTwo-Bl";
+    font-weight: bold;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+}
+
+/* ============================================ */
+/* MOBILE (below 600px) - 1 column             */
+/* ============================================ */
+@media (max-width: 599px) {
+  .wrapper {
+    padding: 15px;
+    margin: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .title {
+    font-size: 18px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 0 15px;
+    text-align: center;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px;
+  }
+
+  .card {
+    max-width: 100%;
+    aspect-ratio: 1 / 0.7;
+  }
+
+  .card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .card p {
+    font-size: 11px;
+  }
+
+  .cardContent {
+    padding: 10px;
+  }
+
+  .centerRow {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .centerRow .card {
+    max-width: 100% !important;
+    width: 100%;
+  }
+
+  /* Hide desktop success message on mobile */
+  .desktopOnly {
+    display: none !important;
+  }
+
+  /* Show mobile footer */
+  .mobileFooter {
+    display: block;
+  }
+
+  .footerWrapper {
+    margin-bottom: 40px;
+    margin-top: 20px;
+    position: relative;
+  }
+
+  .topArrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+
+  .mobileLeftArrow {
+    transform: none;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .mobileRightArrow {
+    transform: rotate(-30deg);
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mobileLeftArrow img {
+    rotate: 30deg;
+  }
+  
+  .mobileRightArrow img {
+    rotate: -30deg;
+  }
+
+  .mobileLeftArrow img,
+  .mobileRightArrow img {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  /* Text styles for mobile */
+  .mobileFooterText {
+    text-align: center;
+    color: #567F55;
+    font-size: 16px;
+    font-family: "RocaTwo-Bl";
+    font-weight: bold;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+}
+
+/* ============================================ */
+/* SMALL MOBILE (below 480px)                  */
+/* ============================================ */
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 12px;
+    margin: 8px 10px;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .card {
+    aspect-ratio: 1 / 0.65;
+  }
+
+  .card h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .card p {
+    font-size: 10px;
+  }
+
+  .cardContent {
+    padding: 8px;
+  }
+
+  .topArrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 0 5px;
+  }
+
+  .mobileLeftArrow {
+    transform: none;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .mobileRightArrow {
+    transform: rotate(-30deg);
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Text styles for small mobile */
+  .mobileFooterText {
+    text-align: center;
+    color: #567F55;
+    font-size: 14px;
+    font-family: "RocaTwo-Bl";
+    font-weight: bold;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+
+  .footerWrapper {
+    margin-bottom: 30px;
+  }
+  
+  .mobileLeftArrow img,
+  .mobileRightArrow img {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
+
+/* ============================================ */
+/* LARGE DESKTOP (above 1200px)                */
+/* ============================================ */
+@media (min-width: 1201px) {
+  .wrapper {
+    padding: 40px;
+  }
+
+  .card {
+    max-width: 330px;
+  }
+
+  .centerRow {
+    gap: 32px;
+  }
+  
+  /* Ensure desktop success message is visible */
+  .desktopOnly {
+    display: block !important;
+  }
+  
+  /* Ensure mobile footer is hidden on desktop */
+  .mobileFooter {
+    display: none !important;
   }
 }

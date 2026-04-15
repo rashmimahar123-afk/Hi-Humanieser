@@ -19,14 +19,15 @@
   font-size: 24px;
   color: #6d8a6d;
   margin-bottom: 42px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
 }
 
+/* ── Card row ── */
 .cardRow {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
- 
-
+  gap: 32px;
 }
 
 .cardWrapper {
@@ -38,8 +39,7 @@
   position: relative;
   width: 280px;
   height: 170px;
-     cursor:pointer
-
+  cursor: pointer;
 }
 
 /* BACKGROUND IMAGE */
@@ -51,47 +51,77 @@
 /* TEXT OVER IMAGE */
 .cardText {
   position: absolute;
-  inset: 0; /* full cover */
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   font-size: 28px;
   font-family: "RocaTwo-Bold";
-  color: #0F4F58;
+  color: #0f4f58;
   z-index: 2;
   line-height: 1.2;
   font-weight: bold;
-
 }
 
-
-/* LEFT arrow (UPPER LEFT of text) */
+/* Arrows */
 .arrowLeft {
-      position: absolute;
-    transform: rotate(180deg);
-    top: -18%;
-    left: -4%;
+  position: absolute;
+  transform: rotate(180deg);
+  top: -26%;
+  left: -4%;
   z-index: 1;
-   
- 
 }
 
-/* RIGHT arrow (UPPER RIGHT of text) */
 .arrowRight {
   position: absolute;
-    bottom:89%;
-  left:82%;
+  bottom: 89%;
+  left: 82%;
   z-index: 1;
-      transform: rotate(121deg); 
-
+  transform: rotate(121deg);
 }
 
+/* ── 768px ── */
+@media (max-width: 768px) {
+  .title    { font-size: 22px; }
+  .subtitle { font-size: 18px; margin-bottom: 28px; }
 
-@media (max-width: 640px) {
-
-
-  .wrapper {
-    padding: 32px;
+  .card {
+    width: 220px;
+    height: 134px;
   }
+
+  .cardText { font-size: 22px; }
+
+  .cardRow { gap: 20px; }
+}
+
+/* ── 640px ── */
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 16px;
+    border-radius: 16px;
+    margin: 12px 8px;
+  }
+
+  .title    { font-size: 20px; }
+  .subtitle { font-size: 15px; margin-bottom: 20px; }
+
+  .cardRow {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .card {
+    width: min(260px, 80vw);
+    height: auto;
+    aspect-ratio: 280 / 170;
+  }
+
+  .cardText { font-size: 20px; }
+
+  /* Tuck arrows so they don't bleed off-screen */
+  .arrowLeft  { top: -14%; left: -2%; }
+  .arrowRight { bottom: 92%; left: 78%; }
 }
