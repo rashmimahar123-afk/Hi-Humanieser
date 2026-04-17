@@ -31,6 +31,7 @@ type POLYGON_BUTTON_PROPS = {
   clipPath?: string;
   childTop?: number;
 };
+
 const PolygonButton = ({
   width = "137px",
   height = "151px",
@@ -42,34 +43,58 @@ const PolygonButton = ({
   children,
   childTop,
 }: POLYGON_BUTTON_PROPS) => {
+  // Resolve numeric widths/heights to px strings for inline styles
+  const resolvedWidth = typeof width === "number" ? `${width}px` : width;
+  const resolvedHeight = typeof height === "number" ? `${height}px` : height;
+
   return (
-    <div className="relative" style={{ width, height }}>
-      {/* Decoration */}
+    <div
+      className="relative"
+      style={{
+        width: resolvedWidth,
+        height: resolvedHeight,
+        // On small screens, constrain oversized buttons so they don't overflow
+        maxWidth: "100%",
+      }}
+    >
+      {/* Decoration image */}
       {decorationImg && (
-        <div className={`absolute ${decorationPosition?.className || ""}`}>
+        <div
+          className={`absolute z-30 ${decorationPosition?.className || ""}`}
+          style={{
+            top: decorationPosition?.top,
+            left: decorationPosition?.left,
+            right: decorationPosition?.right,
+            bottom: decorationPosition?.bottom,
+          }}
+        >
           <Image
             src={decorationImg.src}
             alt="decoration"
             width={decorationImg.width || 48}
             height={decorationImg.height || 48}
+            // Scale decoration image down slightly on mobile
+            className="w-[32px] h-[32px] sm:w-[40px] sm:h-[40px] md:w-auto md:h-auto"
           />
         </div>
       )}
 
-      {/* Polygon Shape ONLY */}
+      {/* Polygon clipped background shape */}
       <div
         style={{
-          width,
-          height,
+          width: resolvedWidth,
+          height: resolvedHeight,
           backgroundColor: bgColor,
           borderRadius: radius,
           clipPath,
+          maxWidth: "100%",
         }}
       />
 
-      {/* TEXT – free from clip-path */}
+      {/* Text content — sits above the clip-path shape */}
       <div
-        className={`absolute -inset-2 flex items-center justify-center text-center pointer-events-none -top-${childTop ? childTop : "4"}`}
+        className={`absolute -inset-2 flex items-center justify-center text-center pointer-events-none`}
+        style={{ top: childTop ? `-${childTop * 4}px` : undefined }}
       >
         {children}
       </div>

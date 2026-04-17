@@ -10,42 +10,43 @@ type RESULT_PATHWAY_CARD_PROPS = {
 function QuizPathwayCards(props: RESULT_PATHWAY_CARD_PROPS) {
   const { title, description, onLearnMore, bgColor } = props;
   const pathname = usePathname();
-
   const hideLearnMore = pathname.includes("dashboard-pdf");
+
   return (
     <div
       className={`
-        w-[357px] h-[274px]
+        w-full
+        lg:w-[357px]
+        min-h-[220px] lg:h-[274px]
         rounded-[12px]
-        px-6 py-8
+        px-5 md:px-6
+        py-6 md:py-8
         flex flex-col justify-between
-      
       `}
       style={{ backgroundColor: bgColor }}
     >
       {/* Top content */}
       <div>
         <h3
-          className="text-[#0F4F58] text-[22px] mb-4 font-[700]"
+          className="text-[#0F4F58] text-[18px] md:text-[22px] mb-3 md:mb-4 font-[700]"
           style={{ fontFamily: "RocaTwo-BI" }}
         >
           {title}
         </h3>
-
         <p
-          className="text-[#0F4F58] text-[20px] leading-[130%] font-[400]"
+          className="text-[#0F4F58] text-[15px] md:text-[20px] leading-[130%] font-[400]"
           style={{ fontFamily: "Aptos" }}
         >
           {description}
         </p>
       </div>
 
-      {/* Actions */}
+      {/* Learn More Action */}
       {!hideLearnMore && (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center sm:items-end gap-4 mt-4 md:mt-0">
           <button
             onClick={onLearnMore}
-            className="px-4 py-1 bg-[#F8E1B8] rounded-full text-[#0F4F58] text-[18px] ml-[121px]"
+            className="px-4 py-1 bg-[#F8E1B8] rounded-full text-[#0F4F58] text-[16px] md:text-[18px]"
             style={{ fontFamily: "RocaTwo-Bold" }}
           >
             learn more

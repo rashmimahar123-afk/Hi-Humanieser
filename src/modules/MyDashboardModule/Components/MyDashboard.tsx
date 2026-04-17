@@ -67,7 +67,6 @@ function MyDashboard() {
 
     const generatePDF = async () => {
       try {
-        // wait for DOM paint
         await new Promise((r) => setTimeout(r, 500));
 
         if (!pdfRef.current) {
@@ -110,24 +109,22 @@ function MyDashboard() {
 
     generatePDF();
   }, [showPdf]);
+
   const handleDownloadPDF = () => {
     setIsDownloading(true);
     setShowPdf(true);
   };
+
   const sortFn = (a: any, b: any, asc = false) => {
-    // 1. Score comparison
     if (a.score !== b.score) {
       return asc ? a.score - b.score : b.score - a.score;
     }
-
-    // 2. Tie-breaker → lower situation wins
     if (a.situation !== b.situation) {
       return a.situation - b.situation;
     }
-
-    // 3. Final fallback (stable sort)
     return a.key.localeCompare(b.key);
   };
+
   const processQuizResults = (results: any) => {
     const wS = 0.5;
     const wZ = 0.5;
@@ -137,14 +134,11 @@ function MyDashboard() {
 
     Object.keys(results).forEach((pillarKey) => {
       const principles = results[pillarKey];
-
       const arr: any[] = [];
 
       Object.keys(principles).forEach((pKey) => {
         const item = principles[pKey];
-
         const score = wS * item.strength + wZ * item.situation;
-
         arr.push({
           key: pKey,
           score,
@@ -156,34 +150,21 @@ function MyDashboard() {
       const sortedDesc = [...arr].sort((a, b) => sortFn(a, b, false));
       const sortedAsc = [...arr].sort((a, b) => sortFn(a, b, true));
 
-      //  Store per pillar
-      pillarData[pillarKey] = {
-        top: sortedDesc[0],
-        weak: sortedAsc[0],
-      };
-
-      // Avg
+      pillarData[pillarKey] = { top: sortedDesc[0], weak: sortedAsc[0] };
       pillarAvg[pillarKey] =
         arr.reduce((sum, p) => sum + p.score, 0) / arr.length;
     });
 
-    return {
-      pillarData,
-      pillarAvg,
-    };
+    return { pillarData, pillarAvg };
   };
 
   const getTopStrengthDetails = (topStrengths: any[], quizData: any) => {
     if (!quizData?.pillars) return [];
-
     const result: any[] = [];
-
     topStrengths.forEach((item) => {
       const formattedKey = item.key.replace("principle", "Principle");
-
       Object.values(quizData.pillars).forEach((pillar: any) => {
         const principle = pillar.principles?.[formattedKey];
-
         if (principle) {
           result.push({
             key: item.key,
@@ -193,26 +174,20 @@ function MyDashboard() {
         }
       });
     });
-
     return result;
   };
+
   const { data: quizDetails } = useQuizDetailsQuery();
 
   const getWeakStrengthDetails = (growthTargets: any[], quizData: any) => {
     if (!quizData?.pillars) return [];
-
     const result: any[] = [];
-
     growthTargets.forEach((item) => {
       const formattedKey = item.key.replace("principle", "Principle");
-
-      // 👇 extract numbers
       const principle_number = parseInt(item.key.split("_")[1], 10);
       const pillar_number = parseInt(item.pillar.split("_")[1], 10);
-
       Object.values(quizData.pillars).forEach((pillar: any) => {
         const principle = pillar.principles?.[formattedKey];
-
         if (principle) {
           result.push({
             key: item.key,
@@ -224,7 +199,6 @@ function MyDashboard() {
         }
       });
     });
-
     return result;
   };
 
@@ -233,15 +207,8 @@ function MyDashboard() {
       const topStrengths = Object.values(resultData.pillarData).map(
         (p: any) => p.top,
       );
-
       const details = getTopStrengthDetails(topStrengths, quizDetails.data);
-
       setTopStrengthDetails(details);
-
-      // agar overall message chahiye
-      const allScores = topStrengths.map((p: any) => p.score);
-      const avg =
-        allScores.reduce((a: number, b: number) => a + b, 0) / allScores.length;
     }
   }, [resultData, quizDetails]);
 
@@ -250,12 +217,10 @@ function MyDashboard() {
       const weakPrinciples = Object.values(resultData.pillarData).map(
         (p: any) => p.weak,
       );
-
       const weakDetails = getWeakStrengthDetails(
         weakPrinciples,
         quizDetails.data,
       );
-
       setWeakStrengthDetails(weakDetails);
     }
   }, [resultData, quizDetails]);
@@ -289,12 +254,7 @@ function MyDashboard() {
       date: "19/03/2026",
       icon: images.curiousImg,
     },
-    {
-      id: 5,
-      title: "Ritual 5",
-      status: "In Progress",
-      icon: images.listenImg,
-    },
+    { id: 5, title: "Ritual 5", status: "In Progress", icon: images.listenImg },
   ];
 
   const quizRef = useRef<HTMLDivElement>(null);
@@ -303,42 +263,28 @@ function MyDashboard() {
   const teamRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
-    ref.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-
     const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-
     return `${day}/${month}/${year}`;
   };
-  // const formattedDate = formatDate(data?.data?.quiz?.created_at ?? "");
-  const { data: chooseMyselfData } = useChooseMyselfQuery();
 
+  const { data: chooseMyselfData } = useChooseMyselfQuery();
   const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
 
-  // ------------------------------->Latest Quiz<-----------------------
   const getLatestQuizByYear = (quizList: any[], selectedYear: string) => {
     if (!Array.isArray(quizList)) return null;
-
-    // 1. Filter by year
     const filtered = quizList.filter((item) => {
       const year = new Date(item.created_at).getFullYear().toString();
       return year === selectedYear;
     });
-
     if (filtered.length === 0) return null;
-
-    // 2. Sort by timestamp DESC (latest first)
     const sorted = filtered.sort((a, b) => b.timestamp - a.timestamp);
-
-    // 3. Return latest
     return sorted[0];
   };
 
@@ -348,24 +294,21 @@ function MyDashboard() {
   );
 
   const formattedDate = latestQuiz ? formatDate(latestQuiz.created_at) : "";
+
   useEffect(() => {
     if (latestQuiz?.results) {
       const processed = processQuizResults(latestQuiz.results);
       setResultData(processed);
     } else {
-      setResultData(null); // optional clear
+      setResultData(null);
     }
   }, [latestQuiz]);
 
-  //----------------------------> Latest Progress List data of active and complete <-----------------------
-
   const generateStructuredProgressList = (mppData: any[]) => {
     if (!Array.isArray(mppData)) return [];
-
     return mppData
-      .filter((item: any) => item.active || item.completed) // only active/completed
+      .filter((item: any) => item.active || item.completed)
       .map((item: any) => {
-        // 🔍 find dynamic key like "The Mindset We Bring"
         const pathwayKey = Object.keys(item).find(
           (key) =>
             ![
@@ -377,11 +320,9 @@ function MyDashboard() {
               "id",
             ].includes(key),
         );
-
         if (!pathwayKey) return null;
-
         return {
-          [pathwayKey]: item[pathwayKey], // 👈 main structured data
+          [pathwayKey]: item[pathwayKey],
           created: item.created,
           uuid: item.uuid,
           active: item.active,
@@ -393,7 +334,6 @@ function MyDashboard() {
 
   const getPathwayMap = (chooseData: any[]) => {
     const map: Record<number, string> = {};
-
     chooseData?.forEach((item: any) => {
       item?.pillars?.forEach((pillar: any) => {
         pillar?.principles?.forEach((principle: any) => {
@@ -401,22 +341,19 @@ function MyDashboard() {
         });
       });
     });
-
     return map;
   };
+
   const transformProgressList = (progressList: any[], pathwayMap: any) => {
     return progressList.map((item) => {
       const dynamicKey = Object.keys(item).find(
         (key) => !["created", "uuid", "active", "completed"].includes(key),
       );
-
       if (!dynamicKey) return item;
-
       const pathwayNumber = Number(dynamicKey);
       const pathwayName = pathwayMap[pathwayNumber] || dynamicKey;
-
       return {
-        [pathwayName]: item[dynamicKey], // 👈 replaced key
+        [pathwayName]: item[dynamicKey],
         created: item.created,
         uuid: item.uuid,
         active: item.active,
@@ -430,29 +367,20 @@ function MyDashboard() {
       const structuredList = generateStructuredProgressList(
         getListMppData.data.pathways,
       );
-
       const pathwayMap = getPathwayMap(chooseMyselfData.data);
-
       const updatedList = transformProgressList(structuredList, pathwayMap);
-
-      // 🔽 Sort by latest created date
       const sortedList = updatedList.sort(
         (a: any, b: any) =>
           new Date(b.created).getTime() - new Date(a.created).getTime(),
       );
-
-      // 🔽 Take latest 20
       const latest20 = sortedList.slice(0, 20);
-
       setProgressList(latest20);
     }
   }, [getListMppData, chooseMyselfData]);
-  // Extract pindash from get list mpp and microaction details from choose myself and merge them to create a new list for practice perspective pathway progress
+
   const getSelectedMicroActions = (pathways: any[]) => {
     if (!Array.isArray(pathways)) return [];
-
     let selected: string[] = [];
-
     pathways.forEach((item) => {
       const dynamicKey = Object.keys(item).find(
         (key) =>
@@ -465,16 +393,12 @@ function MyDashboard() {
             "id",
           ].includes(key),
       );
-
       if (!dynamicKey) return;
-
       const m3 = item?.[dynamicKey]?.m3;
-
       if (m3?.pin_to_dash?.length) {
         selected.push(...m3.pin_to_dash);
       }
     });
-
     return [...new Set(selected)];
   };
 
@@ -483,32 +407,27 @@ function MyDashboard() {
       const selectedKeys = getSelectedMicroActions(
         getListMppData.data.pathways,
       );
-
       const list: any[] = [];
-
       chooseMyselfData.data.forEach((item: any) => {
         item?.pillars?.forEach((pillar: any) => {
           pillar?.principles?.forEach((principle: any) => {
             principle?.micro_actions?.forEach((action: any, index: number) => {
               const key = `ma${index + 1}`;
-
               list.push({
                 id: key,
                 title: action.title,
                 description: action.description,
                 pathway: principle.pathway_title,
-                checked: selectedKeys.includes(key), //  MAIN
+                checked: selectedKeys.includes(key),
               });
             });
           });
         });
       });
-
       setPracticeList(list);
     }
   }, [getListMppData, chooseMyselfData]);
 
-  //Active practice list for dashboard pdf
   const activePracticeListForPdf = practiceList.filter((item) => item.checked);
   const enrichedProgressList = enrichProgressWithPractice(
     progressList,
@@ -520,34 +439,52 @@ function MyDashboard() {
     <>
       <div
         className={`min-h-screen bg-[#4BA6A6] relative font-sans ${styles.page}
-   ${styles.enterRight}
-  ${enter ? styles.enterActive : ""}`}
+          ${styles.enterRight}
+          ${enter ? styles.enterActive : ""}`}
       >
+        {/* Background decorative images — hidden on mobile to avoid overflow issues */}
         <Image
           src={images.myDashGreenPoly}
           alt="dash-green-rectangle"
           width={330}
           height={330}
-          className="absolute top-0 left-0 z-0"
+          className="absolute top-0 left-0 z-0 hidden md:block"
         />
-
         <Image
           src={images.myDashBluePoly}
           alt="dash-rectangle"
           width={530}
           height={530}
-          className="absolute top-45 right-0 z-0"
+          className="absolute top-45 right-0 z-0 hidden md:block"
         />
 
-        <div className="px-10 py-8 absolute w-screen">
+        {/* Smaller decorative images for mobile */}
+        <Image
+          src={images.myDashGreenPoly}
+          alt="dash-green-rectangle"
+          width={160}
+          height={160}
+          className="absolute top-0 left-0 z-0 block md:hidden"
+        />
+        <Image
+          src={images.myDashBluePoly}
+          alt="dash-rectangle"
+          width={220}
+          height={220}
+          className="absolute top-20 right-0 z-0 block md:hidden"
+        />
+
+        <div className="px-4 sm:px-6 md:px-10 py-6 md:py-8 absolute w-screen">
+          {/* Header */}
           <UserProfileHeader
             greetingColor="#0F4F58"
             nameColor="#0F4F58"
             userInfo={user}
-          />{" "}
+          />
+
           <SuccessMessage
             text={randomMessage || ""}
-            fontSize="text-[28px]"
+            fontSize="text-[18px] md:text-[28px]"
             fontColor="#0F4F58"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
@@ -555,60 +492,60 @@ function MyDashboard() {
             rightImgBottom="3px"
             rotate="-35deg"
           />
-          <h1 className="text-center text-[45px] font-semibold text-[#254C4C] mt-14 font-[RocaTwo]">
+
+          {/* Title */}
+          <h1 className="text-center text-[30px] sm:text-[38px] md:text-[45px] font-semibold text-[#254C4C] mt-8 md:mt-14 font-[RocaTwo]">
             My Dashboard
           </h1>
+
           {/* Description + Download */}
-          <div className="flex justify-between items-center max-w-[1000px] mx-auto mt-10">
-            <p className=" text-[#0F4F58] text-[20px] leading-7 max-w-[800px]">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center max-w-[1000px] mx-auto mt-6 md:mt-10 gap-4">
+            <p className="text-[#0F4F58] text-[16px] md:text-[20px] leading-6 md:leading-7 max-w-full md:max-w-[800px]">
               This is your hub — a snapshot of your journey so far. Revisit your
-              check-in, see what you’re building, track what you’re practicing,
-              and notice how it’s showing up in your team.
+              check-in, see what you're building, track what you're practicing,
+              and notice how it's showing up in your team.
             </p>
           </div>
-          <div className="flex justify-end w-full mx-auto mt-10">
-            <div className="flex items-center gap-4 relative">
-              <label className="text-[22px] text-[#0F4F58] font-[RocaTwo]">
+
+          {/* Period Selector */}
+          <div className="flex justify-end w-full mx-auto mt-6 md:mt-10">
+            <div className="flex items-center gap-3 relative">
+              <label className="text-[16px] md:text-[22px] text-[#0F4F58] font-[RocaTwo]">
                 Select Period
               </label>
-
               <div className="relative">
                 <select
                   value={selected || "2026"}
                   onChange={(e) => setSelected(e.target.value)}
                   className="
-        appearance-none
-        bg-[#EDEDED]
-        text-[#254C4C]
-        text-[18px]
-        px-6 pr-14
-        h-[48px]
-        rounded-full
-        outline-none
-        cursor-pointer
-      "
+                    appearance-none
+                    bg-[#EDEDED]
+                    text-[#254C4C]
+                    text-[15px] md:text-[18px]
+                    px-4 md:px-6 pr-12 md:pr-14
+                    h-[40px] md:h-[48px]
+                    rounded-full
+                    outline-none
+                    cursor-pointer
+                  "
                 >
                   <option value="2026">2026</option>
                   <option value="2025">2025</option>
                   <option value="2024">2024</option>
                 </select>
-
-                {/* Arrow Block */}
-                <div className="absolute right-0 top-0 h-full w-[50px] flex items-center justify-center pointer-events-none">
-                  <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-t-[12px] border-l-transparent border-r-transparent border-t-[#254C4C]" />
+                <div className="absolute right-0 top-0 h-full w-[40px] md:w-[50px] flex items-center justify-center pointer-events-none">
+                  <div className="w-0 h-0 border-l-[8px] md:border-l-[10px] border-r-[8px] md:border-r-[10px] border-t-[10px] md:border-t-[12px] border-l-transparent border-r-transparent border-t-[#254C4C]" />
                 </div>
               </div>
             </div>
           </div>
-          {/* Cards */}
-          <div
-            className={`flex gap-[47px] justify-center items-center mx-auto mt-[90px]`}
-          >
+
+          {/* Navigation Cards — 2x2 grid on mobile/tablet, 4-col on desktop */}
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-[47px] justify-center items-center mx-auto mt-10 md:mt-[90px]">
             <div
               className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
               onClick={() => scrollToSection(quizRef)}
             >
-              {/* Image layer */}
               <div className={styles.imageWrapper}>
                 <Image
                   src={images.quizPoly}
@@ -617,8 +554,6 @@ function MyDashboard() {
                   className={styles.cardImage}
                 />
               </div>
-
-              {/* Text on top of image */}
               <div className={styles.cardContent}>
                 <h3>My Check-In Space</h3>
               </div>
@@ -675,29 +610,30 @@ function MyDashboard() {
               </div>
             </div>
           </div>
-          <div className="flex justify-end w-full mx-auto mt-10 gap-10">
-            <div className="text-[18px] text-[#0F4F58] font-bold items-center flex">
+
+          {/* Download Row */}
+          <div className="flex flex-col sm:flex-row justify-end w-full mx-auto mt-6 md:mt-10 gap-4 sm:gap-10 items-center sm:items-center">
+            <div className="text-[15px] md:text-[18px] text-[#0F4F58] font-bold text-center sm:text-right max-w-full sm:max-w-[400px] md:max-w-none">
               Download your journey and use it in your next performance or
               development review
             </div>
-            <div>
-              {" "}
+            <div className="flex-shrink-0">
               <button
                 className="flex flex-col items-center gap-2"
                 onClick={handleDownloadPDF}
                 disabled={isDownloading}
               >
                 <Image src={images.downloadImg} alt="download" />
-
                 <span className="text-sm text-[#3E5F5F]">
                   {isDownloading ? "Preparing PDF..." : "Download in PDF"}
                 </span>
               </button>
             </div>
           </div>
-          <div className={`items-center mx-auto mt-14`}>
-            {/* ---------------------My Quiz Results--------------- */}
-            <div className="mx-auto mt-14" ref={quizRef}>
+
+          {/* Sections */}
+          <div className="items-center mx-auto mt-10 md:mt-14">
+            <div className="mx-auto mt-10 md:mt-14" ref={quizRef}>
               <MyQuizResults
                 topStrengthDetails={topStrengthDetails}
                 formattedDate={formattedDate}
@@ -705,48 +641,39 @@ function MyDashboard() {
                 weakStrengthDetails={weakStrengthDetails}
               />
             </div>
-            {/* ------------------------------------------------------ */}
 
-            {/* ----------------------My Personal Progress--------------- */}
-            <div className="mx-auto mt-14" ref={progressRef}>
+            <div className="mx-auto mt-10 md:mt-14" ref={progressRef}>
               <MyPersonalProgress progressList={progressList} />
             </div>
-            {/* ----------------------------------------------------------- */}
 
-            {/* ----------------------My Personal Progress--------------- */}
-            <div className="mx-auto mt-14" ref={practiceRef}>
+            <div className="mx-auto mt-10 md:mt-14" ref={practiceRef}>
               <MyActivePractice practiceList={practiceList} />
             </div>
-            {/* ----------------------------------------------------------- */}
 
-            {/* ------------------------My Team Progress-------------------- */}
-            <div className="mx-auto mt-14" ref={teamRef}>
+            <div className="mx-auto mt-10 md:mt-14" ref={teamRef}>
               <MyTeamProgress teamProgressList={teamProgressList} />
             </div>
-            {/* ------------------------------------------------------------- */}
           </div>
-          <div className="flex justify-between mt-[50px]">
-            {/* -------------------------------Download PDF------------ */}
-            <div className="flex justify-end">
-              <div>
-                {" "}
-                <button
-                  className="flex flex-col items-center gap-2"
-                  onClick={handleDownloadPDF}
-                  disabled={isDownloading}
-                >
-                  <Image src={images.downloadImg} alt="download" />
 
-                  <span className="text-sm text-[#3E5F5F]">
-                    {isDownloading ? "Preparing PDF..." : "Download in PDF"}
-                  </span>
-                </button>
-              </div>
+          {/* Bottom Action Row */}
+          {/* Bottom Action Row */}
+          <div className="flex flex-col sm:flex-row justify-between mt-[40px] md:mt-[50px] gap-6 sm:gap-0 items-center sm:items-start">
+            {/* Download PDF */}
+            <div className="flex justify-center sm:justify-start">
+              <button
+                className="flex flex-col items-center gap-2"
+                onClick={handleDownloadPDF}
+                disabled={isDownloading}
+              >
+                <Image src={images.downloadImg} alt="download" />
+                <span className="text-sm text-[#3E5F5F]">
+                  {isDownloading ? "Preparing PDF..." : "Download in PDF"}
+                </span>
+              </button>
             </div>
-            <div className="grid grid-cols-2 gap-10">
-              {/* -------slant Left Btn-------- */}
-              <div></div>
-              {/* -------slant Right Btn-------- */}
+
+            {/* See all Ritual Reflections Button */}
+            <div className="flex justify-center sm:justify-end">
               <div
                 className="cursor-pointer"
                 onClick={() => router.push("/reflection-walls")}
@@ -767,7 +694,7 @@ function MyDashboard() {
                   }}
                 >
                   <div className="h-full flex items-center justify-center text-center">
-                    <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-[32px]">
+                    <span className="text-[#0F4F58] text-[18px] sm:text-[22px] font-[RocaTwo] font-bold leading-[28px] md:leading-[32px]">
                       See all Ritual Reflections
                     </span>
                   </div>
@@ -775,11 +702,11 @@ function MyDashboard() {
               </div>
             </div>
           </div>
-          {/* --------------------Success Message------------ */}
-          <div className="mt-14 mx-auto">
+          {/* Success Message */}
+          <div className="mt-10 md:mt-14 mx-auto">
             <SuccessMessage
-              text="Performance shifts when we practice, reflect, and connect — and you’re doing that here"
-              fontSize="text-[23px]"
+              text="Performance shifts when we practice, reflect, and connect — and you're doing that here"
+              fontSize="text-[17px] md:text-[23px]"
               leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
               rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
               fontColor="#0F4F58"
@@ -789,14 +716,16 @@ function MyDashboard() {
               maxWidth="450px"
             />
           </div>
-          {/* ----------------------------Footer-------------------- */}
-          <div className="flex justify-between ">
-            <div className="mt-[160px] flex">
-              <div className="max-w-[200px] text-[#0F4F58] font-[Aptos] text-[17px]">
-                Love what Hi Humaniser!™ brings? Share it with a friend who’d
+
+          {/* Footer */}
+          <div className="flex flex-col sm:flex-row justify-between mt-[80px] md:mt-[160px] gap-8 sm:gap-0">
+            {/* Invite Section */}
+            <div className="flex items-center justify-center sm:justify-start gap-4 sm:gap-0">
+              <div className="max-w-[200px] text-[#0F4F58] font-[Aptos] text-[15px] md:text-[17px]">
+                Love what Hi Humaniser!™ brings? Share it with a friend who'd
                 enjoy it too.
               </div>
-              <div className="ml-[26px]">
+              <div className="ml-0 sm:ml-[26px]">
                 <PolygonButton
                   width="85px"
                   height="95px"
@@ -805,20 +734,21 @@ function MyDashboard() {
                   clipPath={`polygon(0% 0%, 100% 18px,100% calc(100% - 14px),0% 100%)`}
                 >
                   <div className="h-full flex items-center justify-center text-center">
-                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[21px]">
+                    <span className="text-[#0F4F58] text-[16px] md:text-[18px] font-[RocaTwo] font-bold leading-[20px] md:leading-[21px]">
                       Invite a Humaniser
                     </span>
                   </div>
                 </PolygonButton>
               </div>
             </div>
-            <div className="mt-[60px] flex flex-col items-center gap-[14px] ">
+
+            {/* Navigation Buttons */}
+            <div className="flex flex-col items-center gap-[10px] md:gap-[14px]">
               <CommonButtons
                 label="Change my Pathway"
                 bgColor="#F5F0EB"
                 onClick={() => router.push("/choose-myself")}
               />
-
               <CommonButtons
                 label="Return to
 My Personal Pathway"
@@ -835,6 +765,7 @@ Journey"
           </div>
         </div>
       </div>
+
       {showPdf && (
         <div
           style={{
@@ -862,4 +793,5 @@ Journey"
     </>
   );
 }
+
 export default MyDashboard;

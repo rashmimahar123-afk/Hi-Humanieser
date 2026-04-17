@@ -9,11 +9,48 @@ import { openLogoutModal } from "../WelcomeModule/Components/LogoutModal/LogoutM
 type PROFILE_DROPDOWN_PROPS = {
   userInfo?: USER_INFO_TYPE;
 };
+type UserType = 1 | 2 | 3;
+
+type MenuItem = {
+  label: string;
+  path: string;
+};
 
 function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
   const pathname = usePathname();
+  const menuByUserType: Record<UserType, MenuItem[]> = {
+    1: [
+      { label: "Profile", path: "/profile" },
+      { label: "My Account Settings", path: "/account-setting" },
+      { label: "My Pathways", path: "/my-pathways" },
+      { label: "Notifications", path: "/notification" },
+      { label: "Help & Feedback", path: "/help-feedback" },
+      { label: "Spread The Ripple", path: "/spread-ripple" },
+    ],
+    2: [
+      { label: "Profile", path: "/profile" },
+      { label: "My Account Settings", path: "/account-setting" },
+      { label: "My Team Settings", path: "/team-setting" },
+      { label: "My Pathways", path: "/my-pathways" },
+      { label: "Champion Hub", path: "/champion-hub" },
+      { label: "Notifications", path: "/notification" },
+      { label: "Spread The Ripple", path: "/spread-ripple" },
+    ],
+    3: [
+      { label: "Profile", path: "/profile" },
+      { label: "My Account Settings", path: "/account-setting" },
+      { label: "Organisation Settings", path: "/organisation-setting" },
+      { label: "My Pathways", path: "/my-pathways" },
+      { label: "Champion Hub", path: "/champion-hub" },
+      { label: "Partner Hub", path: "/overseer-hub" },
+      { label: "Notifications", path: "/notification" },
+      { label: "Spread The Ripple", path: "/spread-ripple" },
+    ],
+  };
+  if (!userInfo?.user_type) return null;
 
-  if (userInfo?.user_type !== 3) return null;
+  const userType = userInfo.user_type as UserType;
+  const menuItems = menuByUserType[userType] || [];
   const router = useRouter();
 
   const getClass = (path: string) =>
@@ -30,6 +67,7 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
     "/notification",
     "/spread-ripple",
   ].includes(pathname);
+
   return (
     <div
       className={`absolute right-0 top-[150px] w-[320px] bg-[#E9E6E2] rounded-xl shadow-xl p-6 z-50 ${
@@ -41,54 +79,16 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
         className="space-y-4 text-[20px]"
         style={{ fontFamily: "Aptos", color: "#0F4F58" }}
       >
-        <li
-          className={getClass("/profile")}
-          onClick={() => router.push("/profile")}
-        >
-          Profile
-        </li>
-        <li
-          className={getClass("/account-setting")}
-          onClick={() => router.push("/account-setting")}
-        >
-          My Account Settings
-        </li>
-        <li
-          className={getClass("/organisation-setting")}
-          onClick={() => router.push("/organisation-setting")}
-        >
-          Organisation Settings
-        </li>
-        <li
-          className={getClass("/my-pathways")}
-          onClick={() => router.push("/my-pathways")}
-        >
-          My Pathways
-        </li>
-        <li
-          className={getClass("/champion-hub")}
-          onClick={() => router.push("/champion-hub")}
-        >
-          Champion Hub
-        </li>
-        <li
-          className={getClass("/overseer-hub")}
-          onClick={() => router.push("/overseer-hub")}
-        >
-          Partner Hub
-        </li>
-        <li
-          className={getClass("/notification")}
-          onClick={() => router.push("/notification")}
-        >
-          Notifications
-        </li>
-        <li
-          className={getClass("/spread-ripple")}
-          onClick={() => router.push("/spread-ripple")}
-        >
-          Spread the Ripple
-        </li>
+        {menuItems.map((item) => (
+          <li
+            key={item.path}
+            className={getClass(item.path)}
+            onClick={() => router.push(item.path)}
+          >
+            {item.label}
+          </li>
+        ))}
+        {/* Logout */}
         <li
           className="cursor-pointer hover:underline"
           onClick={() => openLogoutModal()}

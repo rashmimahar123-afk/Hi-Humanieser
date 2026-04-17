@@ -8,13 +8,13 @@ import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
 
-const EVENT = "ADD_MEMBER_MODAL_EVENT";
+const EVENT = "SUCCESS_ADD_TEAM_MODAL_EVENT";
 
-export const openAddMemberModal = () => {
+export const openSuccessAddTeamModal = () => {
   emitEvent(EVENT);
 };
 
-function AddMemberModal() {
+function SuccessAddTeamModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEventEmitter(EVENT, () => {
@@ -29,13 +29,6 @@ function AddMemberModal() {
       {/* Modal wrapper */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-[520px] rounded-[28px] bg-[#FBE6BF] p-8 text-center space-y-6">
-          {/* <button
-            onClick={() => setIsOpen(false)}
-            className="absolute left-[65%] font-bold cursor-pointer"
-          >
-            ✕
-          </button> */}
-
           {/* Timer Image */}
           <div className="flex justify-center">
             <Image
@@ -48,43 +41,26 @@ function AddMemberModal() {
 
           {/* Title */}
           <DialogTitle className="text-[28px] font-[700] text-[#567F55]">
-            Invitation sent
+            Team Created!
           </DialogTitle>
 
           {/* Description */}
           <p className="text-[18px] leading-[1.4] text-[#567F55] px-2">
-            An invitation has been sent.
+            A new team has been added to your organisation.
           </p>
 
           <p className="text-[18px] leading-[1.4] text-[#567F55] px-2">
-            They’ll receive an email with a link to register and join your
-            organisation on Hi Humaniser!™.
+            You can now invite users to this team or create another one.{" "}
           </p>
-
-          {/* Resend */}
-
-          {/* Resend */}
-          <div className="flex justify-center items-center gap-3 pt-2">
-            {/* Resend Button */}
-            <button className="relative flex items-center justify-center ml-[30px]">
-              {/* Polygon */}
-              <Image
-                src={images.signupPolygon}
-                alt="resend-bg"
-                width={90}
-                height={90}
-                className="rotate-[-6deg]"
-              />
-
-              {/* Text on polygon */}
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center
-                 text-[#0F4F58] font-bold text-[22px] leading-[1] cursor-pointer"
-                style={{ fontFamily: "RocaTwo" }}
-                onClick={() => setIsOpen(false)}
-              >
-                Return to Portal
-              </div>
+          <div className="flex gap-4 justify-center ">
+            {" "}
+            <button
+              onClick={() => {
+                setIsOpen(false);
+              }}
+              className="bg-[#567F55] text-white px-6 py-3 rounded-full cursor-pointer"
+            >
+              Continue{" "}
             </button>
           </div>
         </DialogPanel>
@@ -93,4 +69,4 @@ function AddMemberModal() {
   );
 }
 
-export default AddMemberModal;
+export default SuccessAddTeamModal;

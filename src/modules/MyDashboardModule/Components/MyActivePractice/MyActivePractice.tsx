@@ -1,21 +1,18 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import styles from "./MyActivePractice.module.css";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type MY_ACTIVE_PRACTICE_PROPS = {
   practiceList: Array<any>;
 };
-
 function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
   const { practiceList } = props;
-
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 2,
-      slidesToSlide: 1, // 👈 CHANGE (smooth scroll)
-      partialVisibilityGutter: 80, // 👈 adjust this
+      slidesToSlide: 1,
+      partialVisibilityGutter: 80,
     },
     tablet: {
       breakpoint: { max: 1024, min: 640 },
@@ -27,26 +24,23 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
       breakpoint: { max: 640, min: 0 },
       items: 1,
       slidesToSlide: 1,
-      partialVisibilityGutter: 40,
+      partialVisibilityGutter: 20,
     },
   };
-
   return (
     <>
       {/* Heading */}
-      <h2 className="text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
+      <h2 className="text-[24px] sm:text-[28px] lg:text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
         My Active Practice List
       </h2>
-
       {/* Sub text */}
-      <p className="text-[#0F4F58] font-[Roboto] text-[22px] ml-[40px] mt-[15px]">
-        Here are the micro-actions you’ve chosen to keep practising. They’re
+      <p className="text-[#0F4F58] font-[Roboto] text-[16px] sm:text-[18px] lg:text-[22px] ml-[10px] sm:ml-[20px] lg:ml-[40px] mt-[15px]">
+        Here are the micro-actions you've chosen to keep practising. They're
         your everyday habits-in-progress — small moves that build momentum over
         time.
       </p>
-
       {/* Carousel */}
-      <div className="mt-12">
+      <div className="mt-8 lg:mt-12">
         <Carousel
           responsive={responsive}
           infinite={true}
@@ -55,37 +49,34 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
           keyBoardControl={true}
           arrows={true}
           containerClass="carousel-container"
-          itemClass="px-3"
+          itemClass="px-2 sm:px-3"
           partialVisible={true}
           renderDotsOutside={false}
         >
           {practiceList.map((item: any, index: number) => (
             <div key={`item${index}`}>
-              <div className="bg-[#F5C882] rounded-2xl px-8 py-10 flex flex-col justify-between min-h-[360px]">
+              <div className="bg-[#F5C882] rounded-2xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 flex flex-col justify-between min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]">
                 <div>
-                  <h3 className="text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
+                  <h3 className="text-[20px] sm:text-[22px] lg:text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
                     {item.title}
                   </h3>
-
-                  <p className="mt-5 text-[#0F4F58] text-[18px] font-[Aptos]">
+                  <p className="mt-3 lg:mt-5 text-[#0F4F58] text-[15px] sm:text-[16px] lg:text-[18px] font-[Aptos]">
                     {item.description}
                   </p>
                 </div>
-
-                <div className="mt-8">
-                  <div className="flex justify-end  text-[#0F4F58] text-[17px] px-4 py-2 rounded-full font-[RocaTwo] ">
+                <div className="mt-6 lg:mt-8">
+                  <div className="flex justify-end text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[17px] px-4 py-2 rounded-full font-[RocaTwo]">
                     <span
-                      className="text-[16px] text-[#0F4F58]"
+                      className="text-[14px] sm:text-[15px] lg:text-[16px] text-[#0F4F58]"
                       style={{ fontFamily: "Aptos" }}
                     >
-                      Remove from Pactice List{" "}
+                      Remove from Practice List{" "}
                     </span>
-
                     <input
                       type="checkbox"
                       checked={item.checked}
                       readOnly
-                      className="ml-4 w-6 h-6 text-[#0F4F58] bg-gray-100 border-gray-300 rounded focus:ring-[#86C9C9] focus:ring-2 cursor-pointer"
+                      className="ml-3 lg:ml-4 w-5 h-5 lg:w-6 lg:h-6 text-[#0F4F58] bg-gray-100 border-gray-300 rounded focus:ring-[#86C9C9] focus:ring-2 cursor-pointer"
                     />
                   </div>
                 </div>
@@ -97,5 +88,4 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
     </>
   );
 }
-
 export default MyActivePractice;

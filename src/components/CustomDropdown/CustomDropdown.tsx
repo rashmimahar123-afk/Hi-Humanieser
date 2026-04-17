@@ -12,6 +12,7 @@ interface CommonDropdownProps {
   placeholder?: string;
   textColor?: string; // selected text color
   placeholderColor?: string; // placeholder color
+  disabledOptions?: boolean;
 }
 
 function CustomDropdown({
