@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import TeamWorkshops from "@/src/modules/ChampionHubModule/Components/TeamWorkshops/TeamWorkshops";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";
@@ -15,4 +16,4 @@ function TeamWorkshopsPage() {
   );
 }
 
-export default TeamWorkshopsPage;
+export default withProtectedRoute(TeamWorkshopsPage);

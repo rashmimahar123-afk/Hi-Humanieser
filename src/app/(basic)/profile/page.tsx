@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function ProfilePage() {
   );
 }
 
-export default ProfilePage;
+export default withProtectedRoute(ProfilePage);

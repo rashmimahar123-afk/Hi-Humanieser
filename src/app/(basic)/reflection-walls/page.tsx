@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ReflectionWalls from "@/src/modules/MyDashboardModule/Components/ReflectionWalls/ReflectionWalls";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function ReflectionWallsPage() {
   );
 }
 
-export default ReflectionWallsPage;
+export default withProtectedRoute(ReflectionWallsPage);

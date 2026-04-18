@@ -20,6 +20,7 @@ import SuccessAddTeamModal, {
   openSuccessAddTeamModal,
 } from "../SuccessAddTeamModal/SuccessAddTeamModal";
 import { useEditTeamMutation } from "../../Hooks/useEditTeamMutation";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function OrganisationSetting() {
   const router = useRouter();
@@ -916,6 +917,7 @@ function OrganisationSetting() {
       </div>
       <AddMemberModal />
       <SuccessAddTeamModal />
+      <LogoutModal />
     </>
   );
 }

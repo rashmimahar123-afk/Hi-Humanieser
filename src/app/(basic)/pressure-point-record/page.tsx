@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import PressurePointRecord from "@/src/modules/ChampionHubModule/Components/PressurePointRecord/PressurePointRecord";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function PressurePointRecordPage() {
   );
 }
 
-export default PressurePointRecordPage;
+export default withProtectedRoute(PressurePointRecordPage);

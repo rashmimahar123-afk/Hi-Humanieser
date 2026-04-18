@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";
 import ProfileNotification from "@/src/modules/ProfileModule/Components/ProfileNotification/ProfileNotification";
@@ -15,4 +16,4 @@ function NotificationPage() {
   );
 }
 
-export default NotificationPage;
+export default withProtectedRoute(NotificationPage);

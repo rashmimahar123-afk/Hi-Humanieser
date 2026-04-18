@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import SavePathway from "@/src/modules/PersonalPathwayModule/Components/SavePathway/SavePathway";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function SavePathwayPage() {
   );
 }
 
-export default SavePathwayPage;
+export default withProtectedRoute(SavePathwayPage);

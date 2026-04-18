@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ContinuePressure from "@/src/modules/ChampionHubModule/Components/ContinuePressure/ContinuePressure";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import ChampionHub from "@/src/modules/ProfileModule/Components/ChampionHub/ChampionHub";
@@ -16,4 +17,4 @@ function ContinuePressurePage() {
   );
 }
 
-export default ContinuePressurePage;
+export default withProtectedRoute(ContinuePressurePage);

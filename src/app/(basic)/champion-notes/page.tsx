@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ChampionNotes from "@/src/modules/ChampionHubModule/Components/ChampionNotes/ChampionNotes";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import ChampionHub from "@/src/modules/ProfileModule/Components/ChampionHub/ChampionHub";
@@ -16,4 +17,4 @@ function ChampionNotesPage() {
   );
 }
 
-export default ChampionNotesPage;
+export default withProtectedRoute(ChampionNotesPage);

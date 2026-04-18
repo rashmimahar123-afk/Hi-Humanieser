@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import HumanieserMoments from "@/src/modules/ChampionHubModule/Components/HumanieserMoments/HumanieserMoments";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import ChampionHub from "@/src/modules/ProfileModule/Components/ChampionHub/ChampionHub";
@@ -16,4 +17,4 @@ function MomentsPage() {
   );
 }
 
-export default MomentsPage;
+export default withProtectedRoute(MomentsPage);

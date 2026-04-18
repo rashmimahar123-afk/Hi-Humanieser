@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";
 import ProfilePathway from "@/src/modules/ProfileModule/Components/ProfilePathway/ProfilePathway";
@@ -14,4 +15,4 @@ function MyPathwayPage() {
   );
 }
 
-export default MyPathwayPage;
+export default withProtectedRoute(MyPathwayPage);

@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ChoosePathwayPage from "@/src/modules/ChoosePathwayModule/Components/ChoosePathwayPage/ChoosePathwayPage";
 import ChangeMyPathway from "@/src/modules/PersonalPathwayModule/Components/ChangeMyPathway/ChangeMyPathway";
 import HelpFeedback from "@/src/modules/ProfileModule/Components/HelpFeedback/HelpFeedback";
@@ -16,4 +17,4 @@ function HelpFeedbackPage() {
   );
 }
 
-export default HelpFeedbackPage;
+export default withProtectedRoute(HelpFeedbackPage);

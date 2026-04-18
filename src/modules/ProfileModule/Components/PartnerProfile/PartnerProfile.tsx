@@ -4,6 +4,7 @@ import {
   MY_PROFILE_RESPONSE,
   ORGANISATION_DATA,
 } from "../../Types/ResponseTypes";
+import { formatJoinedDate } from "@/src/lib/Helpers";
 
 type PROFILE_DATA_PROPS = {
   profileData: MY_PROFILE_RESPONSE;
@@ -11,17 +12,6 @@ type PROFILE_DATA_PROPS = {
 };
 function PartnerProfile(props: PROFILE_DATA_PROPS) {
   const { profileData, organizationData } = props;
-
-  const formatJoinedDate = (timestamp?: number) => {
-    if (!timestamp) return "";
-
-    const date = new Date(timestamp * 1000); // convert to ms
-
-    return date.toLocaleString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
-  };
 
   return (
     <section className="relative mx-14 rounded-[24px] bg-[#F8E1B8] px-14 py-12 overflow-hidden">

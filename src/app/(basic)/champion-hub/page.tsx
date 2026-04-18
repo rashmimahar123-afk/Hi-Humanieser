@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import ChampionHub from "@/src/modules/ProfileModule/Components/ChampionHub/ChampionHub";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";
@@ -15,4 +16,4 @@ function ChampionHubPage() {
   );
 }
 
-export default ChampionHubPage;
+export default withProtectedRoute(ChampionHubPage);

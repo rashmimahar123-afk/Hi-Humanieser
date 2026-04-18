@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";
 import TeamSetting from "@/src/modules/ProfileModule/Components/TeamSetting/TeamSetting";
@@ -14,4 +15,4 @@ function TeamSettingPage() {
   );
 }
 
-export default TeamSettingPage;
+export default withProtectedRoute(TeamSettingPage);

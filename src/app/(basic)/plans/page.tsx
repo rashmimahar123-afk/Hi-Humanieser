@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import { MilestoneDataProvider } from "@/src/context/MilestoneDataContextProvider";
 import AllPlans from "@/src/modules/AllPlans/Components/AllPlans";
 import PersonalPathway from "@/src/modules/PersonalPathwayModule/Components/PersonalPathway";
@@ -14,4 +15,4 @@ function PlansPage() {
   );
 }
 
-export default PlansPage;
+export default withProtectedRoute(PlansPage);

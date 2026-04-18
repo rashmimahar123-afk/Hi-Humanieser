@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import MyTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/MyTeamJourney/MyTeamJourney";
 import StartTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/StartTeamJourney/StartTeamJourney";
 import PersonalPathway from "@/src/modules/PersonalPathwayModule/Components/PersonalPathway";
@@ -14,4 +15,4 @@ function MyTeamJourneyPage() {
   );
 }
 
-export default MyTeamJourneyPage;
+export default withProtectedRoute(MyTeamJourneyPage);

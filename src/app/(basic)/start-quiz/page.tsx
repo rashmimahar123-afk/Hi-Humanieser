@@ -1,5 +1,6 @@
 "use client";
 
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import StartQuizPage from "@/src/modules/ChoosePathwayModule/Components/StartQuizPage/StartQuizPage";
 import React, { Suspense } from "react";
 
@@ -13,4 +14,4 @@ function StartquizPage() {
   );
 }
 
-export default StartquizPage;
+export default withProtectedRoute(StartquizPage);

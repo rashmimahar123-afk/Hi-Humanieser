@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ChoosePathwayPage from "@/src/modules/ChoosePathwayModule/Components/ChoosePathwayPage/ChoosePathwayPage";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function ChoosePathway() {
   );
 }
 
-export default ChoosePathway;
+export default withProtectedRoute(ChoosePathway);

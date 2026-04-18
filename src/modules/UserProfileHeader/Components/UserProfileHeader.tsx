@@ -4,6 +4,7 @@ import { useState } from "react";
 import ProfileDropdown from "../../ProfileDropdown/ProfileDropdown";
 import { USER_INFO_TYPE } from "../../AuthModule/Types/CommonTypes";
 import { useRouter } from "next/navigation";
+import useMyProfileQuery from "../../ProfileModule/Hooks/useMyProfileQuery";
 
 type USER_PROFILE_HEADER_PROPS = {
   greetingColor?: string;
@@ -16,44 +17,48 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
   const { greetingColor, nameColor, hideUserProfile, userInfo } = props;
   const [openDropdown, setOpenDropdown] = useState(false);
   const router = useRouter();
-
+  const { data, isLoading } = useMyProfileQuery();
+  const profileData = data?.data;
   return (
     <>
       <div className="flex justify-between items-start gap-2">
         {/* Left */}
-        <div
-          onClick={() => router.push("/home")}
-          className="cursor-pointer min-w-0 flex-1"
-        >
+        <div className="min-w-0 flex-1">
           <div
-            style={{
-              fontFamily: "Aptos",
-              fontSize: "22px",
-              color: greetingColor,
-              whiteSpace: "nowrap",
-            }}
+            onClick={() => router.push("/home")}
+            className="cursor-pointer inline-block"
           >
-            Hi Humaniser!{" "}
-            <span
+            <div
               style={{
-                fontSize: "0.55em",
-                verticalAlign: "super",
-                lineHeight: 0,
+                fontFamily: "Aptos",
+                fontSize: "22px",
+                color: greetingColor,
+                whiteSpace: "nowrap",
               }}
             >
-              ™
-            </span>
+              Hi Humaniser!{" "}
+              <span
+                style={{
+                  fontSize: "0.55em",
+                  verticalAlign: "super",
+                  lineHeight: 0,
+                }}
+              >
+                ™
+              </span>
+            </div>
+
+            <h1
+              className="mt-2 font-bold leading-none"
+              style={{
+                fontFamily: "RocaTwo-Bold",
+                color: nameColor,
+                fontSize: "clamp(32px, 8vw, 56px)",
+              }}
+            >
+              Hi {profileData?.first_name || ""}!
+            </h1>
           </div>
-          <h1
-            className="mt-2 font-bold leading-none"
-            style={{
-              fontFamily: "RocaTwo-Bold",
-              color: nameColor,
-              fontSize: "clamp(32px, 8vw, 56px)",
-            }}
-          >
-            Hi Maria!
-          </h1>
         </div>
 
         {/* Right profile */}
@@ -70,9 +75,9 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
                 fontSize: "clamp(12px, 3vw, 16px)",
               }}
             >
-              Maria
+              {profileData?.first_name || ""}
               <br />
-              Palacios
+              {profileData?.last_name || ""}
             </div>
             <div className="relative w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] flex-shrink-0">
               {/* Green shape */}

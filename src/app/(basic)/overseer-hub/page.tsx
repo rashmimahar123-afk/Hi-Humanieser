@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import ChampionHub from "@/src/modules/ProfileModule/Components/ChampionHub/ChampionHub";
 import OverseerHub from "@/src/modules/ProfileModule/Components/OverseerHub/OverseerHub";
@@ -16,4 +17,4 @@ function OverseerHubPage() {
   );
 }
 
-export default OverseerHubPage;
+export default withProtectedRoute(OverseerHubPage);

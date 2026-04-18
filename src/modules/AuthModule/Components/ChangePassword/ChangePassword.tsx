@@ -7,28 +7,57 @@ import {
   getPasswordValidationRules,
 } from "@/src/lib/Helpers";
 import { emailMessage, passwordMessage } from "@/src/lib/ErrorMessages";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import useAuthValue from "../../Hooks/useAuthValue";
+import { useChangePasswordMutation } from "../../Hooks/useChangePasswordMutation";
+import styles from "./ChangePassword.module.css";
 
 function ChangePassword() {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
+  const [enter, setEnter] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      email_address: "",
+      currentPassword: "",
+      password: "",
+      confirm_password: "",
+    },
+  });
 
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
+  const { user } = useAuthValue();
+  const passwordValue = watch("password");
+
+  const { mutate, isPending } = useChangePasswordMutation();
   const onSubmit = (data: any) => {
-    console.log("Change Password Data:", data);
+    mutate({
+      current_password: data.currentPassword,
+      new_password: data.newPassword,
+    });
   };
-
   return (
-    <div className="min-h-screen bg-[#e8e4df] flex flex-col">
+    <div
+      className={`min-h-screen bg-[#e8e4df] flex flex-col  page ${
+        enter ? "enterActive" : "enter"
+      }`}
+    >
       <Image
         src={images.loginRectangle}
         alt="login-rectangle"
@@ -130,7 +159,7 @@ function ChangePassword() {
                 </label>
                 <input
                   type="email"
-                  value="prefilled@email.com"
+                  value={user?.sub || ""}
                   readOnly
                   className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
@@ -142,57 +171,110 @@ function ChangePassword() {
                   Current password
                 </label>
                 <input
-                  type={showCurrent ? "text" : "password"}
-                  {...register("currentPassword", { required: "Required" })}
+                  type={showCurrentPassword ? "text" : "password"}
+                  {...register("currentPassword")}
                   className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className={styles.eyeCurrentBtn}
+                >
+                  <Image
+                    src={showCurrentPassword ? images.eyeOpen : images.eyeClose}
+                    alt="toggle password"
+                    width={24}
+                    height={24}
+                  />
+                </button>
               </div>
 
               {/* New Password */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
-                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
-                  Add your new password
-                </label>
-                <input
-                  type={showNew ? "text" : "password"}
-                  {...register("newPassword", { required: "Required" })}
-                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                />
+              <div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                  <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                    Add your new password
+                  </label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...register(
+                      "password",
+                      getPasswordValidationRules(
+                        passwordMessage.password_required,
+                        passwordMessage.password_message,
+                      ),
+                    )}
+                    className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={styles.eyeBtn}
+                  >
+                    <Image
+                      src={showPassword ? images.eyeOpen : images.eyeClose}
+                      alt="toggle password"
+                      width={24}
+                      height={24}
+                    />
+                  </button>
+                </div>
+                {errors.password && (
+                  <p className={styles.errorText}>{errors.password.message}</p>
+                )}
               </div>
-
               {/* Repeat Password */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
-                <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
-                  Repeat your new password
-                </label>
-                <input
-                  type={showRepeat ? "text" : "password"}
-                  {...register("repeatPassword", {
-                    required: "Required",
-                    validate: (value) =>
-                      value === watch("newPassword") ||
-                      "Passwords do not match",
-                  })}
-                  className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                />
+              <div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                  <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                    Repeat your new password
+                  </label>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    {...register("confirm_password", {
+                      required: "Confirm password is required",
+                      validate: (value) =>
+                        value === passwordValue || "Passwords do not match",
+                    })}
+                    className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className={styles.eyeBtnConfirm}
+                  >
+                    <Image
+                      src={
+                        showConfirmPassword ? images.eyeOpen : images.eyeClose
+                      }
+                      alt="toggle password"
+                      width={24}
+                      height={24}
+                    />
+                  </button>
+                </div>
+                {errors.confirm_password && (
+                  <p className={styles.errorText}>
+                    {errors.confirm_password.message}
+                  </p>
+                )}
               </div>
-
               {/* Button */}
               <div className="flex justify-end">
-                <PolygonButton
-                  width="106px"
-                  height="75px"
-                  bgColor="#86c9c9"
-                  radius={14}
-                  clipPath={`polygon(15% 11%, 81% 0%, 100% 87%, 3% calc(100% - 15px))`}
-                  childTop={11}
-                >
-                  <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
-                    Send Reset
-                    <br />
-                    <span className="whitespace-nowrap">Link</span>
-                  </span>
-                </PolygonButton>
+                <button type="submit">
+                  <PolygonButton
+                    width="106px"
+                    height="75px"
+                    bgColor="#86c9c9"
+                    radius={14}
+                    clipPath={`polygon(15% 11%, 81% 0%, 100% 87%, 3% calc(100% - 15px))`}
+                    childTop={11}
+                  >
+                    <span className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-bold leading-tight text-center">
+                      {isPending ? "Please wait..." : "Send Reset Link"}
+                    </span>
+                  </PolygonButton>
+                </button>
               </div>
             </form>
           </div>

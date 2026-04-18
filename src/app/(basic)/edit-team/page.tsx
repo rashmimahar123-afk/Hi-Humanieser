@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import EditTeam from "@/src/modules/TeamSettingModule/Components/EditTeam/EditTeam";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function EditTeamPage() {
   );
 }
 
-export default EditTeamPage;
+export default withProtectedRoute(EditTeamPage);

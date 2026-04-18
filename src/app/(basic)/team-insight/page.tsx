@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import TeamFocus from "@/src/modules/ChampionHubModule/Components/TeamFocus/TeamFocus";
 import TeamInsight from "@/src/modules/ChampionHubModule/Components/TeamInsight/TeamInsight";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
@@ -17,4 +18,4 @@ function TeamInsightPage() {
   );
 }
 
-export default TeamInsightPage;
+export default withProtectedRoute(TeamInsightPage);

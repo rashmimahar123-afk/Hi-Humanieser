@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import Faq from "@/src/modules/FAQModule/Components/Faq";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function FaqPage() {
   );
 }
 
-export default FaqPage;
+export default withProtectedRoute(FaqPage);

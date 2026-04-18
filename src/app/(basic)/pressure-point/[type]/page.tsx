@@ -5,8 +5,9 @@ import UrgentPressurePoint from "@/src/modules/PressurePoint/Components/UrgentPr
 import AlignmentPressurePoint from "@/src/modules/PressurePoint/Components/AlignmentPressurePoint/AlignmentPressurePoint";
 import LatePressurePoint from "@/src/modules/PressurePoint/Components/LatePressurePoint/LatePressurePoint";
 import DependencyPressurePoint from "@/src/modules/PressurePoint/Components/DependencyPressurePoint/DependencyPressurePoint";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 
-export default function PressurePointDetail() {
+function PressurePointDetail() {
   const params = useParams();
   const type = params.type as string;
 
@@ -26,3 +27,4 @@ export default function PressurePointDetail() {
     </div>
   );
 }
+export default withProtectedRoute(PressurePointDetail);

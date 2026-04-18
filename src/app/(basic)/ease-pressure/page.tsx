@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import EasePressure from "@/src/modules/ChampionHubModule/Components/EasePressure/EasePressure";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function EasePressurePage() {
   );
 }
 
-export default EasePressurePage;
+export default withProtectedRoute(EasePressurePage);

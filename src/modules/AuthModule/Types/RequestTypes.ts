@@ -10,3 +10,8 @@ export type LOGIN_REQUEST_TYPE = {
   email_address: string;
   password: string;
 };
+
+export type CHANGE_PASSWORD_REQUEST_TYPE = {
+  current_password: string;
+  new_password: string;
+};

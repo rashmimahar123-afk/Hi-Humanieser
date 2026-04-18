@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import TeamWorkshops from "@/src/modules/ChampionHubModule/Components/TeamWorkshops/TeamWorkshops";
 import ThingsTricky from "@/src/modules/ChampionHubModule/Components/ThingsTricky/ThingsTricky";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
@@ -16,4 +17,4 @@ function TrickyPage() {
   );
 }
 
-export default TrickyPage;
+export default withProtectedRoute(TrickyPage);

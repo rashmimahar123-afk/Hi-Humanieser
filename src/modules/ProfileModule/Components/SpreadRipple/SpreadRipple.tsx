@@ -4,6 +4,7 @@ import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserPr
 import SendInvitationModal from "../SendInvitationModal/SendInvitationModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { useEffect, useState } from "react";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function SpreadRipple() {
   const { user } = useAuthValue();
@@ -55,6 +56,7 @@ function SpreadRipple() {
         </div>
       </main>
       <SendInvitationModal />
+      <LogoutModal />
     </>
   );
 }

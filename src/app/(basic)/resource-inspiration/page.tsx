@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ResourceInspiration from "@/src/modules/ResourceInspiration/Components/ResourceInspiration";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function ResourceInspirationPage() {
   );
 }
 
-export default ResourceInspirationPage;
+export default withProtectedRoute(ResourceInspirationPage);

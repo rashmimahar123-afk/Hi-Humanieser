@@ -480,3 +480,14 @@ export const enrichProgressWithPractice = (
     };
   });
 };
+
+export const formatJoinedDate = (timestamp?: number) => {
+  if (!timestamp) return "";
+
+  const date = new Date(timestamp * 1000); // convert to ms
+
+  return date.toLocaleString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
+};

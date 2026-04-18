@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ChoosePathwayPage from "@/src/modules/ChoosePathwayModule/Components/ChoosePathwayPage/ChoosePathwayPage";
 import Amplifier from "@/src/modules/PersonalPathwayModule/Components/Amplifier/Amplifier";
 import ChangeMyPathway from "@/src/modules/PersonalPathwayModule/Components/ChangeMyPathway/ChangeMyPathway";
@@ -14,4 +15,4 @@ function PathwayCardPage() {
   );
 }
 
-export default PathwayCardPage;
+export default withProtectedRoute(PathwayCardPage);

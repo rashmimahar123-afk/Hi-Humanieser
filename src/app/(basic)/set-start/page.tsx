@@ -1,7 +1,9 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import React, { Suspense } from "react";
 const SetStartPage = React.lazy(
-  () => import("@/src/modules/StartModule/Components/SetStartPage/SetStartPage")
+  () =>
+    import("@/src/modules/StartModule/Components/SetStartPage/SetStartPage"),
 );
 
 function SetStart() {
@@ -14,4 +16,4 @@ function SetStart() {
   );
 }
 
-export default SetStart;
+export default withProtectedRoute(SetStart);

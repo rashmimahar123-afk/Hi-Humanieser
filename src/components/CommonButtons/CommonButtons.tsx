@@ -90,7 +90,7 @@ function CommonButtons({
             alt="arrow"
             width={40}
             height={40}
-            className="w-[40px] h-[40px] sm:w-[49px] sm:h-[49px]"
+            // className="w-[40px] h-[40px] sm:w-[49px] sm:h-[49px]"
           />
         </span>
       </button>

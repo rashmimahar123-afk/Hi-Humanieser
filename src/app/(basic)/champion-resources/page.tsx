@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import ChampionResources from "@/src/modules/ChampionHubModule/Components/ChampionResources/ChampionResources";
 import React, { Suspense } from "react";
 
@@ -12,4 +13,4 @@ function ChampionResourcesPage() {
   );
 }
 
-export default ChampionResourcesPage;
+export default withProtectedRoute(ChampionResourcesPage);
