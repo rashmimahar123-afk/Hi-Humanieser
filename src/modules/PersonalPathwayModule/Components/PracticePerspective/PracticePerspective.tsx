@@ -13,11 +13,13 @@ type PRACTICE_PERSPECTIVE_PROPS = {
   pathwayData: any;
   formattedActivePathways: any;
 };
+
 type ActivePathwayType = {
   m1: any;
   m2: any;
   m3: any;
 };
+
 function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
   const {
     ClosePracticePerspective,
@@ -27,8 +29,8 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
     pathwayData,
     formattedActivePathways,
   } = props;
-  type PracticeStep = "milestone1" | "milestone2" | "milestone3";
 
+  type PracticeStep = "milestone1" | "milestone2" | "milestone3";
   const [step, setStep] = useState<PracticeStep>("milestone1");
   const [activePathway, setActivePathway] = useState<ActivePathwayType | null>(
     null,
@@ -36,14 +38,13 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
 
   const searchParams = useSearchParams();
   const pathname = searchParams.get("step");
+
   useEffect(() => {
     const active = pathwayData?.find((p: any) => p.active && p.uuid === id);
-
     if (active) {
       const firstKey = Object.keys(active).find(
         (k) => !["uuid", "active", "created"].includes(k),
       );
-
       if (firstKey) {
         setActivePathway({
           m1: active[firstKey]?.m1,
@@ -55,8 +56,8 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
   }, [pathwayData, id]);
 
   return (
-    <div className=" bg-[#D6ECEB] flex justify-center">
-      <div className="w-full  px-12 py-4 relative">
+    <div className="bg-[#D6ECEB] flex justify-center">
+      <div className="w-full px-4 sm:px-8 lg:px-12 py-4 relative">
         {step === "milestone1" && pathname === "1" && (
           <Milestone1
             onNext={() => setStep("milestone2")}
@@ -66,7 +67,6 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
             m1Data={activePathway?.m1}
           />
         )}
-
         {step === "milestone2" && pathname === "2" && (
           <MilestoneTwo
             onNext={() => setStep("milestone3")}
@@ -76,7 +76,6 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
             m2Data={activePathway?.m2}
           />
         )}
-
         {step === "milestone3" && pathname === "3" && (
           <MilestoneThree
             ClosePracticePerspective={ClosePracticePerspective}
@@ -91,4 +90,5 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
     </div>
   );
 }
+
 export default PracticePerspective;

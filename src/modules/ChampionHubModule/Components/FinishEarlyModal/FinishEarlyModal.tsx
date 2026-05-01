@@ -9,6 +9,8 @@ import useEventEmitter, {
 } from "@/src/components/Hooks/useEventEmitter";
 import { openExtendTimeModal } from "../YesExtendTimeModal/YesExtendTimeModal";
 import { openCompleteRitualModal } from "../YesCompleteRitualModal/YesCompleteRitualModal";
+import { useFinishCycleMutation } from "../../Hooks/useFinishCycleMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 const EVENT = "FINISH_EARLY_MODAL_EVENT";
 
@@ -23,6 +25,25 @@ function FinishEarlyModal() {
     setIsOpen(true);
   });
 
+  const { mutate, isPending } = useFinishCycleMutation();
+  const handleFinishCycle = () => {
+    mutate(undefined, {
+      onSuccess: () => {
+        setIsOpen(false);
+        openCompleteRitualModal();
+      },
+      onError: (error: any) => {
+        console.error("Complete failed:", error);
+
+        const errorMessage =
+          error?.response?.data?.detail ||
+          error?.response?.data?.message ||
+          "Something went wrong";
+
+        SnackbarHandler.errorToast(errorMessage);
+      },
+    });
+  };
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
@@ -65,13 +86,11 @@ function FinishEarlyModal() {
           <div className="flex gap-4 justify-center ">
             {" "}
             <button
-              onClick={() => {
-                setIsOpen(false);
-                openCompleteRitualModal();
-              }}
+              onClick={handleFinishCycle}
               className="bg-[#567F55] text-white px-6 py-3 rounded-full cursor-pointer"
+              disabled={isPending}
             >
-              Yes, complete this ritual
+              {isPending ? "Completing..." : "Yes, complete this ritual"}
             </button>
             <button
               onClick={() => setIsOpen(false)}

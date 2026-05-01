@@ -8,6 +8,8 @@ import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
 import { openExtendTimeModal } from "../YesExtendTimeModal/YesExtendTimeModal";
+import { useExtendPracticeMutation } from "../../Hooks/useExtendPracticeMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 const EVENT = "NEED_MORE_TIME_MODAL_EVENT";
 
@@ -22,6 +24,26 @@ function NeedMoreTimeModal() {
     setIsOpen(true);
   });
 
+  const { mutate, isPending } = useExtendPracticeMutation();
+
+  const handleExtendPractice = () => {
+    mutate(undefined, {
+      onSuccess: () => {
+        setIsOpen(false);
+        openExtendTimeModal(); // success modal
+      },
+      onError: (error: any) => {
+        console.error("Complete failed:", error);
+
+        const errorMessage =
+          error?.response?.data?.detail ||
+          error?.response?.data?.message ||
+          "Something went wrong";
+
+        SnackbarHandler.errorToast(errorMessage);
+      },
+    });
+  };
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
@@ -63,13 +85,10 @@ function NeedMoreTimeModal() {
           <div className="flex gap-4 justify-center ">
             {" "}
             <button
-              onClick={() => {
-                setIsOpen(false);
-                openExtendTimeModal();
-              }}
+              onClick={() => handleExtendPractice()}
               className="bg-[#567F55] text-white px-6 py-3 rounded-full cursor-pointer"
             >
-              Yes, extend 2 weeks
+              {isPending ? "Extending..." : "Yes, extend 2 weeks"}
             </button>
             <button
               onClick={() => setIsOpen(false)}

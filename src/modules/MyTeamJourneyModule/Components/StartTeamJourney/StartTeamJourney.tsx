@@ -5,6 +5,7 @@ import images from "@/src/assets/images";
 import styles from "./StartTeamJourney.module.css";
 import { useEffect, useState } from "react";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function StartTeamJourney() {
   const [enter, setEnter] = useState(false);
@@ -153,6 +154,7 @@ function StartTeamJourney() {
           </div>
         </div>
       </div>
+      <LogoutModal />
     </>
   );
 }

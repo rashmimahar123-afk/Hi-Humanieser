@@ -7,6 +7,8 @@ import ContinuePressureCards from "../ContinuePressureCards/ContinuePressureCard
 import SelectTeamRitualModal, {
   openSelectTeamRitualModal,
 } from "../SelectTeamRitualModal/SelectTeamRitualModal";
+import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
+import { FOCUS_AREA_SCORES_DATA } from "../../Types/ResponseTypes";
 
 function ContinuePressure() {
   const [animateText, setAnimateText] = useState(false);
@@ -17,8 +19,7 @@ function ContinuePressure() {
   }, []);
 
   const router = useRouter();
-  const ritualOptions = ["Weekly Sync", "Retro", "Check-in", "Planning"];
-  const [open, setOpen] = useState(false);
+
   const [openActiveRitual, setOpenActiveRitual] = useState(false);
 
   const [selected, setSelected] = useState("");
@@ -27,6 +28,18 @@ function ContinuePressure() {
 
     setOpen(false);
   };
+
+  const { mutate, data, isPending } = useRecommendFocusAreaMutation();
+  useEffect(() => {
+    mutate();
+  }, []);
+  const ritualOptions = data?.scores?.map((item: any) => item.option) || [];
+  const [open, setOpen] = useState(false);
+
+  const selectedRituals =
+    data?.recommended_team_rituals?.find(
+      (item: any) => item.focus_area === selected,
+    )?.team_rituals || [];
 
   return (
     <>
@@ -67,7 +80,7 @@ function ContinuePressure() {
 
                 {open && (
                   <div className="absolute top-[60px] w-full bg-white rounded-2xl shadow-lg overflow-hidden">
-                    {ritualOptions.map((item) => (
+                    {ritualOptions.map((item: string) => (
                       <div
                         key={item}
                         onClick={() => handleSelect(item)}

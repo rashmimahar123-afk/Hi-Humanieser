@@ -10,9 +10,11 @@ type FocusLabel =
 
 type HoverOptionProps = {
   label: FocusLabel;
+  isSelected: boolean;
+  onClick: (label: FocusLabel) => void;
 };
 
-function HoverOption({ label }: HoverOptionProps) {
+function HoverOption({ label, isSelected, onClick }: HoverOptionProps) {
   const focusBlurb = {
     "Build Trust":
       "Create honesty and safety so people can rely on each other and speak up.",
@@ -34,12 +36,21 @@ function HoverOption({ label }: HoverOptionProps) {
   };
 
   return (
-    <div className="relative group flex items-center gap-3 cursor-pointer">
+    <div
+      onClick={() => onClick(label)}
+      className="relative group flex items-center gap-3 cursor-pointer"
+    >
       {/* Radio */}
-      <span className="w-3 h-3 rounded-full border border-[#0F4F58]" />
+      <span
+        className={`w-3 h-3 rounded-full border border-[#0F4F58] flex items-center justify-center ${
+          isSelected ? "bg-[#0F4F58]" : ""
+        }`}
+      />
 
       {/* Label */}
-      <span>{label}</span>
+      <span className={isSelected ? "font-bold text-[#0F4F58]" : ""}>
+        {label}
+      </span>
 
       {/* Tooltip */}
       <div
@@ -66,7 +77,6 @@ function HoverOption({ label }: HoverOptionProps) {
       >
         {focusBlurb[label]}
 
-        {/* Tooltip arrow */}
         <span
           className="
             absolute

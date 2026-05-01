@@ -1,54 +1,58 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 
-interface Props {
-  text?: string;
-  rotate?: string;
+interface ViewAllReflectionCardProps {
+  text: string;
+  rotate: string;
   imageKey: any;
   index: number;
 }
 
-const textColors = [
-  "text-[#1F4D52]",
-  "text-[#355F5B]",
-  "text-[#2F6F73]",
-  "text-[#4A6E6A]",
-];
-
-export default function ViewAllReflectionCard({
+function ViewAllReflectionCard({
   text,
   rotate,
   imageKey,
   index,
-}: Props) {
-  const isReflectionWall2 =
-    typeof imageKey === "object" && imageKey?.src?.includes("reflectionWall2");
-
+}: ViewAllReflectionCardProps) {
   return (
-    <div className={`relative w-[397px] h-[373px] ${rotate} `}>
-      {/* NOTE IMAGE */}
-      <Image
-        src={imageKey}
-        alt="reflection wall"
-        fill
-        className="object-contain"
-      />
+    <div
+      className={`relative ${rotate} flex-shrink-0`}
+      style={{ width: "220px", minHeight: "220px" }}
+    >
+      {/* Card background image */}
+      <div className="relative w-full h-full">
+        <Image
+          src={imageKey}
+          alt={`reflection-card-${index}`}
+          width={220}
+          height={220}
+          className="w-full h-auto object-contain"
+        />
+      </div>
 
-      {/* TEXT */}
-      {text && (
-        <div
-          className={`absolute inset-0 flex items-center justify-center px-10 text-center ${
-            isReflectionWall2 ? "mt-[80px]" : ""
-          }`}
+      {/* Text overlay — sits inside the card image bounds */}
+      <div
+        className="absolute inset-0 flex items-center justify-center px-5 py-8"
+        style={{ top: "12px", bottom: "8px", left: "0", right: "0" }}
+      >
+        <p
+          className="text-[#0F4F58] font-[Roboto] text-center overflow-hidden"
+          style={{
+            fontSize: "13px",
+            lineHeight: "1.5",
+            fontWeight: 500,
+            display: "-webkit-box",
+            WebkitLineClamp: 7,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            wordBreak: "break-word",
+            maxHeight: "100%",
+          }}
         >
-          <p
-            className={`${textColors[index % textColors.length]}
-              text-[17px] leading-[20px] font-[Roboto] font-[400] max-w-[280px] `}
-          >
-            {text}
-          </p>
-        </div>
-      )}
+          {text}
+        </p>
+      </div>
     </div>
   );
 }
+
+export default ViewAllReflectionCard;

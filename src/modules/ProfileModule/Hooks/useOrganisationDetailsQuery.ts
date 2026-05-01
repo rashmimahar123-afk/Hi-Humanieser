@@ -18,11 +18,14 @@ const getOrganisationDetails = (
     method: "GET",
   });
 };
-function useOrganisationDetailsQuery(org_id?: string) {
+function useOrganisationDetailsQuery(
+  org_id?: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: [GET_ORGANISATION_DETAILS_QUERY_KEY, org_id],
     queryFn: () => getOrganisationDetails(org_id as string),
-    enabled: !!org_id,
+    enabled: !!org_id && options?.enabled,
   });
 }
 

@@ -1,8 +1,6 @@
 "use client";
 
 import images from "@/src/assets/images";
-import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
-import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,60 +8,37 @@ import SuggestPressurePointModal, {
   openSuggestPressurePointModal,
 } from "../SuggestPressurePointModal/SuggestPressurePointModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
+import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
+import { chunkByPattern } from "@/src/lib/Helpers";
 
 function TeamFocus() {
-  const teamMembers = [
-    { name: "Matthew Richardson", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "George Brown", image: images.userProfile },
-
-    { name: "Maria Palacios", image: images.maria },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-
-    { name: "Matthew Richardson", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "George Brown", image: images.userProfile },
-
-    { name: "Maria Palacios", image: images.maria },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Maria Palacios", image: images.maria },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-  ];
-
-  const chunkByPattern = (arr: any, pattern = [8, 6]) => {
-    const chunks = [];
-    let i = 0;
-    let p = 0;
-
-    while (i < arr.length) {
-      chunks.push(arr.slice(i, i + pattern[p]));
-      i += pattern[p];
-      p = (p + 1) % pattern.length;
-    }
-
-    return chunks;
-  };
-
-  const rows = chunkByPattern(teamMembers);
-
   const router = useRouter();
   const { user } = useAuthValue();
+
+  const { data: teamsData } = useGetTeamsQuery();
+  const teamName =
+    teamsData?.data?.teams?.find((team: any) => team.id === user?.team_id)
+      ?.team_name || "N/A";
+
+  const { data: usersData } = useGetAllListUsersQuery();
+
+  const allUsers = usersData?.data?.users || [];
+  const allTeamMembers = allUsers.filter(
+    (userItem) =>
+      userItem.team_id === user?.team_id &&
+      !userItem.deactivated &&
+      userItem?.user_type === 1,
+  );
+  const mappedTeamMembers = allTeamMembers.map((member: any) => ({
+    name: `${member.first_name} ${member.last_name}`,
+    image:
+      member.has_profile_picture && member.profile_picture_path
+        ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${member.profile_picture_path}`
+        : images.dummyUser,
+  }));
+  const rows = chunkByPattern(mappedTeamMembers || []);
+
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -96,16 +71,13 @@ function TeamFocus() {
           </h3>
 
           <p className="text-[#0F4F58] text-[22px] leading-relaxed mb-6">
-            As a Champion, you play a key role in how work actually happens in
-            your team. This hub gives you a clear view of what’s going on — and
-            practical ways to guide focus, reduce friction, and keep progress
-            moving.
+            Use this space to listen to your team, notice where pressure is
+            showing up, and decide what to work on next.
           </p>
 
           <p className="text-[#0F4F58] text-[22px] leading-relaxed">
-            You’ll find insights, signals, and actionable options to help you
-            make deliberate decisions — so small, consistent actions strengthen
-            clarity, coordination, and execution over time.
+            Team Focus runs in simple cycles — helping you move from awareness
+            into shared action.
           </p>
         </div>
 
@@ -115,7 +87,7 @@ function TeamFocus() {
             <h2 className="text-[38px] font-[RocaTwo] text-[#0F4F58]">Team</h2>
 
             <div className="bg-[#F3EEE7] px-6 py-3 rounded-xl text-[#5E7F6F] text-[18px] font-[Roboto]">
-              Systems Engineering - UK (allow 45 characters)
+              {teamName}
             </div>
           </div>
 
@@ -128,40 +100,51 @@ function TeamFocus() {
                 A quick view of who you’re guiding through this shared practice.
               </div>
             </div>
-            {rows.map((row, rowIndex) => {
-              const cols = row.length; // 8 or 6 dynamically
+            {!usersData ? (
+              <p className="text-[#0F4F58] text-[16px]">
+                Loading team members...
+              </p>
+            ) : mappedTeamMembers.length === 0 ? (
+              <p className="text-[#0F4F58] text-[16px]">
+                No team members found
+              </p>
+            ) : (
+              rows.map((row, rowIndex) => {
+                const isSix = row.length === 6;
 
-              return (
-                <div
-                  key={rowIndex}
-                  className={`grid justify-center gap-y-14 gap-x-14`}
-                  style={{
-                    gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-                  }}
-                >
-                  {row.map((member: any, index: number) => (
+                return (
+                  <div key={rowIndex}>
                     <div
-                      key={index}
-                      className="flex flex-col items-center text-center"
+                      className={`grid gap-y-8 sm:gap-y-10 md:gap-y-12 gap-x-2 sm:gap-x-4 md:gap-x-6 ${
+                        isSix
+                          ? "grid-cols-3 sm:grid-cols-6"
+                          : "grid-cols-4 sm:grid-cols-8"
+                      }`}
                     >
-                      <div className="h-[88px] w-[88px] rounded-full overflow-hidden">
-                        <Image
-                          src={member.image}
-                          alt={member.name}
-                          width={88}
-                          height={88}
-                          className="object-cover"
-                        />
-                      </div>
-
-                      <p className="mt-4 text-[16px] font-[Roboto] text-[#0F4F58] leading-5 max-w-[140px]">
-                        {member.name}
-                      </p>
+                      {row.map((member: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex flex-col items-center text-center"
+                        >
+                          <div className="h-[48px] w-[48px] sm:h-[60px] sm:w-[60px] md:h-[72px] md:w-[72px] rounded-full overflow-hidden">
+                            <Image
+                              src={member.image}
+                              alt={member.name}
+                              width={72}
+                              height={72}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                          <p className="mt-2 text-[10px] sm:text-[12px] md:text-[13px] text-[#0F4F58]">
+                            {member.name}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -211,16 +194,16 @@ function TeamFocus() {
             <div className="relative z-10 mt-20 grid grid-cols-3 gap-12  mx-auto">
               {/* CARD 1 */}
               <div
-                className="bg-[#f8e1b8] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out"
+                className="bg-[#f8e1b8] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
                 onClick={() => router.push("/pressure-point/urgent")}
               >
                 <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                   Everything feels urgent.{" "}
                 </h3>
 
-                <div className="relative h-[182px]">
+                <div className="relative h-[124px]">
                   <Image
-                    src={images.resourcePoly1}
+                    src={images.hubPolyThree}
                     alt="shape"
                     fill
                     className="object-contain absolute -left-[24px] top-0"
@@ -236,16 +219,16 @@ function TeamFocus() {
 
               {/* CARD 2 */}
               <div
-                className="bg-[#fbe1de] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out"
+                className="bg-[#fbe1de] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
                 onClick={() => router.push("/pressure-point/alignment")}
               >
                 <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                   Teams are busy, but not aligned{" "}
                 </h3>
 
-                <div className="relative h-[182px]">
+                <div className="relative h-[124px]">
                   <Image
-                    src={images.resourcePoly2}
+                    src={images.hubPolyFour}
                     alt="shape"
                     fill
                     className="object-contain"
@@ -261,16 +244,16 @@ function TeamFocus() {
 
               {/* CARD 3 */}
               <div
-                className="bg-[#D2E5E6] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out"
+                className="bg-[#D2E5E6] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
                 onClick={() => router.push("/pressure-point/late")}
               >
                 <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                   Problems surface too late{" "}
                 </h3>
 
-                <div className="relative h-[182px]">
+                <div className="relative h-[124px]">
                   <Image
-                    src={images.resourcePoly3}
+                    src={images.hubPolyOne}
                     alt="shape"
                     fill
                     className="object-contain"
@@ -286,16 +269,16 @@ function TeamFocus() {
                 {" "}
                 {/* CARD 4 */}
                 <div
-                  className="bg-[#CDE1D0] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out "
+                  className="bg-[#CDE1D0] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl "
                   onClick={() => router.push("/pressure-point/dependency")}
                 >
                   <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                     Too much depends on me.{" "}
                   </h3>
 
-                  <div className="relative h-[182px]">
+                  <div className="relative h-[124px]">
                     <Image
-                      src={images.resourcePoly3}
+                      src={images.hubPolyTwo}
                       alt="shape"
                       fill
                       className="object-contain"
@@ -310,16 +293,16 @@ function TeamFocus() {
                 {/* CARD 5 (BOTTOM RIGHT – CENTERED ROW) */}
                 {/* CARD 5 */}
                 <div
-                  className="bg-[#F8E1B8] rounded-2xl p-6 cursor-pointer transition-all duration-500 ease-in-out "
+                  className="bg-[#F8E1B8] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl "
                   onClick={() => router.push("/pressure-point/other")}
                 >
                   <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                     Something else is making work heavier{" "}
                   </h3>
 
-                  <div className="relative h-[182px]">
+                  <div className="relative h-[124px]">
                     <Image
-                      src={images.resourcePoly2}
+                      src={images.hubPolyThree}
                       alt="shape"
                       fill
                       className="object-contain"
@@ -343,14 +326,20 @@ function TeamFocus() {
               </h3>
               <p className="text-[#0F4F58] text-[18px] ">
                 These pressure points are grounded in research and real team
-                data — but we may not have captured everything. Not seeing what
-                you’re dealing with? Let us know, and help shape what we explore
-                next.
+                data - but we may not have captured everything. Not seeing what
+                you’re dealing with? Let us know{" "}
+                <span
+                  onClick={openSuggestPressurePointModal}
+                  className="underline cursor-pointer text-[#3377bd] font-semibold"
+                >
+                  HERE
+                </span>{" "}
+                and help shape what we explore next.
               </p>
             </div>
           </div>
 
-          <div className="flex justify-end mt-4 mb-[7px]">
+          {/* <div className="flex justify-end mt-4 mb-[7px]">
             <div
               className="cursor-pointer"
               onClick={openSuggestPressurePointModal}
@@ -373,7 +362,7 @@ function TeamFocus() {
                 </span>
               </PolygonButton>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <SuggestPressurePointModal />

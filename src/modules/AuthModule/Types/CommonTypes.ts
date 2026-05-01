@@ -8,6 +8,7 @@ export type USER_INFO_TYPE = {
   team_name: string;
   type: string;
   user_type: number;
+  team_id?: string;
 };
 export type AUTH_STATE = {
   user: USER_INFO_TYPE | undefined;

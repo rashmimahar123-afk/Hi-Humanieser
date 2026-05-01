@@ -1,8 +1,5 @@
 import Image from "next/image";
-import images from "@/src/assets/images";
-import styles from "./ProfilePathwayCard.module.css";
 
-/* Card Component */
 function ProfilePathwayCard({
   title,
   description,
@@ -23,37 +20,33 @@ function ProfilePathwayCard({
   onClick?: () => void;
 }) {
   return (
-    <div className="flex flex-col items-center text-center">
-      {/* Shape Wrapper */}
+    <div className="flex flex-col items-center text-center px-0.5 min-[400px]:px-1 sm:px-2 md:px-0">
       <div
-        className="relative w-[170px] h-[170px] flex items-center justify-center cursor-pointer"
+        className="relative w-[80px] h-[80px] min-[400px]:w-[100px] min-[400px]:h-[100px] min-[500px]:w-[120px] min-[500px]:h-[120px] sm:w-[150px] sm:h-[150px] md:w-[170px] md:h-[170px] flex items-center justify-center cursor-pointer"
         onClick={onClick}
       >
-        {/* Background Shape Image */}
-        <Image
-          src={shapeImg}
-          alt="quiz shape"
-          fill
-          className="object-contain"
-        />
+        {/* Background Shape */}
+        <Image src={shapeImg} alt="shape" fill className="object-contain" />
 
-        {/* Arrow Image */}
         {arrowImg && (
           <Image
             src={arrowImg}
             alt="arrow decoration"
-            className={`absolute ${arrowPosition} h-auto`}
-            style={{ width: width, rotate: rotate }}
+            className={`absolute ${arrowPosition} h-auto w-[40px] min-[400px]:w-[50px] sm:w-[60px] md:w-[70px]`}
+            style={{ rotate: rotate }}
+            width={70}
+            height={70}
           />
         )}
-        {/* Text on top */}
-        <h3 className="relative z-10 text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-[32px] text-center px-4">
+
+        {/* Title */}
+        <h3 className="relative z-10 text-[#0F4F58] text-[9px] min-[400px]:text-[11px] min-[500px]:text-[13px] sm:text-[20px] md:text-[26px] font-[RocaTwo] font-bold leading-[13px] min-[400px]:leading-[15px] min-[500px]:leading-[18px] sm:leading-[26px] md:leading-[32px] text-center px-1 sm:px-3 md:px-4">
           {title}
         </h3>
       </div>
 
       {/* Description */}
-      <p className="text-[#0F4F58] text-[18px] mt-[24px] leading-[26px] max-w-[250px]">
+      <p className="text-[#0F4F58] text-[8px] min-[400px]:text-[10px] min-[500px]:text-[12px] sm:text-[15px] md:text-[18px] mt-1.5 min-[400px]:mt-2 min-[500px]:mt-3 sm:mt-5 md:mt-[24px] leading-[12px] min-[400px]:leading-[14px] min-[500px]:leading-[17px] sm:leading-[22px] md:leading-[26px] max-w-[80px] min-[400px]:max-w-[100px] min-[500px]:max-w-[130px] sm:max-w-[180px] md:max-w-[250px]">
         {description}
       </p>
     </div>

@@ -37,9 +37,7 @@ const SuccessMessage = ({
   textClassName = "",
   wrapperClassName = "",
   fontColor,
-  left,
   bottom,
-  rightImgRight,
   rightImgBottom,
   rightImgTop,
   top,
@@ -51,71 +49,81 @@ const SuccessMessage = ({
   const rightImgHeight = rightImg?.height || 40;
 
   return (
-    <div
-      className={`flex items-center justify-center ${wrapperClassName}`}
-      style={{ overflow: "visible" }}
-    >
-      <div
-        className="relative flex items-center justify-center"
-        // style={{
-        //   paddingLeft: `${leftImgWidth + 12}px`,
-        //   paddingRight: `${rightImgWidth + 12}px`,
-        //   overflow: "visible",
-        // }}
+    <div className={`flex items-center justify-center ${wrapperClassName}`}>
+      {/* ── LEFT IMAGE ── */}
+      {leftImg && (
+        <>
+          {/* Mobile: inline, half size */}
+          <div className="flex-shrink-0 block md:hidden">
+            <Image
+              src={leftImg.src}
+              alt={leftImg.alt || "left decoration"}
+              width={Math.round(leftImgWidth * 0.5)}
+              height={Math.round(leftImgHeight * 0.5)}
+              className={leftImg.className || ""}
+            />
+          </div>
+
+          {/* Desktop: normal size, inline flex */}
+          <div className="flex-shrink-0 hidden md:block">
+            <Image
+              src={leftImg.src}
+              alt={leftImg.alt || "left decoration"}
+              width={leftImgWidth}
+              height={leftImgHeight}
+              className={leftImg.className || ""}
+            />
+          </div>
+        </>
+      )}
+
+      {/* ── TEXT ── */}
+      <h2
+        className={`
+          text-center
+          font-bold
+          leading-snug
+          mx-3
+          ${fontSize}
+          ${textClassName}
+        `}
+        style={{
+          fontFamily: "League Spartan",
+          color: fontColor,
+          maxWidth: maxWidth,
+        }}
       >
-        {/* Left Image — anchored to top of text with slight upward offset */}
-        {leftImg && (
-          <Image
-            src={leftImg.src}
-            alt={leftImg.alt || "left decoration"}
-            width={leftImgWidth}
-            height={leftImgHeight}
-            className={`shrink-0 ${leftImg.className || ""} absolute`}
-            style={{
-              left: `-${leftImgWidth}px`,
-              top: top ?? "-8px",
-              bottom: bottom ?? undefined,
-              transform: undefined,
-            }}
-          />
-        )}
+        {text}
+      </h2>
 
-        {/* Text */}
-        <h2
-          className={`
-            text-center
-            font-bold
-            leading-snug
-            ${textClassName}
-          `}
-          style={{
-            fontFamily: "League Spartan",
-            color: fontColor,
-            fontSize: "clamp(16px, 4vw, 30px)",
-            maxWidth: maxWidth,
-          }}
-        >
-          {text}
-        </h2>
+      {/* ── RIGHT IMAGE ── */}
+      {rightImg && (
+        <>
+          {/* Mobile: inline, half size */}
+          <div className="flex-shrink-0 block md:hidden">
+            <Image
+              src={rightImg.src}
+              alt={rightImg.alt || "right decoration"}
+              width={Math.round(rightImgWidth * 0.5)}
+              height={Math.round(rightImgHeight * 0.5)}
+              className={rightImg.className || ""}
+              style={{ rotate: rotate }}
+            />
+          </div>
 
-        {/* Right Image — anchored to top of text with slight upward offset */}
-        {rightImg && (
-          <Image
-            src={rightImg.src}
-            alt={rightImg.alt || "right decoration"}
-            width={rightImgWidth}
-            height={rightImgHeight}
-            className={`shrink-0 ${rightImg.className || ""} absolute`}
-            style={{
-              right: `-${rightImgWidth}px`,
-              top: rightImgTop ?? "-8px",
-              bottom: rightImgBottom ?? undefined,
-              transform: undefined,
-              rotate: rotate,
-            }}
-          />
-        )}
-      </div>
+          {/* Desktop: normal size, inline flex */}
+          <div className="flex-shrink-0 hidden md:block">
+            <Image
+              src={rightImg.src}
+              alt={rightImg.alt || "right decoration"}
+              width={rightImgWidth}
+              height={rightImgHeight}
+              className={rightImg.className || ""}
+              style={{ rotate: rotate }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

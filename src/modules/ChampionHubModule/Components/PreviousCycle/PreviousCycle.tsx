@@ -125,7 +125,7 @@ function PreviousCycle() {
           {/* ================= RIGHT STACK ================= */}
           <div className="flex flex-col gap-8">
             {/* Pressure Point */}
-            <div className="bg-[#f5f0eb] rounded-3xl p-13">
+            <div className="bg-[#f5f0eb] rounded-3xl p-4">
               <h3 className="text-[25px] text-[#0F4F58] font-bold font-[RocaTwo]">
                 Pressure Point
               </h3>
@@ -140,7 +140,7 @@ function PreviousCycle() {
             </div>
 
             {/* Recommended Focus */}
-            <div className="bg-[#f5f0eb] rounded-3xl p-13">
+            <div className="bg-[#f5f0eb] rounded-3xl p-4">
               <h3 className="text-[25px] text-[#0F4F58] font-bold font-[RocaTwo] ">
                 Recommended Focus Area
               </h3>

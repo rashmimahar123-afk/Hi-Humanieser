@@ -11,33 +11,28 @@ type AMPLIFIER_BEHAVIOUR_PROPS_TYPE = {
 
 function AmplifierThirdDescription(props: AMPLIFIER_BEHAVIOUR_PROPS_TYPE) {
   const { amplifierBehaviour } = props;
-
   return (
-    <div className="relative  overflow-hidden">
-      {/* Right background lightning illustration */}
+    <div className="relative overflow-hidden">
+      {/* Background illustration — hidden mobile, faint tablet, full desktop */}
       <Image
         src={images.amplifierSecondImg}
         alt=""
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-0 pointer-events-none"
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-0 pointer-events-none hidden sm:block sm:opacity-30 lg:opacity-100 sm:max-w-[40%] lg:max-w-none"
       />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[900px]">
-        {/* Description */}
-        <p className="text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[760px] mb-[18px]">
+      <div className="relative z-10 max-w-full lg:max-w-[900px]">
+        <p className="text-[#0F4A4E] text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.6] max-w-full lg:max-w-[760px] mb-[12px] lg:mb-[18px]">
           {amplifierBehaviour?.intro}
         </p>
 
-        {/* Bullet Points */}
-        <ul className="list-disc pl-[18px] space-y-[10px] text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[820px]">
+        <ul className="list-disc pl-[18px] space-y-[8px] lg:space-y-[10px] text-[#0F4A4E] text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.6] max-w-full lg:max-w-[820px]">
           {amplifierBehaviour?.items?.map(
-            (item: AMPLIFIER_ITEMS_TYPE, index: number) => {
-              return (
-                <li key={item.amplifier_behaviour_number ?? index}>
-                  {item?.text}
-                </li>
-              );
-            },
+            (item: AMPLIFIER_ITEMS_TYPE, index: number) => (
+              <li key={item.amplifier_behaviour_number ?? index}>
+                {item?.text}
+              </li>
+            ),
           )}
         </ul>
       </div>

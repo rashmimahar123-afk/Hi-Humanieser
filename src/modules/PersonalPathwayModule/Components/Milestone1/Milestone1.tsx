@@ -21,18 +21,20 @@ type MILESTONE_ONE_PROPS = {
   id: string;
   m1Data: MILESTONE_ONE_DATA;
 };
+
 function Milestone1(props: MILESTONE_ONE_PROPS) {
   const { onNext, pathwayDetails, pillarNumber, id, m1Data } = props;
   const router = useRouter();
   const [selectedBehaviours, setSelectedBehaviours] = useState<number[]>([]);
   const [selectedPulse, setSelectedPulse] = useState<number | null>(null);
-  // const [pulseMessage, setPulseMessage] = useState<string>("");
   const [showCompMilestoneError, setShowCompMilestoneError] = useState(false);
   const [initialData, setInitialData] = useState<{
     behaviours: number[];
     pulse: number | null;
   } | null>(null);
+
   const { mutate: updateMpp } = useUpdateMppMilestoneMutation();
+
   const toggleBehaviour = (index: number) => {
     setSelectedBehaviours((prev) =>
       prev.includes(index)
@@ -44,10 +46,10 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
   const handlePulseSelect = (value: number) => {
     setSelectedPulse(value);
   };
+
   const handleNext = () => {
     if (isDisabled) return;
 
-    // ✅ check if data changed
     const isSameBehaviour =
       JSON.stringify(initialData?.behaviours.sort()) ===
       JSON.stringify([...selectedBehaviours].sort());
@@ -55,7 +57,6 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
     const isSamePulse = initialData?.pulse === selectedPulse;
 
     if (isSameBehaviour && isSamePulse) {
-      // 🚫 NO API CALL
       router.push("?step=2");
       onNext();
       return;
@@ -88,6 +89,7 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
       },
     );
   };
+
   const isDisabled = selectedBehaviours.length === 0 || selectedPulse === null;
 
   const { data: chooseMyselfData } = useChooseMyselfQuery();
@@ -125,46 +127,56 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
 
     setSelectedPulse(pulseValue);
 
-    // ✅ store initial state
     setInitialData({
       behaviours: selectedIndexes,
       pulse: pulseValue,
     });
   }, [m1Data, pathwayDetails]);
+
   return (
     <div className="animate-slideInRight">
       <StartPracticePerspective pathwayDetails={pathwayDetails} />
-      <h2 className="text-[34px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
+
+      <h2 className="text-[24px] sm:text-[28px] lg:text-[34px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
         Milestone 1: Understand & Commit
       </h2>
-      <p className="mt-4 text-[#567F55] font-[Roboto] text-[18px] ml-[35px]">
-        <span className=" font-bold ">
+
+      <p className="mt-4 text-[#567F55] font-[Roboto] text-[14px] sm:text-[16px] lg:text-[18px] ml-0 sm:ml-[35px]">
+        <span className="font-bold">
           This is a moment to pause and notice what resonates.{" "}
         </span>
         <br />
-        You’ll look through the Core Behaviours, notice a few common patterns we
-        all fall into, and answer one short reflection question. When you’re
-        ready, you’ll move on to Milestone 2 to start experimenting with small,
+        You'll look through the Core Behaviours, notice a few common patterns we
+        all fall into, and answer one short reflection question. When you're
+        ready, you'll move on to Milestone 2 to start experimenting with small,
         real-world actions.
       </p>
-      <h3 className="mt-10 text-[#567F55] font-bold font-[Roboto] text-[23px]">
+
+      <h3 className="mt-10 text-[#567F55] font-bold font-[Roboto] text-[18px] sm:text-[20px] lg:text-[23px]">
         CORE BEHAVIOURS
       </h3>
-      <p className="font-[Roboto] text-[#567F55] text-[17px] font-[400] ml-[20px]">
+
+      <p className="font-[Roboto] text-[#567F55] text-[14px] sm:text-[16px] lg:text-[17px] font-[400] ml-0 sm:ml-[20px]">
         {pathwayDetails?.core_behaviours?.intro}
       </p>
-      {/* Cards */}
 
-      <div className="relative mt-10 flex items-start ml-[126px] gap-6">
-        {/* Q Hand */}
-        <Image src={images.qImg} alt="hand-q" width={107} height={107} />
+      {/* Question Row */}
+      <div className="relative mt-10 flex items-start ml-0 sm:ml-[126px] gap-4 sm:gap-6">
+        <Image
+          src={images.qImg}
+          alt="hand-q"
+          width={107}
+          height={107}
+          className="w-[60px] sm:w-[80px] lg:w-[107px] h-auto shrink-0"
+        />
 
-        {/* Question text */}
-        <p className=" text-[23px] text-[#567F55] leading-snug font-[Roboto] mt-[30px]">
+        <p className="text-[16px] sm:text-[20px] lg:text-[23px] text-[#567F55] leading-snug font-[Roboto] mt-[10px] sm:mt-[30px]">
           Which of these behaviours feels most alive for you right now?
         </p>
       </div>
-      <div className="mt-10 flex justify-center gap-10">
+
+      {/* Behaviour Cards */}
+      <div className="mt-10 flex flex-col sm:flex-row justify-center gap-6 sm:gap-10">
         {pathwayDetails?.core_behaviours?.items.map((item, index) => (
           <BehaviourCard
             key={item?.core_behaviour_number}
@@ -187,56 +199,55 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
           </>
         }
       />
+
       {/* COMMON TRAPS */}
-      <div className="mt-20 ">
-        {/* Heading */}
-        <h3 className="text-[23px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
+      <div className="mt-20">
+        <h3 className="text-[18px] sm:text-[20px] lg:text-[23px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
           Common Traps
         </h3>
 
-        {/* Intro text */}
-        <p className="mt-4 text-[20px] text-[#567F55] leading-relaxed font-[Roboto] font-[400] ml-[20px]">
+        <p className="mt-4 text-[15px] sm:text-[17px] lg:text-[20px] text-[#567F55] leading-relaxed font-[Roboto] font-[400] ml-0 sm:ml-[20px]">
           {pathwayDetails?.common_traps?.intro}
         </p>
 
         {pathwayDetails?.common_traps?.items?.map((item) => {
           return (
             <ul
-              className="mt-6 space-y-4  ml-[150px]"
+              className="mt-6 space-y-4 ml-[20px] sm:ml-[80px] lg:ml-[150px]"
               key={item?.common_trap_number}
             >
               <li className="relative flex items-start gap-5">
-                <div className="absolute mt-[4px]  z-20">
+                <div className="absolute mt-[4px] z-20">
                   <ArrowSquare width={"24"} height={"19"} />
                 </div>
-                <p className="text-[#567F55] text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
+                <p className="text-[#567F55] text-[14px] sm:text-[16px] lg:text-[17px] leading-snug ml-[32px] font-[League Spartan] font-bold">
                   {item?.text}
                 </p>
               </li>
             </ul>
           );
         })}
-        {/* List */}
       </div>
+
       {/* PULSE CHECK */}
-      <div className="mt-24 flex items-start justify-between max-w-[1000px]">
+      <div className="mt-24 flex flex-col lg:flex-row items-start lg:justify-between gap-10 max-w-[1000px]">
         {/* Left Content */}
-        <div className="max-w-[420px]">
-          <h3 className="text-[22px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
+        <div className="max-w-full lg:max-w-[420px]">
+          <h3 className="text-[18px] sm:text-[20px] lg:text-[22px] font-[Roboto] font-bold text-[#567F55] uppercase tracking-wide">
             Pulse Check
           </h3>
 
-          <p className="mt-4 text-[23px] font-[Roboto] font-[400] leading-snug text-[#567F55] ml-[20px]">
+          <p className="mt-4 text-[16px] sm:text-[20px] lg:text-[23px] font-[Roboto] font-[400] leading-snug text-[#567F55] ml-0 sm:ml-[20px]">
             {pathwayDetails?.pulse_check_question}
           </p>
         </div>
 
         {/* Right Emojis */}
-        <div className="relative mt-[80px]">
-          {/* choose one arrow */}
-          <div className="w-[200px] absolute right-[81%] top-[-96%]">
+        <div className="relative mt-0 lg:mt-[80px]">
+          {/* choose one arrow — hide on mobile to avoid overflow */}
+          <div className="hidden lg:block w-[200px] absolute right-[81%] top-[-96%]">
             <Image
-              src={images.emojiArrow} // curved arrow image
+              src={images.emojiArrow}
               alt="choose-arrow"
               width={100}
               height={100}
@@ -246,8 +257,14 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
               choose one
             </div>
           </div>
+
+          {/* Mobile label */}
+          <p className="block lg:hidden text-[#F2A39C] text-[13px] mb-2">
+            choose one
+          </p>
+
           {/* Emoji row */}
-          <div className="flex items-center gap-4 bg-transparent relative">
+          <div className="flex items-center gap-2 sm:gap-4 bg-transparent relative flex-wrap">
             {[1, 2, 3, 4, 5].map((val, index) => {
               const colors = [
                 "#FF2D55",
@@ -264,7 +281,12 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
                   className="cursor-pointer relative"
                   onClick={() => handlePulseSelect(val)}
                 >
-                  <svg width="80" height="80" viewBox="0 0 80 80">
+                  <svg
+                    width="80"
+                    height="80"
+                    viewBox="0 0 80 80"
+                    className="w-[52px] h-[52px] sm:w-[65px] sm:h-[65px] lg:w-[80px] lg:h-[80px]"
+                  >
                     <circle
                       cx="40"
                       cy="40"
@@ -275,7 +297,6 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
                     />
                     <circle cx="26" cy="30" r="4" fill={colors[index]} />
                     <circle cx="54" cy="30" r="4" fill={colors[index]} />
-
                     {val === 3 ? (
                       <line
                         x1="26"
@@ -302,14 +323,13 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
                     )}
                   </svg>
 
-                  {/* ✅ ORANGE TICK ONLY IF SELECTED */}
                   {isSelected && (
                     <Image
                       src={images.orangeTick}
                       alt="tick"
                       width={60}
                       height={60}
-                      className="absolute top-[0.75rem] right-1"
+                      className="absolute top-[0.75rem] right-1 w-[36px] sm:w-[48px] lg:w-[60px] h-auto"
                     />
                   )}
                 </div>
@@ -319,9 +339,9 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
         </div>
       </div>
 
-      <div className="flex justify-end mt-[126px]">
+      {/* Next Button */}
+      <div className="flex justify-end mt-[80px] sm:mt-[126px]">
         <div className={styles.cardWrapper}>
-          {/* Arrow */}
           <Image
             src={images.arrowImg}
             alt="arrow"
@@ -330,7 +350,6 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
             className={styles.arrowLeft}
           />
 
-          {/* Card */}
           <div
             className={`${styles.card} ${styles.leftCard} ${
               isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
@@ -339,7 +358,6 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
             onMouseLeave={() => setShowCompMilestoneError(false)}
             onClick={handleNext}
           >
-            {/* Card shape (SMALL) */}
             <Image
               src={images.personalQuiz}
               alt="card shape"
@@ -347,7 +365,6 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
               height={140}
             />
 
-            {/* Text OUTSIDE image bounds */}
             <div className={styles.cardText}>
               Move into <br />
               Practice
@@ -355,12 +372,14 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
           </div>
         </div>
       </div>
+
       {showCompMilestoneError && isDisabled && (
-        <p className="text-red-500 text-[14px] mt-3 text-right mr-[20px]">
+        <p className="text-red-500 text-[13px] sm:text-[14px] mt-3 text-right mr-[20px]">
           {getErrorMessage()}
         </p>
       )}
     </div>
   );
 }
+
 export default Milestone1;

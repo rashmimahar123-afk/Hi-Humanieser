@@ -24,6 +24,7 @@ type MILESTONE_TWO_PROPS = {
   id: string;
   m2Data: MILESTONE_TWO_DATA;
 };
+
 function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
   const { onNext, pathwayDetails, pillarNumber, id, m2Data } = props;
   const router = useRouter();
@@ -33,16 +34,14 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
   const togglePin = (title: string) => {
     setPinned((prev) => {
       if (prev.includes(title)) {
-        // Unpin
         return prev.filter((item) => item !== title);
       }
 
       if (prev.length >= 2) {
-        openShowMaxTwoMicroAction(); // show modal
-        return prev; // don't add new
+        openShowMaxTwoMicroAction();
+        return prev;
       }
 
-      //  Allow pin
       return [...prev, title];
     });
   };
@@ -59,32 +58,33 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
       <StartPracticePerspective pathwayDetails={pathwayDetails} />
 
       {/* Header */}
-      <h2 className="text-[34px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
+      <h2 className="text-[24px] sm:text-[28px] lg:text-[34px] font-[RocaTwo] font-bold text-[#0F4F58] mt-[40px]">
         Milestone 2: Practice & Embed
       </h2>
 
-      <p className="mt-4 text-[#567F55] font-[Roboto] text-[18px] ml-[35px]">
+      <p className="mt-4 text-[#567F55] font-[Roboto] text-[14px] sm:text-[16px] lg:text-[18px] ml-0 sm:ml-[35px]">
         <span className="font-bold">
           Make it real. Try new Behaviours. See what shifts.
         </span>
         <br />
         <br />
         This is where it gets real. Below are small, doable actions you can
-        weave into your day. Pick up to 2 to try on — they’re experiments, not
+        weave into your day. Pick up to 2 to try on — they're experiments, not
         exams. For each one, add at least one short reflection on how it lands.
         See what shifts, and tweak as you go — in your own time.
       </p>
 
       {/* Main Card Container */}
-      <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-10 py-12 relative">
+      <div className="mt-10 bg-[#F6E7C3] rounded-[20px] px-4 sm:px-8 lg:px-10 py-8 sm:py-12 relative">
+        {/* Decorative images — hidden on mobile to avoid overflow */}
         <Image
           src={images.calImg}
           alt="arrow"
           width={80}
           height={80}
-          className="absolute -right-[3%] top-[10%]"
+          className="hidden lg:block absolute -right-[3%] top-[10%]"
         />
-        <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute top-[8%] -right-[3%] ">
+        <p className="hidden lg:block text-[#F2A39C] text-[14px] leading-[1.5] absolute top-[8%] -right-[3%]">
           fill me up
         </p>
         <Image
@@ -92,29 +92,33 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
           alt="arrow"
           width={80}
           height={80}
-          className="absolute -top-[3%] -left-[2%]"
+          className="hidden lg:block absolute -top-[3%] -left-[2%]"
         />
-        <p className="text-[#F2A39C] text-[14px] leading-[1.5] absolute max-w-[80px] top-[1%] -left-[4%]">
+        <p className="hidden lg:block text-[#F2A39C] text-[14px] leading-[1.5] absolute max-w-[80px] top-[1%] -left-[4%]">
           choose up to 2 micro-actions
         </p>
+
+        {/* Mobile hint */}
+        <p className="block lg:hidden text-[#F2A39C] text-[12px] mb-4">
+          Choose up to 2 micro-actions
+        </p>
+
         {/* Top labels */}
-        <div className="flex justify-between mb-8">
-          <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] ml-[115px]">
+        <div className="flex justify-between mb-6 sm:mb-8">
+          <span className="text-[#567F55] text-[13px] sm:text-[15px] lg:text-[17px] font-bold font-[League Spartan] ml-0 sm:ml-[60px] lg:ml-[115px]">
             MICRO-ACTIONS
           </span>
 
-          <span className="text-[#567F55] text-[17px] font-bold font-[League Spartan] mr-[90px]">
+          <span className="text-[#567F55] text-[13px] sm:text-[15px] lg:text-[17px] font-bold font-[League Spartan] mr-0 sm:mr-[40px] lg:mr-[90px] text-right">
             PRACTICE in your own time
           </span>
         </div>
 
         {/* Action Rows */}
-        <div className="space-y-10 relative">
+        <div className="space-y-8 sm:space-y-10 relative">
           {pathwayDetails?.micro_actions?.map((item) => {
             return (
               <div key={item?.micro_action_id}>
-                {/* Row 1 */}
-
                 <MilestoneTwoActionRow
                   title={`${item?.title}?`}
                   description={item?.description}
@@ -134,21 +138,22 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
 
         {/* Footer line */}
         <div className="w-full flex justify-center">
-          <p className="mt-12 text-center text-[#567F55] text-[23px] font-bold font-[RocaTwo] max-w-[576px]">
+          <p className="mt-10 sm:mt-12 text-center text-[#567F55] text-[16px] sm:text-[20px] lg:text-[23px] font-bold font-[RocaTwo] max-w-[576px]">
             Tiny pivots, big shifts. Each action is a chance to see more,
             connect better, and boost performance in the moment.
           </p>
         </div>
       </div>
+
       <MilestoneFooter
         nextRoute={`/pathway-card?pillar=${pillarNumber}&principle=${pathwayDetails?.principle_number}`}
         nextLabel="Conversation Starters"
-        helperText="Want to go deeper?
-Explore “Conversation Starters Pack’  with few prompts to bring into team meetings, 1:1 and coffee chats."
+        helperText={`Want to go deeper?\nExplore 'Conversation Starters Pack' with few prompts to bring into team meetings, 1:1 and coffee chats.`}
       />
-      <div className="flex justify-end mt-[126px]">
+
+      {/* Next Button */}
+      <div className="flex justify-end mt-[80px] sm:mt-[126px]">
         <div className={styles.cardWrapper}>
-          {/* Arrow */}
           <Image
             src={images.arrowImg}
             alt="arrow"
@@ -157,7 +162,6 @@ Explore “Conversation Starters Pack’  with few prompts to bring into team me
             className={styles.arrowLeft}
           />
 
-          {/* Card */}
           <div
             className={`${styles.card} ${styles.leftCard} ${
               hasAnyReflection
@@ -168,12 +172,10 @@ Explore “Conversation Starters Pack’  with few prompts to bring into team me
             onMouseLeave={() => setShowContinueError(false)}
             onClick={() => {
               if (!hasAnyReflection) return;
-
               router.push("?step=3");
               onNext();
             }}
           >
-            {/* Card shape (SMALL) */}
             <Image
               src={images.personalQuiz}
               alt="card shape"
@@ -181,7 +183,6 @@ Explore “Conversation Starters Pack’  with few prompts to bring into team me
               height={140}
             />
 
-            {/* Text OUTSIDE image bounds */}
             <div className={styles.cardText}>
               Go to <br />
               Milestone 3
@@ -189,11 +190,13 @@ Explore “Conversation Starters Pack’  with few prompts to bring into team me
           </div>
         </div>
       </div>
+
       {!hasAnyReflection && showContinueError && (
-        <p className="text-red-500 text-[14px] text-right mt-2">
+        <p className="text-red-500 text-[13px] sm:text-[14px] text-right mt-2">
           Add at least one reflection to continue
         </p>
       )}
+
       <FillUpFormModal />
       <ShowMaxTwoMicroActionModal />
       <ConfirmShareReflectionModal />
@@ -201,4 +204,5 @@ Explore “Conversation Starters Pack’  with few prompts to bring into team me
     </div>
   );
 }
+
 export default MilestoneTwo;

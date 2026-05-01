@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProgressPill from "../ProgressPill/ProgressPill";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PreviousCycle from "../PreviousCycle/PreviousCycle";
 import NeedMoreTimeModal, {
   openNeedMoreTimeModal,
@@ -19,58 +19,17 @@ import FinishEarlyModal, {
 } from "../FinishEarlyModal/FinishEarlyModal";
 import YesCompleteRitualModal from "../YesCompleteRitualModal/YesCompleteRitualModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
+import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
+import { chunkByPattern } from "@/src/lib/Helpers";
+import PressurePointRecordedModal, {
+  openPressurePointRecorded,
+} from "@/src/modules/PressurePoint/Components/PressurePointRecordedModal/PressurePointRecordedModal";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import useGetMtjPollQuery from "../../Hooks/useGetMtjPollQuery";
+import { useClosePollMutation } from "../../Hooks/useClosePollMutation";
 
 function PressurePointRecord() {
-  const teamMembers = [
-    { name: "Matthew Richardson", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "George Brown", image: images.userProfile },
-
-    { name: "Maria Palacios", image: images.maria },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-
-    { name: "Matthew Richardson", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "George Brown", image: images.userProfile },
-
-    { name: "Maria Palacios", image: images.maria },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Maria Palacios", image: images.maria },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Lorenzo DiCaprio", image: images.userProfile },
-    { name: "Daniella James-Daniels", image: images.userProfile },
-    { name: "Bibil Baby Paramatthatil", image: images.userProfile },
-  ];
-
-  const chunkByPattern = (arr: any, pattern = [8, 6]) => {
-    const chunks = [];
-    let i = 0;
-    let p = 0;
-
-    while (i < arr.length) {
-      chunks.push(arr.slice(i, i + pattern[p]));
-      i += pattern[p];
-      p = (p + 1) % pattern.length;
-    }
-
-    return chunks;
-  };
-
-  const rows = chunkByPattern(teamMembers);
-
   const router = useRouter();
   const { user } = useAuthValue();
   const [openPreviousPoll, setOpenPreviousPoll] = useState(false);
@@ -99,6 +58,61 @@ function PressurePointRecord() {
   const handleSelectPreviousRitual = (item: string) => {
     setSelectedPreviousRitual(item);
     setOpenPreviousRitual(false);
+  };
+
+  const { data: teamsData } = useGetTeamsQuery();
+  const teamName =
+    teamsData?.data?.teams?.find((team: any) => team.id === user?.team_id)
+      ?.team_name || "N/A";
+
+  const { data: usersData } = useGetAllListUsersQuery();
+
+  const allUsers = usersData?.data?.users || [];
+  const allTeamMembers = allUsers.filter(
+    (userItem) =>
+      userItem.team_id === user?.team_id &&
+      !userItem.deactivated &&
+      userItem.user_type === 1,
+  );
+  const mappedTeamMembers = allTeamMembers.map((member: any) => ({
+    name: `${member.first_name} ${member.last_name}`,
+    image:
+      member.has_profile_picture && member.profile_picture_path
+        ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${member.profile_picture_path}`
+        : images.dummyUser,
+  }));
+  const rows = chunkByPattern(mappedTeamMembers || []);
+
+  const { data, isLoading } = useGetMtjPollQuery();
+  const pollData = data?.data;
+
+  const options = pollData?.options || [];
+  const totalMembers = pollData?.team_member_count || 0;
+  const responded = pollData?.team_members_responded || 0;
+  const percentage = pollData?.team_response_percentage || 0;
+  const isLessThan50 = percentage < 50;
+
+  const memberEmails = allTeamMembers.map((m: any) => m.email).filter(Boolean);
+
+  const handleSendReminder = () => {
+    if (!memberEmails.length) return;
+
+    const subject = encodeURIComponent(
+      "Quick Reminder: Team Poll Participation",
+    );
+    const body = encodeURIComponent(
+      `Hi Team,
+
+Just a quick reminder to complete the poll for our current cycle.
+
+Your input will help us choose the right focus area together.
+
+Thanks!`,
+    );
+
+    const mailtoLink = `mailto:${memberEmails.join(",")}?subject=${subject}&body=${body}`;
+
+    window.location.href = mailtoLink;
   };
 
   return (
@@ -147,12 +161,12 @@ function PressurePointRecord() {
         </div>
 
         {/* TEAM HEADER BAR */}
-        <div className="bg-[#E6D2B1] p-6 mt-10">
+        <div className="bg-[#FBE6BF] p-6 mt-10">
           <div className=" px-10 flex items-center justify-end gap-10  mx-auto">
             <h2 className="text-[38px] font-[RocaTwo] text-[#0F4F58]">Team</h2>
 
             <div className="bg-[#F3EEE7] px-6 py-3 rounded-xl text-[#5E7F6F] text-[18px] font-[Roboto]">
-              Systems Engineering - UK (allow 45 characters)
+              {teamName}
             </div>
           </div>
 
@@ -165,45 +179,55 @@ function PressurePointRecord() {
                 A quick view of who you’re guiding through this shared practice.
               </div>
             </div>
-            {rows.map((row, rowIndex) => {
-              const cols = row.length; // 8 or 6 dynamically
+            {!usersData ? (
+              <p className="text-[#0F4F58] text-[16px]">
+                Loading team members...
+              </p>
+            ) : mappedTeamMembers.length === 0 ? (
+              <p className="text-[#0F4F58] text-[16px]">
+                No team members found
+              </p>
+            ) : (
+              rows.map((row, rowIndex) => {
+                const isSix = row.length === 6;
 
-              return (
-                <div
-                  key={rowIndex}
-                  className={`grid justify-center gap-y-14 gap-x-14`}
-                  style={{
-                    gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-                  }}
-                >
-                  {row.map((member: any, index: number) => (
+                return (
+                  <div key={rowIndex}>
                     <div
-                      key={index}
-                      className="flex flex-col items-center text-center"
+                      className={`grid gap-y-8 sm:gap-y-10 md:gap-y-12 gap-x-2 sm:gap-x-4 md:gap-x-6 ${
+                        isSix
+                          ? "grid-cols-3 sm:grid-cols-6"
+                          : "grid-cols-4 sm:grid-cols-8"
+                      }`}
                     >
-                      <div className="h-[88px] w-[88px] rounded-full overflow-hidden">
-                        <Image
-                          src={member.image}
-                          alt={member.name}
-                          width={88}
-                          height={88}
-                          className="object-cover"
-                        />
-                      </div>
-
-                      <p className="mt-4 text-[16px] font-[Roboto] text-[#0F4F58] leading-5 max-w-[140px]">
-                        {member.name}
-                      </p>
+                      {row.map((member: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex flex-col items-center text-center"
+                        >
+                          <div className="h-[48px] w-[48px] sm:h-[60px] sm:w-[60px] md:h-[72px] md:w-[72px] rounded-full overflow-hidden">
+                            <Image
+                              src={member.image}
+                              alt={member.name}
+                              width={72}
+                              height={72}
+                              className="object-cover w-full h-full"
+                            />
+                          </div>
+                          <p className="mt-2 text-[10px] sm:text-[12px] md:text-[13px] text-[#0F4F58]">
+                            {member.name}
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
-        <div className="relative bg-[#E6D2B1] p-10 mt-10 rounded-xl overflow-hidden">
-          {/* Background Image */}
+        {/* <div className="relative bg-[#FBE6BF] p-10 mt-10 rounded-xl overflow-hidden">
           <Image
             src={images.pressureImg}
             alt="left-bg"
@@ -213,9 +237,7 @@ function PressurePointRecord() {
             priority
           />
 
-          {/* Content Wrapper */}
           <div className="relative z-10">
-            {/* Tilted Card Effect */}
             <div className="relative z-10 ">
               <h2 className="text-[#0F4F58] text-[32px] font-bold font-[RocaTwo]">
                 Pressure point recorded.
@@ -256,7 +278,6 @@ function PressurePointRecord() {
                 days if no action is taken.
               </p>
             </div>
-            {/* Bottom Section */}
             <div className="flex justify-end mt-4">
               <PolygonButton
                 width="106px"
@@ -276,63 +297,9 @@ function PressurePointRecord() {
               </PolygonButton>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="relative bg-[#E6D2B1] p-10 mt-10 rounded-xl overflow-hidden">
-          {/* Background Image */}
-
-          {/* Main Content */}
-          <div className="max-w-3xl">
-            <h1 className="text-[#0f4f58] text-[32px] font-bold font-[RocaTwo]">
-              Team Poll Results
-            </h1>
-
-            <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8">
-              Your team is currently answering the Focus Poll. These early
-              results are still taking shape — you’ll get a clearer picture as
-              more people respond.
-            </p>
-
-            <p className="text-[#0F4F58] font-bold text-[20px] fonbt-[Roboto] mb-6 ml-8">
-              So far: 4 of 12 members have responded (33%)
-            </p>
-          </div>
-
-          {/* Right Side Hourglass */}
-          <div className="absolute right-24 top-10">
-            <Image
-              src={images.signupTimer}
-              alt="hourglass"
-              width={120}
-              height={120}
-            />
-          </div>
-          <div className="absolute left-0 top-0 ">
-            <Image
-              src={images.dottedCurve}
-              alt="pattern"
-              width={500}
-              height={270}
-            />
-          </div>
-          <div className="flex justify-end ">
-            <div className="mt-[60px] flex flex-col items-center gap-[14px] ">
-              <CommonButtons
-                label="Return to 
-Champion Hub"
-                bgColor="#cde3cc"
-                onClick={() => router.push("/personal-pathway")}
-              />
-              <CommonButtons
-                label="Go to Homepage"
-                bgColor="#cde3cc"
-                onClick={() => router.push("/personal-pathway")}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="relative bg-[#E6D2B1] p-10 mt-10 rounded-xl overflow-hidden">
+        <div className="relative bg-[#FBE6BF] p-10 mt-10 rounded-xl overflow-hidden">
           {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
           <p>State 4 – Poll reached threshold</p>
           <p>(≥ 50% responses, Champion can act)</p>
@@ -346,23 +313,53 @@ Champion Hub"
               height={270}
             />
           </div>
+          {isLessThan50 && pollData?.poll_open && (
+            <div className="absolute right-[180px] top-[60px] opacity-80">
+              <Image
+                src={images.signupTimer}
+                alt="hourglass"
+                width={110}
+                height={110}
+              />
+            </div>
+          )}
+
           {/* Header Section */}
           <div>
             <h1 className="text-[#0F4F58] text-[32px] font-bold font-[RocaTwo]">
               Team Poll Results
             </h1>
 
-            <p className="text-[#0F4F58] text-[20px] mb-6 leading-relaxed font-[Roboto] ml-8">
+            <p className="text-[#0F4F58] text-[20px] mb-6 leading-relaxed font-[Roboto] ml-8 max-w-[900px]">
               Your team has shared where focused improvement would help them
-              most right now.
+              most right now. These results don’t replace the pressure you’re
+              managing — they help translate it into a clear, shared focus the
+              team can work on together.
             </p>
-
-            <p className="text-[#0F4F58] text-[20px] leading-relaxed font-[Roboto] ml-8">
-              These results don’t replace the pressure you’re managing — they
-              help translate it into a clear, shared focus the team can work on
-              together.
-            </p>
+            {isLessThan50 && (
+              <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8 font-bold">
+                So far: {responded} of {totalMembers} members have responded ({" "}
+                {percentage}%)
+              </p>
+            )}
           </div>
+          {isLessThan50 && pollData?.poll_open && (
+            <div className="mt-10 flex justify-end items-center gap-4">
+              <Image
+                src={images.email}
+                alt="email-icon"
+                width={30}
+                height={16}
+                style={{ flexShrink: 0 }}
+              />
+              <div
+                className="text-[#0F4F58] font-[Roboto] text-[20px]"
+                onClick={handleSendReminder}
+              >
+                Send a quick reminder
+              </div>
+            </div>
+          )}
 
           {/* Two Column Section */}
           <div className="grid grid-cols-2 gap-16 mt-16 ml-8">
@@ -373,11 +370,13 @@ Champion Hub"
               </h3>
 
               <div className="bg-[#EBCDB6] rounded-2xl p-8 space-y-6">
-                <ProgressPill label="Built Trust" percent={70} />
-                <ProgressPill label="Improve Clarity" percent={60} />
-                <ProgressPill label="Strengthen Collaboration" percent={65} />
-                <ProgressPill label="Foster Belonging" percent={45} />
-                <ProgressPill label="Sustain Wellbeing" percent={25} />
+                {options.map((item, index) => (
+                  <ProgressPill
+                    key={index}
+                    label={item.option}
+                    percent={item.vote_percentage}
+                  />
+                ))}
               </div>
             </div>
 
@@ -419,58 +418,96 @@ Champion Hub"
           {/* Bottom Participation */}
           <div className="mt-6 ml-4">
             <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
-              Participation: 8 of 12 team members responded (67%)
+              Participation: {responded} of {totalMembers} members have
+              responded ( {percentage}%)
             </p>
           </div>
         </div>
+        {isLessThan50 && pollData?.poll_open && (
+          <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
+            {/* LEFT CONTENT */}
+            <div className="max-w-3xl">
+              <h1 className="text-[#0F4F58] text-[34px] font-bold font-[RocaTwo]">
+                Choosing the focus for this cycle
+              </h1>
 
-        <div className="mt-8">
-          <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
-            Choosing the focus for this cycle
-          </h1>
+              <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto]">
+                We’re still gathering input from your team...
+              </p>
 
-          <p className="text-[#0F4F58] text-lg leading-relaxed ml-8">
-            Based on the pressure you’re managing and what your team says would
-            help most, the focus areas below are the strongest candidates right
-            now.
-          </p>
-          <div
-            className=" flex justify-center mt-[20px]"
-            onClick={() => router.push("/continue-pressure")}
-          >
-            <div className="grid grid-cols-2 gap-10">
-              {/* Focus Cards Section */}
-              <div>
-                <PolygonButton
-                  height="129px"
-                  bgColor="#f8e1b8"
-                  clipPath={`polygon(
+              <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto] leading-relaxed">
+                Suggested focus areas will appear once participation reaches 50%
+                or after the poll has been open for a few days.
+              </p>
+            </div>
+
+            {/* CENTER TEXT */}
+            <div className="flex justify-center mt-16">
+              <p className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-semibold">
+                Focus suggestion: calculating...
+              </p>
+            </div>
+
+            {/* RIGHT HOURGLASS */}
+            <div className="absolute right-[230px] -bottom-[4px] opacity-80">
+              <Image
+                src={images.signupTimer}
+                alt="hourglass"
+                width={110}
+                height={110}
+              />
+            </div>
+          </div>
+        )}
+
+        {!isLessThan50 && pollData?.poll_open && (
+          <div className="mt-8">
+            <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
+              Choosing the focus for this cycle
+            </h1>
+
+            <p className="text-[#0F4F58] text-lg leading-relaxed ml-8">
+              Based on the pressure you’re managing and what your team says
+              would help most, the focus areas below are the strongest
+              candidates right now.
+            </p>
+            <div
+              className=" flex justify-center mt-[20px]"
+              onClick={() => router.push("/continue-pressure")}
+            >
+              <div className="grid grid-cols-2 gap-10">
+                {/* Focus Cards Section */}
+                <div>
+                  <PolygonButton
+                    height="129px"
+                    bgColor="#f8e1b8"
+                    clipPath={`polygon(
     0% 29px,
     100% 7%,
     87% 89%,
     20% calc(100% - 13px)
   )`}
-                >
-                  <div className="h-full flex items-center justify-center text-center">
-                    <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
-                      Build Trust{" "}
-                    </span>
-                  </div>
-                </PolygonButton>
-              </div>
-              {/* -------slant Right Btn-------- */}
-              <div>
-                <PolygonButton
-                  height="129px"
-                  bgColor="#86c9c9"
-                  radius={14}
-                  topTilt={18}
-                  slantSide="right"
-                  clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
-                >
-                  <div className="h-full flex items-center justify-center text-center">
-                    <span
-                      className="
+                  >
+                    <div className="h-full flex items-center justify-center text-center">
+                      <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
+                        Build Trust{" "}
+                      </span>
+                    </div>
+                  </PolygonButton>
+                </div>
+                {/* -------slant Right Btn-------- */}
+                <div>
+                  <PolygonButton
+                    height="129px"
+                    bgColor="#86c9c9"
+                    radius={14}
+                    topTilt={18}
+                    slantSide="right"
+                    clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
+                  >
+                    <div className="h-full flex items-center justify-center text-center">
+                      <span
+                        className="
       text-[#0F4F58]
       text-[29px]
       font-[RocaTwo]
@@ -479,61 +516,62 @@ Champion Hub"
       text-center
       whitespace-normal
     "
-                    >
-                      Strengthen Collaboration{" "}
-                    </span>
-                  </div>
-                </PolygonButton>
+                      >
+                        Strengthen Collaboration{" "}
+                      </span>
+                    </div>
+                  </PolygonButton>
+                </div>
               </div>
             </div>
-          </div>
-          {/* Middle Text Section */}
-          <div className=" mb-16 mt-4 ml-8">
-            <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
-              Selecting a focus area gives the team a shared direction.
-            </p>
+            {/* Middle Text Section */}
+            <div className=" mb-16 mt-4 ml-8">
+              <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
+                Selecting a focus area gives the team a shared direction.
+              </p>
 
-            <p className="text-[#0F4F58] text-[20px] leading-relaxed">
-              In the next step, you can choose up to two team rituals — from the
-              same focus area or from different ones — depending on what will
-              help most.
-            </p>
-          </div>
-          <div className="relative">
-            <SuccessMessage
-              text="Data informs the decision. Leadership makes the call.
+              <p className="text-[#0F4F58] text-[20px] leading-relaxed">
+                In the next step, you can choose up to two team rituals — from
+                the same focus area or from different ones — depending on what
+                will help most.
+              </p>
+            </div>
+            <div className="relative">
+              <SuccessMessage
+                text="Data informs the decision. Leadership makes the call.
 "
-              fontSize="text-[23px]"
-              leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-              rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-              fontColor="#0F4F58"
-              left="375px"
-              bottom="-1px"
-              rightImgRight="375px"
-              rotate="-35deg"
-              rightImgBottom="-1px"
-            />
-          </div>
+                fontSize="text-[23px]"
+                leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+                rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+                fontColor="#0F4F58"
+                left="375px"
+                bottom="-1px"
+                rightImgRight="375px"
+                rotate="-35deg"
+                rightImgBottom="-1px"
+              />
+            </div>
 
-          {/* Bottom Decorative + Footer */}
-          <div className="flex items-start gap-6 mt-10 relative">
-            {/* Hanging Dots Graphic */}
-            <Image
-              src={images.pollResultImg}
-              alt="poll-img"
-              width={100}
-              height={100}
-              className="absolute top-0 left-0 -z-10"
-              priority
-            />
+            {/* Bottom Decorative + Footer */}
+            <div className="flex items-start gap-6 mt-10 relative">
+              {/* Hanging Dots Graphic */}
+              <Image
+                src={images.pollResultImg}
+                alt="poll-img"
+                width={100}
+                height={100}
+                className="absolute top-0 left-0 -z-10"
+                priority
+              />
 
-            <p className="text-[#0F4F58] text-[18px] font-[Roboto]  leading-relaxed ml-[125px] mt-4">
-              To keep your team’s rhythm flowing, we’ll automatically select a
-              Team Ritual from the top-voted Focus Area if the ritual hasn’t
-              been chosen after a few days.
-            </p>
+              <p className="text-[#0F4F58] text-[18px] font-[Roboto]  leading-relaxed ml-[125px] mt-4">
+                To keep your team’s rhythm flowing, we’ll automatically select a
+                Team Ritual from the top-voted Focus Area if the ritual hasn’t
+                been chosen after a few days.
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="mt-10 relative">
           {/* Section Title */}
@@ -875,6 +913,7 @@ Champion Hub"
       <YesExtendTimeModal />
       <FinishEarlyModal />
       <YesCompleteRitualModal />
+      <LogoutModal />
     </>
   );
 }

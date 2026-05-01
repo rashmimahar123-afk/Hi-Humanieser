@@ -491,3 +491,74 @@ export const formatJoinedDate = (timestamp?: number) => {
     year: "numeric",
   });
 };
+export const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+  });
+};
+
+// pressurePointConfig.ts
+export const PRESSURE_POINT_CONFIG: any = {
+  urgent: {
+    title: "Everything Feels Urgent",
+    description: `Your days are filled with escalations, last-minute decisions, and “quick questions” that are not quick. Priorities keep shifting, there’s little uninterrupted time to think, and work feels reactive rather than led.`,
+    underneath: `This pressure often shows up when decision boundaries are not clear, priorities keep shifting, or uncertainty flows upward instead of being resolved where the work happens. 
+    Over time, urgency becomes the default operating mode — not because everything is truly critical, but because the system lacks the clarity needed to resolve issues at the right level.`,
+    response: `To keep things moving, leaders often step in more, stay constantly available, and absorb pressure personally. It works in the short term — but can quietly increase dependency and reinforce urgency over time.`,
+    message: `This is a common leadership pressure — and it’s workable.`,
+  },
+  alignment: {
+    title: "Teams are Busy, but not Aligned",
+    description: `Your team is busy and capable, yet progress feels uneven and slower than expected. Different parts of the work move in parallel without fully connecting, creating rework and a sense that effort is not adding up.`,
+    underneath: `This pressure tends to emerge when alignment relies on conversations rather than shared anchors. Goals exist, but they’re interpreted rather than held in common. 
+
+As the work grows more complex, small differences in understanding quietly multiply — until effort no longer translates cleanly into outcomes.`,
+    response: `Leaders often try to restore alignment by explaining more, checking in more frequently, or holding additional coordination meetings. It brings temporary clarity — but alignment fades again once attention moves elsewhere.`,
+
+    message: `Hard-working teams can still struggle when 
+shared direction is not clear.`,
+  },
+  late: {
+    title: "Problems Surface Too Late",
+    description: `On the surface, things seem fine — updates sound positive and meetings stay polite. Issues tend to surface only when they’re already costly: deadlines slip, tensions rise, or clients escalate. There’s often a sense that something was off, but it wasn’t visible early enough to address lightly.`,
+    underneath: `This pressure often grows in environments where raising concerns feels risky, uncomfortable, or disruptive. Signals get softened, delayed, or diverted into side conversations. 
+
+Over time, the system rewards keeping things smooth on the surface — even when it slows learning and increases risk underneath.`,
+    response: `Leaders may respond by asking for more detailed updates, tightening oversight, or getting involved once issues are already serious. That can help regain control — but it doesn’t always make it easier for concerns to surface earlier next time.`,
+    message: `This is a common leadership pressure — and it’s workable.`,
+  },
+  dependency: {
+    title: "Too Much Depends on Me",
+    description: `Decisions slow down unless you’re involved. People look to you for reassurance before acting, and progress stalls when you’re unavailable. Even capable leaders hesitate without your input, and the organisation feels more fragile than it should.`,
+    underneath: `This pressure often emerges when ownership and decision rights have not scaled with the complexity of the work. 
+
+Clarity about who decides, who owns what, and how risk is shared has not kept pace — so responsibility drifts upward by default.`,
+    response: `Leaders often stay close to decisions, step in to unblock work, or “just handle it” themselves to keep things moving. It works in the moment — but can quietly reinforce reliance and limit autonomy over time.`,
+    message: `Many leaders experience this as organisations grow 
+and demands increase.`,
+  },
+  other: {
+    title: "Something Else is Making Work Heavier",
+    description: `Work feels heavier than it should, even when nothing is obviously broken. Progress takes more effort, energy drains faster, and small issues feel harder to absorb. There’s a sense of drag without a single clear cause.`,
+    underneath: `This pressure often appears when multiple small frictions combine — unclear expectations, shifting demands, stretched capacity, or unresolved tensions that haven’t found a clear place to land. 
+
+Individually they seem manageable, but together they weigh the system down.`,
+    response: `Leaders often try to push through, absorb the strain, or wait for things to settle before addressing it directly. The work continues — but the underlying heaviness remains.`,
+    message: `Not all pressure is obvious or easy to name — that doesn’t make it less real or less workable.`,
+  },
+};
+
+export const chunkByPattern = (arr: any, pattern = [8, 6]) => {
+  const chunks = [];
+  let i = 0;
+  let p = 0;
+  while (i < arr.length) {
+    chunks.push(arr.slice(i, i + pattern[p]));
+    i += pattern[p];
+    p = (p + 1) % pattern.length;
+  }
+  return chunks;
+};

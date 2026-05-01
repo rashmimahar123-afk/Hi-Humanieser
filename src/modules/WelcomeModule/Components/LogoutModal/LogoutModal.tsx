@@ -49,13 +49,6 @@ function LogoutModal() {
       {/* Modal wrapper */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-[520px] rounded-[28px] bg-[#FBE6BF] p-8 text-center space-y-6">
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute left-[65%] font-bold cursor-pointer"
-          >
-            ✕
-          </button>
-
           {/* Timer Image */}
           <div className="flex justify-center">
             <Image

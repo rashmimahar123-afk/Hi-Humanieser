@@ -41,7 +41,7 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
       { label: "My Account Settings", path: "/account-setting" },
       { label: "Organisation Settings", path: "/organisation-setting" },
       { label: "My Pathways", path: "/my-pathways" },
-      { label: "Champion Hub", path: "/champion-hub" },
+      // { label: "Champion Hub", path: "/champion-hub" },
       { label: "Partner Hub", path: "/overseer-hub" },
       { label: "Notifications", path: "/notification" },
       { label: "Spread The Ripple", path: "/spread-ripple" },
