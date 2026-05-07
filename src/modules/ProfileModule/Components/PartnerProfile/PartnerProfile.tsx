@@ -1,6 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import images from "@/src/assets/images";
 import {
+  ALL_USERS_DATA,
   MY_PROFILE_RESPONSE,
   ORGANISATION_DATA,
 } from "../../Types/ResponseTypes";
@@ -13,10 +14,11 @@ import { openChampionModal } from "../ChampionModal/ChampionModal";
 type PROFILE_DATA_PROPS = {
   profileData: MY_PROFILE_RESPONSE;
   organizationData: ORGANISATION_DATA;
+  loggedInUserDetails?: ALL_USERS_DATA;
 };
 
 function PartnerProfile(props: PROFILE_DATA_PROPS) {
-  const { profileData, organizationData } = props;
+  const { profileData, organizationData, loggedInUserDetails } = props;
   const [profileImage, setProfileImage] = useState<string | StaticImageData>(
     images.dummyUser,
   );
@@ -116,7 +118,7 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
           </h2>
 
           <p className="text-[14px] sm:text-[16px] md:text-[18px] text-[#0F4F58] mt-1 sm:mt-2">
-            Joined {formatJoinedDate(organizationData?.date_created)}
+            Joined {formatJoinedDate(loggedInUserDetails?.created)}
           </p>
 
           <p className="text-[13px] sm:text-[15px] md:text-[16px] text-[#0F4F58]">

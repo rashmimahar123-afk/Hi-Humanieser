@@ -21,8 +21,8 @@ function FAQAccordion({
               px-5 py-4
               text-left
               text-[#0F4F58]
-              text-[15px]
-              font-medium
+              text-[18px]
+              font-bold
               rounded-[14px]
             "
           >
@@ -37,7 +37,7 @@ function FAQAccordion({
             />
           </Disclosure.Button>
 
-          <Disclosure.Panel className="px-5 pb-4 text-[14px] text-[#245B5F]">
+          <Disclosure.Panel className="px-5 pb-4 text-[14px] text-[#245B5F] whitespace-pre-line">
             {paragraph}
           </Disclosure.Panel>
         </div>

@@ -9,6 +9,7 @@ import SelectTeamRitualModal, {
 } from "../SelectTeamRitualModal/SelectTeamRitualModal";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import { FOCUS_AREA_SCORES_DATA } from "../../Types/ResponseTypes";
+import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
 
 function ContinuePressure() {
   const [animateText, setAnimateText] = useState(false);
@@ -30,6 +31,7 @@ function ContinuePressure() {
   };
 
   const { mutate, data, isPending } = useRecommendFocusAreaMutation();
+
   useEffect(() => {
     mutate();
   }, []);
@@ -40,6 +42,16 @@ function ContinuePressure() {
     data?.recommended_team_rituals?.find(
       (item: any) => item.focus_area === selected,
     )?.team_rituals || [];
+
+  const {
+    data: frameworkMtjData,
+    isLoading,
+    isError,
+  } = useHhFrameworkMtjQuery();
+  console.log(
+    "frameworkMtjDataframeworkMtjData",
+    frameworkMtjData?.data?.focus_areas,
+  );
 
   return (
     <>

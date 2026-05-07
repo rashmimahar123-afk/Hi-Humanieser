@@ -3,7 +3,7 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import { enrichProgressWithPractice } from "@/src/lib/Helpers";
+import { enrichProgressWithPractice, getTimeAgo } from "@/src/lib/Helpers";
 import { useEffect, useMemo, useRef, useState } from "react";
 import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
@@ -12,6 +12,13 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
+import { useToggleReflectionMutation } from "../../Hooks/useToggleReflectionMutation";
+import useGetReflectionWallsQuery from "../../Hooks/useGetReflectionWallsQuery";
+import { useSearchParams } from "next/navigation";
+import { GET_REFLECTIONS_DATA } from "../../Types/ResponseTypes";
+import { queryClient } from "@/src/lib/ReactQueryConfig";
 
 const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
   return (
@@ -27,16 +34,20 @@ const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
   );
 };
 
-function ReflectionWalls() {
+function ViewAllReflectionWall() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [progressList, setProgressList] = useState<any>([]);
   const [practiceList, setPracticeList] = useState<any[]>([]);
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
   const { data: chooseMyselfData } = useChooseMyselfQuery();
+  const { mutate: toggleLikeMutate, isPending } = useToggleReflectionMutation();
   const [selectedFilter, setSelectedFilter] = useState("all");
   const { user } = useAuthValue();
   const pdfRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const searchParams = useSearchParams();
+  const teamId = searchParams.get("teamId");
 
   const generateStructuredProgressList = (mppData: any[]) => {
     if (!Array.isArray(mppData)) return [];
@@ -158,45 +169,66 @@ function ReflectionWalls() {
 
   const { data: randomMessage } = useGetMppMessagesQuery();
 
-  const enrichedProgressList = enrichProgressWithPractice(
-    progressList,
-    practiceList,
-  );
+  // const enrichedProgressList = enrichProgressWithPractice(
+  //   progressList,
+  //   practiceList,
+  // );
 
-  const getSharedReflectionsFromEnriched = (data: any[]) => {
-    if (!Array.isArray(data)) return [];
-    const result: any[] = [];
-    data.forEach((item) => {
-      const dynamicKey = Object.keys(item).find(
-        (key) => !["created", "uuid", "active", "completed"].includes(key),
-      );
-      if (!dynamicKey) return;
-      const pathwayData = item[dynamicKey];
-      const m2 = pathwayData?.m2;
-      if (m2) {
-        Object.values(m2).forEach((actions: any) => {
-          if (Array.isArray(actions)) {
-            actions.forEach((action) => {
-              if (action?.share && action?.reflection) {
-                result.push({ text: action.reflection, created: item.created });
-              }
-            });
-          }
-        });
-      }
-      const m3 = pathwayData?.m3;
-      if (m3?.reflection?.share === true && m3?.reflection?.reflection) {
-        result.push({ text: m3.reflection.reflection, created: item.created });
-      }
-    });
-    return result;
-  };
+  // const getSharedReflectionsFromEnriched = (data: any[]) => {
+  //   if (!Array.isArray(data)) return [];
+  //   const result: any[] = [];
+  //   data.forEach((item) => {
+  //     const dynamicKey = Object.keys(item).find(
+  //       (key) => !["created", "uuid", "active", "completed"].includes(key),
+  //     );
+  //     if (!dynamicKey) return;
+  //     const pathwayData = item[dynamicKey];
+  //     const m2 = pathwayData?.m2;
+  //     if (m2) {
+  //       Object.values(m2).forEach((actions: any) => {
+  //         if (Array.isArray(actions)) {
+  //           actions.forEach((action) => {
+  //             if (action?.share && action?.reflection) {
+  //               result.push({
+  //                 id: action.id,
+  //                 text: action.reflection,
+  //                 created: item.created,
+  //               });
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //     const m3 = pathwayData?.m3;
+  //     if (m3?.reflection?.share === true && m3?.reflection?.reflection) {
+  //       result.push({
+  //         id: m3.reflection.id,
+  //         text: m3.reflection.reflection,
+  //         created: item.created,
+  //       });
+  //     }
+  //   });
+  //   return result;
+  // };
 
-  const reflectionList = useMemo(() => {
-    if (!enrichedProgressList?.length) return [];
-    const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
-    return extracted.sort((a, b) => b.created - a.created);
-  }, [enrichedProgressList]);
+  // const reflectionList = useMemo(() => {
+  //   if (!enrichedProgressList?.length) return [];
+  //   const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
+  //   return extracted.sort((a, b) => b.created - a.created);
+  // }, [enrichedProgressList]);
+  const effectiveTeamId = useMemo(() => {
+    if (!user) return undefined;
+
+    if (user.user_type === 3) {
+      return teamId ? teamId : user.team_id;
+    }
+
+    return user.team_id;
+  }, [user, teamId]);
+
+  const { data: reflectionApiData } =
+    useGetReflectionWallsQuery(effectiveTeamId);
+  const reflections = reflectionApiData?.data?.reflections ?? [];
 
   const filterRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -212,38 +244,17 @@ function ReflectionWalls() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const getTimeAgo = (timestamp: number) => {
-    if (!timestamp) return "";
-    const now = Date.now();
-    const createdTime = timestamp * 1000;
-    const diffMs = now - createdTime;
-    const seconds = Math.floor(diffMs / 1000);
-    const minutes = Math.floor(diffMs / (1000 * 60));
-    const hours = Math.floor(diffMs / (1000 * 60 * 60));
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    if (seconds < 60) return `${seconds} sec ago`;
-    if (minutes < 60) return `${minutes} min ago`;
-    if (hours < 24) return `${hours} hr ago`;
-    if (days === 1) return `1 day ago`;
-    if (days < 7) return `${days} days ago`;
-    const weeks = Math.floor(days / 7);
-    if (weeks < 4) return `${weeks} week ago`;
-    const months = Math.floor(days / 30);
-    return `${months} month ago`;
-  };
-
-  const filteredReflections = useMemo(() => {
-    if (!reflectionList.length) return [];
-    const now = Date.now();
-    return reflectionList.filter((item) => {
-      const createdTime = item.created * 1000;
-      const diffDays = (now - createdTime) / (1000 * 60 * 60 * 24);
-      if (selectedFilter === "7days") return diffDays <= 7;
-      if (selectedFilter === "30days") return diffDays <= 30;
-      return true;
-    });
-  }, [reflectionList, selectedFilter]);
-
+  // const filteredReflections = useMemo(() => {
+  //   if (!reflectionList.length) return [];
+  //   const now = Date.now();
+  //   return reflectionList.filter((item) => {
+  //     const createdTime = item.created * 1000;
+  //     const diffDays = (now - createdTime) / (1000 * 60 * 60 * 24);
+  //     if (selectedFilter === "7days") return diffDays <= 7;
+  //     if (selectedFilter === "30days") return diffDays <= 30;
+  //     return true;
+  //   });
+  // }, [reflectionList, selectedFilter]);
   const getFilterLabel = () => {
     if (selectedFilter === "7days") return "Last 7 days";
     if (selectedFilter === "30days") return "Last 30 days";
@@ -315,7 +326,45 @@ function ReflectionWalls() {
       setIsDownloading(false);
     }
   };
+  const handleLike = (reflectionId: string) => {
+    setLikedIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(reflectionId)) {
+        newSet.delete(reflectionId);
+      } else {
+        newSet.add(reflectionId);
+      }
+      return newSet;
+    });
 
+    toggleLikeMutate(
+      { reflection_id: reflectionId },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ["getReflectionWallsQueryKey"],
+          });
+        },
+      },
+    );
+  };
+
+  const getLikeText = (likeCount: number, isLikedByMe: boolean) => {
+    if (likeCount <= 0) return "";
+
+    // sirf tumne like kiya hai
+    if (likeCount === 1) {
+      return "you felt this";
+    }
+
+    // tum + others
+    if (isLikedByMe) {
+      return `you and ${likeCount - 1} other${likeCount - 1 > 1 ? "s" : ""} felt this`;
+    }
+
+    // sirf others
+    return `${likeCount} other${likeCount > 1 ? "s" : ""} felt this`;
+  };
   return (
     <>
       <div className="min-h-screen bg-[#F5F0EB]" ref={pdfRef}>
@@ -437,30 +486,62 @@ function ReflectionWalls() {
           {/* Cards Section */}
           <div className="bg-[#F8E1B8] rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] mt-6 sm:mt-8 lg:mt-10 px-3 sm:px-5 lg:px-8 py-4 sm:py-5 lg:py-6 w-full">
             <div className="mt-[12px] sm:mt-[16px] lg:mt-[20px] flex flex-col gap-3 sm:gap-4 lg:gap-6">
-              {filteredReflections.length === 0 ? (
+              {reflections.length === 0 ? (
                 <div className="text-center text-[#0F4F58] text-[15px] sm:text-[16px] lg:text-[18px] font-[Roboto] py-8 lg:py-10">
                   No reflections found
                 </div>
               ) : (
-                filteredReflections.map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-[#CDE3CC] rounded-[12px] sm:rounded-[14px] lg:rounded-[16px] px-[10px] sm:px-[14px] lg:px-[10px] py-[14px] sm:py-[16px] lg:py-[20px] flex flex-col justify-between"
-                  >
-                    <p className="text-[14px] sm:text-[16px] lg:text-[18px] leading-[18px] sm:leading-[20px] lg:leading-[20px] text-[#0F4F58] font-[Roboto] font-[400] mb-[24px] sm:mb-[32px] lg:mb-[40px]">
-                      {item.text}
-                    </p>
+                reflections.map((item: GET_REFLECTIONS_DATA, index) => {
+                  const isLikedByMe = likedIds.has(item.id);
 
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0 text-[12px] sm:text-[13px] lg:text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
-                      <span className="flex items-center">
-                        ⏱ {getTimeAgo(item.created)}
-                      </span>
-                      <span className="flex items-center sm:ml-[29px]">
-                        ❤️ you and 7 others felt this
-                      </span>
+                  const effectiveLikeCount = item.like_count;
+                  return (
+                    <div
+                      key={index}
+                      className="bg-[#CDE3CC] rounded-[12px] sm:rounded-[14px] lg:rounded-[16px] px-[10px] sm:px-[14px] lg:px-[10px] py-[14px] sm:py-[16px] lg:py-[20px] flex flex-col justify-between"
+                    >
+                      <p className="text-[14px] sm:text-[16px] lg:text-[18px] leading-[18px] sm:leading-[20px] lg:leading-[20px] text-[#0F4F58] font-[Roboto] font-[400] mb-[24px] sm:mb-[32px] lg:mb-[40px]">
+                        {item.reflection}
+                      </p>
+
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0 text-[12px] sm:text-[13px] lg:text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
+                        <span className="flex items-center">
+                          ⏱ {getTimeAgo(item.created_at)}
+                        </span>
+                        <div className="flex items-center sm:ml-[29px] gap-2">
+                          <motion.div
+                            whileTap={{ scale: 0.8 }}
+                            onClick={() => handleLike(item.id)}
+                            className="cursor-pointer"
+                          >
+                            <motion.div
+                              animate={{
+                                scale: item.like_count > 0 ? [1, 1.4, 1] : 1,
+                              }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <Heart
+                                size={18}
+                                fill={
+                                  item.like_count > 0
+                                    ? "#ef4444"
+                                    : "transparent"
+                                }
+                                color={
+                                  item.like_count > 0 ? "#ef4444" : "#0F4F58"
+                                }
+                              />
+                            </motion.div>
+                          </motion.div>
+
+                          <span>
+                            {getLikeText(effectiveLikeCount, isLikedByMe)}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -471,4 +552,4 @@ function ReflectionWalls() {
   );
 }
 
-export default ReflectionWalls;
+export default ViewAllReflectionWall;

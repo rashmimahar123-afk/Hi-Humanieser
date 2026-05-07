@@ -144,7 +144,7 @@ function OrganizationSnapshot() {
         className="absolute top-0 right-0 -z-10"
         priority
       />
-      <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo]">
+      <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo] mt-[35px]">
         Overseer Hub
       </div>
       {/* WELCOME TEXT */}

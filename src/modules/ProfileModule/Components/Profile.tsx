@@ -13,8 +13,7 @@ import useGetTeamsQuery from "../Hooks/useGetTeamsQuery";
 import { useEditUserMutation } from "../Hooks/useEditUserMutation";
 import useGetAllListUsersQuery from "../Hooks/useGetAllListUsersQuery";
 import ChampionModal from "./ChampionModal/ChampionModal";
-import useGetRoleBasedUsersListQuery from "../Hooks/useGetRoleBasedUsersListQuery";
-import useFindUserQuery from "../Hooks/useFindUserQuery";
+import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
 import { formatJoinedDate } from "@/src/lib/Helpers";
 
 function Profile() {
@@ -23,7 +22,7 @@ function Profile() {
     images.dummyUser,
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const { user } = useAuthValue();
   const orgId = user?.org_id;
 
@@ -104,6 +103,7 @@ function Profile() {
   }, [profileData]);
 
   const { data: teamsData } = useGetTeamsQuery();
+
   const teamName =
     teamsData?.data?.teams?.find(
       (team: any) => team.id === profileData?.team_id,
@@ -112,12 +112,30 @@ function Profile() {
   const { data: usersData } = useGetAllListUsersQuery();
 
   const allUsers = usersData?.data?.users || [];
+
+  // const allTeamMembers = allUsers.filter(
+  //   (userItem) =>
+  //     userItem.team_id === profileData?.team_id &&
+  //     userItem.user_type === 1 &&
+  //     !userItem.deactivated, // optional but recommended
+  // );
+
+  const effectiveTeamId = selectedTeamId || profileData?.team_id;
+
   const allTeamMembers = allUsers.filter(
     (userItem) =>
-      userItem.team_id === profileData?.team_id &&
+      userItem.team_id === effectiveTeamId &&
       userItem.user_type === 1 &&
-      !userItem.deactivated, // optional but recommended
+      !userItem.deactivated,
   );
+
+  const teamChampion = allUsers.find(
+    (userItem) =>
+      userItem.team_id === effectiveTeamId &&
+      userItem.user_type === 2 &&
+      !userItem.deactivated,
+  );
+
   const mappedTeamMembers = allTeamMembers.map((member: any) => ({
     name: `${member.first_name} ${member.last_name}`,
     image:
@@ -126,6 +144,10 @@ function Profile() {
         : images.dummyUser,
   }));
   const rows = chunkByPattern(mappedTeamMembers || []);
+
+  const loggedInUserDetails = allUsers.find(
+    (u: any) => u.email === user?.sub && u.user_type === user?.user_type,
+  );
 
   const mapUsers = (users: any[] = []) => {
     return users.map((user) => ({
@@ -136,11 +158,10 @@ function Profile() {
           : images.dummyUser,
     }));
   };
-  const partners = allUsers.filter((u) => u.user_type === 3);
+  const partners = allUsers.filter((u) => u.user_type === 3 && !u.deactivated);
+  const champions = allUsers.filter((u) => u.user_type === 2 && !u.deactivated);
 
-  const champions = allUsers.filter((u) => u.user_type === 2);
-
-  const members = allUsers.filter((u) => u.user_type === 1);
+  const members = allUsers.filter((u) => u.user_type === 1 && !u.deactivated);
 
   const partnersData = mapUsers(partners);
   const championsData = mapUsers(champions);
@@ -163,6 +184,7 @@ function Profile() {
   });
 
   const findUserProfile = findUserData?.data?.profile;
+
   return (
     <>
       <div
@@ -193,12 +215,14 @@ function Profile() {
               <PartnerProfile
                 profileData={profileData}
                 organizationData={organizationData}
+                loggedInUserDetails={loggedInUserDetails}
               />
               <CompanyStructure
                 profileData={profileData}
                 partners={partnersData}
                 champions={championsData}
                 championsWithMembers={championsWithMembers}
+                teamChampion={teamChampion}
               />
             </>
           ) : (
@@ -254,7 +278,7 @@ function Profile() {
                       Joined {formatJoinedDate(findUserProfile?.created)}
                     </p>
                     <p className="text-[13px] sm:text-[14px] text-[#0F4F58]">
-                      Active Member In Hi Humaniser!
+                      Active Champion In Hi Humaniser!
                     </p>
                     <div className="mt-3 sm:mt-5 text-[16px] sm:text-[19px] md:text-[22px] text-[#0F4F58] font-[Roboto] font-[400] leading-6 space-y-1">
                       <p>Company: {profileData?.company_name}</p>

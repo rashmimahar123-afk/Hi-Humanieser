@@ -35,3 +35,22 @@ export type ENRICH_PROGRESS_LIST = {
   active: boolean;
   completed: number;
 };
+export type GET_REFLECTIONS_DATA = {
+  id: string;
+  reflection: string;
+  created_at: string;
+  like_count: number;
+  shared_anonymously: boolean;
+  source: string;
+};
+export type GET_REFLECTION_WALLS_RESPONSE = {
+  message: string;
+  team_id: string;
+  reflections: Array<GET_REFLECTIONS_DATA>;
+};
+export type TOGGLE_REFLECTION_RESPONSE_TYPES = {
+  action: string;
+  like_count: number;
+  message: string;
+  reflection_id: string;
+};

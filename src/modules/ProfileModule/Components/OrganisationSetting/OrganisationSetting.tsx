@@ -783,12 +783,12 @@ function OrganisationSetting() {
                     </p>
                   </div>
                 </div>
-                <button
+                {/* <button
                   className="bg-[#ffffff] px-8 pr-12 h-[41px] w-full sm:w-[200px] rounded-[14px]
                     text-[16px] sm:text-[18px] lg:text-[20px] text-[#567F55] font-[Roboto]"
                 >
                   Upload CSV
-                </button>
+                </button> */}
               </div>
 
               <div className="flex justify-end mt-10 sm:mt-[53px]">

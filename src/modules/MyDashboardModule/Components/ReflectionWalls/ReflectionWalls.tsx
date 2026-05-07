@@ -19,12 +19,14 @@ import FillUpFormModal, {
 import styles from "./ReflectionWalls.module.css";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
+import useGetReflectionWallsQuery from "../../Hooks/useGetReflectionWallsQuery";
 
 function ReflectionWalls() {
   const [progressList, setProgressList] = useState<any>([]);
   const [practiceList, setPracticeList] = useState<any[]>([]);
   const [enter, setEnter] = useState(false);
-
+  const [selectedTeam, setSelectedTeam] = useState("");
   useEffect(() => {
     setEnter(true);
   }, []);
@@ -156,57 +158,89 @@ function ReflectionWalls() {
 
   const { data: randomMessage } = useGetMppMessagesQuery();
 
-  const enrichedProgressList = enrichProgressWithPractice(
-    progressList,
-    practiceList,
-  );
+  // const enrichedProgressList = enrichProgressWithPractice(
+  //   progressList,
+  //   practiceList,
+  // );
 
-  const getSharedReflectionsFromEnriched = (data: any[]) => {
-    if (!Array.isArray(data)) return [];
-    const result: any[] = [];
-    data.forEach((item) => {
-      const dynamicKey = Object.keys(item).find(
-        (key) => !["created", "uuid", "active", "completed"].includes(key),
-      );
-      if (!dynamicKey) return;
-      const pathwayData = item[dynamicKey];
+  // const getSharedReflectionsFromEnriched = (data: any[]) => {
+  //   if (!Array.isArray(data)) return [];
+  //   const result: any[] = [];
+  //   data.forEach((item) => {
+  //     const dynamicKey = Object.keys(item).find(
+  //       (key) => !["created", "uuid", "active", "completed"].includes(key),
+  //     );
+  //     if (!dynamicKey) return;
+  //     const pathwayData = item[dynamicKey];
 
-      const m2 = pathwayData?.m2;
-      if (m2) {
-        Object.values(m2).forEach((actions: any) => {
-          if (Array.isArray(actions)) {
-            actions.forEach((action) => {
-              if (action?.share && action?.reflection) {
-                result.push({ text: action.reflection, created: item.created });
-              }
-            });
-          }
-        });
-      }
+  //     const m2 = pathwayData?.m2;
+  //     if (m2) {
+  //       Object.values(m2).forEach((actions: any) => {
+  //         if (Array.isArray(actions)) {
+  //           actions.forEach((action) => {
+  //             if (action?.share && action?.reflection) {
+  //               result.push({ text: action.reflection, created: item.created });
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
 
-      const m3 = pathwayData?.m3;
-      if (m3?.reflection?.share === true && m3?.reflection?.reflection) {
-        result.push({ text: m3.reflection.reflection, created: item.created });
-      }
-    });
-    return result;
-  };
+  //     const m3 = pathwayData?.m3;
+  //     if (m3?.reflection?.share === true && m3?.reflection?.reflection) {
+  //       result.push({ text: m3.reflection.reflection, created: item.created });
+  //     }
+  //   });
+  //   return result;
+  // };
 
-  const reflectionList = useMemo(() => {
-    if (!enrichedProgressList?.length) return [];
-    const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
-    return extracted.sort((a, b) => b.created - a.created).slice(0, 5);
-  }, [enrichedProgressList]);
+  const effectiveTeamId = useMemo(() => {
+    if (!user) return undefined;
 
-  const reflections = reflectionList.map((item, i) => ({
-    id: i + 1,
-    text: item.text,
-    rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
-    imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
-  }));
+    if (user.user_type === 3) {
+      return selectedTeam ? selectedTeam : user.team_id;
+    }
+
+    return user.team_id;
+  }, [user, selectedTeam]);
+
+  const { data: reflectionApiData } =
+    useGetReflectionWallsQuery(effectiveTeamId);
+
+  // const reflectionList = useMemo(() => {
+  //   if (!enrichedProgressList?.length) return [];
+  //   const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
+  //   return extracted.sort((a, b) => b.created - a.created).slice(0, 5);
+  // }, [enrichedProgressList]);
+  const reflections = useMemo(() => {
+    if (!reflectionApiData?.data?.reflections) return [];
+
+    return reflectionApiData.data.reflections
+      .sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      )
+      .slice(0, 5)
+      .map((item, i) => ({
+        id: i + 1,
+        text: item.reflection,
+        rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
+        imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
+      }));
+  }, [reflectionApiData]);
+  // const reflections = reflectionList.map((item, i) => ({
+  //   id: i + 1,
+  //   text: item.text,
+  //   rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
+  //   imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
+  // }));
 
   const rows = createPatternRows(reflections, [3, 2]);
+  const { data: teamsData } = useGetTeamsQuery();
+  const teams = teamsData?.data?.teams || [];
+  const selectedTeamData = teams.find((team: any) => team.id === selectedTeam);
 
+  // const isOwnTeam = selectedTeam ? selectedTeam === user?.team_id : true;
   return (
     <>
       <div
@@ -278,22 +312,30 @@ function ReflectionWalls() {
           <div className="mt-4 sm:mt-5 lg:mt-6 flex justify-end">
             <div className="relative">
               <select
+                value={selectedTeam}
+                onChange={(e) => setSelectedTeam(e.target.value)}
                 className="
-                  appearance-none
-                  bg-[#86C9C9]
-                  text-[#0F4F58]
-                  text-[14px] sm:text-[16px] lg:text-[18px]
-                  font-[400]
-                  px-4 sm:px-5 lg:px-6
-                  pr-8 sm:pr-9 lg:pr-10
-                  h-[36px] sm:h-[38px] lg:h-[40px]
-                  w-[200px] sm:w-[250px] lg:w-[297px]
-                  rounded-full
-                  outline-none
-                  font-[Roboto]
-                "
+    appearance-none
+    bg-[#86C9C9]
+    text-[#0F4F58]
+    text-[14px] sm:text-[16px] lg:text-[18px]
+    font-[400]
+    px-4 sm:px-5 lg:px-6
+    pr-8 sm:pr-9 lg:pr-10
+    h-[36px] sm:h-[38px] lg:h-[40px]
+    w-[200px] sm:w-[250px] lg:w-[297px]
+    rounded-full
+    outline-none
+    font-[Roboto]
+  "
               >
-                <option>Choose Team</option>
+                <option value="">Choose Team</option>
+
+                {teams.map((team: any) => (
+                  <option key={team.id} value={team.id}>
+                    {team.team_name}
+                  </option>
+                ))}
               </select>
               <div className="pointer-events-none absolute right-3 lg:right-4 top-1/2 -translate-y-1/2">
                 <Image src={images.dropdownImg} alt="dropdown-img" width={20} />
@@ -305,11 +347,11 @@ function ReflectionWalls() {
           <div className="bg-[#F8E1B8] rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] mt-6 sm:mt-8 lg:mt-10 px-3 sm:px-5 lg:px-8 py-6 sm:py-8 lg:py-10 relative w-full min-h-[200px]">
             <div className="w-full">
               {/* Card Rows */}
-              <div className="flex flex-col items-center gap-2 sm:gap-3 lg:gap-4">
+              <div className="flex flex-col items-center gap-2 sm:gap-3 lg:gap-[50px]">
                 {rows.map((row: any, rowIndex: any) => (
                   <div
                     key={rowIndex}
-                    className="flex gap-2 sm:gap-4 lg:gap-10 flex-wrap justify-center"
+                    className="flex sm:gap-4 lg:gap-[20px] flex-wrap justify-center"
                   >
                     {row.map((item: any) => (
                       <ViewAllReflectionCard
@@ -326,34 +368,45 @@ function ReflectionWalls() {
 
               {/* Buttons */}
               <div className="flex justify-end gap-4 sm:gap-6 lg:gap-8 mr-4 sm:mr-8 lg:mr-12 mt-6 sm:mt-8 pb-2">
-                {/* Add Reflection */}
-                <div
-                  className="relative w-[64px] h-[70px] sm:w-[72px] sm:h-[78px] lg:w-[80px] lg:h-[85px] cursor-pointer"
-                  onClick={() => {
-                    if (!progressList?.length) return;
-                    openFillupModal("micro_action_1", progressList[0].uuid);
-                  }}
-                >
-                  <PolygonButton
-                    width="100%"
-                    height="100%"
-                    bgColor="#F7C3BE"
-                    clipPath={`polygon(0% 18px, 100% 0%, 100% 100%, 0% calc(100% - 14px))`}
-                    radius={14}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none">
-                    <span className="text-[#0F4F58] text-[12px] sm:text-[15px] lg:text-[18px] font-[RocaTwo] font-bold leading-[18px] sm:leading-[22px] lg:leading-[26px]">
-                      Add
-                      <br />
-                      Reflection
-                    </span>
-                  </div>
-                </div>
+                {user?.user_type !== 3 && (
+                  <>
+                    {/* Add Reflection */}
+                    <div
+                      className="relative w-[64px] h-[70px] sm:w-[72px] sm:h-[78px] lg:w-[80px] lg:h-[85px] cursor-pointer"
+                      onClick={() => {
+                        openFillupModal(
+                          "reflection_wall", // microActionType (anything meaningful)
+                          "", // uuid (not needed here)
+                          undefined,
+                          undefined,
+                          selectedTeam, // ✅ correct place
+                        );
+                      }}
+                    >
+                      <PolygonButton
+                        width="100%"
+                        height="100%"
+                        bgColor="#F7C3BE"
+                        clipPath={`polygon(0% 18px, 100% 0%, 100% 100%, 0% calc(100% - 14px))`}
+                        radius={14}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none">
+                        <span className="text-[#0F4F58] text-[12px] sm:text-[15px] lg:text-[18px] font-[RocaTwo] font-bold leading-[18px] sm:leading-[22px] lg:leading-[26px]">
+                          Add
+                          <br />
+                          Reflection
+                        </span>
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 {/* View Full Wall */}
                 <div
                   className="relative w-[64px] h-[70px] sm:w-[72px] sm:h-[78px] lg:w-[80px] lg:h-[85px] cursor-pointer"
-                  onClick={() => router.push("/view-reflection-wall")}
+                  onClick={() =>
+                    router.push(`/view-reflection-wall?teamId=${selectedTeam}`)
+                  }
                 >
                   <PolygonButton
                     width="100%"

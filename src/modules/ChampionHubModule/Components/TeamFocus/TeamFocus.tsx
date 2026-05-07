@@ -11,6 +11,7 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
 import { chunkByPattern } from "@/src/lib/Helpers";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function TeamFocus() {
   const router = useRouter();
@@ -366,6 +367,7 @@ function TeamFocus() {
         </div>
       </div>
       <SuggestPressurePointModal />
+      <LogoutModal />
     </>
   );
 }

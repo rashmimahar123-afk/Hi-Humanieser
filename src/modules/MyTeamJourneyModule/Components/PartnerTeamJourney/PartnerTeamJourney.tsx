@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import { useRouter } from "next/navigation";
+import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
 
 function PartnerTeamJourney() {
   const [enter, setEnter] = useState(false);
@@ -15,6 +16,7 @@ function PartnerTeamJourney() {
   useEffect(() => {
     setEnter(true);
   }, []);
+  const { data: randomMessage, isLoading } = useGetMppMessagesQuery();
   return (
     <>
       <div
@@ -46,7 +48,7 @@ function PartnerTeamJourney() {
         </div>
         <div className="relative z-20  ">
           <SuccessMessage
-            text="Great to see you again — ready to explore?"
+            text={randomMessage || ""}
             fontSize="text-[30px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
@@ -81,7 +83,7 @@ function PartnerTeamJourney() {
           </p>
 
           {/* Yellow CTA Box */}
-          <div className="mt-12 bg-[#f5c882] rounded-[18px] px-12 py-4 max-w-[900px] ml-[55px] gap-6">
+          <div className="mt-12 bg-[#f5c882] rounded-[18px] px-12 py-4 max-w-[830px] ml-[100px] gap-6">
             {/* Left text */}
             <div>
               <p className="text-[#0f4f58] text-[22px] whitespace-nowrap font-[Aptos]">
@@ -91,31 +93,32 @@ function PartnerTeamJourney() {
             {/* Center CTA */}
 
             {/* Image-based button */}
-            <div className="flex justify-center mr-[86px]">
-              <button
-                className="relative "
-                onClick={() => router.push("/overseer-hub")}
-              >
-                {/* Arrow strokes */}
-                <Image
-                  src={images.pathwayArrowRight}
-                  alt="arrow"
-                  width={42}
-                  height={42}
-                  className="absolute -top-[34px] -right-[32px]"
-                />
-                {/* Background Image */}
-                <Image
-                  src={images.teamPoly}
-                  alt="Return Home"
-                  width={106}
-                  height={80}
-                  className="object-contain"
-                />
+            <div className="flex ml-[100px]">
+              <div className="mr-[86px]">
+                <button
+                  className="relative "
+                  onClick={() => router.push("/overseer-hub")}
+                >
+                  {/* Arrow strokes */}
+                  <Image
+                    src={images.pathwayArrowRight}
+                    alt="arrow"
+                    width={42}
+                    height={42}
+                    className="absolute -top-[34px] -right-[32px]"
+                  />
+                  {/* Background Image */}
+                  <Image
+                    src={images.teamPoly}
+                    alt="Return Home"
+                    width={106}
+                    height={80}
+                    className="object-contain"
+                  />
 
-                {/* Text on top */}
-                <span
-                  className="
+                  {/* Text on top */}
+                  <span
+                    className="
         absolute
         inset-0
         flex
@@ -129,19 +132,19 @@ function PartnerTeamJourney() {
         text-center
         z-10
       "
-                >
-                  Partner Hub
-                </span>
-              </button>
+                  >
+                    Partner Hub
+                  </span>
+                </button>
+              </div>
+              <div>
+                <p className="text-[#0f4f58] text-[22px] max-w-[400px] font-[Aptos]">
+                  To explore team insights, engagement trends and progress
+                  across your organisation
+                </p>
+              </div>
             </div>
-
             {/* Right text */}
-            <div className="flex justify-end -mr-[46px]">
-              <p className="text-[#0f4f58] text-[22px] max-w-[360px] font-[Aptos]">
-                To explore team insights, engagement trends and progress across
-                your organisation
-              </p>
-            </div>
           </div>
 
           {/* Bottom note */}

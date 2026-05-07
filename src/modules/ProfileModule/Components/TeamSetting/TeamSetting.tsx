@@ -13,6 +13,7 @@ import useGetTeamsQuery from "../../Hooks/useGetTeamsQuery";
 import { useEditTeamMutation } from "../../Hooks/useEditTeamMutation";
 import { useCreateUserMutation } from "../../Hooks/useCreateUserMutation";
 import useGetAllListUsersQuery from "../../Hooks/useGetAllListUsersQuery";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function TeamSetting() {
   const [firstName, setFirstName] = useState("");
@@ -360,9 +361,9 @@ function TeamSetting() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white px-6 py-2 rounded-full text-[18px] font-[Roboto] text-[#567f55]">
+                {/* <div className="bg-white px-6 py-2 rounded-full text-[18px] font-[Roboto] text-[#567f55]">
                   Upload CSV
-                </div>
+                </div> */}
               </div>
 
               <div className="flex justify-end mt-[53px]  ">
@@ -409,6 +410,7 @@ function TeamSetting() {
         )}
       </div>
       <AddMemberModal />
+      <LogoutModal />
     </>
   );
 }

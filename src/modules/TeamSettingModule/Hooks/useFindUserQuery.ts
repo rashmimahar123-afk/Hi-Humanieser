@@ -5,7 +5,7 @@ import {
   GET_FIND_USERS_RESPONSE,
   GET_ORGANISATION_DETAILS_RESPONSE,
   GET_TEAMS_RESPONSE,
-} from "../Types/ResponseTypes";
+} from "../../ProfileModule/Types/ResponseTypes";
 
 export const GET_FIND_USER_QUERY_KEY = ["getFindUserQueryKey"];
 
@@ -19,9 +19,24 @@ const getFindUser = (
 };
 function useFindUserQuery(email?: string, options?: { enabled?: boolean }) {
   return useQuery({
-    queryKey: [GET_FIND_USER_QUERY_KEY, email],
-    queryFn: () => getFindUser(email as string),
+    queryKey: ["getFindUserQueryKey", email],
+    queryFn: async ({ queryKey }) => {
+      const [, emailParam] = queryKey;
+
+      try {
+        return await getFindUser(emailParam as string);
+      } catch (err: any) {
+        // ✅ normalize error
+        const message =
+          err?.response?.data?.detail ||
+          err?.response?.data?.message ||
+          "Something went wrong";
+
+        throw new Error(message); // 🔥 important
+      }
+    },
     enabled: !!email && options?.enabled,
+    retry: false, // ❗ don't retry on 404
   });
 }
 

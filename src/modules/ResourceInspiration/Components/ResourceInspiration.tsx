@@ -32,6 +32,7 @@ function ResourceInspiration() {
         src={images.resourcePolygon1}
         alt="shape"
         className="absolute top-0 right-0 z-0 hidden lg:block"
+        width={500}
       />
       <Image
         src={images.resourceArrow}
@@ -42,7 +43,7 @@ function ResourceInspiration() {
         src={images.resourcePolygon2}
         alt="shape"
         className="absolute top-[180px] left-0 z-0 hidden lg:block"
-        width={630}
+        width={500}
       />
 
       {/* ── TABLET background shapes (sm–lg) ── */}
@@ -110,7 +111,6 @@ function ResourceInspiration() {
             This space brings together all the learning, tools, and ideas that
             make Hi Humaniser! come alive.
             <br className="hidden lg:block" />
-            <br className="hidden lg:block" />
             <span className="block mt-3 lg:mt-0">
               Explore the pillars, principles, and pathways — or spend a moment
               with Huma when you need space to pause and think.
@@ -119,7 +119,7 @@ function ResourceInspiration() {
         </div>
 
         {/* Subtitle */}
-        <div className="flex justify-center text-[#FFFFFF] text-[14px] sm:text-[20px] md:text-[24px] lg:text-[33px] mt-8 sm:mt-10 lg:mt-[84px] text-center leading-snug px-2 sm:px-6 lg:px-0">
+        <div className="flex justify-center text-[#FFFFFF] text-[14px] sm:text-[20px] md:text-[24px] lg:text-[33px] mt-8 sm:mt-10 lg:mt-[134px] text-center leading-snug px-2 sm:px-6 lg:px-0">
           Explore the pillars and principles behind HH!, discover how they show
           up in everyday work, or dive into the research that proves
           human-centred practices drive real performance.
@@ -135,16 +135,23 @@ function ResourceInspiration() {
                 router.push("behind-scene");
               }}
               className={`
-                bg-[#FFF7F3] rounded-xl p-4 sm:p-5 lg:p-6 cursor-pointer
-                transition-all duration-500 ease-in-out
-                ${
-                  activeCard === 1
-                    ? "scale-105 lg:scale-110 -translate-y-3 lg:-translate-y-6 shadow-2xl z-20"
-                    : activeCard
-                      ? "opacity-40"
-                      : ""
-                }
-              `}
+
+  bg-[#FFF7F3] rounded-xl p-4 sm:p-5 lg:p-6 cursor-pointer
+  transition-all duration-300 ease-in-out
+  transform
+  hover:-translate-y-4 lg:hover:-translate-y-8
+  hover:scale-105
+  hover:shadow-2xl
+  hover:z-20
+
+  ${
+    activeCard === 1
+      ? "scale-105 lg:scale-110 -translate-y-3 lg:-translate-y-6 shadow-2xl z-20"
+      : activeCard
+        ? "opacity-40"
+        : ""
+  }
+`}
             >
               <h3 className="text-[#0F4F58] text-center mb-3 lg:mb-4 font-[400] text-[15px] sm:text-[17px] md:text-[19px] lg:text-[22px] font-bold">
                 Behind the Scenes of
@@ -173,8 +180,15 @@ function ResourceInspiration() {
                 router.push("/from-ideas");
               }}
               className={`
-                bg-[#F8E1B8] rounded-xl p-4 sm:p-5 lg:p-6 cursor-pointer
-                transition-all duration-500 ease-in-out
+             
+                bg-[#F8E1B8]  rounded-xl p-4 sm:p-5 lg:p-6 cursor-pointer
+  transition-all duration-300 ease-in-out
+  transform
+  hover:-translate-y-4 lg:hover:-translate-y-8
+  hover:scale-105
+  hover:shadow-2xl
+  hover:z-20
+
                 ${
                   activeCard === 2
                     ? "scale-105 lg:scale-110 -translate-y-3 lg:-translate-y-6 shadow-2xl z-20"
@@ -209,9 +223,14 @@ function ResourceInspiration() {
                 router.push("/research-room");
               }}
               className={`
-                bg-[#F5C882] rounded-xl p-4 sm:p-5 lg:p-6 cursor-pointer
-                transition-all duration-500 ease-in-out
-                sm:col-span-2 lg:col-span-1
+                
+                       bg-[#F5C882]  rounded-xl p-4 sm:p-5 lg:p-6 cursor-pointer
+  transition-all duration-300 ease-in-out
+  transform
+  hover:-translate-y-4 lg:hover:-translate-y-8
+  hover:scale-105
+  hover:shadow-2xl
+  hover:z-20
                 ${
                   activeCard === 3
                     ? "scale-105 lg:scale-110 -translate-y-3 lg:-translate-y-6 shadow-2xl z-20"

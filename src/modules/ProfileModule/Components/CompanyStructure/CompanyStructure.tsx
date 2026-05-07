@@ -60,9 +60,9 @@ function MemberGrid({ rows }: { rows: any[][] }) {
 /* ── Reusable card shell ── */
 function StructureCard({ children }: { children: React.ReactNode }) {
   return (
-    <section className="bg-[#F8E1B8] rounded-[18px] sm:rounded-[24px] p-4 sm:p-6 md:p-10 relative overflow-hidden mt-6 sm:mt-8 md:mt-10">
+    <section className="bg-[#F8E1B8] rounded-[18px] sm:rounded-[24px] p-4 sm:p-6 md:p-10 relative mt-6 sm:mt-8 md:mt-10">
       {/* Curve dotted path */}
-      <div className="absolute right-3 sm:right-6 md:right-10 top-3 sm:top-6 md:top-10 rotate-[185deg] pointer-events-none">
+      <div className="absolute right-3 sm:right-6 md:-right-[5px] top-3 sm:top-6 md:-top-[16px] rotate-[185deg] pointer-events-none">
         <Image
           src={images.teamDot}
           alt=""
@@ -77,24 +77,31 @@ function StructureCard({ children }: { children: React.ReactNode }) {
 }
 
 /* ── Top partner row (shared by Partners + Champions cards) ── */
-function TopPartnerRow({ profileData }: any) {
+function TopPartnerRow({ profileData, teamChampion }: any) {
   return (
     <div className="flex items-center gap-3 sm:gap-5 mb-6 sm:mb-8 md:mb-10">
       <div className="w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] md:w-[70px] md:h-[70px] rounded-full overflow-hidden shrink-0">
         <Image
-          src={images.dummyUser}
-          alt="Partner"
-          width={70}
-          height={70}
-          className="object-cover w-full h-full"
+          src={
+            teamChampion?.has_profile_picture &&
+            teamChampion?.profile_picture_path
+              ? `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${teamChampion.profile_picture_path}`
+              : images.dummyUser
+          }
+          alt="Champion"
+          width={72}
+          height={72}
         />
       </div>
       <div>
-        <h3 className="text-[18px] sm:text-[22px] md:text-[26px] font-semibold text-[#0F4F58]">
-          Hi Humaniser! Partner
+        <h3 className="text-[18px] sm:text-[22px] md:text-[36px] font-semibold text-[#0F4F58]">
+          Hi Humaniser!
         </h3>
-        <p className="text-[13px] sm:text-[15px] md:text-[16px] text-[#0F4F58]">
-          {profileData?.first_name} {profileData?.last_name}
+        <p className="text-[13px] sm:text-[15px] md:text-[18px] text-[#0F4F58]">
+          {teamChampion
+            ? `${teamChampion.first_name} ${teamChampion.last_name}`
+            : "No Champion"}
+          ``
         </p>
       </div>
     </div>
@@ -105,9 +112,11 @@ function TopPartnerRow({ profileData }: any) {
 function CardFooter({
   label,
   onClick,
+  disabled = false,
 }: {
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <>
@@ -117,11 +126,19 @@ function CardFooter({
           alt=""
           width={100}
           height={100}
-          className="w-[60px] sm:w-[80px] md:w-[100px] h-auto"
+          className="w-[60px] sm:w-[80px] md:w-[100px] h-auto absolute -bottom-[44px] rotate-[90deg]"
         />
       </div>
       <div className="mt-4 sm:mt-6 md:mt-10 flex justify-end items-center">
-        <CommonButtons label={label} bgColor="#f2a39c" onClick={onClick} />
+        <div
+          style={{
+            pointerEvents: disabled ? "none" : "auto", // ❌ click block
+            opacity: disabled ? 0.5 : 1, // ❌ faded UI
+            cursor: disabled ? "not-allowed" : "pointer", // ❌ UX improve
+          }}
+        >
+          <CommonButtons label={label} bgColor="#f2a39c" onClick={onClick} />
+        </div>
       </div>
     </>
   );
@@ -130,6 +147,7 @@ function CardFooter({
 function CompanyStructure({
   profileData,
 
+  teamChampion,
   partners = [],
   champions = [],
   championsWithMembers = [],
@@ -137,7 +155,6 @@ function CompanyStructure({
   const { user } = useAuthValue();
   const partnerRows = chunkByPattern(partners);
   const championRows = chunkByPattern(champions);
-
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
@@ -148,7 +165,13 @@ function CompanyStructure({
     ? championsWithMembers.filter(
         (item: any) => item.champion.team_id === selectedTeam.id,
       )
-    : championsWithMembers;
+    : [];
+  console.log("filteredChampionsfilteredChampions", filteredChampions);
+  const hasMembers = filteredChampions.some(
+    (item: any) => item.members && item.members.length > 0,
+  );
+  console.log("hasMembers", hasMembers);
+  const isEmptyState = !selectedTeam || !hasMembers;
   return (
     <div className="mt-8 sm:mt-10 md:mt-12 px-0 sm:px-4 md:px-14">
       {/* Title */}
@@ -158,14 +181,14 @@ function CompanyStructure({
 
       {/* ══ Partners Card ══ */}
       <StructureCard>
-        <TopPartnerRow profileData={profileData} />
+        <TopPartnerRow profileData={profileData} teamChampion={teamChampion} />
         <h3 className="text-[20px] sm:text-[24px] md:text-[28px] font-[RocaTwo] font-bold text-[#0F4F58] mb-4 sm:mb-6 md:mb-8">
           Hi Humaniser! Partners
         </h3>
         <MemberGrid rows={partnerRows} />
         <CardFooter
-          label="See / Edit Partners"
-          onClick={() => router.push("/edit-members")}
+          label=" Edit Partners"
+          onClick={() => router.push("/edit-members?type=partner")}
         />
       </StructureCard>
 
@@ -177,8 +200,8 @@ function CompanyStructure({
         </h3>
         <MemberGrid rows={championRows} />
         <CardFooter
-          label="See / Edit Champion"
-          onClick={() => router.push("/dashboard")}
+          label="Edit Champion"
+          onClick={() => router.push("/edit-members?type=champion")}
         />
       </StructureCard>
 
@@ -216,7 +239,12 @@ function CompanyStructure({
 
             {/* Dropdown */}
             {isOpen && (
-              <div className="absolute top-full mt-2 w-full  rounded-xl shadow-md z-10 overflow-hidden text-[#5E7F6F]">
+              <div
+                className="absolute left-0 top-full mt-2 w-full sm:min-w-[280px] 
+  max-h-[250px] overflow-y-auto 
+  bg-[#F3EEE7] rounded-xl shadow-md z-50 text-[#5E7F6F]"
+              >
+                {" "}
                 {teams.length > 0 ? (
                   teams.map((team: any) => (
                     <div
@@ -259,7 +287,7 @@ function CompanyStructure({
           }));
 
           const rows = chunkByPattern(mappedMembers);
-
+          console.log("rows", rows);
           return (
             <div key={index} className="mb-10">
               {/* Champion */}
@@ -293,10 +321,13 @@ function CompanyStructure({
             </div>
           );
         })}
-        <CardFooter
-          label="See / Edit Members"
-          onClick={() => router.push("/dashboard")}
-        />
+        <div className={isEmptyState ? "mt-[200px]" : ""}>
+          <CardFooter
+            label=" Edit Members"
+            onClick={() => router.push("/edit-members?type=member")}
+            disabled={isEmptyState}
+          />
+        </div>
       </StructureCard>
     </div>
   );

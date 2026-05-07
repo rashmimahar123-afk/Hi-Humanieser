@@ -176,18 +176,18 @@ function LandingPage() {
           <div className="flex flex-col justify-center gap-4">
             <FAQAccordion
               title="What is Hi Humaniser!™?"
-              paragraph="Hi Humaniser!™ is a digital platform… but not in the way you might expect.
- 
+              paragraph={`Hi Humaniser!™ is a digital platform… but not in the way you might expect.
+
 It’s not another place to log in and “do things”. It’s there to improve how work actually happens, in meetings, in conversations, in decisions that don’t always go as planned.
- 
+
 At its core, it helps organisations connect two things that are often disconnected:
 what leaders are dealing with… and what teams experience day to day.
- 
-From there, it turns small behaviours, like how we communicate, how we listen, how we show up, into practical habits that make work feel clearer, smoother… and yes, more effective."
+
+From there, it turns small behaviours, like how we communicate, how we listen, how we show up, into practical habits that make work feel clearer, smoother… and yes, more effective.`}
             />
             <FAQAccordion
               title="Who is Hi Humaniser!™ for?"
-              paragraph="It’s for organisations where work isn’t just tasks… it’s conversations, decisions, constant interaction.
+              paragraph={`It’s for organisations where work isn’t just tasks… it’s conversations, decisions, constant interaction.
  
 The kind of places where people are thinking, aligning, re-aligning… and sometimes talking past each other without meaning to.
  
@@ -196,11 +196,11 @@ So yes, individuals use it. Teams use it. Leaders use it.
 But really… it’s for organisations where performance depends on how well people work together, not just how hard they work.
  
 If everything in your world is clear, simple and predictable… this is probably not for you.
-If things get messy, fast, human… then it probably is."
+If things get messy, fast, human… then it probably is.`}
             />
             <FAQAccordion
               title="Is this just another platform or initiative I don’t have time for?"
-              paragraph="Fair question. Most people don’t.
+              paragraph={`Fair question. Most people don’t.
  
 This wasn’t built for people who have spare time. It was built for people already in the middle of it… the meetings, the decisions, the “can we just align on this?” moments.
  
@@ -211,11 +211,11 @@ You try things in real conversations. In meetings you were already going to have
 And if it ever feels like “one more thing”… then it’s not working the way it should.
 The point is the opposite: less friction, fewer loops, clearer decisions.
  
-Not more work. Better work."
+Not more work. Better work.`}
             />
             <FAQAccordion
               title="What problem is Hi Humaniser!™ trying to solve?"
-              paragraph="It’s not a lack of effort. Most teams are already working hard.
+              paragraph={`It’s not a lack of effort. Most teams are already working hard.
  
 The problem is what sits underneath that…
 things not quite landing, decisions going in circles, people doing their best but not always in the same direction.
@@ -226,11 +226,11 @@ And those two don’t always meet.
  
 That’s where the friction comes from.
  
-Hi Humaniser!™ is there to close that gap… so work becomes clearer, decisions move faster, and people are not constantly having to work around the system to get things done."
+Hi Humaniser!™ is there to close that gap… so work becomes clearer, decisions move faster, and people are not constantly having to work around the system to get things done.`}
             />
             <FAQAccordion
               title="How does Hi Humaniser!™ work?"
-              paragraph="It doesn’t take you out of work to “develop”.
+              paragraph={`It doesn’t take you out of work to “develop”.
 It works with what’s already there.
  
 You pick a starting point… something that feels relevant right now.
@@ -241,20 +241,20 @@ In meetings. In conversations. In decisions you were already going to make anywa
 At the same time, your team is working on a shared focus… trying simple things together, noticing what changes.
  
 Nothing heavy. Nothing theoretical.
-Just small adjustments that, over time, make work feel a lot less complicated than it used to."
+Just small adjustments that, over time, make work feel a lot less complicated than it used to.`}
             />
             <FAQAccordion
               title="How much time does it take each week?"
-              paragraph="Very little. And that’s kind of the point.
+              paragraph={`Very little. And that’s kind of the point.
  
 This is not something you block time for. It shows up in the work you’re already doing. A small shift in how you run a meeting. A different way of asking a question. Catching something earlier instead of fixing it later.
  
 That’s it.
-And over time… those small things tend to give you time back."
+And over time… those small things tend to give you time back.`}
             />
             <FAQAccordion
               title="How do you measure impact?"
-              paragraph="Not with a single score or a dashboard full of numbers.
+              paragraph={`Not with a single score or a dashboard full of numbers.
  
 You see it in how things start to shift.
 Conversations get clearer. Decisions don’t bounce around as much. Teams spend less time untangling things.
@@ -266,27 +266,27 @@ But the real impact shows up in the day-to-day.
 When work feels lighter.
 When things move forward without as much friction.
  
-That’s when you know it’s working."
+That’s when you know it’s working.`}
             />
             <FAQAccordion
               title="How do we get started with Hi Humaniser!™?"
-              paragraph="You don’t need a big rollout or a perfect plan to start.
+              paragraph={`You don’t need a big rollout or a perfect plan to start.
  
 Most organisations begin small… sometimes it’s just one person exploring it first, getting a feel for how it works in real meetings, real conversations, real work.
  
 You can try it out free for 10 days, see what shifts, and decide from there what makes sense for your team or organisation.
  
-If it resonates, just reach out. We’ll set you up and walk you through the next steps, at your pace."
+If it resonates, just reach out. We’ll set you up and walk you through the next steps, at your pace.`}
             />
             <FAQAccordion
               title="What if my organisation is not ready yet?"
-              paragraph="That’s okay. Not every organisation is ready at the same time.
+              paragraph={`That’s okay. Not every organisation is ready at the same time.
  
 You don’t need to push or convince anyone. You can explore Hi Humaniser!™ at your own pace, and introduce it when the timing feels right.
  
 This works best when organisations are genuinely open to improving how work happens.
  
-And when that moment comes, it will still be here."
+And when that moment comes, it will still be here.`}
             />
           </div>
         </div>

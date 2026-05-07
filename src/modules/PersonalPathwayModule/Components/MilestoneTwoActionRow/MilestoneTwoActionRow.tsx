@@ -2,14 +2,8 @@ import { useState } from "react";
 import { openFillupModal } from "../FillUpFormModal/FillUpFormModal";
 import { renderBoldQuotesText } from "@/src/lib/Helpers";
 import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
-import {
-  MICRO_ACTION_DATA,
-  MILESTONE_TWO_DATA,
-} from "../../Types/ResponseTypes";
-import { useMilestoneDataContext } from "@/src/context/MilestoneDataContextProvider";
-import usePersonalPathwayQuery, {
-  GET_PERSONAL_PATHWAY_QUERY_KEY,
-} from "../../Hooks/usePersonalPathwayQuery";
+import { MILESTONE_TWO_DATA } from "../../Types/ResponseTypes";
+import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
 import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
 import { openConfirmShareReflectionModal } from "../ConfirmShareReflectionModal/ConfirmShareReflectionModal";
 import { queryClient } from "@/src/lib/ReactQueryConfig";
@@ -42,19 +36,10 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
     m2Data,
   } = props;
 
-  // const { milestoneData } = useMilestoneDataContext();
-  // const microActionReflections =
-  //   milestoneData?.[pathwayDetails?.principle_number]?.m2?.[
-  //     `micro_action_${microActionNumber}`
-  //   ] ?? [];
-
   const microActionReflections =
     m2Data?.[`micro_action_${microActionNumber}`] ?? [];
 
   const { mutate: updateMilestone } = useUpdateMppMilestoneMutation();
-  // const latestReflection =
-  //   microActionReflections[microActionReflections.length - 1];
-  // const isLatestShared = latestReflection?.share || false;
 
   const latestReflection =
     microActionReflections.length > 0
@@ -123,19 +108,7 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
   };
 
   return (
-    // <div className="grid grid-cols-[420px_360px_360px] gap-8">
     <div className="grid grid-cols-[450px_450px] gap-10">
-      {/* MICRO-ACTION */}
-      {/* <div className="relative bg-[#F5F0EB] rounded-[16px] p-6">
-        <h4 className="text-[#567F55] font-bold text-[20px] mb-3 font-[Roboto]">
-          {title}
-        </h4>
-
-        <p className="text-[#567F55] text-[18px] whitespace-pre-line leading-relaxed font-[Roboto] font-[400]">
-          {renderBoldQuotes(description)}
-        </p>
-      </div> */}
-
       {/* MICRO-ACTION */}
       <div
         className={`relative bg-[#F5F0EB] rounded-[16px] p-6 pb-14 transition-all duration-300
@@ -178,7 +151,6 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
         </div>
       </div>
 
-      {/* REFLECTION 1 */}
       {/* REFLECTIONS */}
       <div
         className={`relative bg-[#F5F0EB] rounded-[16px] p-6 transition-all duration-300
@@ -188,11 +160,6 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
         <div className="space-y-5">
           {/* Render existing reflections */}
           {latestReflection ? (
-            // <div className="border-b border-dotted border-[#000000] py-2">
-            //   <p className="text-[15px] text-[#0F4F58]">
-            //     {latestReflection.reflection}
-            //   </p>
-            // </div>
             <div className={styles.reflectionWrapper}>
               <p className={styles.reflectionText}>
                 {latestReflection.reflection}

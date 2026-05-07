@@ -10,6 +10,9 @@ import useEventEmitter, {
 import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
+import { usePathname } from "next/navigation";
+import { useAddReflectionMutation } from "../../Hooks/useAddReflectionMutation";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 const EVENT = "FILL_UP_FORM_MODAL_EVENT";
 
@@ -18,8 +21,15 @@ export const openFillupModal = (
   uuid: string,
   selectedPulse?: number,
   pinToDash?: string[],
+  selectedTeam?: string,
 ) => {
-  emitEvent(EVENT, { microActionType, uuid, selectedPulse, pinToDash });
+  emitEvent(EVENT, {
+    microActionType,
+    uuid,
+    selectedPulse,
+    pinToDash,
+    selectedTeam,
+  });
 };
 
 function FillUpFormModal() {
@@ -29,28 +39,55 @@ function FillUpFormModal() {
   const [actionKey, setActionKey] = useState<string>("");
   const [pulseCheck, setPulseCheck] = useState<number>();
   const [id, setId] = useState("");
-  const charCount = reflection.length;
+  const [selectedTeamId, setSelectedTeamId] = useState("");
 
+  const charCount = reflection.length;
+  const pathname = usePathname();
+  const { mutate: addReflectionMutate, isPending: isAdding } =
+    useAddReflectionMutation();
   const [pinToDash, setPinToDash] = useState<string[]>([]);
 
-  useEventEmitter(EVENT, ({ microActionType, uuid, selectedPulse }) => {
-    setTimeout(() => {
-      setActionKey(microActionType);
-      setId(uuid);
-      setPulseCheck(selectedPulse);
-      setPinToDash(pinToDash || []);
-      setReflection("");
-      setShare(false);
-
-      setIsOpen(true);
-    }, 0);
-  });
+  useEventEmitter(
+    EVENT,
+    ({ microActionType, uuid, selectedPulse, selectedTeam }) => {
+      setTimeout(() => {
+        setActionKey(microActionType);
+        setId(uuid);
+        setPulseCheck(selectedPulse);
+        setPinToDash(pinToDash || []);
+        setReflection("");
+        setShare(false);
+        setSelectedTeamId(selectedTeam);
+        setIsOpen(true);
+      }, 0);
+    },
+  );
   const queryClient = useQueryClient();
   const { mutate, isPending } = useUpdateMppMilestoneMutation();
+  const { user } = useAuthValue();
 
   const handleSave = async () => {
     const newReflection = { reflection, share };
+    if (pathname === "/reflection-walls") {
+      const payload = {
+        team_id: selectedTeamId ? selectedTeamId : user?.team_id, // replace if available
+        shared_anonymously: share,
+        reflection: reflection,
+        source: "reflection_wall",
+      };
 
+      addReflectionMutate(payload, {
+        onSuccess: async () => {
+          setReflection("");
+          setShare(false);
+          setIsOpen(false);
+          await queryClient.invalidateQueries({
+            queryKey: ["getReflectionWallsQueryKey"],
+          });
+        },
+      });
+      return;
+    }
     // ✅ ===== MILESTONE 3 =====
     if (actionKey === "milestone3") {
       const payload = {
@@ -96,8 +133,11 @@ function FillUpFormModal() {
       (k) => !["uuid", "created", "active"].includes(k),
     );
 
-    const existingM2 = currentPathway?.[firstKey]?.m2 || {};
-
+    if (!firstKey) {
+      console.error("No valid key found in pathway");
+      return;
+    }
+    const existingM2 = currentPathway[firstKey]?.m2 || {};
     const { micro_actions, ...cleanM2 } = existingM2 || {};
 
     // STEP 2: Merge properly

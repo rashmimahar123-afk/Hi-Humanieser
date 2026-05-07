@@ -24,14 +24,27 @@
 
 
 
+/* .card {
+  position: relative;
+  width: 274px;
+  height: 228px;
+  border-radius: 20px;
+  overflow: hidden;
+} */
 .card {
   position: relative;
   width: 274px;
   height: 228px;
   border-radius: 20px;
   overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  will-change: transform;
 }
 
+.card:hover {
+  transform: translateY(-14px) scale(1.04);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
 /* image layer */
 .imageWrapper {
   position: absolute;
@@ -39,11 +52,19 @@
   z-index: 1;
 }
 
-.cardImage {
+/* .cardImage {
   object-fit: contain;
+} */
+ .cardImage {
+  object-fit: contain;
+  transition: transform 0.4s ease;
 }
 
-.cardContent {
+.card:hover .cardImage {
+  transform: scale(1.08);
+}
+
+/* .cardContent {
   position: relative;
   z-index: 2;
  text-align: center;        
@@ -56,8 +77,26 @@
   pointer-events: none; 
   max-width: 239px;
   margin-top: 55px;
+} */
+.cardContent {
+    position: relative;
+  z-index: 2;
+ text-align: center;        
+  display: flex; 
+  justify-content: center;
+  flex-direction: column;
+    padding: 20px;
+  color: #0F4F58;
+  font-family: RocaTwo-Bold;
+  pointer-events: none; 
+  max-width: 239px;
+  margin-top: 55px;
+  transition: transform 0.3s ease;
 }
 
+.card:hover .cardContent {
+  transform: translateY(-6px);
+}
 
 .card::before {
   content: "";
@@ -66,8 +105,28 @@
   transform: rotate(-6deg);
   border-radius: 18px;
   opacity: 0.6;
-  z-index: -1;
+  z-index: 0;
 }
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.4),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
 .centerRow {
   grid-column: 1 / -1;       /* ✅ full width row */
   display: flex;

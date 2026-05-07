@@ -80,6 +80,7 @@ export const authFetcher = (config: AxiosRequestConfig) => {
     url: config.url,
     method: config.method ?? "GET",
     data: config.data,
+    params: config.params,
     headers: {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -561,4 +562,36 @@ export const chunkByPattern = (arr: any, pattern = [8, 6]) => {
     p = (p + 1) % pattern.length;
   }
   return chunks;
+};
+
+export const getTimeAgo = (createdAt: string) => {
+  if (!createdAt) return "";
+
+  // Fix: ensure proper ISO format
+  const normalizedDate = createdAt.replace(/\.\d+$/, ""); // remove microseconds
+  const finalDate = normalizedDate + "Z"; // force UTC
+
+  const now = Date.now();
+  const createdTime = new Date(finalDate).getTime();
+
+  const diffMs = now - createdTime;
+
+  if (diffMs < 0) return "just now";
+
+  const seconds = Math.floor(diffMs / 1000);
+  const minutes = Math.floor(diffMs / (1000 * 60));
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  if (seconds < 60) return `${seconds} sec ago`;
+  if (minutes < 60) return `${minutes} min ago`;
+  if (hours < 24) return `${hours} hr ago`;
+  if (days === 1) return `1 day ago`;
+  if (days < 7) return `${days} days ago`;
+
+  const weeks = Math.floor(days / 7);
+  if (weeks < 4) return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+
+  const months = Math.floor(days / 30);
+  return `${months} month${months > 1 ? "s" : ""} ago`;
 };
