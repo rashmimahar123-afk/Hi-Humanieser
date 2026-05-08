@@ -77,6 +77,7 @@ function ShowResultPage() {
     pathway: number,
     index: number,
     messageObj?: any,
+    totalSelectedCount?: number,
   ) => {
     const payload = {
       pathways: [pathway],
@@ -93,7 +94,12 @@ function ShowResultPage() {
           }));
 
           // latest message use karo
-          openActivePathwayModal(uuid, messageObj, index);
+          openActivePathwayModal(
+            uuid,
+            messageObj,
+            index,
+            totalSelectedCount || 1,
+          );
         }
       },
     });
@@ -724,6 +730,7 @@ function ShowResultPage() {
                                   principleNumber,
                                   index,
                                   messageObj,
+                                  selectedPathways.length + 1,
                                 );
 
                                 //  DO NOT SELECT HERE
