@@ -37,9 +37,7 @@ const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
 function ViewAllReflectionWall() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [progressList, setProgressList] = useState<any>([]);
-  console.log("proggg", progressList);
   const [practiceList, setPracticeList] = useState<any[]>([]);
-  console.log("practiceList", practiceList);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
   const { data: chooseMyselfData } = useChooseMyselfQuery();
