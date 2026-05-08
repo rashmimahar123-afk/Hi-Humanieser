@@ -10,6 +10,7 @@ import useEventEmitter, {
 import { useActivePathwayMutation } from "../../Hooks/useActivePathwayMutation";
 import SnackbarHandler from "@/src/lib/SnackbarHandler";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import { useRouter } from "next/navigation";
 
 const EVENT = "OPEN_ACTIVE_PATHWAY_MODAL";
 
@@ -17,8 +18,9 @@ export const openActivePathwayModal = (
   uuid: string,
   mssg: any,
   principleNumber: number,
+  totalSelectedCount: number,
 ) => {
-  emitEvent(EVENT, { uuid, mssg, principleNumber });
+  emitEvent(EVENT, { uuid, mssg, principleNumber, totalSelectedCount });
 };
 
 function ActivePathwayModal() {
@@ -26,13 +28,19 @@ function ActivePathwayModal() {
   const [uuid, setUuid] = useState<string | null>(null);
   const [mssgData, setMssgData] = useState<any>();
   const [principleNumber, setPrincipleNumber] = useState<number | null>(null);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const router = useRouter();
 
-  useEventEmitter(EVENT, ({ uuid, mssg, principleNumber }) => {
-    setIsOpen(true);
-    setUuid(uuid);
-    setMssgData(mssg);
-    setPrincipleNumber(principleNumber);
-  });
+  useEventEmitter(
+    EVENT,
+    ({ uuid, mssg, principleNumber, totalSelectedCount }) => {
+      setIsOpen(true);
+      setUuid(uuid);
+      setMssgData(mssg);
+      setPrincipleNumber(principleNumber);
+      setSelectedCount(totalSelectedCount);
+    },
+  );
   const { mutate: activateMpp, isPending } = useActivePathwayMutation();
 
   const handleActivate = () => {
@@ -50,6 +58,9 @@ function ActivePathwayModal() {
           });
 
           SnackbarHandler.successToast("Pathway Activated");
+          if (selectedCount >= 2) {
+            router.push("/personal-pathway");
+          }
         },
       },
     );
@@ -110,7 +121,7 @@ function ActivePathwayModal() {
             onClick={() => handleActivate()}
             className="border border-[#567F55] text-[#567F55] px-6 py-3 rounded-full cursor-pointer"
           >
-            Continue
+            {selectedCount >= 2 ? "Return to My Personal Pathway" : "Continue"}
           </button>
         </DialogPanel>
       </div>

@@ -10,6 +10,9 @@ import SelectTeamRitualModal, {
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import { FOCUS_AREA_SCORES_DATA } from "../../Types/ResponseTypes";
 import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
+import { MY_TEAM_RITUALS_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
+import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import { useFocusAndRitualSelectMutation } from "../../Hooks/useFocusAndRitualSelectMutation";
 
 function ContinuePressure() {
   const [animateText, setAnimateText] = useState(false);
@@ -24,6 +27,8 @@ function ContinuePressure() {
   const [openActiveRitual, setOpenActiveRitual] = useState(false);
 
   const [selected, setSelected] = useState("");
+  const [selectedRitual, setSelectedRitual] = useState<string | null>(null);
+
   const handleSelect = (item: string) => {
     setSelected(item);
 
@@ -35,7 +40,6 @@ function ContinuePressure() {
   useEffect(() => {
     mutate();
   }, []);
-  const ritualOptions = data?.scores?.map((item: any) => item.option) || [];
   const [open, setOpen] = useState(false);
 
   const selectedRituals =
@@ -48,6 +52,40 @@ function ContinuePressure() {
     isLoading,
     isError,
   } = useHhFrameworkMtjQuery();
+  const focusAreas = frameworkMtjData?.data?.focus_areas || [];
+  useEffect(() => {
+    if (focusAreas.length > 0 && !selected) {
+      setSelected(focusAreas[0].title);
+    }
+  }, [focusAreas, selected]);
+
+  const selectedFocusArea = focusAreas.find(
+    (item: any) => item.title === selected,
+  );
+
+  const ritualOptions = focusAreas.map((item: any) => item.title);
+  const ritualCards =
+    selectedFocusArea?.team_rituals?.map((ritual: MY_TEAM_RITUALS_DATA) => ({
+      ritual_id: ritual.team_ritual_id,
+      title: ritual.title,
+      description: ritual.long_description,
+      impact: ritual.operational_impact,
+      learnMoreColor: "#cde3cc",
+
+      selected: selectedRitual === ritual.team_ritual_id,
+      onLearnMore: () =>
+        router.push(
+          `/conversation?focusArea=${selectedFocusArea?.focus_area_id}`,
+        ),
+      onSelect: () => handleRitualSelect(ritual),
+    })) || [];
+
+  const handleRitualSelect = (ritual: MY_TEAM_RITUALS_DATA) => {
+    openSelectTeamRitualModal({
+      ritualId: ritual.team_ritual_id ?? "",
+      focusAreaId: selectedFocusArea?.focus_area_id ?? "",
+    });
+  };
 
   return (
     <>
@@ -104,8 +142,7 @@ function ContinuePressure() {
 
             {/* DESCRIPTION */}
             <p className="mt-6 text-[21px] text-[#0f4f58] max-w-[750px] leading-relaxed font-[Roboto]">
-              Making expectations, priorities and communication clear so
-              everyone knows where they stand and what they’re working toward.
+              {selectedFocusArea?.description_long}
             </p>
           </div>
 
@@ -128,9 +165,7 @@ function ContinuePressure() {
                 </h3>
 
                 <p className="text-[#0F4F58] text-[19px] leading-relaxed font-[Roboto] mt-3">
-                  Lack of clarity creates rework, slow decisions, and competing
-                  priorities. Clear direction reduces friction, speeds
-                  execution, and helps effort translate into results.
+                  {selectedFocusArea?.why_it_matters}
                 </p>
               </div>
             </div>
@@ -142,34 +177,18 @@ function ContinuePressure() {
             </h2>
             <ContinuePressureCards
               bgColor="#f5c882"
-              onCardClick={openSelectTeamRitualModal}
-              cards={[
-                {
-                  title: "What’s the Purpose?",
-                  description:
-                    "Create clarity by naming the purpose of a conversation upfront, so everyone knows why they’re there and what matters.",
-                  learnMoreColor: "#cde3cc",
-                  impact:
-                    "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                },
-                {
-                  title: "Be Real, Not Right",
-                  description:
-                    "Transform your messages into clear direction that people can actually act on.",
-                  learnMoreColor: "#cde3cc",
-                  impact:
-                    "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                },
-                {
-                  title: "Be Real, Not Right",
-                  description:
-                    "Transform your messages into clear direction that people can actually act on.",
-                  learnMoreColor: "#cde3cc",
-                  impact:
-                    "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                },
-              ]}
+              ritualCards={ritualCards}
             />
+          </div>
+
+          <div className="mt-[60px] flex justify-end items-center  ">
+            <div>
+              <CommonButtons
+                label="Go back to Team Focus"
+                bgColor="#FBE1DE"
+                onClick={() => router.push("/team-focus")}
+              />
+            </div>
           </div>
         </div>
       </div>

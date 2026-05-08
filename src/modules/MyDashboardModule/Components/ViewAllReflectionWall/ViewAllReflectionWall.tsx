@@ -37,7 +37,9 @@ const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
 function ViewAllReflectionWall() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [progressList, setProgressList] = useState<any>([]);
+  console.log("proggg", progressList);
   const [practiceList, setPracticeList] = useState<any[]>([]);
+  console.log("practiceList", practiceList);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
   const { data: chooseMyselfData } = useChooseMyselfQuery();
@@ -228,8 +230,86 @@ function ViewAllReflectionWall() {
 
   const { data: reflectionApiData } =
     useGetReflectionWallsQuery(effectiveTeamId);
-  const reflections = reflectionApiData?.data?.reflections ?? [];
 
+  const enrichedProgressList = enrichProgressWithPractice(
+    progressList,
+    practiceList,
+  );
+
+  const getSharedReflectionsFromEnriched = (data: any[]) => {
+    if (!Array.isArray(data)) return [];
+
+    const result: any[] = [];
+
+    data.forEach((item) => {
+      const dynamicKey = Object.keys(item).find(
+        (key) => !["created", "uuid", "active", "completed"].includes(key),
+      );
+
+      if (!dynamicKey) return;
+
+      const pathwayData = item[dynamicKey];
+
+      // m2 reflections
+      const m2 = pathwayData?.m2;
+
+      if (m2) {
+        Object.values(m2).forEach((actions: any) => {
+          if (Array.isArray(actions)) {
+            actions.forEach((action: any, index: number) => {
+              if (action?.share && action?.reflection) {
+                result.push({
+                  id: item.uuid, // backend ko yehi chahiye
+                  local_id: `${item.uuid}-${dynamicKey}-${index}`, // UI uniqueness ke liye
+                  reflection: action.reflection,
+                  created: item.created,
+                  like_count: 0,
+                });
+              }
+            });
+          }
+        });
+      }
+
+      // m3 reflections
+      const m3 = pathwayData?.m3;
+
+      if (m3?.reflection?.share && m3?.reflection?.reflection) {
+        result.push({
+          id: item.uuid,
+          local_id: `${item.uuid}-m3`,
+          reflection: m3.reflection.reflection,
+          created: item.created,
+          like_count: 0,
+        });
+      }
+    });
+
+    return result;
+  };
+
+  // const reflections = reflectionApiData?.data?.reflections ?? [];
+  const reflections = useMemo(() => {
+    const apiReflections = reflectionApiData?.data?.reflections ?? [];
+
+    // User type 1 & 2 → local + API reflections
+    if (user?.user_type === 1 || user?.user_type === 2) {
+      const localReflections =
+        getSharedReflectionsFromEnriched(enrichedProgressList);
+
+      return [...localReflections, ...apiReflections].sort(
+        (a: any, b: any) =>
+          Number(b.created || b.created_at) - Number(a.created || a.created_at),
+      );
+    }
+
+    // User type 3 → only API reflections
+    return apiReflections.sort(
+      (a: any, b: any) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
+  }, [user, enrichedProgressList, reflectionApiData]);
+  console.log("reflectionsreflections", reflections);
   const filterRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -506,7 +586,8 @@ function ViewAllReflectionWall() {
 
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0 text-[12px] sm:text-[13px] lg:text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
                         <span className="flex items-center">
-                          ⏱ {getTimeAgo(item.created_at)}
+                          ⏱{" "}
+                          {getTimeAgo((item as any).created || item.created_at)}
                         </span>
                         <div className="flex items-center sm:ml-[29px] gap-2">
                           <motion.div

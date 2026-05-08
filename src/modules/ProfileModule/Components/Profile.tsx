@@ -470,7 +470,7 @@ function Profile() {
                     )}
 
                     {/* FIX: teamDots moved to normal flow at the bottom of the card */}
-                    <div className="flex justify-start pl-0 sm:pl-4 pt-4">
+                    {/* <div className="flex justify-start pl-0 sm:pl-4 pt-4">
                       <Image
                         src={images.teamDots}
                         alt=""
@@ -478,7 +478,7 @@ function Profile() {
                         height={160}
                         className="w-[100px] sm:w-[130px] md:w-[160px] h-auto"
                       />
-                    </div>
+                    </div> */}
                     <div className={isEmptyState ? "mt-[200px]" : ""}>
                       <CardFooter
                         label=" Edit Members"

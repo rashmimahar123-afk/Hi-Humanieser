@@ -515,9 +515,9 @@ function PersonalPathway() {
         <div className="flex justify-center sm:justify-end sm:mr-[85px]">
           <div className="mt-[40px] sm:mt-[60px] flex flex-col items-center gap-[14px]">
             <CommonButtons
-              label="See My Dashboard"
+              label="Go To Home"
               bgColor="#ACD5AB"
-              onClick={() => router.push("/my-dashboard")}
+              onClick={() => router.push("/home")}
             />
             {formattedActivePathways?.length !== 0 ? (
               <CommonButtons

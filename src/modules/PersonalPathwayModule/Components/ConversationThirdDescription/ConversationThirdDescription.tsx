@@ -2,7 +2,14 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 
-function ConversationThirdDescription() {
+type CONVERSATION_THIRD_DESC_PROPS = {
+  selectedFocusAreaWorks?: {
+    body: string;
+    summary: string;
+  };
+};
+function ConversationThirdDescription(props: CONVERSATION_THIRD_DESC_PROPS) {
+  const { selectedFocusAreaWorks } = props;
   return (
     <div className="relative space-y-5 overflow-hidden">
       {/* Background Illustration */}
@@ -15,25 +22,12 @@ function ConversationThirdDescription() {
       {/* MAIN CONTENT */}
       <div className="relative z-10 space-y-5 font-[Roboto] text-[20px]">
         {/* Intro */}
-        <div>
-          Collaboration doesn’t improve just because people work harder
-          together. It improves when roles are clear, contributions are valued,
-          and different perspectives are genuinely brought into the work — not
-          worked around.
-        </div>
-        <div>
-          Research shows that collaboration breaks down when people don’t know
-          how their input fits, feel their expertise is overlooked, or end up
-          duplicating or undoing each other’s efforts. When teams make space for
-          different skills, coordinate intentionally, and share ownership of
-          outcomes, work becomes smoother and solutions
-        </div>
+        <div>{selectedFocusAreaWorks?.body}</div>
+
         {/* Quote */}
         <div className="flex justify-end">
           <p className="text-[#4BA6A6] text-[20px]  max-w-[500px]">
-            Strengthen Collaboration rituals focus on shaping those everyday
-            interactions, so working together feels purposeful, balanced, and
-            genuinely shared — rather than effortful or frustrating
+            {selectedFocusAreaWorks?.summary}
           </p>
         </div>
         {/* Footer */}

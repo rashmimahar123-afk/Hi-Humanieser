@@ -175,7 +175,10 @@ function ChampionHub() {
           </div>
 
           {/* CHAMPION RESOURCES */}
-          <div className="relative bg-[#FBE1DE] rounded-xl p-4 mr-16 cursor-pointer">
+          <div
+            className="relative bg-[#FBE1DE] rounded-xl p-4 mr-16 cursor-pointer"
+            onClick={() => router.push("champion-resources")}
+          >
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
               Champion Resources
             </h3>

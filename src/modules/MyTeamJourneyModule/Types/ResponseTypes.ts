@@ -9,7 +9,7 @@ export type FOCUS_AREA_STEP_DATA = {
   body: string;
   examples: Array<any>;
 };
-export type TEAM_RITUALS_DATA = {
+export type MY_TEAM_RITUALS_DATA = {
   team_ritual_id: string;
   title: string;
   short_description: string;
@@ -37,7 +37,7 @@ export type FOCUS_AREA_DATA = {
     designed_for_real_work: string;
   };
   common_traps: Array<any>;
-  team_rituals: Array<TEAM_RITUALS_DATA>;
+  team_rituals: Array<MY_TEAM_RITUALS_DATA>;
 };
 export type HH_FRAMEWORK_MTJ_RESPONSE_TYPES = {
   focus_areas: Array<FOCUS_AREA_DATA>;

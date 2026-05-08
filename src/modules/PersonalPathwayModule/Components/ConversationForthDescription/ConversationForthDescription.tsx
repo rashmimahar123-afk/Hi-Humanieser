@@ -1,10 +1,15 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
 
-function AmplifierForthDescription() {
+type CONVERSATION_FORTH_DESC_PROPS = {
+  selectedFocusAreaTraps?: Array<string>;
+};
+
+function ConversationForthDescription(props: CONVERSATION_FORTH_DESC_PROPS) {
+  const { selectedFocusAreaTraps } = props;
   return (
-    <div className="relative  overflow-hidden">
-      {/* Right background lightning illustration */}
+    <div className="relative overflow-hidden">
+      {/* Right background illustration */}
       <Image
         src={images.amplifierForthImg}
         alt=""
@@ -15,15 +20,14 @@ function AmplifierForthDescription() {
 
       {/* Content */}
       <div className="relative z-10 max-w-[900px]">
-        {/* Bullet Points */}
         <ul className="list-disc pl-[18px] space-y-[10px] text-[#0F4A4E] text-[16px] leading-[1.6] max-w-[820px]">
-          <li>Waiting until things are already off track</li>
-          <li>Framing help as incompetence</li>
-          <li>Asking vaguely instead of naming what’s unclear or heavy</li>
+          {selectedFocusAreaTraps?.map((trap: string, index: number) => (
+            <li key={index}>{trap}</li>
+          ))}
         </ul>
       </div>
     </div>
   );
 }
 
-export default AmplifierForthDescription;
+export default ConversationForthDescription;

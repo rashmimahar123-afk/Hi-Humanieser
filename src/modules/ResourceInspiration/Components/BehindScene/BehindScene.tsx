@@ -405,9 +405,14 @@ Research Room"
         <div className="flex justify-start ">
           <div className="mt-14 flex">
             <div className="max-w-[350px] text-[#0F4F58] font-[Aptos] text-[17px]">
-              Feeling inspired? Invite someone to explore Hi Humaniser!™
+              Feeling inspired?
+              <br />
+              Invite someone to explore Hi Humaniser!™
             </div>
-            <div className="-ml-[6px]">
+            <div
+              className="ml-[15px] cursor-pointer"
+              onClick={() => router.push("/spread-ripple")}
+            >
               <PolygonButton
                 width="85px"
                 height="95px"

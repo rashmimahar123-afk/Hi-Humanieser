@@ -7,20 +7,44 @@ import images from "@/src/assets/images";
 import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
+import { useFocusAndRitualSelectMutation } from "../../Hooks/useFocusAndRitualSelectMutation";
 
 const EVENT = "SELECT_TEAM_RITUAL_MODAL_EVENT";
 
-export const openSelectTeamRitualModal = () => {
-  emitEvent(EVENT);
+export const openSelectTeamRitualModal = (data: {
+  ritualId: string;
+  focusAreaId: string;
+}) => {
+  emitEvent(EVENT, data);
 };
-
 function SelectTeamRitualModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [reflection, setReflection] = useState("");
-  useEventEmitter(EVENT, () => {
+  const [selectedRitualId, setSelectedRitualId] = useState<string>("");
+  const [focusAreaId, setFocusAreaId] = useState<string>("");
+
+  useEventEmitter(EVENT, (data) => {
+    setSelectedRitualId(data?.ritualId);
+    setFocusAreaId(data?.focusAreaId);
     setIsOpen(true);
   });
 
+  const { mutate: submitFocusAndRitualSelection, isPending } =
+    useFocusAndRitualSelectMutation();
+
+  const handleActivateRitual = () => {
+    submitFocusAndRitualSelection(
+      {
+        focus_areas: [focusAreaId],
+        team_ritual_ids: [selectedRitualId],
+      },
+      {
+        onSuccess: () => {
+          setIsOpen(false);
+        },
+      },
+    );
+  };
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
@@ -101,6 +125,7 @@ function SelectTeamRitualModal() {
                 className="absolute inset-0 flex flex-col items-center justify-center
                  text-[#0F4F58] font-bold text-[22px] leading-[1] cursor-pointer"
                 style={{ fontFamily: "RocaTwo" }}
+                onClick={handleActivateRitual}
               >
                 Activate Ritual
               </div>

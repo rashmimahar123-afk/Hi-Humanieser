@@ -14,6 +14,7 @@ import {
 } from "../modules/AuthModule/Hooks/useAuthValue";
 import { emitEvent } from "../components/Hooks/useEventEmitter";
 import AuthService from "../modules/AuthModule/Services/AuthService";
+import { GET_REFLECTIONS_DATA } from "../modules/MyDashboardModule/Types/ResponseTypes";
 
 // const router = useRouter();
 
@@ -461,7 +462,7 @@ export const enrichProgressWithPractice = (
         (p) => p.id === maId && p.pathway === pathwayName,
       );
 
-      // ✅ FIX: safe array handling
+      //  FIX: safe array handling
       const entries = Array.isArray(m2[key]) ? m2[key] : [];
 
       updatedM2[key] = entries.map((entry: any) => ({
@@ -564,15 +565,23 @@ export const chunkByPattern = (arr: any, pattern = [8, 6]) => {
   return chunks;
 };
 
-export const getTimeAgo = (createdAt: string) => {
+export const getTimeAgo = (createdAt: string | number) => {
   if (!createdAt) return "";
 
-  // Fix: ensure proper ISO format
-  const normalizedDate = createdAt.replace(/\.\d+$/, ""); // remove microseconds
-  const finalDate = normalizedDate + "Z"; // force UTC
-
   const now = Date.now();
-  const createdTime = new Date(finalDate).getTime();
+
+  let createdTime = 0;
+
+  // local reflections -> unix timestamp number
+  if (typeof createdAt === "number") {
+    createdTime = createdAt * 1000;
+  } else {
+    // API reflections -> ISO string
+    const normalizedDate = createdAt.replace(/\.\d+$/, "");
+    const finalDate = normalizedDate + "Z";
+
+    createdTime = new Date(finalDate).getTime();
+  }
 
   const diffMs = now - createdTime;
 
@@ -594,4 +603,50 @@ export const getTimeAgo = (createdAt: string) => {
 
   const months = Math.floor(days / 30);
   return `${months} month${months > 1 ? "s" : ""} ago`;
+};
+
+export const getSharedReflectionsFromEnriched = (data: any[]) => {
+  if (!Array.isArray(data)) return [];
+
+  const result: any[] = [];
+
+  data.forEach((item) => {
+    const dynamicKey = Object.keys(item).find(
+      (key) => !["created", "uuid", "active", "completed"].includes(key),
+    );
+
+    if (!dynamicKey) return;
+
+    const pathwayData = item[dynamicKey];
+
+    //  m2 reflections
+    const m2 = pathwayData?.m2;
+
+    if (m2) {
+      Object.values(m2).forEach((actions: any) => {
+        if (Array.isArray(actions)) {
+          actions.forEach((action) => {
+            if (action?.share && action?.reflection) {
+              result.push({
+                text: action.reflection,
+                created: item.created,
+              });
+            }
+          });
+        }
+      });
+    }
+
+    // ✅ m3 reflections
+    const m3 = pathwayData?.m3;
+
+    if (m3?.reflection?.share === true && m3?.reflection?.reflection) {
+      result.push({
+        text: m3.reflection.reflection,
+        created: item.created,
+      });
+    }
+  });
+
+  return result;
 };

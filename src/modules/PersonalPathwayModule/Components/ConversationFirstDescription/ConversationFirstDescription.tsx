@@ -1,8 +1,20 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import { FOCUS_AREA_STEP_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
 
-function ConversationFirstDescription() {
+type CONVERSATION_FIRST_DESCRIPTION_PROPS = {
+  selectedFocusAreaExpect?: {
+    intro: string;
+    steps: Array<FOCUS_AREA_STEP_DATA>;
+    designed_for_real_work: string;
+  };
+};
+function ConversationFirstDescription(
+  props: CONVERSATION_FIRST_DESCRIPTION_PROPS,
+) {
+  const { selectedFocusAreaExpect } = props;
+
   return (
     <div className="relative space-y-5 overflow-hidden">
       {/* Background Illustration */}
@@ -15,28 +27,33 @@ function ConversationFirstDescription() {
       {/* MAIN CONTENT */}
       <div className="relative z-10 space-y-5 font-[Roboto] text-[20px]">
         {/* Intro */}
-        <p>
-          This Focus Area is not about getting it right straight away. It’s
-          designed to be experienced, reflected on, and shaped over time.
-        </p>
+        <p>{selectedFocusAreaExpect?.intro}</p>
 
         <p>Here’s how it usually unfolds:</p>
 
         {/* Sections */}
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1 text-[22px]">
-            1. Try it
-          </p>
-          <p>
-            After the team poll, your Champion selects one ritual to try. You’ll
-            notice how it shows up in everyday work — meetings, conversations,
-            decisions — without needing to change everything at once. The aim is
-          </p>
-          <p>
-            simple:{" "}
-            <span className="font-bold">experience it, not perfect it.</span>
-          </p>
-        </div>
+        {selectedFocusAreaExpect?.steps?.map(
+          (step: FOCUS_AREA_STEP_DATA, index: number) => (
+            <div key={index}>
+              <p className="font-[700] text-[#0F4A4E] mb-1 text-[22px]">
+                {step.step}. {step.title}
+              </p>
+
+              <p>{step.body}</p>
+
+              {/* Examples */}
+              {step.examples && step.examples.length > 0 && (
+                <ul className="list-disc pl-[18px] space-y-[10px] text-[#0F4A4E] text-[20px] leading-[1.6] max-w-[820px] ml-4 mt-3">
+                  {step.examples.map(
+                    (example: string, exampleIndex: number) => (
+                      <li key={exampleIndex}>{example}</li>
+                    ),
+                  )}
+                </ul>
+              )}
+            </div>
+          ),
+        )}
 
         {/* Designed for real work box */}
         <div className="flex justify-end">
@@ -54,69 +71,42 @@ function ConversationFirstDescription() {
             </p>
           </div>
         </div>
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1">2. Keep it alive</p>
-          <p>
-            As the ritual is being practised, anyone can use short HH! Moments
-            to keep it present. These are quick, optional check-ins (usually
-            under 5 minutes) that might:
-          </p>
-          <ul className="list-disc pl-[18px] space-y-[10px] text-[#0F4A4E] text-[20px] leading-[1.6] max-w-[820px] ml-4">
-            <li>
-              “I realise I may have rushed my point — here’s the honest version”
-            </li>
-            <li>surface a shared insight from the Reflection Wall</li>
-            <li>help the team sense how things are feeling</li>
-          </ul>
-        </div>
-
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1">3. Decide what stays</p>
-          <p>
-            Over time, teams pause to reflect on what’s actually helping. Some
-            rituals fade. Some become habits. Some point to bigger system
-            changes.
-          </p>
-          <p className="mt-2">
-            HH! supports this step with simple workshop materials, so teams can
-            decide what’s worth keeping and embed it intentionally (e.g., in
-            meetings or handovers).
-          </p>
-        </div>
       </div>
 
       {/* Button stays above bg */}
       <div className="relative z-10 flex justify-end mt-[53px] mb-[7px]">
-        <div className="mt-6 flex items-center mr-[20px] max-w-[453px] flex text-end mt-[43px]">
+        <div className=" flex items-center mr-[30px] max-w-[453px] flex text-end mt-[53px]">
           <p className="text-[17px] text-[#0F4F58] font-[Roboto] ">
             Want a simple way to keep team rituals present in everyday work?
             Check Hi Humanser! Moments
           </p>
         </div>
-        <PolygonButton
-          width="106px"
-          height="107px"
-          bgColor="#86C9C9"
-          radius={14}
-          clipPath={`polygon(
+        <div className="mt-10">
+          <PolygonButton
+            width="106px"
+            height="107px"
+            bgColor="#86C9C9"
+            radius={14}
+            clipPath={`polygon(
         0% 30%,
         92% 0%,
         100% 87%,
         3% calc(100% - 15px)
       )`}
-          decorationImg={{
-            src: images.arrowImg,
-            width: 48,
-            height: 48,
-          }}
-          decorationPosition={{
-            className: "-left-[49px] -top-[9px]",
-          }}
-        >
-          <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
-            HH! Moments
-          </span>
-        </PolygonButton>
+            decorationImg={{
+              src: images.arrowImg,
+              width: 48,
+              height: 48,
+            }}
+            decorationPosition={{
+              className: "-left-[56px] -top-[40px] rotate-[20deg]",
+            }}
+          >
+            <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
+              HH! Moments
+            </span>
+          </PolygonButton>
+        </div>
       </div>
     </div>
   );

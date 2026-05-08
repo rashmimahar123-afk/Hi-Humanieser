@@ -145,7 +145,7 @@ function ChampionResources() {
 
         {/* <---------------------CHAMPION TRAINING--------------> */}
 
-        <div className=" relative mt-10">
+        <div className=" relative mt-20">
           <Image
             src={images.championTrainImg}
             alt="champion-training-bg"
@@ -225,7 +225,7 @@ function ChampionResources() {
 
         {/* ================= CHAMPION TOOLKIT ================= */}
 
-        <div className="relative mt-28 px-20 pb-32">
+        <div className="relative mt-20">
           {/* Right Background Illustration */}
           <Image
             src={images.toolkitImg} // toolbox illustration
@@ -236,9 +236,9 @@ function ChampionResources() {
           />
 
           <div className="relative z-10 ">
-            <h2 className="text-[44px] font-[RocaTwo] text-[#0F4F58] mb-4">
+            <div className="relative z-10 mt-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo]">
               Champion Toolkit
-            </h2>
+            </div>
             <h3 className="text-[24px] font-semibold text-[#0F4F58] mb-6">
               Here’s where things get practical.
             </h3>
@@ -251,7 +251,7 @@ function ChampionResources() {
             {/* TOOLKIT CARDS */}
             <div className="space-y-10 mt-14">
               {/* HH Moments */}
-              <div className="space-y-8 mt-12">
+              <div className="mt-12">
                 <PolygonButton
                   width="1200px"
                   height="130px"
@@ -263,7 +263,6 @@ function ChampionResources() {
       100% 90%,
       0% 100%
     )`}
-                  childTop={25}
                 >
                   <div>
                     <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex">
@@ -291,7 +290,6 @@ function ChampionResources() {
       100% 90%,
       0% 100%
     )`}
-                  childTop={25}
                 >
                   <div>
                     <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex">
@@ -319,7 +317,6 @@ function ChampionResources() {
       100% 90%,
       0% 100%
     )`}
-                  childTop={25}
                 >
                   <div>
                     <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex">
@@ -346,7 +343,6 @@ function ChampionResources() {
       100% 90%,
       0% 100%
     )`}
-                  childTop={25}
                 >
                   <div>
                     <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex">

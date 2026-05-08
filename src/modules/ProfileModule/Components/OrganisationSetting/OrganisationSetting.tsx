@@ -36,6 +36,7 @@ function OrganisationSetting() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [teamId, setTeamId] = useState("");
+  const MAX_TEAM_NAME_LENGTH = 35;
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -68,6 +69,12 @@ function OrganisationSetting() {
   const handleCreateTeam = () => {
     if (!teamName.trim()) {
       SnackbarHandler.errorToast("Please enter team name");
+      return;
+    }
+    if (teamName.trim().length > MAX_TEAM_NAME_LENGTH) {
+      SnackbarHandler.errorToast(
+        `Team name cannot exceed ${MAX_TEAM_NAME_LENGTH} characters`,
+      );
       return;
     }
 
@@ -143,6 +150,13 @@ function OrganisationSetting() {
 
     if (!editTeamName.trim()) {
       SnackbarHandler.errorToast("Please enter team name");
+      return;
+    }
+
+    if (editTeamName.trim().length > MAX_TEAM_NAME_LENGTH) {
+      SnackbarHandler.errorToast(
+        `Team name cannot exceed ${MAX_TEAM_NAME_LENGTH} characters`,
+      );
       return;
     }
 
@@ -389,6 +403,7 @@ function OrganisationSetting() {
                 <input
                   type="text"
                   value={teamName}
+                  maxLength={35}
                   onChange={(e) => setTeamName(e.target.value)}
                   className="flex-1 bg-[#ffffff] rounded-[12px]
                     px-6 pr-10 h-[41px]
@@ -483,6 +498,7 @@ function OrganisationSetting() {
                 <input
                   type="text"
                   value={editTeamName}
+                  maxLength={35}
                   onChange={(e) => setEditTeamName(e.target.value)}
                   disabled={!editTeamId}
                   className="flex-1 rounded-[12px]

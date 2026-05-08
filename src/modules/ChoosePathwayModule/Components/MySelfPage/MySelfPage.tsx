@@ -34,6 +34,9 @@ type ActivePathwayType = {
 function MySelfPage() {
   const [enter, setEnter] = useState(false);
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
+  const [localPathwayUuids, setLocalPathwayUuids] = useState<
+    Record<number, string>
+  >({});
   const { user } = useAuthValue();
 
   useEffect(() => {
@@ -53,6 +56,7 @@ function MySelfPage() {
   const { mutate: createMpp } = useCreateMppMutation();
   const { mutate: deleteMpp } = useDeletePathwayMutation();
   const { refetch: getRandomMessage } = useGetPathwaySelectMssgQuery();
+
   const handleSelect = async (principleNumber: number) => {
     const isAlreadySelected = finalSelectedPathways.includes(principleNumber);
 
@@ -91,7 +95,17 @@ function MySelfPage() {
             const uuid = res?.new_uuids?.[0];
 
             if (uuid) {
-              openActivePathwayModal(uuid, messageObj, principleNumber);
+              setLocalPathwayUuids((prev) => ({
+                ...prev,
+                [principleNumber]: uuid,
+              }));
+
+              openActivePathwayModal(
+                uuid,
+                messageObj,
+                principleNumber,
+                totalSelectedCount + 1,
+              );
             }
           },
         },
@@ -102,6 +116,11 @@ function MySelfPage() {
   };
   useEventEmitter("DELETE_PATHWAY_SUCCESS", ({ index }) => {
     setSelectedPathways((prev) => prev.filter((id) => id !== index));
+    setLocalPathwayUuids((prev) => {
+      const updated = { ...prev };
+      delete updated[index];
+      return updated;
+    });
   });
 
   useEventEmitter("PATHWAY_CONFIRMED", ({ principleNumber }) => {
@@ -149,8 +168,11 @@ function MySelfPage() {
       map[Number(item.pathwayNumber)] = item.uuid;
     });
 
-    return map;
-  }, [formattedActivePathways]);
+    return {
+      ...map,
+      ...localPathwayUuids,
+    };
+  }, [formattedActivePathways, localPathwayUuids]);
   return (
     <>
       <div

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   createPatternRows,
   enrichProgressWithPractice,
+  getSharedReflectionsFromEnriched,
 } from "@/src/lib/Helpers";
 import ViewAllReflectionCard from "../ViewAllReflectionCard/ViewAllReflectionCard";
 import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
@@ -24,6 +25,7 @@ import useGetReflectionWallsQuery from "../../Hooks/useGetReflectionWallsQuery";
 
 function ReflectionWalls() {
   const [progressList, setProgressList] = useState<any>([]);
+  console.log("progressList", progressList);
   const [practiceList, setPracticeList] = useState<any[]>([]);
   const [enter, setEnter] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState("");
@@ -129,8 +131,8 @@ function ReflectionWalls() {
         (a: any, b: any) =>
           new Date(b.created).getTime() - new Date(a.created).getTime(),
       );
-      const latest20 = sortedList.slice(0, 20);
-      setProgressList(latest20);
+      const latestFive = sortedList.slice(0, 5);
+      setProgressList(latestFive);
 
       const selectedKeys = getSelectedMicroActions(
         getListMppData.data.pathways,
@@ -204,43 +206,77 @@ function ReflectionWalls() {
     return user.team_id;
   }, [user, selectedTeam]);
 
+  const enrichedProgressList = enrichProgressWithPractice(
+    progressList,
+    practiceList,
+  );
+
   const { data: reflectionApiData } =
     useGetReflectionWallsQuery(effectiveTeamId);
 
-  // const reflectionList = useMemo(() => {
-  //   if (!enrichedProgressList?.length) return [];
-  //   const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
-  //   return extracted.sort((a, b) => b.created - a.created).slice(0, 5);
-  // }, [enrichedProgressList]);
   const reflections = useMemo(() => {
+    //  User Type 1 & 2 → local enrichedProgressList reflections
+    if (user?.user_type === 1 || user?.user_type === 2) {
+      const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
+
+      return extracted
+        .sort(
+          (a: any, b: any) =>
+            new Date(b.created).getTime() - new Date(a.created).getTime(),
+        )
+        .slice(0, 5)
+        .map((item: any, i: number) => ({
+          id: i + 1,
+          text: item.text,
+          rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
+          imageKey:
+            images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
+        }));
+    }
+
+    //  User Type 3 → API reflections
     if (!reflectionApiData?.data?.reflections) return [];
 
     return reflectionApiData.data.reflections
       .sort(
-        (a, b) =>
+        (a: any, b: any) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
       )
       .slice(0, 5)
-      .map((item, i) => ({
+      .map((item: any, i: number) => ({
         id: i + 1,
         text: item.reflection,
         rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
         imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
       }));
-  }, [reflectionApiData]);
-  // const reflections = reflectionList.map((item, i) => ({
-  //   id: i + 1,
-  //   text: item.text,
-  //   rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
-  //   imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
-  // }));
+  }, [reflectionApiData, enrichedProgressList, user]);
 
-  const rows = createPatternRows(reflections, [3, 2]);
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
   const selectedTeamData = teams.find((team: any) => team.id === selectedTeam);
 
+  const MIN_REFLECTION_CARDS = 5;
+
+  const finalReflections = useMemo(() => {
+    const placeholderCount = Math.max(
+      0,
+      MIN_REFLECTION_CARDS - reflections.length,
+    );
+
+    const placeholders = Array.from({ length: placeholderCount }, (_, i) => ({
+      id: reflections.length + i + 1,
+      text: "A reflection will appear here soon…",
+      rotate: (reflections.length + i) % 2 === 0 ? "-rotate-2" : "rotate-1",
+      imageKey:
+        images[
+          `reflectionWall${((reflections.length + i) % 5) + 1}` as keyof typeof images
+        ],
+    }));
+
+    return [...reflections, ...placeholders];
+  }, [reflections]);
   // const isOwnTeam = selectedTeam ? selectedTeam === user?.team_id : true;
+  const rows = createPatternRows(finalReflections, [3, 2]);
   return (
     <>
       <div
@@ -309,9 +345,8 @@ function ReflectionWalls() {
           </div>
 
           {/* Right select */}
-          <div className="mt-4 sm:mt-5 lg:mt-6 flex justify-end">
-            <div className="relative">
-              <select
+
+          {/* <select
                 value={selectedTeam}
                 onChange={(e) => setSelectedTeam(e.target.value)}
                 className="
@@ -336,11 +371,65 @@ function ReflectionWalls() {
                     {team.team_name}
                   </option>
                 ))}
-              </select>
-              <div className="pointer-events-none absolute right-3 lg:right-4 top-1/2 -translate-y-1/2">
-                <Image src={images.dropdownImg} alt="dropdown-img" width={20} />
+              </select> */}
+          <div className="mt-4 sm:mt-5 lg:mt-6 flex justify-end">
+            {/* User Type 3 → show dropdown */}
+            {user?.user_type === 3 ? (
+              <div className="relative">
+                <select
+                  value={selectedTeam}
+                  onChange={(e) => setSelectedTeam(e.target.value)}
+                  className="
+appearance-none
+bg-[#86C9C9]
+text-[#0F4F58]
+text-[14px] sm:text-[16px] lg:text-[18px]
+font-[400]
+px-4 sm:px-5 lg:px-6
+pr-8 sm:pr-9 lg:pr-10
+h-[36px] sm:h-[38px] lg:h-[40px]
+w-[200px] sm:w-[250px] lg:w-[297px]
+rounded-full
+outline-none
+font-[Roboto]
+"
+                >
+                  <option value="">Choose Team</option>
+
+                  {teams.map((team: any) => (
+                    <option key={team.id} value={team.id}>
+                      {team.team_name}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="pointer-events-none absolute right-3 lg:right-4 top-1/2 -translate-y-1/2">
+                  <Image
+                    src={images.dropdownImg}
+                    alt="dropdown-img"
+                    width={20}
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              /* User Type 1 & 2 → show only own team */
+              <div
+                className="
+bg-[#86C9C9]
+text-[#0F4F58]
+text-[14px] sm:text-[16px] lg:text-[18px]
+px-4 sm:px-5 lg:px-6
+h-[36px] sm:h-[38px] lg:h-[40px]
+min-w-[400px] sm:min-w-[400px] lg:min-w-[500px]
+rounded-full
+flex items-center
+font-[Roboto]
+"
+              >
+                {teams.find((team: any) => team.id === user?.team_id)
+                  ?.team_name || "My Team"}
+              </div>
+            )}
           </div>
 
           {/* Cards Section */}
@@ -379,7 +468,7 @@ function ReflectionWalls() {
                           "", // uuid (not needed here)
                           undefined,
                           undefined,
-                          selectedTeam, // ✅ correct place
+                          selectedTeam, //  correct place
                         );
                       }}
                     >
@@ -405,7 +494,9 @@ function ReflectionWalls() {
                 <div
                   className="relative w-[64px] h-[70px] sm:w-[72px] sm:h-[78px] lg:w-[80px] lg:h-[85px] cursor-pointer"
                   onClick={() =>
-                    router.push(`/view-reflection-wall?teamId=${selectedTeam}`)
+                    router.push(
+                      `/view-reflection-wall?teamId=${effectiveTeamId}`,
+                    )
                   }
                 >
                   <PolygonButton

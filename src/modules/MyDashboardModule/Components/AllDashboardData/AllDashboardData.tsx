@@ -420,10 +420,14 @@ function AllDashboardData() {
       </div>
       {/* Header */}
       <div className=" px-10 py-8">
-        <h1 className="text-[#567F55] text-[47px] font-[Aptos] mb-6 font-[Aptos] font-[700] ">
-          Hi Humaniser! ™
-        </h1>
-
+        <div>
+          <h1
+            className="text-[#567F55] text-[47px] font-[Aptos] mb-6 font-[Aptos] font-[700] cursor-pointer"
+            onClick={() => router.push("/home")}
+          >
+            Hi Humaniser! ™
+          </h1>
+        </div>
         {/* Record Section */}
         <div>
           <h2 className="text-[#0F4F58] text-[37px] font-bold font-[RocaTwo] mb-1">

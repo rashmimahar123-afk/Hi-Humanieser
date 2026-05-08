@@ -1,23 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { openSelectTeamRitualModal } from "../SelectTeamRitualModal/SelectTeamRitualModal";
+import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
+import { MY_TEAM_RITUALS_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
 
 type PATHWAY_CARD = {
+  ritual_id?: number;
   title: string;
   description: string;
   learnMoreColor: string;
   impact: string;
+  selected?: boolean;
+  onSelect?: () => void;
+  onLearnMore: () => void;
 };
 
 type IDEA_PATHWAY_CARD_PROPS = {
   bgColor: string;
-  cards: PATHWAY_CARD[];
   onCardClick?: (card: PATHWAY_CARD, index: number) => void;
+  ritualCards: PATHWAY_CARD | any;
 };
 
 function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
-  const { bgColor, cards, onCardClick } = props;
+  const { bgColor, onCardClick, ritualCards } = props;
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  console.log("ritualCardsritualCards", ritualCards);
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -38,7 +46,6 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
     },
   };
 
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   return (
     <div
       className="rounded-[24px] pl-[40px] py-[40px] flex  w-full overflow-visible"
@@ -49,15 +56,15 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
         <Carousel
           responsive={responsive}
           infinite={true}
-          autoPlay={true}
+          autoPlay={false}
           keyBoardControl={true}
           containerClass="carousel-container"
           itemClass="px-3"
           removeArrowOnDeviceType={[]}
           dotListClass="custom-dot-list-style"
-          partialVisible={true} // 👈 ADD THIS
+          partialVisible={true} //  ADD THIS
         >
-          {cards.map((card, index) => (
+          {ritualCards.map((card: PATHWAY_CARD, index: number) => (
             <div
               key={index}
               className="bg-[#f8e1b8] from-amber-50 to-stone-100 rounded-3xl p-8 shadow-lg h-full flex flex-col justify-between min-h-[320px]"
@@ -67,11 +74,11 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
                   className="text-[24px] text-[#0F4F58] mb-[16px] flex justify-center font-bold"
                   style={{ fontFamily: "RocaTwo-Bold" }}
                 >
-                  {card.title}
+                  {card?.title}
                 </h3>
 
                 <p className="text-[20px] text-[#0F4F58] mb-6 font-[Roboto]">
-                  {card.description}
+                  {card?.description}
                 </p>
 
                 <div>
@@ -80,7 +87,7 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
                   </span>
 
                   <p className="text-[20px] text-[#0F4F58] leading-[32px] text-[17px] font-[Roboto]">
-                    {card.impact}
+                    {card?.impact}
                   </p>
                 </div>
               </div>
@@ -91,12 +98,12 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
 
                 <div
                   onClick={() => {
-                    setSelectedIndex(index);
+                    card.onSelect?.();
                     onCardClick?.(card, index);
                   }}
                   className="w-[26px] h-[26px] rounded-[6px] border-2 border-[#0F4F58] flex items-center justify-center cursor-pointer"
                 >
-                  {selectedIndex === index && (
+                  {card.selected && (
                     <div className="w-[16px] h-[16px] bg-[#E6B86C] rounded-[4px]" />
                   )}
                 </div>
@@ -106,6 +113,7 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
                   <button
                     className="px-[28px] py-[8px] rounded-full text-[18px] text-[#0F4F58] font-[Roboto] "
                     style={{ backgroundColor: card.learnMoreColor }}
+                    onClick={card.onLearnMore}
                   >
                     Learn more
                   </button>

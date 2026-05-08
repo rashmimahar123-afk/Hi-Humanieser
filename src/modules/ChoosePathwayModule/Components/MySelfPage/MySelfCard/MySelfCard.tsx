@@ -64,7 +64,7 @@ function MySelfCard(props: MYSELF_CARD_PROPS) {
         <Carousel
           responsive={responsive}
           infinite={true}
-          autoPlay={true}
+          autoPlay={false}
           keyBoardControl={true}
           containerClass="carousel-container"
           itemClass="px-3"
