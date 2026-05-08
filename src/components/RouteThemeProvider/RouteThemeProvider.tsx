@@ -75,7 +75,8 @@ export default function RouteThemeProvider() {
       pathname === "/champion-hub" ||
       pathname === "/overseer-hub" ||
       pathname === "/notification" ||
-      pathname === "/spread-ripple"
+      pathname === "/spread-ripple" ||
+      pathname === "/continue-pressure"
     ) {
       bg = "#F5F0EB";
       fg = "#F5F0EB";
@@ -84,6 +85,14 @@ export default function RouteThemeProvider() {
     if (pathname === "/organisation-setting") {
       bg = "#F8F4EE";
       fg = "#F8F4EE";
+    }
+    if (pathname === "/team-focus") {
+      bg = "#F3EEE7";
+      fg = "#F3EEE7";
+    }
+    if (pathname.startsWith("/pressure-point/")) {
+      bg = "#E9E6E2";
+      fg = "#E9E6E2";
     }
     root.style.setProperty("--background", bg);
     root.style.setProperty("--foreground", fg);

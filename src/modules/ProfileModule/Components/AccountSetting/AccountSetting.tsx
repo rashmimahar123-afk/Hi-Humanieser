@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import useOrganisationDetailsQuery from "../../Hooks/useOrganisationDetailsQuery";
 import { formatJoinedDate } from "@/src/lib/Helpers";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import useMyProfileQuery from "../../Hooks/useMyProfileQuery";
+import useGetAllListUsersQuery from "../../Hooks/useGetAllListUsersQuery";
+import useGetTeamsQuery from "../../Hooks/useGetTeamsQuery";
 
 function AccountSetting() {
   const [selected, setSelected] = useState("");
@@ -24,17 +27,27 @@ function AccountSetting() {
 
   const router = useRouter();
   const orgId = user?.org_id;
-  const { data: orgData, isLoading: orgLoading } =
-    useOrganisationDetailsQuery(orgId);
-  const organizationData = orgData?.data.organization;
+  const { data, isLoading } = useMyProfileQuery();
+  const profileData = data?.data;
+  const { data: usersData } = useGetAllListUsersQuery();
+
+  const allUsers = usersData?.data?.users || [];
+  const loggedInUserDetails = allUsers.find(
+    (u: any) => u.email === user?.sub && u.user_type === user?.user_type,
+  );
+
+  const { data: teamsData } = useGetTeamsQuery();
+
+  const teamName =
+    teamsData?.data?.teams?.find(
+      (team: any) => team.id === profileData?.team_id,
+    )?.team_name || "N/A";
 
   useEffect(() => {
-    if (organizationData?.created_by_user) {
-      setFirstName(organizationData.created_by_user.first_name || "");
-      setLastName(organizationData.created_by_user.last_name || "");
-      setEmail(organizationData.created_by_user.email || "");
-    }
-  }, [organizationData]);
+    setFirstName(profileData?.first_name || "");
+    setLastName(profileData?.last_name || "");
+    setEmail(profileData?.email || "");
+  }, []);
 
   return (
     <>
@@ -87,18 +100,17 @@ function AccountSetting() {
               {/* Info — pr keeps text from sliding under dots pattern */}
               <div className="flex-1 min-w-0 pr-[80px] sm:pr-[140px] md:pr-0">
                 <h3 className="text-[24px] sm:text-[34px] md:text-[46px] font-[RocaTwo] font-bold text-[#0F4F58] truncate">
-                  {organizationData?.created_by_user?.first_name}{" "}
-                  {organizationData?.created_by_user?.last_name}
+                  {profileData?.first_name} {profileData?.last_name}
                 </h3>
                 <p className="mt-1 text-[14px] sm:text-[16px] md:text-[19px] text-[#0F4F58] font-[Roboto]">
-                  Joined {formatJoinedDate(organizationData?.date_created)}
+                  Joined {formatJoinedDate(loggedInUserDetails?.created)}
                 </p>
                 <p className="text-[13px] sm:text-[16px] md:text-[19px] text-[#0F4F58]">
                   Active Member In Hi Humaniser!
                 </p>
                 <div className="mt-3 sm:mt-4 md:mt-6 text-[15px] sm:text-[18px] md:text-[22px] text-[#0F4F58] font-[Roboto] leading-6 space-y-1">
-                  <p>Company: {organizationData?.company_name}</p>
-                  <p>Team: Systems Engineering - UK</p>
+                  <p>Company: {profileData?.company_name}</p>
+                  <p>Team: {teamName}</p>
                 </div>
               </div>
             </div>

@@ -15,6 +15,8 @@ import useGetAllListUsersQuery from "../Hooks/useGetAllListUsersQuery";
 import ChampionModal from "./ChampionModal/ChampionModal";
 import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
 import { formatJoinedDate } from "@/src/lib/Helpers";
+import CardFooter from "./CardFooter/CardFooter";
+import { useRouter } from "next/navigation";
 
 function Profile() {
   const [enter, setEnter] = useState(false);
@@ -25,6 +27,7 @@ function Profile() {
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const { user } = useAuthValue();
   const orgId = user?.org_id;
+  const router = useRouter();
 
   useEffect(() => {
     setEnter(true);
@@ -184,7 +187,13 @@ function Profile() {
   });
 
   const findUserProfile = findUserData?.data?.profile;
-
+  const filteredChampions = championsWithMembers.filter(
+    (item: any) => item.champion.team_id === user?.team_id,
+  );
+  const hasMembers = filteredChampions.some(
+    (item: any) => item.members && item.members.length > 0,
+  );
+  const isEmptyState = !hasMembers;
   return (
     <>
       <div
@@ -468,6 +477,13 @@ function Profile() {
                         width={160}
                         height={160}
                         className="w-[100px] sm:w-[130px] md:w-[160px] h-auto"
+                      />
+                    </div>
+                    <div className={isEmptyState ? "mt-[200px]" : ""}>
+                      <CardFooter
+                        label=" Edit Members"
+                        onClick={() => router.push("/edit-members?type=member")}
+                        disabled={isEmptyState}
                       />
                     </div>
                   </div>
