@@ -23,34 +23,6 @@ function TeamJourney() {
 
   const practiceRef = useRef<HTMLDivElement | null>(null);
 
-  // const openPracticePerspective = () => {
-  //   setActivePathway("firstTeamJourney");
-  //   router.push("?step=1", { scroll: false });
-
-  //   setTimeout(() => {
-  //     practiceRef.current?.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "start",
-  //     });
-  //   }, 200);
-  // };
-
-  // const searchParams = useSearchParams();
-  // const pathname = searchParams.get("step");
-
-  // const ClosePracticePerspective = () => {
-  //   if (pathname !== null) {
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: "smooth",
-  //     });
-
-  //     setTimeout(() => {
-  //       setActivePathway(null);
-  //       router.push("/personal-pathway", { scroll: false });
-  //     }, 200);
-  //   }
-  // };
   const ClosePracticePerspective = () => {
     window.scrollTo({
       top: 0,

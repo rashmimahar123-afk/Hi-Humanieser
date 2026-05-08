@@ -248,17 +248,7 @@ export type CHOOSE_MYSELF_RESPONSE_TYPES = [
 
   {
     framework_name: string;
-    pillars: [
-      {
-        pillar_01: CHOOSE_MYSELF_PILLAR_TYPE;
-      },
-      {
-        pillar_02: CHOOSE_MYSELF_PILLAR_TYPE;
-      },
-      {
-        pillar_03: CHOOSE_MYSELF_PILLAR_TYPE;
-      },
-    ];
+    pillars: CHOOSE_MYSELF_PILLAR_TYPE[];
   },
 ];
 

@@ -167,7 +167,7 @@ function HelpFeedback() {
           <CommonButtons
             label="Return to  Homepage"
             bgColor="#cde3cc"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/home")}
           />
         </div>
       </div>

@@ -28,19 +28,25 @@ function Amplifier() {
   const principleNumber = Number(searchParams.get("principle"));
 
   // Try both index 0 and index 1 to find pillars
-  const pillarsData =
-    data?.data?.[0]?.pillars ??
-    data?.data?.[1]?.pillars ??
-    data?.data?.pillars ??
-    data?.pillars ??
-    [];
+  // const pillarsData =
+  //   data?.data?.[0]?.pillars ??
+  //   data?.data?.[1]?.pillars ??
+  //   data?.data?.pillars ??
+  //   data?.pillars ??
+  //   [];
+  const frameworkData = data?.data?.find((item) => "pillars" in item);
 
-  const selectedPrincipleData: PILLAR_PRINCIPLE_TYPE = pillarsData
-    ?.find((pillar: any) => pillar.pillar_number === pillarNumber)
+  const pillarsData = frameworkData?.pillars ?? [];
+  // const selectedPrincipleData: PILLAR_PRINCIPLE_TYPE = pillarsData
+  //   ?.find((pillar: any) => pillar.pillar_number === pillarNumber)
+  //   ?.principles?.find(
+  //     (principle: any) => principle.principle_number === principleNumber,
+  //   );
+  const selectedPrincipleData = pillarsData
+    .find((pillar) => pillar.pillar_number === pillarNumber)
     ?.principles?.find(
-      (principle: any) => principle.principle_number === principleNumber,
+      (principle) => principle.principle_number === principleNumber,
     );
-
   return (
     <div
       className={`bg-[#F5F0EB] min-h-screen ${styles.page} ${styles.enterRight} ${enter ? styles.enterActive : ""}`}

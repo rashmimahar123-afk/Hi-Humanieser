@@ -220,7 +220,7 @@ function ChampionNotes() {
                 label="Return to 
 Champion Hub"
                 bgColor="#FBE1DE"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/champion-hub")}
               />
             </div>
             <div>
@@ -228,7 +228,7 @@ Champion Hub"
               <CommonButtons
                 label="Go to Homepage "
                 bgColor="#FBE1DE"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/home")}
               />
             </div>
           </div>

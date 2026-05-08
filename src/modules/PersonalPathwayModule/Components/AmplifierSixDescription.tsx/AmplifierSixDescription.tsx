@@ -6,7 +6,7 @@ import {
 } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 type CONVERSATION_STARTER_PROPS_TYPE = {
-  conversationStarter: CONVERSATION_STARTER_TYPE;
+  conversationStarter?: CONVERSATION_STARTER_TYPE;
 };
 
 function AmplifierSixDescription(props: CONVERSATION_STARTER_PROPS_TYPE) {

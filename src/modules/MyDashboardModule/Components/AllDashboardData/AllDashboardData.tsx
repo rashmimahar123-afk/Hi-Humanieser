@@ -323,13 +323,13 @@ function AllDashboardData() {
 
       const updatedList = transformProgressList(structuredList, pathwayMap);
 
-      // 🔽 Sort by latest created date
+      //  Sort by latest created date
       const sortedList = updatedList.sort(
         (a: any, b: any) =>
           new Date(b.created).getTime() - new Date(a.created).getTime(),
       );
 
-      // 🔽 Take latest 20
+      //  Take latest 20
       const latest20 = sortedList.slice(0, 20);
 
       setProgressList(latest20);

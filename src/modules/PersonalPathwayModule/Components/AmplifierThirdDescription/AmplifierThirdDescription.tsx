@@ -6,7 +6,7 @@ import {
 } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 type AMPLIFIER_BEHAVIOUR_PROPS_TYPE = {
-  amplifierBehaviour: AMPLIFIER_BEHAVIOUR_TYPE;
+  amplifierBehaviour?: AMPLIFIER_BEHAVIOUR_TYPE;
 };
 
 function AmplifierThirdDescription(props: AMPLIFIER_BEHAVIOUR_PROPS_TYPE) {

@@ -133,7 +133,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
         </div>
 
         {/* Retake Button */}
-        <div className="flex justify-center sm:justify-end mt-[40px] md:mt-[53px] mb-[7px]">
+        <div className="flex justify-center sm:justify-end mt-[40px] md:mt-[63px] mb-[7px]">
           <div
             className="cursor-pointer"
             onClick={() => router.push("/start-quiz")}
@@ -145,7 +145,9 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
               radius={14}
               clipPath={`polygon(15% 11%, 81% 0%, 100% 87%, 3% calc(100% - 15px))`}
               decorationImg={{ src: images.arrowImg, width: 48, height: 48 }}
-              decorationPosition={{ className: "-left-[31px] -top-[25px]" }}
+              decorationPosition={{
+                className: "-left-[37px] -top-[47px] rotate-[20deg]",
+              }}
             >
               <span className="text-[#0F4F58] text-[22px] md:text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
                 Retake the Check-In

@@ -160,7 +160,6 @@ function ShowResultPage() {
   useEffect(() => {
     if (data && data?.data?.quiz.length > 0) {
       const latest = getLatestResult(data?.data?.quiz);
-      console.log("LATEST RESULT", latest);
 
       if (latest?.results) {
         const processed = processQuizResults(latest.results);
@@ -727,7 +726,7 @@ function ShowResultPage() {
                                   messageObj,
                                 );
 
-                                // ❌ DO NOT SELECT HERE
+                                //  DO NOT SELECT HERE
                               } catch (err) {
                                 console.log(err);
                               }

@@ -1,11 +1,15 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import path from "path";
 import { useEffect } from "react";
 
 export default function RouteThemeProvider() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const pillar = searchParams.get("pillar");
+  const principle = searchParams.get("principle");
 
   useEffect(() => {
     const root = document.documentElement;
@@ -62,7 +66,7 @@ export default function RouteThemeProvider() {
       bg = "#6FAFB0";
       fg = "#6FAFB0";
     }
-    if (pathname === "/my-team") {
+    if (pathname === "/my-team" || pathname === "/choose-myself") {
       bg = "#4BA6A6";
       fg = "#4BA6A6";
     }
@@ -76,7 +80,9 @@ export default function RouteThemeProvider() {
       pathname === "/overseer-hub" ||
       pathname === "/notification" ||
       pathname === "/spread-ripple" ||
-      pathname === "/continue-pressure"
+      pathname === "/continue-pressure" ||
+      pathname === "/my-pathways" ||
+      pathname === "/view-all"
     ) {
       bg = "#F5F0EB";
       fg = "#F5F0EB";
@@ -86,7 +92,7 @@ export default function RouteThemeProvider() {
       bg = "#F8F4EE";
       fg = "#F8F4EE";
     }
-    if (pathname === "/team-focus") {
+    if (pathname === "/team-focus" || pathname.startsWith("/overseer-hub/")) {
       bg = "#F3EEE7";
       fg = "#F3EEE7";
     }
@@ -94,6 +100,13 @@ export default function RouteThemeProvider() {
       bg = "#E9E6E2";
       fg = "#E9E6E2";
     }
+    if (pathname === "/pathway-card") {
+      if (pillar === "1" || pillar === "2" || pillar === "3") {
+        bg = "#F5F0EB";
+        fg = "#F5F0EB";
+      }
+    }
+
     root.style.setProperty("--background", bg);
     root.style.setProperty("--foreground", fg);
   }, [pathname]);

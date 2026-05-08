@@ -6,7 +6,7 @@ import {
 } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 type COMMON_TRAPS_PROPS_TYPE = {
-  commonTraps: COMMON_TRAPS_TYPE;
+  commonTraps?: COMMON_TRAPS_TYPE;
 };
 
 function AmplifierForthDescription(props: COMMON_TRAPS_PROPS_TYPE) {

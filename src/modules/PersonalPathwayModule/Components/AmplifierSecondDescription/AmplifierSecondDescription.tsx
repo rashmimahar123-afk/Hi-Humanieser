@@ -6,7 +6,7 @@ import {
 } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 type CORE_BEHAVIOUR__PROPS_TYPE = {
-  coreBehaviour: CORE_BEHAVIOUR_TYPE;
+  coreBehaviour?: CORE_BEHAVIOUR_TYPE;
 };
 
 function AmplifierSecondDescription(props: CORE_BEHAVIOUR__PROPS_TYPE) {

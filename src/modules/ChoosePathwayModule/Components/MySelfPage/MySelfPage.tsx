@@ -42,19 +42,14 @@ function MySelfPage() {
 
   const router = useRouter();
 
-  const togglePathway = (id: number) => {
-    setSelectedPathways((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((item) => item !== id);
-      }
-
-      return [...prev, id]; // no limit now
-    });
-  };
-
   const { data, isLoading, isError } = useChooseMyselfQuery();
-  const pillarsData = data?.data?.slice(1); // skip pulse_check_config
-  const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
+  // const pillarsData = data?.data?.slice(1); // skip pulse_check_config
+  // const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
+  const pillarsData = data?.data?.[1];
+
+  const pillarsList =
+    pillarsData && "pillars" in pillarsData ? pillarsData.pillars : [];
+
   const { mutate: createMpp } = useCreateMppMutation();
   const { mutate: deleteMpp } = useDeletePathwayMutation();
   const { refetch: getRandomMessage } = useGetPathwaySelectMssgQuery();

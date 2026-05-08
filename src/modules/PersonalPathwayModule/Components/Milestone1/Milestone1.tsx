@@ -16,8 +16,8 @@ import { MILESTONE_ONE_DATA } from "../../Types/ResponseTypes";
 
 type MILESTONE_ONE_PROPS = {
   onNext: () => void;
-  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
-  pillarNumber: number;
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE | null;
+  pillarNumber: number | null;
   id: string;
   m1Data: MILESTONE_ONE_DATA;
 };

@@ -24,7 +24,12 @@ function FromIdeas() {
 
   const router = useRouter();
   const { data, isLoading, isError } = useChooseMyselfQuery();
-  const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
+  const pillarsData = data?.data?.[1];
+
+  const pillarsList =
+    pillarsData && "pillars" in pillarsData ? pillarsData.pillars : [];
+
+  // const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
   const { user } = useAuthValue();
   return (
     <div

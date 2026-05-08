@@ -6,9 +6,10 @@ export type MICRO_ACTION_DATA = {
   reflection: string;
   share: boolean;
 };
+
 export type MILESTONE_TWO_DATA = {
-  micro_action_1: MICRO_ACTION_DATA;
-  micro_action_2: MICRO_ACTION_DATA;
+  micro_action_1?: MICRO_ACTION_DATA[];
+  micro_action_2?: MICRO_ACTION_DATA[];
 };
 export type MILESTONE_ONE_DATA = {
   behaviour_selection: Array<number>;

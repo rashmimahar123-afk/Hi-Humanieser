@@ -7,8 +7,8 @@ import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/R
 
 type PRACTICE_PERSPECTIVE_PROPS = {
   ClosePracticePerspective: () => void;
-  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
-  pillarNumber: number;
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE | null;
+  pillarNumber: number | null;
   id: string;
   pathwayData: any;
   formattedActivePathways: any;
@@ -19,6 +19,7 @@ type ActivePathwayType = {
   m2: any;
   m3: any;
 };
+type PracticeStep = "milestone1" | "milestone2" | "milestone3";
 
 function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
   const {
@@ -29,8 +30,6 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
     pathwayData,
     formattedActivePathways,
   } = props;
-
-  type PracticeStep = "milestone1" | "milestone2" | "milestone3";
   const [step, setStep] = useState<PracticeStep>("milestone1");
   const [activePathway, setActivePathway] = useState<ActivePathwayType | null>(
     null,

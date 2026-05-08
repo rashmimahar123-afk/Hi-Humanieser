@@ -48,10 +48,6 @@ function ContinuePressure() {
     isLoading,
     isError,
   } = useHhFrameworkMtjQuery();
-  console.log(
-    "frameworkMtjDataframeworkMtjData",
-    frameworkMtjData?.data?.focus_areas,
-  );
 
   return (
     <>

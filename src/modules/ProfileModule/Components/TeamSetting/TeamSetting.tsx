@@ -157,7 +157,6 @@ function TeamSetting() {
                         },
                         {
                           onSuccess: (res) => {
-                            console.log("Team updated:", res);
                             setIsEditingTeam(false);
                           },
                           onError: (err) => {

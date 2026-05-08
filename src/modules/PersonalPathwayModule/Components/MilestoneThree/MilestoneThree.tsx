@@ -22,8 +22,8 @@ import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestone
 
 type MILESTONE_THREE_PROPS = {
   ClosePracticePerspective: () => void;
-  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
-  pillarNumber: number;
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE | null;
+  pillarNumber: number | null;
   id: string;
   m3Data: MILESTONE_THREE_DATA;
   m1Pulse: number;
@@ -73,7 +73,6 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
             setCompletionMessage(res?.data || "");
             setShowSuccess(true);
           } catch (err) {
-            console.log("Message fetch error", err);
             setShowSuccess(true);
           }
         },

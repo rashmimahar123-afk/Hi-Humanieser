@@ -358,13 +358,13 @@ function OrganisationDiagnostic() {
               label={`Return to 
 Partner Hub`}
               bgColor="#fbe1de"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/partner-hub")}
             />
 
             <CommonButtons
               label="Back to Homepage"
               bgColor="#fbe1de"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/home")}
             />
           </div>
         </div>
@@ -555,13 +555,13 @@ Partner Hub`}
               label={`Return to 
 Partner Hub`}
               bgColor="#fbe1de"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/overseer-hub")}
             />
 
             <CommonButtons
               label="Back to Homepage"
               bgColor="#fbe1de"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/home")}
             />
           </div>
         </div>

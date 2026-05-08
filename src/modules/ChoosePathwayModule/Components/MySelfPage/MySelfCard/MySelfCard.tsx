@@ -24,7 +24,7 @@ type MYSELF_CARD_PROPS = {
 
 function MySelfCard(props: MYSELF_CARD_PROPS) {
   const { sectionTitle, bgColor, cards } = props;
-  console.log("cards", cards);
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },

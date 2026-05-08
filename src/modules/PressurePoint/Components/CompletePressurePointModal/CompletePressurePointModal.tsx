@@ -54,7 +54,6 @@ function CompletePressurePointModal() {
     }
 
     //  Normal flow (you can integrate API here if needed)
-    console.log("Reflection:", reflection);
 
     router.push("/pressure-point-record");
     setIsOpen(false);

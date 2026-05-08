@@ -3,7 +3,7 @@ import images from "@/src/assets/images";
 import { MICRO_ACTIONS_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
 type MICRO_ACTION_PROPS_TYPE = {
-  microActions: Array<MICRO_ACTIONS_TYPE>;
+  microActions?: Array<MICRO_ACTIONS_TYPE>;
 };
 
 function AmplifierFifthDescription(props: MICRO_ACTION_PROPS_TYPE) {

@@ -23,6 +23,7 @@ import { enrichProgressWithPractice } from "@/src/lib/Helpers";
 import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessagesQuery";
 import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
 import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
+import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
 
 type Principle = {
   key: string;
@@ -44,8 +45,8 @@ function MyDashboard() {
     pillarAvg: Record<string, number>;
   } | null>(null);
   const [progressList, setProgressList] = useState<any>([]);
-  const currentYear = new Date().getFullYear().toString();
-  const [selected, setSelected] = useState(currentYear);
+  const [selected, setSelected] = useState("");
+
   const [isDownloading, setIsDownloading] = useState(false);
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
@@ -57,6 +58,19 @@ function MyDashboard() {
   const { data, isLoading } = useMyQuizResultQuery();
   const pdfRef = useRef<HTMLDivElement>(null);
   const [enter, setEnter] = useState(false);
+
+  const { data: findUserData } = useFindUserQuery(user?.sub, {
+    enabled: user?.user_type === 2,
+  });
+  const findUserProfile = findUserData?.data?.profile;
+
+  const joinedYear = findUserProfile?.created
+    ? new Date(findUserProfile.created).getFullYear()
+    : new Date().getFullYear();
+
+  const yearOptions = Array.from({ length: 11 }, (_, index) =>
+    String(joinedYear + index),
+  );
 
   useEffect(() => {
     setEnter(true);
@@ -288,10 +302,11 @@ function MyDashboard() {
     return sorted[0];
   };
 
-  const latestQuiz = getLatestQuizByYear(
-    data?.data?.quiz || [],
-    selected || new Date().getFullYear().toString(),
-  );
+  const currentYear = new Date().getFullYear().toString();
+
+  const activeYear = selected || currentYear;
+
+  const latestQuiz = getLatestQuizByYear(data?.data?.quiz || [], activeYear);
 
   const formattedDate = latestQuiz ? formatDate(latestQuiz.created_at) : "";
 
@@ -515,7 +530,7 @@ function MyDashboard() {
               </label>
               <div className="relative">
                 <select
-                  value={selected || "2026"}
+                  value={selected}
                   onChange={(e) => setSelected(e.target.value)}
                   className="
                     appearance-none
@@ -529,9 +544,14 @@ function MyDashboard() {
                     cursor-pointer
                   "
                 >
-                  <option value="2026">2026</option>
-                  <option value="2025">2025</option>
-                  <option value="2024">2024</option>
+                  <option value="" disabled hidden>
+                    Select Year
+                  </option>
+                  {yearOptions.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
                 </select>
                 <div className="absolute right-0 top-0 h-full w-[40px] md:w-[50px] flex items-center justify-center pointer-events-none">
                   <div className="w-0 h-0 border-l-[8px] md:border-l-[10px] border-r-[8px] md:border-r-[10px] border-t-[10px] md:border-t-[12px] border-l-transparent border-r-transparent border-t-[#254C4C]" />

@@ -76,7 +76,7 @@ export default function ProfilePathway() {
           <CommonButtons
             label="Return to My Dashboard"
             bgColor="#FBE1DE"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/my-dashboard")}
           />
         </div>
       </div>

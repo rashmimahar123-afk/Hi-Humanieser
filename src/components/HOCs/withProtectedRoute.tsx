@@ -6,7 +6,7 @@ function withProtectedRoute(WrappedComponent: any) {
   return function Wrapper(props: any) {
     const { loggedIn } = getAuthValue();
     const router = useRouter();
-    console.log("loggedInloggedInloggedIn", !loggedIn);
+
     useLayoutEffect(() => {
       if (!loggedIn) {
         router.push("/login");

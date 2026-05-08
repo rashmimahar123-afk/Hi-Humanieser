@@ -36,13 +36,13 @@ function ToolsSupport() {
         priority
       />
       <div className="relative z-10 ml-21 font-bold text-[#0F4F58] text-[45px] font-[RocaTwo]">
-        Overseer Hub
+        Partner Hub
       </div>
 
       {/* WELCOME TEXT */}
       <div className="relative z-10 mt-8">
         <h3 className="text-[#0f4f58] text-[30px] font-bold mb-4 font-[RocaTwo]">
-          Overseer Tools & Support{" "}
+          Partner Tools & Support{" "}
         </h3>
         <div className="ml-12">
           <p className="text-[#0F4F58] text-[22px] leading-relaxed">
@@ -69,7 +69,7 @@ function ToolsSupport() {
 
             {/* Text on top of image */}
             <div className={styles.cardContent}>
-              <h3>Overseer Guide</h3>
+              <h3>Partner Guide</h3>
             </div>
           </div>
 
@@ -83,7 +83,7 @@ function ToolsSupport() {
               />
             </div>
             <div className={styles.cardContent}>
-              <h3>Overseer Toolkit</h3>
+              <h3>Partner Toolkit</h3>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ function ToolsSupport() {
           className="absolute top-0 right-0 z-0"
         />
         <div className="relative z-10 mt-10font-bold text-[#0F4F58] text-[45px] font-[RocaTwo] font-bold">
-          Overseer Guide
+          Partner Guide
         </div>
 
         {/* WELCOME TEXT */}
@@ -131,7 +131,7 @@ function ToolsSupport() {
                   className={styles.trainingImage}
                 />
 
-                <h3 className={styles.polyTitle}>Overseer Guide</h3>
+                <h3 className={styles.polyTitle}>Partner Guide</h3>
               </div>
 
               <p className={styles.trainingSubtitle}>
@@ -153,7 +153,7 @@ function ToolsSupport() {
                   className={styles.trainingImage}
                 />
 
-                <h3 className={styles.polyTitle}>Overseer Role</h3>
+                <h3 className={styles.polyTitle}>Partner Role</h3>
               </div>
 
               <p className={styles.trainingSubtitle}>
@@ -180,7 +180,7 @@ function ToolsSupport() {
 
         <div className="relative z-10 ">
           <h2 className="text-[44px] font-[RocaTwo] text-[#0F4F58] mb-4 font-bold">
-            Overseer Toolkit
+            Partner Toolkit
           </h2>
           <h3 className="text-[24px] font-semibold text-[#0F4F58] mb-6">
             Practical resources to support alignment across teams and strengthen
@@ -203,7 +203,6 @@ function ToolsSupport() {
                 clipPath={`polygon(
       0% 7%, 99% 0%, 99% 94%, 6% 100%
     )`}
-                childTop={25}
               >
                 <div>
                   <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
@@ -227,7 +226,6 @@ function ToolsSupport() {
                 clipPath={`polygon(
       0% 7%, 99% 0%, 99% 94%, 6% 100%
     )`}
-                childTop={25}
               >
                 <div>
                   <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
@@ -252,7 +250,6 @@ function ToolsSupport() {
                 clipPath={`polygon(
       0% 7%, 99% 0%, 99% 94%, 6% 100%
     )`}
-                childTop={25}
               >
                 <div>
                   <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
@@ -277,7 +274,6 @@ function ToolsSupport() {
                 clipPath={`polygon(
      0% 7%, 99% 0%, 99% 94%, 6% 100%
     )`}
-                childTop={25}
               >
                 <div>
                   <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
@@ -449,15 +445,15 @@ Clarity"
           {/* Bottom Buttons */}
           <div className="flex flex-col gap-4 items-center">
             <CommonButtons
-              label={`Return to Champion Hub`}
+              label={`Return to Partner Hub`}
               bgColor="#cde3cc"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/overseer-hub")}
             />
 
             <CommonButtons
               label="Go to Homepage"
               bgColor="#cde3cc"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/home")}
             />
           </div>
         </div>

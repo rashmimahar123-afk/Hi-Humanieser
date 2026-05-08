@@ -375,13 +375,13 @@ It happens when teams learn — together."
           <CommonButtons
             label={`Return to Champion Hub`}
             bgColor="#fbe1de"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/champion-hub")}
           />
 
           <CommonButtons
             label="Go to Homepage"
             bgColor="#fbe1de"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/home")}
           />
         </div>
       </div>

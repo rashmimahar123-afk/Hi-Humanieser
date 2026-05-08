@@ -522,13 +522,13 @@ Clarity"
               <CommonButtons
                 label={`Return to Champion Hub`}
                 bgColor="#cde3cc"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/champion-hub")}
               />
 
               <CommonButtons
                 label="Go to Homepage"
                 bgColor="#cde3cc"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push("/home")}
               />
             </div>
           </div>

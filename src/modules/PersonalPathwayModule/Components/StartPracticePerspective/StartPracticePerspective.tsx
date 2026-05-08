@@ -2,7 +2,7 @@ import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/R
 import { useSearchParams } from "next/navigation";
 
 type START_PRACTICE_PERSPECTIVE_PROPS = {
-  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE | null;
 };
 
 function StartPracticePerspective(props: START_PRACTICE_PERSPECTIVE_PROPS) {

@@ -133,11 +133,11 @@ function CompanyStructure({
         (item: any) => item.champion.team_id === selectedTeam.id,
       )
     : [];
-  console.log("filteredChampionsfilteredChampions", filteredChampions);
+
   const hasMembers = filteredChampions.some(
     (item: any) => item.members && item.members.length > 0,
   );
-  console.log("hasMembers", hasMembers);
+
   const isEmptyState = !selectedTeam || !hasMembers;
   return (
     <div className="mt-8 sm:mt-10 md:mt-12 px-0 sm:px-4 md:px-14">
@@ -254,7 +254,7 @@ function CompanyStructure({
           }));
 
           const rows = chunkByPattern(mappedMembers);
-          console.log("rows", rows);
+
           return (
             <div key={index} className="mb-10">
               {/* Champion */}

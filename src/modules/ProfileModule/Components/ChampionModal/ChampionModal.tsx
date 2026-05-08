@@ -106,7 +106,6 @@ function ChampionModal() {
               className="bg-[#567F55] text-white px-6 py-3 rounded-full disabled:opacity-50"
               onClick={() => {
                 // only real team now
-                console.log(selectedTeam);
 
                 setSelectedTeam("");
                 setIsOpen(false);

@@ -19,8 +19,8 @@ import RemoveShareReflectionModal from "../RemoveShareReflectionModal/RemoveShar
 
 type MILESTONE_TWO_PROPS = {
   onNext: () => void;
-  pathwayDetails: PILLAR_PRINCIPLE_TYPE;
-  pillarNumber: number;
+  pathwayDetails: PILLAR_PRINCIPLE_TYPE | null;
+  pillarNumber: number | null;
   id: string;
   m2Data: MILESTONE_TWO_DATA;
 };
@@ -46,13 +46,17 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
     });
   };
 
-  const hasAnyReflection = Object.keys(m2Data || {}).some((key) => {
-    if (key.startsWith("micro_action_")) {
-      return (m2Data?.[key]?.length ?? 0) > 0;
-    }
-    return false;
+  // const hasAnyReflection = Object.keys(m2Data || {}).some((key) => {
+  //   if (key.startsWith("micro_action_")) {
+  //     return (m2Data?.[key]?.length ?? 0) > 0;
+  //   }
+  //   return false;
+  // });
+  const hasAnyReflection = (
+    Object.keys(m2Data || {}) as Array<keyof MILESTONE_TWO_DATA>
+  ).some((key) => {
+    return (m2Data?.[key]?.length ?? 0) > 0;
   });
-
   return (
     <div className="animate-slideInRight">
       <StartPracticePerspective pathwayDetails={pathwayDetails} />

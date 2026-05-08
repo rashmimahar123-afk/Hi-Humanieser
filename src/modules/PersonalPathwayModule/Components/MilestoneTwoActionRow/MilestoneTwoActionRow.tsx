@@ -36,8 +36,10 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
     m2Data,
   } = props;
 
-  const microActionReflections =
-    m2Data?.[`micro_action_${microActionNumber}`] ?? [];
+  const microActionKey =
+    `micro_action_${microActionNumber}` as keyof MILESTONE_TWO_DATA;
+
+  const microActionReflections = m2Data?.[microActionKey] ?? [];
 
   const { mutate: updateMilestone } = useUpdateMppMilestoneMutation();
 
@@ -79,7 +81,8 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
       (k) => !["uuid", "created", "active"].includes(k),
     );
 
-    const existingM2 = currentPathway?.[firstKey]?.m2 || {};
+    // const existingM2 = currentPathway?.[firstKey]?.m2 || {};
+    const existingM2 = firstKey ? currentPathway?.[firstKey]?.m2 || {} : {};
     const { micro_actions, ...cleanM2Data } = existingM2;
 
     // STEP 3: merge safely
