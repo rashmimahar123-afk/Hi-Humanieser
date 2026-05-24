@@ -7,6 +7,8 @@ import useEventEmitter, {
 } from "@/src/components/Hooks/useEventEmitter";
 import useGetTeamsQuery from "../../Hooks/useGetTeamsQuery";
 import { useRouter } from "next/navigation";
+import { useTogglePartnerRoleMutation } from "../../Hooks/useTogglePartnerRoleMutation";
+
 
 const EVENT = "OPEN_CHAMPION_MODAL";
 
@@ -14,13 +16,14 @@ export const openChampionModal = () => {
   emitEvent(EVENT);
 };
 
-type PROPS = {
+type ChampionModalProps = {
   onSubmit: (teamId: string) => void;
 };
 
-function ChampionModal() {
-  const [isOpen, setIsOpen] = useState(false);
+function ChampionModal({ onSubmit }: ChampionModalProps) {
+    const [isOpen, setIsOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState("");
+  console.log("selectedTeamselectedTeam",selectedTeam)
   const router = useRouter();
 
   useEventEmitter(EVENT, () => {
@@ -29,6 +32,14 @@ function ChampionModal() {
 
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
+
+  
+const handleBecomeChampion = () => {
+  onSubmit(selectedTeam);
+
+  setSelectedTeam("");
+  setIsOpen(false);
+};
 
   return (
     <Dialog
@@ -87,16 +98,28 @@ function ChampionModal() {
               ))}
             </select>
             <div className="mt-4 text-[#567F55] font-bold">OR</div>
-            <div
-              onClick={() => {
-                setIsOpen(false);
-                router.push("/organisation-setting");
-              }}
+            {/* <div
+             onClick={() => {
+  onSubmit(selectedTeam);
+
+  setSelectedTeam("");
+  setIsOpen(false);
+}}
               className="mt-3 text-[14px] text-[#567F55] cursor-pointer hover:underline flex items-center gap-2"
             >
               <span className="text-[18px]">+</span>
               Create a new team
-            </div>
+            </div> */}
+            <div
+  onClick={() => {
+    setIsOpen(false);
+    router.push("/organisation-setting");
+  }}
+  className="mt-3 text-[14px] text-[#567F55] cursor-pointer hover:underline flex items-center gap-2"
+>
+  <span className="text-[18px]">+</span>
+  Create a new team
+</div>
           </div>
 
           {/* Actions */}
@@ -104,12 +127,7 @@ function ChampionModal() {
             <button
               disabled={!selectedTeam}
               className="bg-[#567F55] text-white px-6 py-3 rounded-full disabled:opacity-50"
-              onClick={() => {
-                // only real team now
-
-                setSelectedTeam("");
-                setIsOpen(false);
-              }}
+              onClick={handleBecomeChampion}
             >
               Start as Champion
             </button>

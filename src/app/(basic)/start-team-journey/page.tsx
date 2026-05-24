@@ -14,6 +14,8 @@ function StartTeamJourneyPage() {
   const { data, isLoading } = useGetMtjPollQuery();
   const pollData = data?.data;
 
+console.log("pollDatapollDatapollDatapollData",pollData)
+
   if (isLoading) {
     return (
       <div>

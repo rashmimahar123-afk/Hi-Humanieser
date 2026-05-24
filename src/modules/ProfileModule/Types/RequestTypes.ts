@@ -27,3 +27,6 @@ export type Edit_TEAM_REQUEST = {
   team_id: string;
   new_team_name: string;
 };
+export type TOGGLE_ROLE_PAYLOAD = {
+  team_id?: string;
+};

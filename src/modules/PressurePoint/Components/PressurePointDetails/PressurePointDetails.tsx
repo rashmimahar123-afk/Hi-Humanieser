@@ -31,7 +31,7 @@ function PressurePointDetails() {
   const handleContinue = () => {
     mutate(
       {
-        team_id: user?.team_id ?? "",
+        // team_id: user?.team_id ?? "",
         pressure_point: data?.title,
       },
       {

@@ -42,6 +42,7 @@ function MyTeamJourney() {
   };
 
   const { mutate: submitPoll, isPending } = useSubmitPollResponseMutation();
+
   const handleSubmitVoice = () => {
     if (selectedOptions.length === 0) {
       SnackbarHandler.errorToast("Please select at least one option");
@@ -49,7 +50,7 @@ function MyTeamJourney() {
     }
 
     submitPoll(
-      { option: selectedOptions },
+      { options: selectedOptions },
       {
         onSuccess: (res) => {
           openVoiceModal(); // ✅ open success modal

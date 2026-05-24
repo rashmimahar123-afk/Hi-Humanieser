@@ -1,0 +1,9 @@
+.wrapper {
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    padding-bottom: 2rem;
+  }
+}

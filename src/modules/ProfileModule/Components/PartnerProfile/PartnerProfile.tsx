@@ -10,15 +10,19 @@ import { useRef, useState } from "react";
 import { useEditUserMutation } from "../../Hooks/useEditUserMutation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { openChampionModal } from "../ChampionModal/ChampionModal";
+import { useTogglePartnerRoleMutation } from "../../Hooks/useTogglePartnerRoleMutation";
 
 type PROFILE_DATA_PROPS = {
-  profileData: MY_PROFILE_RESPONSE;
-  organizationData: ORGANISATION_DATA;
+  profileData?: MY_PROFILE_RESPONSE;
+  // organizationData: ORGANISATION_DATA;
   loggedInUserDetails?: ALL_USERS_DATA;
+  teamName?:string
+    handleBecomePartner: () => void;
+
 };
 
 function PartnerProfile(props: PROFILE_DATA_PROPS) {
-  const { profileData, organizationData, loggedInUserDetails } = props;
+  const { profileData, loggedInUserDetails ,teamName,handleBecomePartner} = props;
   const [profileImage, setProfileImage] = useState<string | StaticImageData>(
     images.dummyUser,
   );
@@ -60,6 +64,7 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
       },
     );
   };
+
 
   return (
     <section className="relative rounded-[18px] sm:rounded-[24px] bg-[#F8E1B8] px-4 sm:px-8 md:px-14 py-8 sm:py-10 md:py-12 overflow-hidden">
@@ -122,12 +127,17 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
           </p>
 
           <p className="text-[13px] sm:text-[15px] md:text-[16px] text-[#0F4F58]">
-            Active Partner in Hi Humaniser!
+            Active {user?.user_type===3?"Partner":"Champion"} in Hi Humaniser!
           </p>
-
-          <p className="text-[16px] sm:text-[18px] md:text-[22px] text-[#0F4F58] mt-3 sm:mt-4">
-            Company: {profileData?.company_name || ""}
-          </p>
+   <div className="mt-3 sm:mt-5 text-[16px] sm:text-[19px] md:text-[22px] text-[#0F4F58] font-[Roboto] font-[400] leading-6 space-y-1">
+                      <p>Company: {profileData?.company_name}</p>
+                       {
+            user?.user_type===2 &&  <p >Team: {teamName}</p>
+          }
+                    </div>
+     
+         
+           
         </div>
       </div>
 
@@ -139,9 +149,17 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
       <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
         <button
           className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]"
-          onClick={openChampionModal}
+          onClick={() => {
+    if (user?.user_type === 3) {
+      openChampionModal();
+    } else {
+    handleBecomePartner();
+    }
+  }}
         >
-          Become a Champion
+         {user?.user_type===3
+    ? "Become a Champion"
+    : "Switch to Partner"}
         </button>
       </div>
 
@@ -153,7 +171,8 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
 
       {/* Input fields — FIX: stacked on mobile, inline on sm+ */}
       <div className="mt-8 sm:mt-12 max-w-3xl space-y-3 sm:space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
+        {
+          user?.user_type===3?   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
           <span className="w-full sm:w-40 text-[13px] sm:text-[16px] md:text-[18px] text-[#567F55] shrink-0">
             Full name
           </span>
@@ -162,7 +181,35 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
             value={`${profileData?.first_name || ""} ${profileData?.last_name || ""}`}
             className="w-full rounded-[10px] sm:rounded-[14px] bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-[13px] sm:text-[14px] text-[#567F55] outline-none"
           />
-        </div>
+        </div>:   
+        <>
+        {/* First Name */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
+                    <span className="w-full sm:w-40 text-[13px] sm:text-[15px] text-[#567F55] shrink-0">
+                      First Name
+                    </span>
+                    <input
+                      disabled
+                      value={profileData?.first_name || ""}
+                      className="w-full rounded-[10px] sm:rounded-[14px] bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-[13px] sm:text-[14px] text-[#567F55] outline-none"
+                    />
+                  </div>
+
+                  {/* Last Name */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
+                    <span className="w-full sm:w-40 text-[13px] sm:text-[15px] text-[#567F55] shrink-0">
+                      Last Name
+                    </span>
+                    <input
+                      disabled
+                      value={profileData?.last_name || ""}
+                      className="w-full rounded-[10px] sm:rounded-[14px] bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-[13px] sm:text-[14px] text-[#567F55] outline-none"
+                    />
+                  </div>
+                  </>
+        }
+     
+   
 
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
           <span className="w-full sm:w-40 text-[13px] sm:text-[16px] md:text-[18px] text-[#567F55] shrink-0">

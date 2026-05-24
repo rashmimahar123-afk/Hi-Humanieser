@@ -30,6 +30,7 @@ type POLYGON_BUTTON_PROPS = {
   decorationPosition?: DECORATION_POSITION;
   clipPath?: string;
   childTop?: number;
+  contentClassName?: string;
 };
 
 const PolygonButton = ({
@@ -42,6 +43,7 @@ const PolygonButton = ({
   decorationPosition,
   children,
   childTop,
+  contentClassName,
 }: POLYGON_BUTTON_PROPS) => {
   // Resolve numeric widths/heights to px strings for inline styles
   const resolvedWidth = typeof width === "number" ? `${width}px` : width;
@@ -93,7 +95,7 @@ const PolygonButton = ({
 
       {/* Text content — sits above the clip-path shape */}
       <div
-        className={`absolute -inset-2 flex items-center justify-center text-center pointer-events-none`}
+        className={`absolute inset-2 flex ${contentClassName ?? "items-center justify-center text-center"} pointer-events-none`}
         style={{ top: childTop ? `-${childTop * 4}px` : undefined }}
       >
         {children}

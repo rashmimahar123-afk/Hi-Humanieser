@@ -90,8 +90,17 @@ function PressurePointRecord() {
   const totalMembers = pollData?.team_member_count || 0;
   const responded = pollData?.team_members_responded || 0;
   const percentage = pollData?.team_response_percentage || 0;
-  const isLessThan50 = percentage < 50;
 
+  const averageVotePercentage =
+  options.length > 0
+    ? options.reduce(
+        (sum: number, item: any) => sum + item.vote_percentage,
+        0,
+      ) / options.length
+    : 0;
+
+const isLessThan70 = averageVotePercentage < 70;
+console.log("averageVotePercentageaverageVotePercentage",averageVotePercentage)
   const memberEmails = allTeamMembers.map((m: any) => m.email).filter(Boolean);
 
   const handleSendReminder = () => {
@@ -313,7 +322,7 @@ Thanks!`,
               height={270}
             />
           </div>
-          {isLessThan50 && pollData?.poll_open && (
+          {isLessThan70 && pollData?.poll_open && (
             <div className="absolute right-[180px] top-[60px] opacity-80">
               <Image
                 src={images.signupTimer}
@@ -336,14 +345,14 @@ Thanks!`,
               managing — they help translate it into a clear, shared focus the
               team can work on together.
             </p>
-            {isLessThan50 && (
+            {isLessThan70 && (
               <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8 font-bold">
                 So far: {responded} of {totalMembers} members have responded ({" "}
                 {percentage}%)
               </p>
             )}
           </div>
-          {isLessThan50 && pollData?.poll_open && (
+          {isLessThan70 && pollData?.poll_open && (
             <div className="mt-10 flex justify-end items-center gap-4">
               <Image
                 src={images.email}
@@ -423,7 +432,7 @@ Thanks!`,
             </p>
           </div>
         </div>
-        {isLessThan50 && pollData?.poll_open && (
+        {isLessThan70 && pollData?.poll_open && (
           <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
             {/* LEFT CONTENT */}
             <div className="max-w-3xl">
@@ -460,7 +469,7 @@ Thanks!`,
           </div>
         )}
 
-        {!isLessThan50 && pollData?.poll_open && (
+        {!isLessThan70 && pollData?.poll_open && (
           <div className="mt-8">
             <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
               Choosing the focus for this cycle

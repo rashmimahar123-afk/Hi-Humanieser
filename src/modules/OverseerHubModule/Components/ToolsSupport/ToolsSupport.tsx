@@ -9,6 +9,7 @@ import styles from "./ToolsSupport.module.css";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { motion } from "framer-motion";
 
 function ToolsSupport() {
   const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
@@ -17,6 +18,41 @@ function ToolsSupport() {
 
   const router = useRouter();
   const { user } = useAuthValue();
+
+   const cards = [
+    {
+      title: "HH! Moments",
+      description:
+        "Short prompts to bring clarity and Humaniser habits into everyday meetings. Simple to use. No preparation required.",
+      bgColor: "#86c9c9",
+      height: "130px",
+      path: "/moments",
+    },
+    {
+      title: "Cross-Team Workshops",
+      description:
+        "Guidance and tools to help teams share learning, surface patterns, and shape how work works — across the organisation.",
+      bgColor: "#cde3cc",
+      height: "130px",
+      path: "/team-workshops",
+    },
+    {
+      title: "Leading Under Pressure",
+      description:
+        "Understand common pressure patterns and make small structural moves that protect execution without overloading teams.",
+      bgColor: "#fbe1de",
+      height: "130px",
+      path: "/pressure-point-record",
+    },
+    {
+      title: "When things get tricky...",
+      description:
+        "Practical guidance for moments when momentum dips, engagement drops, or challenges start to surface.",
+      bgColor: "#f8e1b8",
+      height: "169px",
+      path: "/tricky",
+    },
+  ];
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
@@ -193,99 +229,48 @@ function ToolsSupport() {
 
           {/* TOOLKIT CARDS */}
           <div className="space-y-10 mt-14">
-            {/* HH Moments */}
-            <div className="space-y-8 mt-12">
-              <PolygonButton
-                width="1200px"
-                height="130px"
-                bgColor="#86c9c9"
-                radius={16}
-                clipPath={`polygon(
-      0% 7%, 99% 0%, 99% 94%, 6% 100%
-    )`}
-              >
-                <div>
-                  <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
-                    HH! Moments
-                  </h4>
-                  <p className="text-[20px] text-[#0F4F58] max-w-[1000px]">
-                    Short prompts to bring clarity and Humaniser habits into
-                    everyday meetings. Simple to use. No preparation required.
-                  </p>
-                </div>
-              </PolygonButton>
-            </div>
+          {cards.map((card, index) => (
+        <motion.div
+          key={index}
+          whileHover={{
+            scale: 1.03,
+            rotate: -1,
+            y: -8,
+          }}
+          whileTap={{
+            scale: 0.97,
+            rotate: 1,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 250,
+            damping: 15,
+          }}
+          className="cursor-pointer"
+          onClick={() => router.push(card.path)}
+        >
+          <PolygonButton
+            width="1200px"
+            height={card.height}
+            bgColor={card.bgColor}
+            radius={16}
+            clipPath={`polygon(
+              0% 7%, 99% 0%, 99% 94%, 6% 100%
+            )`}
+          >
+            <div>
+              <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
+                {card.title}
+              </h4>
 
-            {/* Cross-Team Workshops */}
-            <div className="space-y-8 mt-12">
-              <PolygonButton
-                width="1200px"
-                height="130px"
-                bgColor="#cde3cc"
-                radius={16}
-                clipPath={`polygon(
-      0% 7%, 99% 0%, 99% 94%, 6% 100%
-    )`}
-              >
-                <div>
-                  <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
-                    Cross-Team Workshops
-                  </h4>
-                  <p className="text-[20px] text-[#0F4F58] max-w-[1000px]">
-                    Guidance and tools to help teams share learning, surface
-                    patterns, and shape how work works — across the
-                    organisation.
-                  </p>
-                </div>
-              </PolygonButton>
+              <p className="text-[20px] text-[#0F4F58] max-w-[1000px]">
+                {card.description}
+              </p>
             </div>
-
-            {/* Ease the Pressure */}
-            <div className="space-y-8 mt-12">
-              <PolygonButton
-                width="1200px"
-                height="130px"
-                bgColor="#fbe1de"
-                radius={16}
-                clipPath={`polygon(
-      0% 7%, 99% 0%, 99% 94%, 6% 100%
-    )`}
-              >
-                <div>
-                  <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
-                    Leading Under Pressure{" "}
-                  </h4>
-                  <p className="text-[20px] text-[#0F4F58] max-w-[1000px]">
-                    Understand common pressure patterns and make small
-                    structural moves that protect execution without overloading
-                    teams.
-                  </p>
-                </div>
-              </PolygonButton>
-            </div>
-
-            {/* When things get tricky */}
-            <div className="space-y-8 mt-12">
-              <PolygonButton
-                width="1200px"
-                height="169px"
-                bgColor="#f8e1b8"
-                radius={16}
-                clipPath={`polygon(
-     0% 7%, 99% 0%, 99% 94%, 6% 100%
-    )`}
-              >
-                <div>
-                  <h4 className="text-[30px] font-[RocaTwo] text-[#0F4F58] flex justify-end font-bold">
-                    When things get tricky...
-                  </h4>
-                  <p className="text-[20px] text-[#0F4F58] max-w-[1000px]">
-                    Practical guidance for moments when momentum dips,
-                    engagement drops, or challenges start to surface.
-                  </p>
-                </div>
-              </PolygonButton>
-            </div>
+          </PolygonButton>
+        </motion.div>
+      ))}
+   
           </div>
         </div>
         {/* <div className="relative ">

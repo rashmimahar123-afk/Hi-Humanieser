@@ -68,6 +68,13 @@ function HumanieserMoments() {
       ppt: "/moments/dots.pptx",
       pdf: "/moments/dots.pdf",
     },
+    {
+      title: "What Could Go Wrong",
+      desc: "A reminder to think beyond the plan and imagine what could get in the way.",
+      width: "160px",
+      ppt: "/moments/wrong.pptx",
+      pdf: "/moments/wrong.pdf",
+    },
   ];
 
   const router = useRouter();

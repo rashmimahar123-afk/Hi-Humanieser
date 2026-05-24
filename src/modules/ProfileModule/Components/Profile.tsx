@@ -2,11 +2,11 @@ import UserProfileHeader from "../../UserProfileHeader/Components/UserProfileHea
 import Image, { StaticImageData } from "next/image";
 import images from "@/src/assets/images";
 import { useEffect, useRef, useState } from "react";
-import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
+import useAuthValue, { getAuthValue, setAuthValue } from "../../AuthModule/Hooks/useAuthValue";
 import styles from "./Profile.module.css";
-import useMyProfileQuery from "../Hooks/useMyProfileQuery";
+import useMyProfileQuery, { GET_PROFILE_QUERY_KEY } from "../Hooks/useMyProfileQuery";
 import PartnerProfile from "./PartnerProfile/PartnerProfile";
-import useOrganisationDetailsQuery from "../Hooks/useOrganisationDetailsQuery";
+import useOrganisationDetailsQuery, { GET_ORGANISATION_DETAILS_QUERY_KEY } from "../Hooks/useOrganisationDetailsQuery";
 import CompanyStructure from "./CompanyStructure/CompanyStructure";
 import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
 import useGetTeamsQuery from "../Hooks/useGetTeamsQuery";
@@ -17,6 +17,9 @@ import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
 import { formatJoinedDate } from "@/src/lib/Helpers";
 import CardFooter from "./CardFooter/CardFooter";
 import { useRouter } from "next/navigation";
+import { useTogglePartnerRoleMutation } from "../Hooks/useTogglePartnerRoleMutation";
+import { TOGGLE_PARTNER_RESPONSE } from "../Types/ResponseTypes";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Profile() {
   const [enter, setEnter] = useState(false);
@@ -28,7 +31,7 @@ function Profile() {
   const { user } = useAuthValue();
   const orgId = user?.org_id;
   const router = useRouter();
-
+const queryClient = useQueryClient();
   useEffect(() => {
     setEnter(true);
   }, []);
@@ -194,6 +197,121 @@ function Profile() {
     (item: any) => item.members && item.members.length > 0,
   );
   const isEmptyState = !hasMembers;
+
+
+
+  const { mutate: togglePartnerRole } = useTogglePartnerRoleMutation();
+
+const handleBecomeChampion = (teamId: string) => {
+  togglePartnerRole(
+    {
+      team_id: teamId,
+    },
+    {
+  onSuccess: async (res: TOGGLE_PARTNER_RESPONSE) => {
+  const authState = localStorage.getItem("authState");
+
+  if (authState) {
+    const parsedAuthState = JSON.parse(authState);
+
+    const updatedAuthState = {
+      ...parsedAuthState,
+      user: {
+        ...parsedAuthState.user,
+        user_type: res.user_type,
+      },
+    };
+
+    // localStorage update
+    localStorage.setItem(
+      "authState",
+      JSON.stringify(updatedAuthState),
+    );
+  }
+
+  // observable update (IMPORTANT)
+  const currentAuth = getAuthValue();
+
+  setAuthValue({
+    ...currentAuth,
+    user: {
+      ...currentAuth.user!,
+      user_type: res.user_type,
+    },
+  });
+
+  // APIs refetch
+  await queryClient.invalidateQueries({
+    queryKey: GET_PROFILE_QUERY_KEY,
+  });
+
+  await queryClient.invalidateQueries({
+    queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
+  });
+},
+
+      onError: (error) => {
+        console.log(error);
+      },
+    },
+  );
+};
+
+const handleBecomePartner = () => {
+  togglePartnerRole(
+    {
+      team_id: undefined,
+    },
+    {
+      onSuccess: async (res) => {
+        const authState = localStorage.getItem("authState");
+
+        if (authState) {
+          const parsedAuthState = JSON.parse(authState);
+
+          const updatedAuthState = {
+            ...parsedAuthState,
+            user: {
+              ...parsedAuthState.user,
+              user_type: res.user_type,
+              team_id: undefined,
+            },
+          };
+
+          localStorage.setItem(
+            "authState",
+            JSON.stringify(updatedAuthState),
+          );
+        }
+
+        // observable update
+        const currentAuth = getAuthValue();
+
+        setAuthValue({
+          ...currentAuth,
+          user: {
+            ...currentAuth.user!,
+            user_type: res.user_type,
+            team_id: undefined,
+          },
+        });
+
+        // refetch queries
+        await queryClient.invalidateQueries({
+          queryKey: GET_PROFILE_QUERY_KEY,
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
+        });
+      },
+
+      onError: (error) => {
+        console.log(error);
+      },
+    },
+  );
+};
   return (
     <>
       <div
@@ -219,13 +337,17 @@ function Profile() {
             </h2>
           </div>
 
-          {user?.user_type === 3 && profileData && organizationData ? (
-            <>
+        
+         
               <PartnerProfile
                 profileData={profileData}
-                organizationData={organizationData}
+                // organizationData={organizationData}
+                teamName={teamName}
                 loggedInUserDetails={loggedInUserDetails}
+                  handleBecomePartner={handleBecomePartner}
+
               />
+                {user?.user_type === 3 && profileData  ? (
               <CompanyStructure
                 profileData={profileData}
                 partners={partnersData}
@@ -233,121 +355,10 @@ function Profile() {
                 championsWithMembers={championsWithMembers}
                 teamChampion={teamChampion}
               />
-            </>
+          
           ) : (
             <>
-              {/* ══ Profile Card ══ */}
-              <section className="relative rounded-[18px] sm:rounded-[24px] bg-[#F8E1B8] px-4 sm:px-8 md:px-14 py-8 sm:py-10 md:py-12 overflow-hidden">
-                {/* Dots pattern */}
-                <div className="absolute right-3 sm:right-6 md:right-12 top-3 sm:top-6 md:top-12 pointer-events-none">
-                  <Image
-                    src={images.dotsPattern}
-                    alt="pattern"
-                    width={270}
-                    height={270}
-                    className="w-[100px] sm:w-[170px] md:w-[220px] lg:w-[270px] h-auto opacity-60 sm:opacity-100"
-                  />
-                </div>
-
-                {/* Top content: avatar + details */}
-                <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 md:gap-16">
-                  {/* Avatar */}
-                  <div className="flex flex-col items-center shrink-0">
-                    <div className="h-[80px] w-[80px] sm:h-[96px] sm:w-[96px] rounded-full overflow-hidden">
-                      <Image
-                        src={profileImage}
-                        alt="Profile"
-                        width={168}
-                        height={168}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    <p
-                      className="mt-2 text-[13px] sm:text-[15px] md:text-[16px] text-[#0F4F58] font-[Roboto] cursor-pointer"
-                      onClick={handleImageClick}
-                    >
-                      add/edit picture
-                    </p>
-                  </div>
-
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-
-                  {/* Details */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-[26px] sm:text-[34px] md:text-[45px] font-[RocaTwo] font-bold text-[#0F4F58] truncate">
-                      {profileData?.first_name} {profileData?.last_name}
-                    </h3>
-                    <p className="mt-1 text-[15px] sm:text-[17px] md:text-[19px] text-[#0F4F58] font-[Roboto]">
-                      Joined {formatJoinedDate(findUserProfile?.created)}
-                    </p>
-                    <p className="text-[13px] sm:text-[14px] text-[#0F4F58]">
-                      Active Champion In Hi Humaniser!
-                    </p>
-                    <div className="mt-3 sm:mt-5 text-[16px] sm:text-[19px] md:text-[22px] text-[#0F4F58] font-[Roboto] font-[400] leading-6 space-y-1">
-                      <p>Company: {profileData?.company_name}</p>
-                      <p>Team: {teamName}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Input fields — FIX: replaced xs: (invalid) with sm: */}
-                <div className="mt-8 sm:mt-10 w-full max-w-3xl space-y-3 sm:space-y-4">
-                  {/* First Name */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
-                    <span className="w-full sm:w-40 text-[13px] sm:text-[15px] text-[#567F55] shrink-0">
-                      First Name
-                    </span>
-                    <input
-                      disabled
-                      value={profileData?.first_name || ""}
-                      className="w-full rounded-[10px] sm:rounded-[14px] bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-[13px] sm:text-[14px] text-[#567F55] outline-none"
-                    />
-                  </div>
-
-                  {/* Last Name */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
-                    <span className="w-full sm:w-40 text-[13px] sm:text-[15px] text-[#567F55] shrink-0">
-                      Last Name
-                    </span>
-                    <input
-                      disabled
-                      value={profileData?.last_name || ""}
-                      className="w-full rounded-[10px] sm:rounded-[14px] bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-[13px] sm:text-[14px] text-[#567F55] outline-none"
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
-                    <span className="w-full sm:w-40 text-[13px] sm:text-[15px] text-[#567F55] shrink-0">
-                      email/username
-                    </span>
-                    <input
-                      disabled
-                      value={profileData?.email || ""}
-                      className="w-full rounded-[10px] sm:rounded-[14px] bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-[13px] sm:text-[14px] text-[#567F55] outline-none"
-                    />
-                  </div>
-                </div>
-              </section>
-
-              {/* Six-dots decoration — stays in normal flow, no overlap */}
-              <div className="relative h-10 sm:h-14">
-                <div className="absolute sm:left-10 z-10 -top-[38px]">
-                  <Image
-                    src={images.sixDots}
-                    alt="dots"
-                    width={116}
-                    height={116}
-                    className="w-[70px] sm:w-[90px] md:w-[116px] h-auto"
-                  />
-                </div>
-              </div>
+      
 
               {/* ══ Team Structure ══ */}
               <div className="py-6 sm:py-8 md:py-12 relative z-0">
@@ -494,7 +505,7 @@ function Profile() {
         </div>
       </div>
       <LogoutModal />
-      <ChampionModal />
+<ChampionModal onSubmit={handleBecomeChampion} />
     </>
   );
 }

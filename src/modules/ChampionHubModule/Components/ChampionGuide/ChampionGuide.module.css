@@ -1,0 +1,88 @@
+.wrapper {
+  position: relative;
+}
+
+.title {
+  font-family: RocaTwo;
+  color: #0f4f58;
+}
+
+.card {
+  background: white;
+  border-radius: 28px;
+  padding: 28px;
+}
+
+.featureList {
+  margin-top: 24px;
+  display: grid;
+  gap: 20px;
+}
+
+.backButtonRow {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.trainingCardRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+  .trainingCardRow {
+    flex-direction: row;
+    justify-content: center;
+    gap: 120px;
+    align-items: flex-start;
+  }
+}
+
+.trainingCardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.polyContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 260px;
+}
+
+.polyTitle {
+  position: absolute;
+  font-family: RocaTwo;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f4f58;
+  text-align: center;
+  width: 90%;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .polyTitle {
+    font-size: 33px;
+    width: 80%;
+  }
+}
+
+.trainingSubtitle {
+  margin-top: 24px;
+  font-size: 18px;
+  color: #0f4f58;
+  line-height: 1.4;
+}

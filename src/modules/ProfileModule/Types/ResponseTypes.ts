@@ -114,3 +114,10 @@ export type GET_FIND_USERS_RESPONSE = {
   message: string;
   profile: USER_PROFILE_DATA;
 };
+
+export type TOGGLE_PARTNER_RESPONSE={
+  
+  message: string,
+  user_type: number
+
+}

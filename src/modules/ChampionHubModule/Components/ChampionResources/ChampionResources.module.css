@@ -26,8 +26,9 @@
 
 .card {
   position: relative;
-  width: 274px;
-  height: 228px;
+  width: 100%;
+  max-width: 325px;
+  min-height: 240px;
   border-radius: 20px;
   overflow: hidden;
 }
@@ -46,16 +47,24 @@
 .cardContent {
   position: relative;
   z-index: 2;
- text-align: center;        
-  display: flex; 
+  text-align: center;
+  display: flex;
   justify-content: center;
   flex-direction: column;
-    padding: 20px;
+  align-items: center;   /* add this */
+  padding: 20px;
   color: #0F4F58;
   font-family: RocaTwo-Bold;
-  pointer-events: none; 
-  max-width: 239px;
+  pointer-events: none;
+  width: 100%;           /* change */
   margin-top: 55px;
+}
+
+.cardContent h3 {
+  font-size: 34px;       /* increase size */
+  line-height: 1.2;
+  width: 100%;
+  font-weight: bold;
 }
 
 
@@ -115,11 +124,6 @@
   background:#FBE1DE;
 }
 
-.card h3 {
-  font-size: 28px;
-  margin-bottom: 14px;
-  font-weight: bold;
-}
 
 .card p {
   font-size: 20px;
@@ -168,9 +172,20 @@
 
 .trainingCardRow {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 120px;
-  margin-top: 60px;
+  gap: 32px;
+  margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+  .trainingCardRow {
+    flex-direction: row;
+    justify-content: center;
+    gap: 120px;
+    align-items: flex-start;
+  }
 }
 
 .trainingCardWrapper {
@@ -178,6 +193,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  width: 100%;
+  max-width: 340px;
 }
 
 .polyContainer {
@@ -185,6 +202,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  max-width: 260px;
+}
+
+.polyTitle {
+  position: absolute;
+  font-family: RocaTwo;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f4f58;
+  text-align: center;
+  width: 90%;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .polyTitle {
+    font-size: 33px;
+    width: 80%;
+  }
+}
+
+.trainingSubtitle {
+  margin-top: 24px;
+  font-size: 18px;
+  color: #0f4f58;
+  line-height: 1.4;
 }
 
 
