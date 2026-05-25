@@ -1,44 +1,146 @@
-.mainHeading {
-  font-size: 74px;
+
+
+
+/* .mainHeading {
+  font-size: clamp(40px, 10vw, 74px);
   font-family: RocaTwo-Bold, serif;
   margin-left: 49px;
   margin-top: 55px;
-  margin-bottom:12px
+  margin-bottom: 12px;
 }
 
-.headSpan{
-    font-size: 20.8px;
+.headSpan {
+  font-size: 20.8px;
   font-weight: 400;
   font-family: RocaTwo-Bold, serif;
 }
 
-.description{
-     margin-left: 58px;
+.description {
+  margin-left: 58px;
 }
-.descParagraph{
-    font-size: 21px;
+
+.descParagraph {
+  font-size: clamp(15px, 3.5vw, 21px);
   font-family: Roboto, sans-serif;
 }
 
-.goBtn{
-      position: absolute;
-    bottom: -2%;
-    left: -28%;
+.goBtn {
+  position: absolute;
+  bottom: -2%;
+  left: -28%;
 }
-.goBtnText{
-    width: 137px;
+
+.goBtnText {
+  width: 137px;
 }
-.goBtnSpan{
-    font-family: RocaTwo-Bold, serif;
+
+.goBtnSpan {
+  font-family: RocaTwo-Bold, serif;
   font-size: 16px;
   font-weight: 400;
 }
-.infoBox{
-    margin-top: 50px;
+
+.infoBox {
+  margin-top: 50px;
 }
-.infoBoxText{
-      font-family: RocaTwo-Bold, serif;
+
+.infoBoxText {
+  font-family: RocaTwo-Bold, serif;
   font-size: 18px;
-  color: #0F4F58;
+  color: #0f4f58;
   text-align: center;
+}
+
+
+@media (max-width: 640px) {
+  .mainHeading {
+    margin-left: 0px;
+    margin-top: 24px;
+  }
+
+  .description {
+    margin-left: 0px;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: -2%;
+    left: -5%;
+  }
+} */
+
+
+
+
+.mainHeading {
+  font-size: clamp(40px, 10vw, 74px);
+  font-family: RocaTwo-Bold, serif;
+  margin-left: 49px;
+  margin-top: 55px;
+  margin-bottom: 12px;
+}
+
+.headSpan {
+  font-size: 20.8px;
+  font-weight: 400;
+  font-family: RocaTwo-Bold, serif;
+}
+
+.description {
+  margin-left: 58px;
+}
+
+.descParagraph {
+  font-size: clamp(15px, 3.5vw, 21px);
+  font-family: Roboto, sans-serif;
+}
+
+.goBtn {
+  position: absolute;
+  bottom: -2%;
+  left: -28%;
+}
+
+.goBtnText {
+  width: 137px;
+}
+
+.goBtnSpan {
+  font-family: RocaTwo-Bold, serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.infoBox {
+  margin-top: 50px;
+}
+
+.infoBoxText {
+  font-family: RocaTwo-Bold, serif;
+  font-size: 18px;
+  color: #0f4f58;
+  text-align: center;
+}
+
+/* Mobile fixes */
+@media (max-width: 640px) {
+  .mainHeading {
+    margin-left: 0px;
+    margin-top: 24px;
+  }
+
+  .description {
+    margin-left: 0px;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: -2%;
+    left: -5%;
+  }
+
+  .goBtnArrow {
+    width: 36px !important;
+    height: auto !important;
+  }
 }
