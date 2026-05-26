@@ -1,7 +1,4 @@
 
-
-
-
 // "use client";
 
 // import Image from "next/image";
@@ -407,7 +404,7 @@ function LandingPage() {
         </p>
       </div>
 
-      <div className="mt-16 max-w-7xl mx-auto px-4">
+      <div className="mt-10 max-w-7xl mx-auto px-4">
         <div className="w-full flex justify-end text-center">
           <div className="flex flex-col items-end w-full">
             <div className="text-[#0F4F58] text-[clamp(24px,6vw,38px)] font-[RocaTwo]">
@@ -491,3 +488,11 @@ function LandingPage() {
 }
 
 export default LandingPage;
+
+
+
+
+
+
+
+
