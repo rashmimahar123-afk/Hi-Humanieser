@@ -1,7 +1,12 @@
 
+ 
 
 
-/* .mainHeading {
+
+
+
+
+ /* .mainHeading {
   font-size: clamp(40px, 10vw, 74px);
   font-family: RocaTwo-Bold, serif;
   margin-left: 49px;
@@ -42,6 +47,14 @@
 
 .infoBox {
   margin-top: 50px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 60px 120px;
+  min-height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoBoxText {
@@ -49,9 +62,74 @@
   font-size: 18px;
   color: #0f4f58;
   text-align: center;
+  max-width: 700px;
 }
 
+/* ── TRUE DESKTOP ≥1400px ── 
+@media (min-width: 1400px) {
+  .peopleImageWrapper {
+    max-width: 85%;
+    margin-left: auto;
+  }
 
+  .goBtn {
+    position: absolute;
+    bottom: -2%;
+    left: -28%;
+  }
+}
+
+/* ── SMALL DESKTOP: 1025px – 1399px ── 
+@media (min-width: 1025px) and (max-width: 1399px) {
+  .peopleImageWrapper {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: -2%;
+    left: -15%;
+  }
+}
+
+/* ── TABLET: 641px – 1024px ── 
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mainHeading {
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+
+  .description {
+    margin-left: 24px;
+  }
+
+  .peopleImageWrapper {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .goBtn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    margin-top: 12px;
+    margin-bottom: 16px;
+    margin-left: 0;
+  }
+
+  .infoBox {
+    padding: 50px 80px;
+    min-height: 140px;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+  }
+}
+
+/* ── MOBILE ≤640px ──*
 @media (max-width: 640px) {
   .mainHeading {
     margin-left: 0px;
@@ -64,10 +142,28 @@
 
   .goBtn {
     position: absolute;
-    bottom: -2%;
+    bottom: 2%;
     left: -5%;
   }
+
+  .goBtnArrow {
+    width: 36px !important;
+    height: auto !important;
+  }
+
+  .infoBox {
+    margin-top: 30px;
+    padding: 40px 32px;
+    min-height: 120px;
+  }
+
+  .infoBoxText {
+    font-size: 13px;
+    line-height: 1.5;
+  }
 } */
+
+
 
 
 
@@ -97,11 +193,12 @@
 
 .goBtn {
   position: absolute;
-  bottom: -2%;
+  bottom: 2%;
   left: -28%;
 }
 
 .goBtnText {
+  margin-right: 10px ;
   width: 137px;
 }
 
@@ -113,6 +210,14 @@
 
 .infoBox {
   margin-top: 50px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 60px 120px;
+  min-height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoBoxText {
@@ -120,9 +225,83 @@
   font-size: 18px;
   color: #0f4f58;
   text-align: center;
+  max-width: 700px;
 }
 
-/* Mobile fixes */
+/* ── TRUE DESKTOP ≥1400px ── */
+@media (min-width: 1400px) {
+  .peopleImageWrapper {
+    max-width: 85%;
+    margin-left: auto;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: -2%;
+    left: -28%;
+  }
+}
+
+/* ── SMALL DESKTOP: 1025px – 1399px ── */
+@media (min-width: 1025px) and (max-width: 1399px) {
+  .peopleImageWrapper {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: -2%;
+    left: -15%;
+  }
+}
+
+/* ── TABLET: 641px – 1024px ── */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mainHeading {
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+
+  .description {
+    margin-left: 24px;
+  }
+
+  .peopleImageWrapper {
+    max-width: 100%;
+    margin-left: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .goBtn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    margin-top: 12px;
+    margin-bottom: 16px;
+    margin-left: 0;
+  }
+
+  .infoBox {
+    padding: 50px 80px;
+    min-height: 140px;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+  }
+}
+
+/* ── MOBILE ≤640px ── */
 @media (max-width: 640px) {
   .mainHeading {
     margin-left: 0px;
@@ -135,12 +314,23 @@
 
   .goBtn {
     position: absolute;
-    bottom: -2%;
+    bottom: 2%;
     left: -5%;
   }
 
   .goBtnArrow {
     width: 36px !important;
     height: auto !important;
+  }
+
+  .infoBox {
+    margin-top: 30px;
+    padding: 40px 32px;
+    min-height: 120px;
+  }
+
+  .infoBoxText {
+    font-size: 13px;
+    line-height: 1.5;
   }
 }
