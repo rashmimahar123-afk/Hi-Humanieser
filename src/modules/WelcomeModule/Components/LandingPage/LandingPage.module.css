@@ -1,7 +1,6 @@
+/* 
 
-
-
-/* .mainHeading {
+.mainHeading {
   font-size: clamp(40px, 10vw, 74px);
   font-family: RocaTwo-Bold, serif;
   margin-left: 49px;
@@ -24,12 +23,6 @@
   font-family: Roboto, sans-serif;
 }
 
-.goBtn {
-  position: absolute;
-  bottom: -2%;
-  left: -28%;
-}
-
 .goBtnText {
   width: 137px;
 }
@@ -42,6 +35,14 @@
 
 .infoBox {
   margin-top: 50px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 60px 120px;
+  min-height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoBoxText {
@@ -49,6 +50,115 @@
   font-size: 18px;
   color: #0f4f58;
   text-align: center;
+  max-width: 700px;
+}
+
+
+.rightSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.goBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 6%;
+  left: -22%;
+  z-index: 10;
+}
+
+.goBtnArrow {
+  width: 48px;
+  height: auto;
+}
+
+
+@media (min-width: 1400px) {
+  .peopleImageWrapper {
+    max-width: 80%;
+    margin-left: auto;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: 6%;
+    left: -18%;
+  }
+}
+
+
+@media (min-width: 1025px) and (max-width: 1399px) {
+  .peopleImageWrapper {
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: 6%;
+    left: -5%;
+  }
+
+  .goBtnArrow {
+    width: 40px;
+  }
+}
+
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mainHeading {
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+
+  .description {
+    margin-left: 24px;
+  }
+
+  .rightSection {
+    align-items: flex-start;
+  }
+
+  .peopleImageWrapper {
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+
+  .goBtn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    margin-left: 4px;
+  }
+
+  .goBtnArrow {
+    width: 36px;
+  }
+
+  .infoBox {
+    padding: 50px 80px;
+    min-height: 140px;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+  }
 }
 
 
@@ -62,12 +172,48 @@
     margin-left: 0px;
   }
 
+  .rightSection {
+    align-items: flex-start;
+    padding-bottom: 60px;
+  }
+
+  .peopleImageWrapper {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
   .goBtn {
-    position: absolute;
-    bottom: -2%;
-    left: -5%;
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    margin-top: 14px;
+    margin-left: 0;
+  }
+
+  .goBtnArrow {
+    width: 32px !important;
+    height: auto !important;
+  }
+
+  .infoBox {
+    margin-top: 30px;
+    padding: 40px 32px;
+    min-height: 120px;
+  }
+
+  .infoBoxText {
+    font-size: 13px;
+    line-height: 1.5;
   }
 } */
+
+
 
 
 
@@ -95,12 +241,6 @@
   font-family: Roboto, sans-serif;
 }
 
-.goBtn {
-  position: absolute;
-  bottom: -2%;
-  left: -28%;
-}
-
 .goBtnText {
   width: 137px;
 }
@@ -113,6 +253,14 @@
 
 .infoBox {
   margin-top: 50px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 60px 120px;
+  min-height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoBoxText {
@@ -120,9 +268,140 @@
   font-size: 18px;
   color: #0f4f58;
   text-align: center;
+  max-width: 700px;
 }
 
-/* Mobile fixes */
+/* ── RIGHT SECTION WRAPPER ── */
+.rightSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── DESKTOP: Let's Go Button — absolute over image ── */
+.goBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 2%;
+  left: -22%;
+  z-index: 10;
+}
+
+.goBtnArrow {
+  width: 48px;
+  height: auto;
+}
+
+/* Mobile button — hidden on desktop */
+.goBtnMobile {
+  display: none;
+}
+
+.goBtnArrowMobile {
+  width: 32px;
+  height: auto;
+}
+
+/* ── TRUE DESKTOP ≥1400px ── */
+@media (min-width: 1400px) {
+  .peopleImageWrapper {
+    max-width: 80%;
+    margin-left: auto;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: 2%;
+    left: -18%;
+  }
+
+  .goBtnMobile {
+    display: none;
+  }
+}
+
+/* ── SMALL DESKTOP: 1025px – 1399px ── */
+@media (min-width: 1025px) and (max-width: 1399px) {
+  .peopleImageWrapper {
+    max-width: 75%;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .goBtn {
+    position: absolute;
+    bottom: 2%;
+    left: -5%;
+  }
+
+  .goBtnArrow {
+    width: 40px;
+  }
+
+  .goBtnMobile {
+    display: none;
+  }
+}
+
+/* ── TABLET: 641px – 1024px ── */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mainHeading {
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+
+  .description {
+    margin-left: 24px;
+  }
+
+  .rightSection {
+    align-items: flex-start;
+  }
+
+  .peopleImageWrapper {
+    max-width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+
+  .goBtn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    margin-left: 4px;
+  }
+
+  .goBtnArrow {
+    width: 36px;
+  }
+
+  .goBtnMobile {
+    display: none;
+  }
+
+  .infoBox {
+    padding: 50px 80px;
+    min-height: 140px;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+  }
+}
+
+/* ── MOBILE ≤640px ── */
 @media (max-width: 640px) {
   .mainHeading {
     margin-left: 0px;
@@ -133,14 +412,48 @@
     margin-left: 0px;
   }
 
-  .goBtn {
-    position: absolute;
-    bottom: -2%;
-    left: -5%;
+  .rightSection {
+    align-items: flex-start;
   }
 
-  .goBtnArrow {
-    width: 36px !important;
+  .peopleImageWrapper {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
     height: auto !important;
+  }
+
+  /* Hide desktop button on mobile */
+  .goBtn {
+    display: none;
+  }
+
+  /* Show mobile button below image */
+  .goBtnMobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  .goBtnArrowMobile {
+    width: 32px !important;
+    height: auto !important;
+  }
+
+  .infoBox {
+    margin-top: 24px;
+    padding: 40px 32px;
+    min-height: 120px;
+  }
+
+  .infoBoxText {
+    font-size: 13px;
+    line-height: 1.5;
   }
 }
