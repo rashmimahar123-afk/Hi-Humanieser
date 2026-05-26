@@ -94,7 +94,7 @@ function ChampionResources() {
             </div>
           </div>
 
-          <div className={`${styles.card} bg-[#f5c882] w-full max-w-[325px] min-h-[240px]`}>
+          <div className={`${styles.card} bg-[#f5c882] w-full max-w-[325px] min-h-[240px]`}  onClick={() => router.push("/champion-resources/focus-area-rituals")}>
             <div className={styles.imageWrapper}>
               <Image
                 src={images.focusImg}
@@ -103,7 +103,7 @@ function ChampionResources() {
                 className={styles.cardImage}
               />
             </div>
-            <div className={styles.cardContent}>
+            <div className={styles.cardContent} >
               <h3>Focus Areas & Rituals</h3>
             </div>
           </div>
