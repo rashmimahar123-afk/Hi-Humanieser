@@ -1,6 +1,7 @@
 /* 
 
-.mainHeading {
+
+ .mainHeading {
   font-size: clamp(40px, 10vw, 74px);
   font-family: RocaTwo-Bold, serif;
   margin-left: 49px;
@@ -37,12 +38,15 @@
   margin-top: 50px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-position: center;
-  padding: 60px 120px;
-  min-height: 160px;
+  background-position: left center;
+  padding: 50px 80px;
+  min-height: 130px;
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 75%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .infoBoxText {
@@ -50,9 +54,9 @@
   font-size: 18px;
   color: #0f4f58;
   text-align: center;
-  max-width: 700px;
+  white-space: nowrap;
+  max-width: unset;
 }
-
 
 .rightSection {
   position: relative;
@@ -60,19 +64,28 @@
   flex-direction: column;
 }
 
-
 .goBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 6%;
-  left: -22%;
+  bottom: -4%;       
+  left: -28%;         
   z-index: 10;
 }
 
 .goBtnArrow {
   width: 48px;
+  height: auto;
+}
+
+
+.goBtnMobile {
+  display: none;
+}
+
+.goBtnArrowMobile {
+  width: 32px;
   height: auto;
 }
 
@@ -85,33 +98,69 @@
 
   .goBtn {
     position: absolute;
-    bottom: 6%;
-    left: -18%;
+    bottom: -4%;       
+    left: -24%;        
+  }
+
+  .goBtnMobile {
+    display: none;
   }
 }
 
 
 @media (min-width: 1025px) and (max-width: 1399px) {
+  .mainHeading {
+    font-size: clamp(32px, 5vw, 52px);
+    margin-left: 49px;
+    margin-top: 55px;
+  }
+
   .peopleImageWrapper {
-    max-width: 75%;
+    max-width: 100%;
     margin-left: auto;
     margin-right: 0;
   }
 
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
   .goBtn {
     position: absolute;
-    bottom: 6%;
-    left: -5%;
+    bottom: -4%;
+    left: -38%;
+    z-index: 10;
+    display: inline-flex;
   }
 
   .goBtnArrow {
     width: 40px;
   }
+
+  .goBtnMobile {
+    display: none;
+  }
+
+  .infoBox {
+    max-width: 80%;
+    padding: 55px 60px;
+    min-height: 150px;
+    white-space: normal;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+    white-space: normal;
+    text-align: center;
+    max-width: 700px;
+  }
 }
 
 
-@media (min-width: 641px) and (max-width: 1024px) {
+ @media (min-width: 641px) and (max-width: 1024px) {
   .mainHeading {
+    font-size: clamp(28px, 4.5vw, 44px);
     margin-left: 20px;
     margin-top: 30px;
   }
@@ -125,9 +174,9 @@
   }
 
   .peopleImageWrapper {
-    max-width: 85%;
+    max-width: 110%;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: -10px;
     overflow: hidden;
   }
 
@@ -139,27 +188,35 @@
 
   .goBtn {
     position: relative;
-    bottom: auto;
+    
     left: auto;
+    bottom: -4%;
+    left: -58%;              
+    z-index: 10;
     display: inline-flex;
-    margin-top: 14px;
-    margin-bottom: 8px;
-    margin-left: 4px;
+   
   }
 
   .goBtnArrow {
     width: 36px;
   }
 
+  .goBtnMobile {
+    display: none;
+  }
+
   .infoBox {
-    padding: 50px 80px;
+    max-width: 100%;
+    padding: 50px 60px;
     min-height: 140px;
   }
 
   .infoBoxText {
     font-size: 16px;
+    white-space: normal;
   }
-}
+} 
+ 
 
 
 @media (max-width: 640px) {
@@ -174,12 +231,13 @@
 
   .rightSection {
     align-items: flex-start;
-    padding-bottom: 60px;
   }
 
   .peopleImageWrapper {
-    width: 100%;
+    width: 75%;
     overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .peopleImageWrapper img {
@@ -188,32 +246,37 @@
   }
 
   .goBtn {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    display: inline-flex;
-    margin-top: 14px;
-    margin-left: 0;
+    display: none;
   }
 
-  .goBtnArrow {
+  .goBtnMobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 16px;         
+    margin-bottom: 4px;
+    padding-left: 4px;
+  }
+
+  .goBtnArrowMobile {
     width: 32px !important;
     height: auto !important;
   }
 
   .infoBox {
-    margin-top: 30px;
-    padding: 40px 32px;
-    min-height: 120px;
+    margin-top: 8px;         
+    padding: 6px 16px;       
+    min-height: 0px;         
+    background-size: 100% 100%;        
   }
 
   .infoBoxText {
     font-size: 13px;
     line-height: 1.5;
+    white-space: normal;
   }
-} */
-
-
+} 
+ */
 
 
 
@@ -255,12 +318,15 @@
   margin-top: 50px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  background-position: center;
-  padding: 60px 120px;
-  min-height: 160px;
+  background-position: left center;
+  padding: 50px 80px;
+  min-height: 130px;
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 75%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .infoBoxText {
@@ -268,7 +334,8 @@
   font-size: 18px;
   color: #0f4f58;
   text-align: center;
-  max-width: 700px;
+  white-space: nowrap;
+  max-width: unset;
 }
 
 /* ── RIGHT SECTION WRAPPER ── */
@@ -284,8 +351,8 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 2%;
-  left: -22%;
+  bottom: -4%;
+  left: -28%;
   z-index: 10;
 }
 
@@ -313,8 +380,8 @@
 
   .goBtn {
     position: absolute;
-    bottom: 2%;
-    left: -18%;
+    bottom: -4%;
+    left: -24%;
   }
 
   .goBtnMobile {
@@ -322,18 +389,31 @@
   }
 }
 
-/* ── SMALL DESKTOP: 1025px – 1399px ── */
+/* ── SMALL DESKTOP / LAPTOP: 1025px – 1399px ── */
 @media (min-width: 1025px) and (max-width: 1399px) {
+  .mainHeading {
+    font-size: clamp(32px, 5vw, 52px);
+    margin-left: 49px;
+    margin-top: 55px;
+  }
+
   .peopleImageWrapper {
-    max-width: 75%;
+    max-width: 100%;
     margin-left: auto;
     margin-right: 0;
   }
 
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
   .goBtn {
     position: absolute;
-    bottom: 2%;
-    left: -5%;
+    bottom: -4%;
+    left: -38%;
+    z-index: 10;
+    display: inline-flex;
   }
 
   .goBtnArrow {
@@ -343,11 +423,26 @@
   .goBtnMobile {
     display: none;
   }
+
+  .infoBox {
+    max-width: 80%;
+    padding: 45px 50px;
+    min-height: 70px;
+    white-space: normal;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+    white-space: normal;
+    text-align: center;
+    max-width: 700px;
+  }
 }
 
 /* ── TABLET: 641px – 1024px ── */
-@media (min-width: 641px) and (max-width: 1024px) {
+/* @media (min-width: 641px) and (max-width: 1024px) {
   .mainHeading {
+    font-size: clamp(28px, 4.5vw, 44px);
     margin-left: 20px;
     margin-top: 30px;
   }
@@ -357,13 +452,79 @@
   }
 
   .rightSection {
+    position: relative;
     align-items: flex-start;
   }
 
   .peopleImageWrapper {
-    max-width: 85%;
+    max-width: 110%;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: -10px;
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+
+  
+  .goBtn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    margin-left: 4px;
+    z-index: 10;
+  }
+
+  .goBtnArrow {
+    width: 36px;
+  }
+
+  
+  .goBtnMobile {
+    display: none !important;
+  }
+
+  .infoBox {
+    max-width: 100%;
+    padding: 50px 60px;
+    min-height: 140px;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+    white-space: normal;
+  }
+} */
+
+/* ── TABLET: 641px – 1024px ── */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .mainHeading {
+    font-size: clamp(28px, 4.5vw, 44px);
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+
+  .description {
+    margin-left: 24px;
+  }
+
+  .rightSection {
+    position: relative;
+    align-items: flex-start;
+  }
+
+  .peopleImageWrapper {
+    max-width: 55%;          /* ← was 110%, now constrained to half width */
+    margin-left: auto;
+    margin-right: auto;      /* ← centered */
     overflow: hidden;
   }
 
@@ -378,9 +539,13 @@
     bottom: auto;
     left: auto;
     display: inline-flex;
-    margin-top: 14px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
     margin-bottom: 8px;
-    margin-left: 4px;
+    margin-left: auto;
+    margin-right: auto;      /* ← centered under image */
+    z-index: 10;
   }
 
   .goBtnArrow {
@@ -388,18 +553,21 @@
   }
 
   .goBtnMobile {
-    display: none;
+    display: none !important;
   }
 
   .infoBox {
-    padding: 50px 80px;
-    min-height: 140px;
+    max-width: 100%;
+    padding: 18px 40px;
+    min-height: 0px;
   }
 
   .infoBoxText {
     font-size: 16px;
+    white-space: normal;
   }
 }
+
 
 /* ── MOBILE ≤640px ── */
 @media (max-width: 640px) {
@@ -417,8 +585,10 @@
   }
 
   .peopleImageWrapper {
-    width: 100%;
+    width: 75%;
     overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .peopleImageWrapper img {
@@ -426,18 +596,18 @@
     height: auto !important;
   }
 
-  /* Hide desktop button on mobile */
+  /* Hide desktop goBtn on mobile */
   .goBtn {
     display: none;
   }
 
-  /* Show mobile button below image */
+  /* Show mobile button */
   .goBtnMobile {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
     margin-top: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     padding-left: 4px;
   }
 
@@ -447,13 +617,15 @@
   }
 
   .infoBox {
-    margin-top: 24px;
-    padding: 40px 32px;
-    min-height: 120px;
+    margin-top: 8px;
+    padding: 6px 16px;
+    min-height: 0px;
+    background-size: 100% 100%;
   }
 
   .infoBoxText {
     font-size: 13px;
     line-height: 1.5;
+    white-space: normal;
   }
 }
