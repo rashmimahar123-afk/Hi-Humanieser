@@ -2,29 +2,28 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ContinuePressureCards from "../ContinuePressureCards/ContinuePressureCards";
 import SelectTeamRitualModal, {
   openSelectTeamRitualModal,
 } from "../SelectTeamRitualModal/SelectTeamRitualModal";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
-import { FOCUS_AREA_SCORES_DATA } from "../../Types/ResponseTypes";
 import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
 import { MY_TEAM_RITUALS_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
-import { useFocusAndRitualSelectMutation } from "../../Hooks/useFocusAndRitualSelectMutation";
+import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import MaxTwoRitualModal, { openMaxTwoRitual } from "../MaxTwoRitualModal/MaxTwoRitualModal";
 
 function ContinuePressure() {
-  const [animateText, setAnimateText] = useState(false);
   const [enter, setEnter] = useState(false);
+const {user}=useAuthValue()
 
   useEffect(() => {
     setEnter(true);
   }, []);
 
   const router = useRouter();
-
-  const [openActiveRitual, setOpenActiveRitual] = useState(false);
 
   const [selected, setSelected] = useState("");
   const [selectedRitual, setSelectedRitual] = useState<string | null>(null);
@@ -35,24 +34,36 @@ function ContinuePressure() {
     setOpen(false);
   };
 
+const searchParams = useSearchParams();
+
+const focusAreaFromQuery = searchParams.get("focusArea");
+
   const { mutate, data, isPending } = useRecommendFocusAreaMutation();
+
+const { data: cycleOverviewData } =
+  useGetMtjCycleOverviewQuery(user?.team_id);
+
+  
+const activeRitualIds =
+  cycleOverviewData?.data?.cycle?.team_rituals?.map(
+    (item: any) => item.team_ritual_id,
+  ) || [];
+
 
   useEffect(() => {
     mutate();
   }, []);
-  const [open, setOpen] = useState(false);
 
-  const selectedRituals =
-    data?.recommended_team_rituals?.find(
-      (item: any) => item.focus_area === selected,
-    )?.team_rituals || [];
+  const [open, setOpen] = useState(false);
 
   const {
     data: frameworkMtjData,
     isLoading,
     isError,
   } = useHhFrameworkMtjQuery();
+
   const focusAreas = frameworkMtjData?.data?.focus_areas || [];
+
   useEffect(() => {
     if (focusAreas.length > 0 && !selected) {
       setSelected(focusAreas[0].title);
@@ -64,15 +75,19 @@ function ContinuePressure() {
   );
 
   const ritualOptions = focusAreas.map((item: any) => item.title);
+
+
+
   const ritualCards =
     selectedFocusArea?.team_rituals?.map((ritual: MY_TEAM_RITUALS_DATA) => ({
+      
       ritual_id: ritual.team_ritual_id,
       title: ritual.title,
       description: ritual.long_description,
       impact: ritual.operational_impact,
       learnMoreColor: "#cde3cc",
 
-      selected: selectedRitual === ritual.team_ritual_id,
+selected:  activeRitualIds.includes(ritual.team_ritual_id),
       onLearnMore: () =>
         router.push(
           `/conversation?focusArea=${selectedFocusArea?.focus_area_id}`,
@@ -80,13 +95,35 @@ function ContinuePressure() {
       onSelect: () => handleRitualSelect(ritual),
     })) || [];
 
-  const handleRitualSelect = (ritual: MY_TEAM_RITUALS_DATA) => {
-    openSelectTeamRitualModal({
-      ritualId: ritual.team_ritual_id ?? "",
-      focusAreaId: selectedFocusArea?.focus_area_id ?? "",
-    });
-  };
+const handleRitualSelect = (ritual: MY_TEAM_RITUALS_DATA) => {
+  const alreadySelected = activeRitualIds.includes(
+    ritual.team_ritual_id,
+  );
 
+  // already selected hai toh allow karo
+  if (!alreadySelected && activeRitualIds.length >= 2) {
+    openMaxTwoRitual();
+    return;
+  }
+
+  
+  setSelectedRitual(ritual.team_ritual_id);
+
+  openSelectTeamRitualModal({
+    ritualId: ritual.team_ritual_id ?? "",
+    focusAreaId: selected ?? "",
+  });
+};
+
+useEffect(() => {
+  if (focusAreas.length > 0) {
+    if (focusAreaFromQuery) {
+      setSelected(focusAreaFromQuery);
+    } else if (!selected) {
+      setSelected(focusAreas[0].title);
+    }
+  }
+}, [focusAreas, focusAreaFromQuery]);
   return (
     <>
       <div className={`bg-[#F5F0EB] min-h-screen `}>
@@ -178,6 +215,7 @@ function ContinuePressure() {
             <ContinuePressureCards
               bgColor="#f5c882"
               ritualCards={ritualCards}
+              
             />
           </div>
 
@@ -186,13 +224,14 @@ function ContinuePressure() {
               <CommonButtons
                 label="Go back to Team Focus"
                 bgColor="#FBE1DE"
-                onClick={() => router.push("/team-focus")}
+                onClick={() => router.push("/pressure-point-record")}
               />
             </div>
           </div>
         </div>
       </div>
       <SelectTeamRitualModal />
+      <MaxTwoRitualModal />
     </>
   );
 }

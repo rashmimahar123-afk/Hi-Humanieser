@@ -33,14 +33,13 @@ function FinishEarlyModal() {
         openCompleteRitualModal();
       },
       onError: (error: any) => {
-        console.error("Complete failed:", error);
-
-        const errorMessage =
-          error?.response?.data?.detail ||
+ 
+      
+        SnackbarHandler.errorToast(
+          error?.response?.data?.detail?.message ||
           error?.response?.data?.message ||
-          "Something went wrong";
-
-        SnackbarHandler.errorToast(errorMessage);
+          "Something went wrong"
+        );
       },
     });
   };

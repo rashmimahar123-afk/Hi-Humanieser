@@ -4,9 +4,12 @@ import "react-multi-carousel/lib/styles.css";
 import { openSelectTeamRitualModal } from "../SelectTeamRitualModal/SelectTeamRitualModal";
 import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
 import { MY_TEAM_RITUALS_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
+import Image from "next/image";
+import images from "@/src/assets/images";
+
 
 type PATHWAY_CARD = {
-  ritual_id?: number;
+  ritual_id?: string;
   title: string;
   description: string;
   learnMoreColor: string;
@@ -24,14 +27,13 @@ type IDEA_PATHWAY_CARD_PROPS = {
 
 function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
   const { bgColor, onCardClick, ritualCards } = props;
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  console.log("ritualCardsritualCards", ritualCards);
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 2,
       slidesToSlide: 2,
-      partialVisibilityGutter: 120, // 👈 IMPORTANT
+      partialVisibilityGutter: 120, //  IMPORTANT
     },
     tablet: {
       breakpoint: { max: 1024, min: 640 },
@@ -45,7 +47,6 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
       slidesToSlide: 1,
     },
   };
-
   return (
     <div
       className="rounded-[24px] pl-[40px] py-[40px] flex  w-full overflow-visible"
@@ -64,8 +65,10 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
           dotListClass="custom-dot-list-style"
           partialVisible={true} //  ADD THIS
         >
-          {ritualCards.map((card: PATHWAY_CARD, index: number) => (
-            <div
+          {ritualCards.map((card: PATHWAY_CARD, index: number) => {
+            console.log("card.selected", card.title, card.selected);
+            return(
+     <div
               key={index}
               className="bg-[#f8e1b8] from-amber-50 to-stone-100 rounded-3xl p-8 shadow-lg h-full flex flex-col justify-between min-h-[320px]"
             >
@@ -96,17 +99,22 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
                   Select Ritual
                 </span>
 
-                <div
-                  onClick={() => {
-                    card.onSelect?.();
-                    onCardClick?.(card, index);
-                  }}
-                  className="w-[26px] h-[26px] rounded-[6px] border-2 border-[#0F4F58] flex items-center justify-center cursor-pointer"
-                >
-                  {card.selected && (
-                    <div className="w-[16px] h-[16px] bg-[#E6B86C] rounded-[4px]" />
-                  )}
-                </div>
+             <div
+  onClick={() => {
+    card.onSelect?.();
+    onCardClick?.(card, index);
+  }}
+  className="relative w-[26px] h-[26px] rounded-[6px] border-2 border-[#0F4F58] flex items-center justify-center cursor-pointer"
+>
+  {card.selected && (
+    <Image
+      src={images.tickImg}
+      alt="tick"
+      width={18}
+      height={18}
+    />
+  )}
+</div>
               </div>
               <div className="flex justify-start mt-10">
                 <div className="flex flex-col items-center gap-[20px]">
@@ -120,7 +128,9 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          }
+          )}
         </Carousel>
       </div>
     </div>

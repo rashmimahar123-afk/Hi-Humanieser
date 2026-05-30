@@ -28,6 +28,8 @@ import PressurePointRecordedModal, {
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import useGetMtjPollQuery from "../../Hooks/useGetMtjPollQuery";
 import { useClosePollMutation } from "../../Hooks/useClosePollMutation";
+import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
+import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 
 function PressurePointRecord() {
   const router = useRouter();
@@ -44,22 +46,6 @@ function PressurePointRecord() {
     setOpenPreviousPoll(false);
   };
 
-  const [openPreviousRitual, setOpenPreviousRitual] = useState(false);
-  const [selectedPreviousRitual, setSelectedPreviousRitual] = useState<
-    string | null
-  >(null);
-
-  const previousRitualOptions = [
-    "What's the Purpose",
-    "Quarterly Reflection",
-    "Team Reset Ritual",
-  ];
-
-  const handleSelectPreviousRitual = (item: string) => {
-    setSelectedPreviousRitual(item);
-    setOpenPreviousRitual(false);
-  };
-
   const { data: teamsData } = useGetTeamsQuery();
   const teamName =
     teamsData?.data?.teams?.find((team: any) => team.id === user?.team_id)
@@ -68,6 +54,7 @@ function PressurePointRecord() {
   const { data: usersData } = useGetAllListUsersQuery();
 
   const allUsers = usersData?.data?.users || [];
+
   const allTeamMembers = allUsers.filter(
     (userItem) =>
       userItem.team_id === user?.team_id &&
@@ -83,7 +70,7 @@ function PressurePointRecord() {
   }));
   const rows = chunkByPattern(mappedTeamMembers || []);
 
-  const { data, isLoading } = useGetMtjPollQuery();
+  const { data, isLoading ,refetch} = useGetMtjPollQuery();
   const pollData = data?.data;
 
   const options = pollData?.options || [];
@@ -91,17 +78,8 @@ function PressurePointRecord() {
   const responded = pollData?.team_members_responded || 0;
   const percentage = pollData?.team_response_percentage || 0;
 
-  const averageVotePercentage =
-  options.length > 0
-    ? options.reduce(
-        (sum: number, item: any) => sum + item.vote_percentage,
-        0,
-      ) / options.length
-    : 0;
-
-const isLessThan70 = averageVotePercentage < 70;
-console.log("averageVotePercentageaverageVotePercentage",averageVotePercentage)
-  const memberEmails = allTeamMembers.map((m: any) => m.email).filter(Boolean);
+const isLessThan70 = percentage < 70;
+const memberEmails = allTeamMembers.map((m: any) => m.email).filter(Boolean);
 
   const handleSendReminder = () => {
     if (!memberEmails.length) return;
@@ -124,6 +102,34 @@ Thanks!`,
     window.location.href = mailtoLink;
   };
 
+
+const { mutate: closePollMutation, isPending: isClosingPoll } =
+  useClosePollMutation();
+
+
+  const {
+  mutate: recommendFocusAreas,
+  data: recommendedFocusData,
+  isPending: isRecommendLoading,
+} = useRecommendFocusAreaMutation();
+
+useEffect(() => {
+  recommendFocusAreas();
+}, []);
+
+
+const recommendedFocusAreas =
+  recommendedFocusData?.recommended_focus_areas || [];
+
+  const { data: cycleOverviewData } =
+  useGetMtjCycleOverviewQuery(user?.team_id);
+
+  const activeRitualIds =
+  cycleOverviewData?.data?.cycle?.team_rituals?.map(
+    (item: any) => item.team_ritual_id,
+  ) || [];
+
+  console.log("activeRitualIdsactiveRitualIds",activeRitualIds)
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -307,12 +313,16 @@ Thanks!`,
             </div>
           </div>
         </div> */}
-
-        <div className="relative bg-[#FBE6BF] p-10 mt-10 rounded-xl overflow-hidden">
+{
+  pollData?.poll_open ? 
+  <>
+  
+       <div className="relative bg-[#FBE6BF] p-10 mt-10 rounded-xl overflow-hidden">
           {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
           <p>State 4 – Poll reached threshold</p>
           <p>(≥ 50% responses, Champion can act)</p>
         </div> */}
+
 
           <div className="absolute left-0 top-0 ">
             <Image
@@ -322,7 +332,7 @@ Thanks!`,
               height={270}
             />
           </div>
-          {isLessThan70 && pollData?.poll_open && (
+          {isLessThan70 && (
             <div className="absolute right-[180px] top-[60px] opacity-80">
               <Image
                 src={images.signupTimer}
@@ -334,7 +344,8 @@ Thanks!`,
           )}
 
           {/* Header Section */}
-          <div>
+       
+                   <div>
             <h1 className="text-[#0F4F58] text-[32px] font-bold font-[RocaTwo]">
               Team Poll Results
             </h1>
@@ -352,7 +363,9 @@ Thanks!`,
               </p>
             )}
           </div>
-          {isLessThan70 && pollData?.poll_open && (
+       
+     
+          {isLessThan70 && (
             <div className="mt-10 flex justify-end items-center gap-4">
               <Image
                 src={images.email}
@@ -371,7 +384,8 @@ Thanks!`,
           )}
 
           {/* Two Column Section */}
-          <div className="grid grid-cols-2 gap-16 mt-16 ml-8">
+         
+                <div className="grid grid-cols-2 gap-16 mt-16 ml-8">
             {/* LEFT COLUMN */}
             <div>
               <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
@@ -423,16 +437,41 @@ Thanks!`,
               </div>
             </div>
           </div>
-
-          {/* Bottom Participation */}
-          <div className="mt-6 ml-4">
+          <div className="mt-6 ml-4 flex justify-between">
+            <div>
             <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
               Participation: {responded} of {totalMembers} members have
               responded ( {percentage}%)
             </p>
+            </div>
+            
+{!isLessThan70 && (
+  <div>
+  <button
+    onClick={() =>
+      closePollMutation(undefined, {
+        onSuccess: async () => {
+  await refetch();
+
+  recommendFocusAreas();
+},
+      })
+    }
+    disabled={isClosingPoll}
+    className="bg-[#0F4F58] text-white px-6 py-3 rounded-[14px] font-[RocaTwo] text-[18px] disabled:opacity-50"
+  >
+    {isClosingPoll ? "Closing..." : "Close Poll"}
+  </button>
+  </div>
+)}
+
           </div>
+      
+
+          {/* Bottom Participation */}
+     
         </div>
-        {isLessThan70 && pollData?.poll_open && (
+              {isLessThan70 &&(
           <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
             {/* LEFT CONTENT */}
             <div className="max-w-3xl">
@@ -468,8 +507,12 @@ Thanks!`,
             </div>
           </div>
         )}
+  </>
+:
+<>
 
-        {!isLessThan70 && pollData?.poll_open && (
+
+       
           <div className="mt-8">
             <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
               Choosing the focus for this cycle
@@ -480,59 +523,58 @@ Thanks!`,
               would help most, the focus areas below are the strongest
               candidates right now.
             </p>
-            <div
-              className=" flex justify-center mt-[20px]"
-              onClick={() => router.push("/continue-pressure")}
+         <div className="flex justify-center mt-[20px]">
+  <div className="grid grid-cols-2 gap-10">
+    {recommendedFocusAreas.map(
+      (item: any, index: number) => {
+        const isFirst = index === 0;
+
+        return (
+          <div
+            key={item.rank}
+            className="cursor-pointer"
+            onClick={() =>
+              router.push(
+                `/continue-pressure?focusArea=${encodeURIComponent(
+                  item.option,
+                )}`,
+              )
+            }
+          >
+            <PolygonButton
+              height="129px"
+              bgColor={isFirst ? "#f8e1b8" : "#86c9c9"}
+              radius={14}
+              topTilt={!isFirst ? 18 : undefined}
+              slantSide={!isFirst ? "right" : undefined}
+              clipPath={
+                isFirst
+                  ? `polygon(
+                      0% 29px,
+                      100% 7%,
+                      87% 89%,
+                      20% calc(100% - 13px)
+                    )`
+                  : `polygon(
+                      17% 17px,
+                      77% 11%,
+                      100% 81%,
+                      0% calc(100% - 15px)
+                    )`
+              }
             >
-              <div className="grid grid-cols-2 gap-10">
-                {/* Focus Cards Section */}
-                <div>
-                  <PolygonButton
-                    height="129px"
-                    bgColor="#f8e1b8"
-                    clipPath={`polygon(
-    0% 29px,
-    100% 7%,
-    87% 89%,
-    20% calc(100% - 13px)
-  )`}
-                  >
-                    <div className="h-full flex items-center justify-center text-center">
-                      <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
-                        Build Trust{" "}
-                      </span>
-                    </div>
-                  </PolygonButton>
-                </div>
-                {/* -------slant Right Btn-------- */}
-                <div>
-                  <PolygonButton
-                    height="129px"
-                    bgColor="#86c9c9"
-                    radius={14}
-                    topTilt={18}
-                    slantSide="right"
-                    clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
-                  >
-                    <div className="h-full flex items-center justify-center text-center">
-                      <span
-                        className="
-      text-[#0F4F58]
-      text-[29px]
-      font-[RocaTwo]
-      font-bold
-      leading-[28px]
-      text-center
-      whitespace-normal
-    "
-                      >
-                        Strengthen Collaboration{" "}
-                      </span>
-                    </div>
-                  </PolygonButton>
-                </div>
+              <div className="h-full flex items-center justify-center text-center px-4">
+                <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
+                  {item.option}
+                </span>
               </div>
-            </div>
+            </PolygonButton>
+          </div>
+        );
+      },
+    )}
+  </div>
+</div>
             {/* Middle Text Section */}
             <div className=" mb-16 mt-4 ml-8">
               <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
@@ -580,7 +622,12 @@ Thanks!`,
               </p>
             </div>
           </div>
-        )}
+     
+</>
+}
+  
+  {
+    activeRitualIds?.length!==0 &&
 
         <div className="mt-10 relative">
           {/* Section Title */}
@@ -732,6 +779,8 @@ Thanks!`,
             </div>
           </div>
         </div>
+  }
+
         <div className="ml-20">
           <div className="flex items-center justify-between  mt-10">
             {/* LEFT SECTION */}

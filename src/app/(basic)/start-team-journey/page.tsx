@@ -13,8 +13,8 @@ function StartTeamJourneyPage() {
   const { user } = useAuthValue();
   const { data, isLoading } = useGetMtjPollQuery();
   const pollData = data?.data;
-
-console.log("pollDatapollDatapollDatapollData",pollData)
+const cycleStarted=pollData?.cycle_started
+console.log("pollDatapollDatapollDatapollData",!pollData?.ready)
 
   if (isLoading) {
     return (
@@ -29,7 +29,7 @@ console.log("pollDatapollDatapollDatapollData",pollData)
       {user?.user_type === 3 ? (
         <PartnerTeamJourney />
       ) : user?.user_type === 2 ? (
-        <ChampionTeamJourney />
+        <ChampionTeamJourney cycleStarted={cycleStarted}/>
       ) : pollData?.ready ? (
         <MyTeamJourney />
       ) : (

@@ -89,3 +89,41 @@ export type FINISH_CYCLE_RESPONSE_TYPES = {
   completed_at: string;
   close_reason: string;
 };
+
+export type MTJ_CYCLE_OPTIONS={
+   option: string;
+        vote_count: number;
+        vote_percentage: number;
+}
+export type TEAM_RITUAL_DATA={
+  team_ritual_id: string;
+                title:string;
+                focus_area: string;
+                short_description: string;
+}
+export type GET_MTJ_CYCLE_OVERVIEW_RESPONSE={
+  
+  message: string;
+  team_id: string;
+  team_name: string;
+  cycle: {
+    id: string;
+    status: string;
+    stage:string;
+    pressure_point:string;
+    started_at:number;
+  end_at: null;
+    extended:boolean;
+    focus_areas: Array<string>;
+    team_rituals: Array<TEAM_RITUAL_DATA>;
+  },
+  poll: {
+    id:string;
+    status:string;
+    opened_at: number;
+    closed_at:string;
+    total_votes: number;
+    options: Array<MTJ_CYCLE_OPTIONS>
+  }
+
+}

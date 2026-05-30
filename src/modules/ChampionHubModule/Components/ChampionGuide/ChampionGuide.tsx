@@ -111,7 +111,7 @@ function ChampionGuide() {
           {/* SKY SHAPE CARD */}
         </div>
 
-        <div className={`${styles.backButtonRow} mt-10 flex flex-col sm:flex-row gap-4`}>
+        <div className={`${styles.backButtonRow} mt-10 flex flex-col sm:flex-row gap-4 justify-end`}>
           <CommonButtons
             label="Back to Champion Resources"
             bgColor="#cde3cc"

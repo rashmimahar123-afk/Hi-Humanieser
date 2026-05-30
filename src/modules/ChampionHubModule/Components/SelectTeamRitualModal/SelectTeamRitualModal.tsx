@@ -8,6 +8,8 @@ import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
 import { useFocusAndRitualSelectMutation } from "../../Hooks/useFocusAndRitualSelectMutation";
+import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 const EVENT = "SELECT_TEAM_RITUAL_MODAL_EVENT";
 
@@ -22,7 +24,7 @@ function SelectTeamRitualModal() {
   const [reflection, setReflection] = useState("");
   const [selectedRitualId, setSelectedRitualId] = useState<string>("");
   const [focusAreaId, setFocusAreaId] = useState<string>("");
-
+const {user}=useAuthValue()
   useEventEmitter(EVENT, (data) => {
     setSelectedRitualId(data?.ritualId);
     setFocusAreaId(data?.focusAreaId);
@@ -32,19 +34,31 @@ function SelectTeamRitualModal() {
   const { mutate: submitFocusAndRitualSelection, isPending } =
     useFocusAndRitualSelectMutation();
 
+ const { refetch: refetchCycleOverview } =
+  useGetMtjCycleOverviewQuery(user?.team_id);
+     
   const handleActivateRitual = () => {
     submitFocusAndRitualSelection(
       {
-        focus_areas: [focusAreaId],
-        team_ritual_ids: [selectedRitualId],
+        focus_area: focusAreaId,
+        team_ritual_id: selectedRitualId,
+              activation_message: reflection,
+
       },
       {
-        onSuccess: () => {
-          setIsOpen(false);
-        },
+       onSuccess: async () => {
+  await refetchCycleOverview();
+  setIsOpen(false);
+}
       },
     );
   };
+
+  
+  
+
+
+
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
