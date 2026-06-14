@@ -46,7 +46,10 @@ function PressurePointRecordedModal() {
   return (
     <Dialog open={isOpen} onClose={setIsOpen} className="relative z-[9999]">
       {/* Overlay */}
-
+      <div
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+        aria-hidden="true"
+      />
       {/* Wrapper */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-[900px] rounded-[28px] bg-[#FBE6BF] p-6 relative">
@@ -72,10 +75,9 @@ function PressurePointRecordedModal() {
               </p>
 
               <p className="text-[#0F4F58] leading-relaxed mb-6 text-[20px] font-[Roboto]">
-                A short team poll has now been sent automatically so you can
-                hear directly from your team before deciding what to focus on
-                next. Their input will sit alongside your pressure point to help
-                you choose the most helpful focus area and team ritual.
+                A short team poll has now been sent automatically and the input
+                will sit alongside your pressure point to help you choose the
+                most helpful focus area.
               </p>
 
               <div className="flex items-start gap-4 mt-10">
