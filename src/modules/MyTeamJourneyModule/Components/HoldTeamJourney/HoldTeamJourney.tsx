@@ -48,7 +48,6 @@ function HoldTeamJourney(props: HOLD_TEAM_JOURNEY_PROPS) {
             greetingColor="#0f4f58"
             nameColor="#0F4F58"
             userInfo={user}
-            profileData={profileData}
           />
         </div>
         <div className="relative z-20  ">

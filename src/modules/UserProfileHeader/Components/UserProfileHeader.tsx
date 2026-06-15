@@ -12,14 +12,16 @@ type USER_PROFILE_HEADER_PROPS = {
   nameColor?: string;
   hideUserProfile?: boolean;
   userInfo?: USER_INFO_TYPE;
-  profileData?: MY_PROFILE_RESPONSE;
 };
 
 function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
-  const { greetingColor, nameColor, hideUserProfile, userInfo, profileData } =
-    props;
+  const { greetingColor, nameColor, hideUserProfile, userInfo } = props;
   const [openDropdown, setOpenDropdown] = useState(false);
   const router = useRouter();
+
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
 
   return (
     <>

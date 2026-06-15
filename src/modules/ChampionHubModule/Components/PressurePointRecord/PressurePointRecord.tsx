@@ -22,14 +22,12 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
 import { chunkByPattern } from "@/src/lib/Helpers";
-import PressurePointRecordedModal, {
-  openPressurePointRecorded,
-} from "@/src/modules/PressurePoint/Components/PressurePointRecordedModal/PressurePointRecordedModal";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import useGetMtjPollQuery from "../../Hooks/useGetMtjPollQuery";
 import { useClosePollMutation } from "../../Hooks/useClosePollMutation";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
+import useGetKpiQuery from "../../Hooks/useGetKpiQuery";
 
 function PressurePointRecord() {
   const router = useRouter();
@@ -127,7 +125,24 @@ Thanks!`,
       (item: any) => item.team_ritual_id,
     ) || [];
 
-  console.log("activeRitualIdsactiveRitualIds", activeRitualIds);
+  const teamRituals = cycleOverviewData?.data?.cycle?.team_rituals || [];
+  const cycle = cycleOverviewData?.data?.cycle;
+
+  const getRemainingWeeks = (endAt?: number | null) => {
+    if (!endAt) return "--";
+
+    const now = Date.now();
+    const end = new Date(endAt * 1000).getTime();
+
+    const diff = end - now;
+    const weeks = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24 * 7)));
+
+    return `${weeks} Weeks`;
+  };
+
+  const { data: mtjKpiData } = useGetKpiQuery(user?.team_id);
+  const engagementData = mtjKpiData?.data?.engagement;
+  console.log("engagementDataengagementDataengagementData", engagementData);
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -174,7 +189,7 @@ Thanks!`,
         </div>
 
         {/* TEAM HEADER BAR */}
-        <div className="bg-[#FBE6BF] p-6 mt-10">
+        <div className="bg-[#FBE6BF] p-6 mt-10 rounded-xl">
           <div className=" px-10 flex items-center justify-end gap-10  mx-auto">
             <h2 className="text-[38px] font-[RocaTwo] text-[#0F4F58]">Team</h2>
 
@@ -369,7 +384,7 @@ Thanks!`,
                     style={{ flexShrink: 0 }}
                   />
                   <div
-                    className="text-[#0F4F58] font-[Roboto] text-[20px]"
+                    className="text-[#0F4F58] font-[Roboto] text-[20px] cursor-pointer "
                     onClick={handleSendReminder}
                   >
                     Send a quick reminder
@@ -500,137 +515,143 @@ Thanks!`,
             )}
           </>
         ) : (
-          <>
-            <div className="mt-8">
-              <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
-                Choosing the focus for this cycle
-              </h1>
+          activeRitualIds.length < 2 && (
+            <>
+              <div className="mt-8">
+                <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
+                  Choosing the focus for this cycle
+                </h1>
 
-              <p className="text-[#0F4F58] text-lg leading-relaxed ml-8">
-                Based on the pressure you’re managing and what your team says
-                would help most, the focus areas below are the strongest
-                candidates right now.
-              </p>
-              <div className="flex justify-center mt-[20px]">
-                <div className="grid grid-cols-2 gap-10">
-                  {recommendedFocusAreas.map((item: any, index: number) => {
-                    const isFirst = index === 0;
+                <p className="text-[#0F4F58] text-lg leading-relaxed ml-8">
+                  Based on the pressure you’re managing and what your team says
+                  would help most, the focus areas below are the strongest
+                  candidates right now.
+                </p>
+                <div className="flex justify-center mt-[20px]">
+                  <div className="grid grid-cols-2 gap-10">
+                    {recommendedFocusAreas.map((item: any, index: number) => {
+                      const isFirst = index === 0;
 
-                    return (
-                      <div
-                        key={item.rank}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          router.push(
-                            `/continue-pressure?focusArea=${encodeURIComponent(
-                              item.option,
-                            )}`,
-                          )
-                        }
-                      >
-                        <PolygonButton
-                          height="129px"
-                          bgColor={isFirst ? "#f8e1b8" : "#86c9c9"}
-                          radius={14}
-                          topTilt={!isFirst ? 18 : undefined}
-                          slantSide={!isFirst ? "right" : undefined}
-                          clipPath={
-                            isFirst
-                              ? `polygon(
+                      return (
+                        <div
+                          key={item.rank}
+                          className="cursor-pointer"
+                          onClick={() =>
+                            router.push(
+                              `/continue-pressure?focusArea=${encodeURIComponent(
+                                item.option,
+                              )}`,
+                            )
+                          }
+                        >
+                          <PolygonButton
+                            height="129px"
+                            bgColor={isFirst ? "#f8e1b8" : "#86c9c9"}
+                            radius={14}
+                            topTilt={!isFirst ? 18 : undefined}
+                            slantSide={!isFirst ? "right" : undefined}
+                            clipPath={
+                              isFirst
+                                ? `polygon(
                       0% 29px,
                       100% 7%,
                       87% 89%,
                       20% calc(100% - 13px)
                     )`
-                              : `polygon(
+                                : `polygon(
                       17% 17px,
                       77% 11%,
                       100% 81%,
                       0% calc(100% - 15px)
                     )`
-                          }
-                        >
-                          <div className="h-full flex items-center justify-center text-center px-4">
-                            <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
-                              {item.option}
-                            </span>
-                          </div>
-                        </PolygonButton>
-                      </div>
-                    );
-                  })}
+                            }
+                          >
+                            <div className="h-full flex items-center justify-center text-center px-4">
+                              <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
+                                {item.option}
+                              </span>
+                            </div>
+                          </PolygonButton>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {/* Middle Text Section */}
+                <div className=" mb-16 mt-4 ml-8">
+                  <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
+                    Selecting a focus area gives the team a shared direction.
+                  </p>
+
+                  <p className="text-[#0F4F58] text-[20px] leading-relaxed">
+                    In the next step, you can choose up to two team rituals —
+                    from the same focus area or from different ones — depending
+                    on what will help most.
+                  </p>
+                </div>
+                <div className="relative">
+                  <SuccessMessage
+                    text="Data informs the decision. Leadership makes the call.
+"
+                    fontSize="text-[23px]"
+                    leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+                    rightImg={{
+                      src: images.leftArrowImg,
+                      width: 60,
+                      height: 60,
+                    }}
+                    fontColor="#0F4F58"
+                    left="375px"
+                    bottom="-1px"
+                    rightImgRight="375px"
+                    rotate="-35deg"
+                    rightImgBottom="-1px"
+                  />
+                </div>
+
+                {/* Bottom Decorative + Footer */}
+                <div className="flex items-start gap-6 mt-10 relative">
+                  {/* Hanging Dots Graphic */}
+                  <Image
+                    src={images.pollResultImg}
+                    alt="poll-img"
+                    width={100}
+                    height={100}
+                    className="absolute top-0 left-0 -z-10"
+                    priority
+                  />
+
+                  <p className="text-[#0F4F58] text-[18px] font-[Roboto]  leading-relaxed ml-[125px] mt-4">
+                    To keep your team’s rhythm flowing, we’ll automatically
+                    select a Team Ritual from the top-voted Focus Area if the
+                    ritual hasn’t been chosen after a few days.
+                  </p>
                 </div>
               </div>
-              {/* Middle Text Section */}
-              <div className=" mb-16 mt-4 ml-8">
-                <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
-                  Selecting a focus area gives the team a shared direction.
-                </p>
-
-                <p className="text-[#0F4F58] text-[20px] leading-relaxed">
-                  In the next step, you can choose up to two team rituals — from
-                  the same focus area or from different ones — depending on what
-                  will help most.
-                </p>
-              </div>
-              <div className="relative">
-                <SuccessMessage
-                  text="Data informs the decision. Leadership makes the call.
-"
-                  fontSize="text-[23px]"
-                  leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-                  rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-                  fontColor="#0F4F58"
-                  left="375px"
-                  bottom="-1px"
-                  rightImgRight="375px"
-                  rotate="-35deg"
-                  rightImgBottom="-1px"
-                />
-              </div>
-
-              {/* Bottom Decorative + Footer */}
-              <div className="flex items-start gap-6 mt-10 relative">
-                {/* Hanging Dots Graphic */}
-                <Image
-                  src={images.pollResultImg}
-                  alt="poll-img"
-                  width={100}
-                  height={100}
-                  className="absolute top-0 left-0 -z-10"
-                  priority
-                />
-
-                <p className="text-[#0F4F58] text-[18px] font-[Roboto]  leading-relaxed ml-[125px] mt-4">
-                  To keep your team’s rhythm flowing, we’ll automatically select
-                  a Team Ritual from the top-voted Focus Area if the ritual
-                  hasn’t been chosen after a few days.
-                </p>
-              </div>
-            </div>
-          </>
+            </>
+          )
         )}
 
-        {activeRitualIds?.length !== 0 && (
+        {activeRitualIds?.length === 2 && (
           <div className="mt-10 relative">
-            {/* Section Title */}
-            <h2 className="text-[32px] font-[RocaTwo] text-[#0F4F58] mt-6 font-bold">
-              Active Focus & Engagement
-            </h2>
-
-            <div className="absolute left-0 top-0 ">
+            <div className="absolute left-0 top-0 z-0 pointer-events-none">
               <Image
                 src={images.dottedCurve}
                 alt="pattern"
-                width={500}
+                width={400}
                 height={270}
               />
             </div>
+            <div className="relative z-10">
+              {/* Section Title */}
+              <h2 className="text-[32px] font-[RocaTwo] text-[#0F4F58] mt-6 font-bold">
+                Active Focus & Engagement
+              </h2>
+              {/* Outer Beige Container */}
+              {/* <div className=" rounded-[24px] p-10 mt-5"> */}
 
-            {/* Outer Beige Container */}
-            <div className="bg-[#E3CFA8] rounded-[24px] p-10 mt-5">
               {/* Description Text */}
-              <div>
+              <div className="mt-5">
                 <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto] font-medium">
                   This is your team’s current improvement cycle. Track what’s
                   live, how participation is evolving, and where attention may
@@ -643,11 +664,11 @@ Thanks!`,
                 </p>
               </div>
               {/* Two Column Layout */}
-              <div className="grid grid-cols-2 gap-12  mt-4">
+              <div className="grid grid-cols-2 gap-12  mt-8">
                 {/* CARD */}
-                {[1, 2].map((_, index) => (
+                {teamRituals.map((ritual: any) => (
                   <div
-                    key={index}
+                    key={ritual.team_ritual_id}
                     className="bg-[#cde3cc] rounded-[20px] p-10 "
                   >
                     {/* TOP INFO SECTION */}
@@ -658,7 +679,7 @@ Thanks!`,
                           Focus Area
                         </span>
                         <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          {index === 0 ? "Improve Clarity" : "Build Trust"}
+                          {ritual.focus_area}
                         </div>
                       </div>
 
@@ -668,9 +689,7 @@ Thanks!`,
                           Active Team <br /> Ritual
                         </span>
                         <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          {index === 0
-                            ? "What Happens Next"
-                            : "Say It in One Line"}
+                          {ritual.title}
                         </div>
                       </div>
 
@@ -680,7 +699,7 @@ Thanks!`,
                           Time remaining <br /> in this cycle
                         </span>
                         <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          [5 Weeks]
+                          {getRemainingWeeks(cycle?.end_at)}
                         </div>
                       </div>
                     </div>
@@ -700,20 +719,10 @@ Thanks!`,
                             height={22}
                             className="mt-1"
                           />
-                          <span>Awareness: 92% have viewed the ritual</span>
-                        </li>
-
-                        <li className="flex items-start gap-4">
-                          <Image
-                            src={images.engagementImg}
-                            alt="arrow"
-                            width={22}
-                            height={22}
-                            className="mt-1"
-                          />
                           <span>
-                            Participation: 67% have contributed at least one
-                            team reflection
+                            Awareness:{" "}
+                            {engagementData?.awareness?.percentage ?? 0}% have
+                            viewed the ritual
                           </span>
                         </li>
 
@@ -726,7 +735,10 @@ Thanks!`,
                             className="mt-1"
                           />
                           <span>
-                            Momentum: 41% have contributed more than once
+                            Participation:{" "}
+                            {engagementData?.team_ritual_participation
+                              ?.percentage ?? 0}
+                            % have contributed at least one team reflection
                           </span>
                         </li>
 
@@ -739,7 +751,24 @@ Thanks!`,
                             className="mt-1"
                           />
                           <span>
-                            Sharing: 14 reflections shared on Reflection Wall
+                            Momentum:{" "}
+                            {engagementData?.momentum?.percentage ?? 0}% have
+                            contributed more than once
+                          </span>
+                        </li>
+
+                        <li className="flex items-start gap-4">
+                          <Image
+                            src={images.engagementImg}
+                            alt="arrow"
+                            width={22}
+                            height={22}
+                            className="mt-1"
+                          />
+                          <span>
+                            Sharing:{" "}
+                            {engagementData?.sharing?.shared_count ?? 0}{" "}
+                            reflections shared on Reflection Wall
                           </span>
                         </li>
                       </ul>
@@ -753,7 +782,11 @@ Thanks!`,
 "
                   fontSize="text-[23px]"
                   leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-                  rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+                  rightImg={{
+                    src: images.leftArrowImg,
+                    width: 60,
+                    height: 60,
+                  }}
                   fontColor="#0F4F58"
                   left="230px"
                   bottom="32px"
