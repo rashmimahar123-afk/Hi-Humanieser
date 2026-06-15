@@ -72,7 +72,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                 width={40}
                 height={40}
                 className="shrink-0 absolute hidden lg:block"
-                style={{ left: `157px`, bottom: "50px" }}
+                style={{ left: "30px", bottom: "50px" }}
               />
 
               <div className="text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px] font-[700] font-[Roboto] max-w-full md:max-w-[823px] text-center mt-[10px] md:mt-[20px]">
@@ -88,7 +88,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                 width={60}
                 height={40}
                 className="shrink-0 absolute hidden lg:block"
-                style={{ right: "148px", bottom: "50px", rotate: "-35deg" }}
+                style={{ right: "25px", bottom: "50px", rotate: "-35deg" }}
               />
             </div>
           </div>

@@ -13,6 +13,6 @@ function MyDashboardPage() {
   );
 }
 
-export default withProtectedRoute(MyDashboardPage);
-
+// export default withProtectedRoute(MyDashboardPage);
+export default (MyDashboardPage);
 
