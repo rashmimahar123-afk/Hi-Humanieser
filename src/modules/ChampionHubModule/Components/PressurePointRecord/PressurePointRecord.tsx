@@ -378,15 +378,17 @@ Thanks!`,
               )}
 
               {/* Two Column Section */}
-
-              <div className="grid grid-cols-2 gap-16 mt-16 ml-8">
-                {/* LEFT COLUMN */}
-                <div>
-                  <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
-                    What the team says would most support progress right now
+              <div className="grid lg:grid-cols-2 grid-cols-1 gap-12 items-start">
+                {" "}
+                {/* LEFT */}
+                <div className="mt-6">
+                  <h3 className="text-center text-[#0F4F58] text-[24px] font-bold font-[RocaTwo] mb-6">
+                    What the team says would most support
+                    <br />
+                    progress right now
                   </h3>
 
-                  <div className="bg-[#EBCDB6] rounded-2xl p-8 space-y-6">
+                  <div className="bg-[#D8CFBB] rounded-[26px] p-8 flex flex-col gap-6 h-full">
                     {options.map((item, index) => (
                       <ProgressPill
                         key={index}
@@ -396,76 +398,74 @@ Thanks!`,
                     ))}
                   </div>
                 </div>
-
-                {/* RIGHT COLUMN */}
-                <div>
-                  <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
+                {/* RIGHT */}
+                <div className="mt-10">
+                  <h3 className="text-center text-[#0F4F58] text-[24px] font-bold font-[RocaTwo] mb-10">
                     How this helps your leadership
                   </h3>
 
-                  <div className="bg-[#EBCDB6] rounded-2xl p-8 space-y-8 text-[#0F4F58] text-[18px] leading-relaxed font-[Roboto]">
-                    <p>
+                  <div className="bg-[#D8CFBB] rounded-[26px] p-8 h-full flex flex-col justify-around">
+                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
                       Earlier issue-raising, better judgement in decisions, and
                       fewer surprises later.
                     </p>
 
-                    <p>
+                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
                       Clear priorities, faster decision-making, and less rework
                       across the team.
                     </p>
 
-                    <p>
+                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
                       Better coordination across teams, reducing silos,
                       friction, and delays in delivery.
                     </p>
 
-                    <p>
+                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
                       Stronger ownership, more discretionary effort, and better
                       retention of key people.
                     </p>
 
-                    <p>
+                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
                       More sustainable pace, fewer energy crashes, and steadier
                       delivery over time.
                     </p>
                   </div>
                 </div>
               </div>
-              <div className="mt-6 ml-4 flex justify-between">
-                <div>
-                  <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
-                    Participation: {responded} of {totalMembers} members have
-                    responded ( {percentage}%)
-                  </p>
-                </div>
 
-                {!isLessThan70 && (
-                  <div>
-                    <button
-                      onClick={() =>
-                        closePollMutation(undefined, {
-                          onSuccess: async () => {
-                            await refetch();
-
-                            recommendFocusAreas();
-                          },
-                        })
-                      }
-                      disabled={isClosingPoll}
-                      className="bg-[#0F4F58] text-white px-6 py-3 rounded-[14px] font-[RocaTwo] text-[18px] disabled:opacity-50"
-                    >
-                      {isClosingPoll ? "Closing..." : "Close Poll"}
-                    </button>
-                  </div>
-                )}
+              <div className="mt-4">
+                <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
+                  Participation: {responded} of {totalMembers} members have
+                  responded ( {percentage}%)
+                </p>
               </div>
+
+              {!isLessThan70 && (
+                <div>
+                  <button
+                    onClick={() =>
+                      closePollMutation(undefined, {
+                        onSuccess: async () => {
+                          await refetch();
+
+                          recommendFocusAreas();
+                        },
+                      })
+                    }
+                    disabled={isClosingPoll}
+                    className="bg-[#0F4F58] text-white px-6 py-3 rounded-[14px] font-[RocaTwo] text-[18px] disabled:opacity-50"
+                  >
+                    {isClosingPoll ? "Closing..." : "Close Poll"}
+                  </button>
+                </div>
+              )}
 
               {/* Bottom Participation */}
             </div>
             {isLessThan70 && (
               <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
                 {/* LEFT CONTENT */}
-                <div className="max-w-3xl">
+                <div>
                   <h1 className="text-[#0F4F58] text-[34px] font-bold font-[RocaTwo]">
                     Choosing the focus for this cycle
                   </h1>
@@ -476,7 +476,7 @@ Thanks!`,
 
                   <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto] leading-relaxed">
                     Suggested focus areas will appear once participation reaches
-                    50% or after the poll has been open for a few days.
+                    70% or after the poll has been open for a few days.
                   </p>
                 </div>
 

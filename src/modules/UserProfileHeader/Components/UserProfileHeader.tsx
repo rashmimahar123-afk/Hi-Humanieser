@@ -5,20 +5,22 @@ import ProfileDropdown from "../../ProfileDropdown/ProfileDropdown";
 import { USER_INFO_TYPE } from "../../AuthModule/Types/CommonTypes";
 import { useRouter } from "next/navigation";
 import useMyProfileQuery from "../../ProfileModule/Hooks/useMyProfileQuery";
+import { MY_PROFILE_RESPONSE } from "../../ProfileModule/Types/ResponseTypes";
 
 type USER_PROFILE_HEADER_PROPS = {
   greetingColor?: string;
   nameColor?: string;
   hideUserProfile?: boolean;
   userInfo?: USER_INFO_TYPE;
+  profileData?: MY_PROFILE_RESPONSE;
 };
 
 function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
-  const { greetingColor, nameColor, hideUserProfile, userInfo } = props;
+  const { greetingColor, nameColor, hideUserProfile, userInfo, profileData } =
+    props;
   const [openDropdown, setOpenDropdown] = useState(false);
   const router = useRouter();
-  const { data, isLoading } = useMyProfileQuery();
-  const profileData = data?.data;
+
   return (
     <>
       <div className="flex justify-between items-start gap-2">
