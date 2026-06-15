@@ -19,12 +19,12 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
   return (
     <>
       {/* Section Title */}
-      <h2 className="font-bold text-[28px] md:text-[35px] text-[#F5F0EB] font-[RocaTwo]">
+      <h2 className="font-bold text-[22px] md:text-[28px] lg:text-[35px] text-[#F5F0EB] font-[RocaTwo]">
         My Check-In Space
       </h2>
 
       {/* Subtitle */}
-      <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[16px] md:text-[22px] ml-0 sm:ml-[20px] md:ml-[40px] mt-[10px] md:mt-[15px]">
+      <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[13px] md:text-[17px] lg:text-[22px] ml-0 sm:ml-[20px] md:ml-[40px] mt-[10px] md:mt-[15px]">
         {`Based on your check-in from ${formattedDate}, here's what was coming through at the time, along with a few Pathways suggested as a starting point.`}
       </p>
 
@@ -32,10 +32,10 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
       <div className="bg-[#f5f0eb] pt-[1px] px-[16px] sm:px-[28px] md:px-[45px] pb-[12px] mt-[20px] border rounded-[10px]">
         {/* What's Working Well */}
         <div className="mt-[24px] md:mt-[30px]">
-          <div className="text-[#0F4F58] text-[20px] md:text-[26px] font-[League Spartan] font-bold">
+          <div className="text-[#0F4F58] text-[16px] md:text-[20px] lg:text-[26px] font-[League Spartan] font-bold">
             What's already working well
           </div>
-          <p className="text-[#0F4F58] font-[Aptos] text-[16px] md:text-[22px] mt-[10px] ml-0 sm:ml-[10px] md:ml-[20px]">
+          <p className="text-[#0F4F58] font-[Aptos] text-[13px] md:text-[17px] lg:text-[22px] mt-[10px] ml-0 sm:ml-[10px] md:ml-[20px]">
             Maria, from what you shared, a few things are already coming through
             strongly:
           </p>
@@ -49,7 +49,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                   className="relative pl-8 md:pl-0"
                   style={{ fontFamily: "Aptos" }}
                 >
-                  <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[15px] md:text-[20px]">
+                  <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px]">
                     {item.description}
                   </span>
 
@@ -72,10 +72,10 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                 width={40}
                 height={40}
                 className="shrink-0 absolute hidden lg:block"
-                style={{ left: `157px`, bottom: "29px" }}
+                style={{ left: `157px`, bottom: "50px" }}
               />
 
-              <div className="text-[#0F4F58] text-[15px] md:text-[20px] font-[700] font-[Roboto] max-w-full md:max-w-[823px] text-center mt-[10px] md:mt-[20px]">
+              <div className="text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px] font-[700] font-[Roboto] max-w-full md:max-w-[823px] text-center mt-[10px] md:mt-[20px]">
                 These are qualities worth celebrating. They're not just traits
                 you have — they're the foundations you can keep building on as
                 you grow in your Pathway.
@@ -88,7 +88,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                 width={60}
                 height={40}
                 className="shrink-0 absolute hidden lg:block"
-                style={{ right: "148px", bottom: "27px", rotate: "-35deg" }}
+                style={{ right: "148px", bottom: "50px", rotate: "-35deg" }}
               />
             </div>
           </div>
@@ -98,13 +98,13 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
         <div className="mt-14 md:mt-20">
           <div className="relative z-20 text-[#567F55] font-[400]">
             <h3
-              className="text-[#0F4F58] text-[20px] md:text-[26px] font-bold"
+              className="text-[#0F4F58] text-[16px] md:text-[20px] lg:text-[26px] font-bold"
               style={{ fontFamily: "RocaRwo" }}
             >
               A few places you could start
             </h3>
             <p
-              className="text-[16px] md:text-[22px] text-[#0F4F58] ml-0 sm:ml-[10px] md:ml-[20px] w-full xl:w-[900px]"
+              className="text-[13px] md:text-[17px] lg:text-[22px] text-[#0F4F58] ml-0 sm:ml-[10px] md:ml-[20px] w-full xl:w-[900px]"
               style={{ fontFamily: "Aptos" }}
             >
               Based on what you shared, these Pathways could be a helpful next
@@ -149,7 +149,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                 className: "-left-[37px] -top-[47px] rotate-[20deg]",
               }}
             >
-              <span className="text-[#0F4F58] text-[22px] md:text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
+              <span className="text-[#0F4F58] text-[17px] md:text-[20px] lg:text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
                 Retake the Check-In
               </span>
             </PolygonButton>

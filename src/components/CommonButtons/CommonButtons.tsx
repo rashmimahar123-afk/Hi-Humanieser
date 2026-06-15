@@ -10,6 +10,7 @@ type COMMON_BUTTON_PROPS = {
   height?: string;
   disabled?: boolean;
   textColor?: string;
+  textClassName?: string;
 };
 
 function CommonButtons({
@@ -19,6 +20,7 @@ function CommonButtons({
   height,
   disabled = false,
   textColor,
+  textClassName = "text-[15px] sm:text-[18px]",
 }: COMMON_BUTTON_PROPS) {
   const pathname = usePathname();
   const [showTooltip, setShowTooltip] = useState(false);
@@ -53,7 +55,7 @@ function CommonButtons({
           w-full sm:w-[271px]
           rounded-[12px]
           px-[16px] sm:px-[22px]
-          text-[15px] sm:text-[18px]
+          ${textClassName}
           font-[400]
           transition
           flex items-center

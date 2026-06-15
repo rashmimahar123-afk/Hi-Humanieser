@@ -1,7 +1,8 @@
-/* 
 
 
- .mainHeading {
+
+
+/* .mainHeading {
   font-size: clamp(40px, 10vw, 74px);
   font-family: RocaTwo-Bold, serif;
   margin-left: 49px;
@@ -58,19 +59,21 @@
   max-width: unset;
 }
 
+
 .rightSection {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
+
 .goBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: -4%;       
-  left: -28%;         
+  bottom: -4%;
+  left: -28%;
   z-index: 10;
 }
 
@@ -89,7 +92,7 @@
   height: auto;
 }
 
-
+  
 @media (min-width: 1400px) {
   .peopleImageWrapper {
     max-width: 80%;
@@ -98,8 +101,8 @@
 
   .goBtn {
     position: absolute;
-    bottom: -4%;       
-    left: -24%;        
+    bottom: -4%;
+    left: -24%;
   }
 
   .goBtnMobile {
@@ -144,8 +147,8 @@
 
   .infoBox {
     max-width: 80%;
-    padding: 55px 60px;
-    min-height: 150px;
+    padding: 45px 50px;
+    min-height: 70px;
     white-space: normal;
   }
 
@@ -157,8 +160,8 @@
   }
 }
 
-
- @media (min-width: 641px) and (max-width: 1024px) {
+/* ── TABLET: 641px – 1024px ── */
+/* @media (min-width: 641px) and (max-width: 1024px) {
   .mainHeading {
     font-size: clamp(28px, 4.5vw, 44px);
     margin-left: 20px;
@@ -170,6 +173,7 @@
   }
 
   .rightSection {
+    position: relative;
     align-items: flex-start;
   }
 
@@ -186,23 +190,27 @@
     object-fit: contain;
   }
 
+  
   .goBtn {
     position: relative;
-    
+    bottom: auto;
     left: auto;
-    bottom: -4%;
-    left: -58%;              
-    z-index: 10;
     display: inline-flex;
-   
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    margin-left: 4px;
+    z-index: 10;
   }
 
   .goBtnArrow {
     width: 36px;
   }
 
+  
   .goBtnMobile {
-    display: none;
+    display: none !important;
   }
 
   .infoBox {
@@ -215,8 +223,71 @@
     font-size: 16px;
     white-space: normal;
   }
-} 
- 
+} */
+
+
+/* @media (min-width: 641px) and (max-width: 1024px) {
+  .mainHeading {
+    font-size: clamp(28px, 4.5vw, 44px);
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+
+  .description {
+    margin-left: 24px;
+  }
+
+  .rightSection {
+    position: relative;
+    align-items: flex-start;
+  }
+
+  .peopleImageWrapper {
+    max-width: 55%;          
+    margin-left: auto;
+    margin-right: auto;      
+    overflow: hidden;
+  }
+
+  .peopleImageWrapper img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+
+  .goBtn {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    margin-left: auto;
+    margin-right: auto;      
+    z-index: 10;
+  }
+
+  .goBtnArrow {
+    width: 36px;
+  }
+
+  .goBtnMobile {
+    display: none !important;
+  }
+
+  .infoBox {
+    max-width: 100%;
+    padding: 18px 40px;
+    min-height: 0px;
+  }
+
+  .infoBoxText {
+    font-size: 16px;
+    white-space: normal;
+  }
+}
 
 
 @media (max-width: 640px) {
@@ -249,11 +320,12 @@
     display: none;
   }
 
+
   .goBtnMobile {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 16px;         
+    margin-top: 16px;
     margin-bottom: 4px;
     padding-left: 4px;
   }
@@ -264,10 +336,10 @@
   }
 
   .infoBox {
-    margin-top: 8px;         
-    padding: 6px 16px;       
-    min-height: 0px;         
-    background-size: 100% 100%;        
+    margin-top: 8px;
+    padding: 6px 16px;
+    min-height: 0px;
+    background-size: 100% 100%;
   }
 
   .infoBoxText {
@@ -275,8 +347,7 @@
     line-height: 1.5;
     white-space: normal;
   }
-} 
- */
+} */ 
 
 
 
@@ -440,71 +511,6 @@
 }
 
 /* ── TABLET: 641px – 1024px ── */
-/* @media (min-width: 641px) and (max-width: 1024px) {
-  .mainHeading {
-    font-size: clamp(28px, 4.5vw, 44px);
-    margin-left: 20px;
-    margin-top: 30px;
-  }
-
-  .description {
-    margin-left: 24px;
-  }
-
-  .rightSection {
-    position: relative;
-    align-items: flex-start;
-  }
-
-  .peopleImageWrapper {
-    max-width: 110%;
-    margin-left: auto;
-    margin-right: -10px;
-    overflow: hidden;
-  }
-
-  .peopleImageWrapper img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain;
-  }
-
-  
-  .goBtn {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-top: 12px;
-    margin-bottom: 8px;
-    margin-left: 4px;
-    z-index: 10;
-  }
-
-  .goBtnArrow {
-    width: 36px;
-  }
-
-  
-  .goBtnMobile {
-    display: none !important;
-  }
-
-  .infoBox {
-    max-width: 100%;
-    padding: 50px 60px;
-    min-height: 140px;
-  }
-
-  .infoBoxText {
-    font-size: 16px;
-    white-space: normal;
-  }
-} */
-
-/* ── TABLET: 641px – 1024px ── */
 @media (min-width: 641px) and (max-width: 1024px) {
   .mainHeading {
     font-size: clamp(28px, 4.5vw, 44px);
@@ -522,9 +528,9 @@
   }
 
   .peopleImageWrapper {
-    max-width: 55%;          /* ← was 110%, now constrained to half width */
+    max-width: 100%;
     margin-left: auto;
-    margin-right: auto;      /* ← centered */
+    margin-right: 0;
     overflow: hidden;
   }
 
@@ -535,21 +541,17 @@
   }
 
   .goBtn {
-    position: relative;
-    bottom: auto;
-    left: auto;
+    position: absolute;
+    bottom: -4%;
+    left: -30%;
+    z-index: 10;
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 12px;
-    margin-bottom: 8px;
-    margin-left: auto;
-    margin-right: auto;      /* ← centered under image */
-    z-index: 10;
   }
 
   .goBtnArrow {
-    width: 36px;
+    width: 40px;
   }
 
   .goBtnMobile {
@@ -567,7 +569,6 @@
     white-space: normal;
   }
 }
-
 
 /* ── MOBILE ≤640px ── */
 @media (max-width: 640px) {

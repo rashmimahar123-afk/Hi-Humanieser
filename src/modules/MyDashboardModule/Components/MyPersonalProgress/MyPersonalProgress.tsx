@@ -31,10 +31,10 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
   return (
     <>
       {/* Heading */}
-      <h2 className="text-[24px] sm:text-[28px] lg:text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
+      <h2 className="text-[20px] sm:text-[24px] lg:text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
         My Personal Progress
       </h2>
-      <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[16px] sm:text-[18px] lg:text-[22px] ml-[10px] sm:ml-[20px] lg:ml-[40px] mt-[15px]">
+      <p className="text-[#0F4F58] font-[Roboto] font-[400] text-[13px] sm:text-[15px] lg:text-[22px] ml-[10px] sm:ml-[20px] lg:ml-[40px] mt-[15px]">
         See the pathways you've taken on and how far you've come. Each one shows
         whether it's in progress or complete, so you can track your journey at a
         glance.
@@ -76,18 +76,18 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
                               height={80}
                             />
                           </div>
-                          <span className="text-[#000000] text-[14px] sm:text-[16px] lg:text-[17px] font-[Canva Sans] truncate">
+                          <span className="text-[#000000] text-[12px] sm:text-[14px] lg:text-[17px] font-[Canva Sans] truncate">
                             {pathwayName}
                           </span>
                         </div>
 
                         {/* RIGHT */}
                         <div className="text-right flex-shrink-0">
-                          <p className="text-[#000000] text-[13px] sm:text-[15px] lg:text-[17px]">
+                          <p className="text-[#000000] text-[11px] sm:text-[13px] lg:text-[17px]">
                             {item.completed ? "Completed on" : "In Progress"}
                           </p>
                           {item.completed && (
-                            <p className="text-[#000000] text-[13px] sm:text-[15px] lg:text-[17px]">
+                            <p className="text-[#000000] text-[11px] sm:text-[13px] lg:text-[17px]">
                               {new Date(
                                 item.completed * 1000,
                               ).toLocaleDateString()}
@@ -120,7 +120,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
               decorationPosition={{ className: "-left-[44px] -top-[12px]" }}
             >
               <div className="h-full flex items-center justify-center text-center">
-                <span className="text-[#0F4F58] text-[16px] sm:text-[18px] font-[RocaTwo] font-bold leading-[28px]">
+                <span className="text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[18px] font-[RocaTwo] font-bold leading-[24px] lg:leading-[28px]">
                   See all Micro-Actions I've tried
                 </span>
               </div>
@@ -142,7 +142,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
               decorationPosition={{ className: "-right-[27px] -top-[20px]" }}
             >
               <div className="h-full flex items-center justify-center text-center">
-                <span className="text-[#0F4F58] text-[16px] sm:text-[18px] font-[RocaTwo] font-bold leading-[28px] text-center whitespace-normal">
+                <span className="text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[18px] font-[RocaTwo] font-bold leading-[24px] lg:leading-[28px] text-center whitespace-normal">
                   See all my Pathway Reflections
                 </span>
               </div>
