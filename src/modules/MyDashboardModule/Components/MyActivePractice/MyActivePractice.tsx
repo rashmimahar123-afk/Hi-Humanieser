@@ -30,11 +30,11 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
   return (
     <>
       {/* Heading */}
-      <h2 className="text-[24px] sm:text-[28px] lg:text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
+      <h2 className="text-[20px] sm:text-[24px] lg:text-[35px] font-bold text-[#F5F0EB] font-[RocaTwo]">
         My Active Practice List
       </h2>
       {/* Sub text */}
-      <p className="text-[#0F4F58] font-[Roboto] text-[16px] sm:text-[18px] lg:text-[22px] ml-[10px] sm:ml-[20px] lg:ml-[40px] mt-[15px]">
+      <p className="text-[#0F4F58] font-[Roboto] text-[13px] sm:text-[15px] lg:text-[22px] ml-[10px] sm:ml-[20px] lg:ml-[40px] mt-[15px]">
         Here are the micro-actions you've chosen to keep practising. They're
         your everyday habits-in-progress — small moves that build momentum over
         time.
@@ -57,17 +57,17 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
             <div key={`item${index}`}>
               <div className="bg-[#F5C882] rounded-2xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 flex flex-col justify-between min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]">
                 <div>
-                  <h3 className="text-[20px] sm:text-[22px] lg:text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
+                  <h3 className="text-[17px] sm:text-[19px] lg:text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
                     {item.title}
                   </h3>
-                  <p className="mt-3 lg:mt-5 text-[#0F4F58] text-[15px] sm:text-[16px] lg:text-[18px] font-[Aptos]">
+                  <p className="mt-3 lg:mt-5 text-[#0F4F58] text-[13px] sm:text-[14px] lg:text-[18px] font-[Aptos]">
                     {item.description}
                   </p>
                 </div>
                 <div className="mt-6 lg:mt-8">
-                  <div className="flex justify-end text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[17px] px-4 py-2 rounded-full font-[RocaTwo]">
+                  <div className="flex justify-end text-[#0F4F58] text-[12px] sm:text-[14px] lg:text-[17px] px-4 py-2 rounded-full font-[RocaTwo]">
                     <span
-                      className="text-[14px] sm:text-[15px] lg:text-[16px] text-[#0F4F58]"
+                      className="text-[12px] sm:text-[13px] lg:text-[16px] text-[#0F4F58]"
                       style={{ fontFamily: "Aptos" }}
                     >
                       Remove from Practice List{" "}
