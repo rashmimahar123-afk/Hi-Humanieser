@@ -5,6 +5,7 @@ import images from "@/src/assets/images";
 import { useEffect, useState } from "react";
 import styles from "./TeamJourneyPoll.module.css";
 import { useSearchParams } from "next/navigation";
+import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 
 type PRACTICE_PERSPECTIVE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -59,11 +60,11 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
         </div>
 
         {/* Two Column Section */}
-        <div className="flex justify-between w-full mt-10">
+        <div className="grid grid-cols-[44%_52%] gap-x-10 mt-10">
           {/* LEFT COLUMN */}
-          <div className="space-y-6">
+          <div className="flex flex-col gap-8">
             {/* Ritual Card */}
-            <div className="bg-[#F5F0EB] rounded-[18px] p-6 max-w-[381px]">
+            <div className="bg-[#F5F0EB] rounded-[18px] p-6">
               <h4 className="text-[21px] font-[RocaTwo] font-bold text-[#4BA6A6] mb-4">
                 Your Team Ritual: Check the Story
               </h4>
@@ -87,7 +88,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             </div>
 
             {/* Champion Note */}
-            <div className="bg-[#F5F0EB] rounded-[18px] p-6 text-center max-w-[381px]">
+            <div className="bg-[#F5F0EB] rounded-[18px] p-6">
               <h4 className="text-[21px] font-[RocaTwo] font-bold text-[#4BA6A6] mb-6">
                 Here’s a note from your Champion
               </h4>
@@ -99,7 +100,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="bg-[#F5F0EB] rounded-[18px] p-8  max-w-[501px]">
+          <div className="bg-[#F5F0EB] rounded-[18px] p-8">
             <h4 className="text-[21px] font-[RocaTwo] font-bold text-[#4BA6A6] mb-6">
               Track & Reflect
             </h4>
@@ -154,12 +155,12 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             </div>
 
             {/* Share Checkbox */}
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-10">
               <div>
                 <p className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">
                   Share your insights with your team?
                 </p>
-                <p className="text-[14px] italic text-[#0F4F58] font-[Aptos] font-[400] mt-[20px]">
+                <p className="text-[14px] italic text-[#0F4F58] font-[Aptos] font-[400] mt-[4px]">
                   if yes, your reflection will be shared anonymously on
                   Reflection Walls
                 </p>
@@ -173,17 +174,40 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
         </div>
 
         {/* Common Traps */}
-        <div className="bg-[#F5F0EB] rounded-xl p-6 mb-[40px]">
-          <h5 className="text-[#4BA6A6] font-bold font-[RocaTwo] text-[21px] mb-2">
-            Common Traps
-          </h5>
-          <ul className="text-[18px] text-[#0F4F58] list-disc pl-5 font-[Aptos] font-[400]">
-            <li>Treating this as oversimplification instead of clarity aid</li>
-            <li>
-              Using it to cut people off rather than help the message land
-            </li>
-            <li>Asking for one-line answers before thinking is ready</li>
-          </ul>
+        <div className="grid grid-cols-[82%_18%] gap-8 mt-8 items-end relative">
+          {/* Common Traps */}
+          <div className="bg-[#F5F0EB] rounded-[18px] p-6">
+            <h5 className="text-[#4BA6A6] font-[RocaTwo] text-[21px] mb-2">
+              Common Traps
+            </h5>
+
+            <ul className="list-disc pl-5 text-[18px] text-[#0F4F58]">
+              <li>
+                Treating this as oversimplification instead of clarity aid
+              </li>
+              <li>
+                Using it to cut people off rather than help the message land
+              </li>
+              <li>Asking for one-line answers before thinking is ready</li>
+            </ul>
+          </div>
+
+          {/* Add another reflection */}
+          <div className="flex justify-center items-center absolute right-0 top-[12px]">
+            <PolygonButton
+              width="150px"
+              height="105px"
+              bgColor="#4BA6A6"
+              radius={16}
+              clipPath={`polygon(0px 35%, -9% 20px, 87% 0px, 96% 100%, 100% 100%, -6px 92%)`}
+            >
+              <div className="h-full flex items-center justify-center text-center ">
+                <span className="text-[#0f4f58] text-[24px] font-[RocaTwo] leading-[24px] font-[400]">
+                  Add Another Reflection
+                </span>
+              </div>
+            </PolygonButton>
+          </div>
         </div>
         <div className="mt-[35px]">
           <SuccessMessage

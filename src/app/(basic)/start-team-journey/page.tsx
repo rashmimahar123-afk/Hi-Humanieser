@@ -8,6 +8,7 @@ import HoldTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/HoldTe
 import MyTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/MyTeamJourney/MyTeamJourney";
 import PartnerTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/PartnerTeamJourney/PartnerTeamJourney";
 import StartTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/StartTeamJourney/StartTeamJourney";
+import TeamJourney from "@/src/modules/MyTeamJourneyModule/Components/TeamJourney/TeamJourney";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 import { Suspense } from "react";
 
@@ -20,7 +21,7 @@ function StartTeamJourneyPage() {
   const { data, isLoading } = useGetMtjPollQuery();
   const pollData = data?.data;
   const cycleStarted = pollData?.cycle_started;
-  console.log("pollDatapollDatapollDatapollData", pollData);
+  console.log("pollDatapollDatapollDatapollData", pollData?.poll_open);
 
   if (isLoading) {
     return (
@@ -39,10 +40,14 @@ function StartTeamJourneyPage() {
       ) : //  : pollData?.team_members_left_to_respond !== 0 ? (
       //   <HoldTeamJourney pollData={pollData} profileData={profileData} />
       // )
-      pollData?.ready ? (
-        <MyTeamJourney />
+      pollData?.poll_open ? (
+        pollData?.ready ? (
+          <MyTeamJourney />
+        ) : (
+          <StartTeamJourney />
+        )
       ) : (
-        <StartTeamJourney />
+        <TeamJourney />
       )}
     </Suspense>
   );
