@@ -1,5 +1,7 @@
 
 
+
+
 // "use client";
 
 // /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -149,7 +151,6 @@
 //   /* ── Header ── */
 //   const hPadX = isLg ? 32 : isMd ? 28 : isSm ? 20 : 16;
 //   const hPadT = isLg ? 32 : isMd ? 28 : isSm ? 24 : 20;
-//   // FIX 2: Added bottom padding to header so it doesn't crowd the main content
 //   const hPadB = isLg ? 12 : isMd ? 16 : 12;
 
 //   /* Logo */
@@ -201,7 +202,6 @@
 //   const mainPadX = isLg ? 0 : isMd ? 28 : isSm ? 20 : 16;
 //   const mainPadT = isLg ? 0 : isMd ? 20 : isSm ? 24 : 16;
 //   const mainPadB = isLg ? 16 : isMd ? 20 : 12;
-//   // FIX 6: Added small top padding on mobile so form doesn't jam against header
 //   const cardPadT = isLg ? 24 : isMd ? 16 : 12;
 
 //   /* ── Banner ── */
@@ -255,23 +255,13 @@
 
 //   /* ── Footer ── */
 //   const formMaxW = 573;
-//   const ftBannerBreakout = isLg || isMd;
+//   const ftTop = isLg ? "12%" : "7%";
 //   const footerMt = isLg ? 12 : isMd ? 12 : 12;
 //   const footerPad = isLg ? "0 0 24px" : "0 0 16px";
 //   const ftLeft = isSm ? "5%" : "3%";
-//   const ftTop = isLg ? "12%" : "7%";
-//   // Extend banner from form-left toward viewport right (desktop/laptop only)
-//   const ftBannerWidth = ftBannerBreakout
-//     ? `calc(100% + max(0px, (100vw - ${formMaxW}px) / 2 - 32px))`
-//     : "100%";
-//   const ftTextInset = ftBannerBreakout ? 16 : 0;
-//   // const ftFontSize = isLg
-//   //   ? "clamp(9px, 1.5vw, 18px)"
-//   //   : isMd
-//   //     ? "clamp(8px, 1.2vw, 12px)"
-//   //     : isSm
-//   //       ? "clamp(7px, 1.8vw, 10px)"
-//   //       : "clamp(6px, 2vw, 9px)";
+
+//   const ftBannerWidth = "100%";
+
 //   const ftFontSize = isLg
 //     ? "clamp(9px, 1vw, 13px)"
 //     : isMd
@@ -326,7 +316,6 @@
 //           paddingLeft: hPadX,
 //           paddingRight: hPadX,
 //           paddingTop: hPadT,
-//           // FIX 2 applied: bottom padding so header breathes
 //           paddingBottom: hPadB,
 //           flexShrink: 0,
 //           zIndex: 1,
@@ -747,6 +736,9 @@
 //             zIndex: 1,
 //             position: "relative",
 //             overflow: "visible",
+//             display: "flex",
+//             flexDirection: "column",
+//             alignItems: "center",
 //           }}
 //         >
 //           {/* Banner image with overlay text */}
@@ -754,7 +746,8 @@
 //             style={{
 //               position: "relative",
 //               width: ftBannerWidth,
-//               maxWidth: ftBannerBreakout ? "none" : "100%",
+//               display: "flex",
+//               justifyContent: "center",
 //             }}
 //           >
 //             <Image
@@ -764,7 +757,7 @@
 //                 width: "100%",
 //                 maxHeight: isLg ? 112 : isMd ? 100 : isSm ? 90 : 82,
 //                 objectFit: "fill",
-//                 objectPosition: ftBannerBreakout ? "left center" : "center",
+//                 objectPosition: "center",
 //                 display: "block",
 //               }}
 //             />
@@ -772,10 +765,11 @@
 //               style={{
 //                 position: "absolute",
 //                 top: ftTop,
-//                 left: ftBannerBreakout ? ftTextInset : ftLeft,
-//                 right: ftBannerBreakout ? 24 : "3%",
+//                 left: isLg || isMd ? "3%" : ftLeft,
+//                 right: "3%",
 //                 display: "flex",
 //                 alignItems: "center",
+//                 justifyContent: isLg || isMd ? "center" : "flex-start",
 //               }}
 //             >
 //               <p
@@ -786,8 +780,8 @@
 //                   fontWeight: "bold",
 //                   margin: 0,
 //                   lineHeight: 1.35,
-//                   whiteSpace: isLg ? "nowrap" : "normal",
-//                   textAlign: "left",
+//                   whiteSpace: "normal",
+//                   textAlign: isLg || isMd ? "center" : "left",
 //                 }}
 //               >
 //                 New here? Hi Humaniser!™ is part of Humanising Our Workplaces, a movement bringing humanity back into performance. Discover more at{" "}
@@ -828,7 +822,7 @@
 //                 fontSize: privacyFontSize,
 //                 lineHeight: 1.3,
 //                 color: "#567F55",
-//                 whiteSpace: ftBannerBreakout ? "nowrap" : "normal",
+//                 whiteSpace: isLg || isMd ? "nowrap" : "normal",
 //               }}
 //             >
 //               Your data stays yours. Learn more in our{" "}
@@ -848,7 +842,6 @@
 // }
 
 // export default LoginForm;
-
 
 
 
@@ -999,12 +992,13 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
 
   /* ── Corner image ── */
   const cornerW: number | string = isLg
-    ? 630
+    ? 400
     : isMd
-      ? "min(36vw, 280px)"
+      ? "min(44vw, 340px)"
       : isSm
-        ? 180
-        : 100;
+        ? 270
+        : 175;
+  const cornerH = isLg ? 340 : isMd ? 310 : isSm ? 230 : 155;
 
   /* ── Header ── */
   const hPadX = isLg ? 32 : isMd ? 28 : isSm ? 20 : 16;
@@ -1113,15 +1107,18 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
 
   /* ── Footer ── */
   const formMaxW = 573;
-  const ftTop = isLg ? "12%" : "7%";
-  const footerMt = isLg ? 12 : isMd ? 12 : 12;
+  const ftBannerBreakout = isLg;
+  const ftTop = isLg ? "50%" : "7%";
+  const footerMt = isLg ? 40 : isMd ? 24 : 16;
   const footerPad = isLg ? "0 0 24px" : "0 0 16px";
   const ftLeft = isSm ? "5%" : "3%";
-
-  const ftBannerWidth = "100%";
+  const ftBannerWidth = ftBannerBreakout ? "100vw" : "100%";
+  const ftTextInset = ftBannerBreakout ? hPadX : 0;
+  const ftTextRight = ftBannerBreakout ? hPadX : "3%";
+  const ftBannerHeight = isLg ? 88 : isMd ? 52 : isSm ? 48 : 42;
 
   const ftFontSize = isLg
-    ? "clamp(9px, 1vw, 13px)"
+    ? "clamp(13px, 1.2vw, 18px)"
     : isMd
       ? "clamp(8px, 1.2vw, 12px)"
       : isSm
@@ -1159,10 +1156,13 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         style={{
           position: "absolute",
           top: 0,
-          right: isLg ? 120 : isMd ? 48 : 0,
+          right: isLg ? 0 : isMd ? 48 : 0,
           zIndex: 0,
           width: cornerW,
-          height: "auto",
+          height: cornerH,
+          maxHeight: isLg ? cornerH : undefined,
+          objectFit: isLg ? "cover" : "contain",
+          objectPosition: "top right",
           pointerEvents: "none",
         }}
       />
@@ -1228,7 +1228,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                 fontWeight: "bold",
                 display: "inline-block",
                 color: "#0F4F58",
-                margin: 0,
+                marginRight: 0,
                 lineHeight: 1.1,
                 whiteSpace: isXs ? "normal" : "nowrap",
               }}
@@ -1588,7 +1588,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         <footer
           style={{
             width: "100%",
-            maxWidth: formMaxW,
+            maxWidth: ftBannerBreakout ? "none" : formMaxW,
             flexShrink: 0,
             marginTop: footerMt,
             zIndex: 1,
@@ -1596,7 +1596,8 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             overflow: "visible",
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
+            alignItems: ftBannerBreakout ? "flex-start" : "center",
+            alignSelf: ftBannerBreakout ? "flex-start" : "center",
           }}
         >
           {/* Banner image with overlay text */}
@@ -1604,8 +1605,9 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             style={{
               position: "relative",
               width: ftBannerWidth,
+              maxWidth: ftBannerBreakout ? "none" : "100%",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: ftBannerBreakout ? "flex-start" : "center",
             }}
           >
             <Image
@@ -1613,9 +1615,10 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
               alt="Footer Rectangle"
               style={{
                 width: "100%",
-                maxHeight: isLg ? 112 : isMd ? 100 : isSm ? 90 : 82,
+                height: ftBannerHeight,
+                maxHeight: ftBannerHeight,
                 objectFit: "fill",
-                objectPosition: "center",
+                objectPosition: ftBannerBreakout ? "left center" : "center",
                 display: "block",
               }}
             />
@@ -1623,11 +1626,16 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
               style={{
                 position: "absolute",
                 top: ftTop,
-                left: isLg || isMd ? "3%" : ftLeft,
-                right: "3%",
+                left: ftBannerBreakout ? ftTextInset : isMd ? "3%" : ftLeft,
+                right: ftBannerBreakout ? ftTextRight : "3%",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: isLg || isMd ? "center" : "flex-start",
+                transform: ftBannerBreakout ? "translateY(-50%)" : undefined,
+                justifyContent: ftBannerBreakout
+                  ? "flex-start"
+                  : isMd
+                    ? "center"
+                    : "flex-start",
               }}
             >
               <p
@@ -1638,8 +1646,8 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                   fontWeight: "bold",
                   margin: 0,
                   lineHeight: 1.35,
-                  whiteSpace: "normal",
-                  textAlign: isLg || isMd ? "center" : "left",
+                  whiteSpace: ftBannerBreakout ? "nowrap" : "normal",
+                  textAlign: ftBannerBreakout ? "left" : isMd ? "center" : "left",
                 }}
               >
                 New here? Hi Humaniser!™ is part of Humanising Our Workplaces, a movement bringing humanity back into performance. Discover more at{" "}
@@ -1662,7 +1670,8 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
               gap: 8,
               marginTop: 8,
               padding: footerPad,
-              width: "100%",
+              paddingLeft: ftBannerBreakout ? ftTextInset : undefined,
+              width: ftBannerBreakout ? ftBannerWidth : "100%",
               boxSizing: "border-box",
             }}
           >
@@ -1680,7 +1689,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                 fontSize: privacyFontSize,
                 lineHeight: 1.3,
                 color: "#567F55",
-                whiteSpace: isLg || isMd ? "nowrap" : "normal",
+                whiteSpace: ftBannerBreakout || isMd ? "nowrap" : "normal",
               }}
             >
               Your data stays yours. Learn more in our{" "}
