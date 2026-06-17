@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import styles from "./TeamJourneyPoll.module.css";
 import { useSearchParams } from "next/navigation";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import FillUpFormModal, {
+  openFillupModal,
+} from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
+import { useGetMtjMessagesQuery } from "../../Hooks/useGetMtjMessagesQuery";
 
 type PRACTICE_PERSPECTIVE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -19,11 +23,25 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   const [animateText, setAnimateText] = useState(false);
 
   const [enter, setEnter] = useState(false);
+  const [reflections, setReflections] = useState<string[]>([]);
+  const [reflectionCount, setReflectionCount] = useState(0);
+
   const searchParams = useSearchParams();
   const pathname = searchParams.get("step");
+
   useEffect(() => {
     setEnter(true);
   }, []);
+
+  const handleAddReflection = () => {
+    // Open your reflection modal
+    openFillupModal("", "");
+
+    // Agar local testing karna ho
+    // setReflectionCount((prev) => prev + 1);
+  };
+
+  const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
 
   return (
     <div>
@@ -144,14 +162,21 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             </div>
             {/* Save Button */}
             <div className="flex justify-end mb-8">
-              <button
-                className="bg-[#F8E1B8] px-6 py-2 rounded-full text-[14px] font-[RocaTwo] font-bold text-[#0F4F58]"
-                onClick={() => {
-                  setShowSuccess(true);
-                }}
-              >
-                save reflection
-              </button>
+              {reflections.length === 0 ? (
+                <button
+                  className="bg-[#F8E1B8] px-6 py-2 rounded-full text-[14px] font-[RocaTwo] font-bold text-[#0F4F58]"
+                  onClick={handleAddReflection}
+                >
+                  add reflection
+                </button>
+              ) : reflections.length < 2 ? (
+                <button
+                  className="bg-[#F8E1B8] px-6 py-2 rounded-full text-[14px] font-[RocaTwo] font-bold text-[#0F4F58]"
+                  onClick={handleAddReflection}
+                >
+                  add another reflection
+                </button>
+              ) : null}
             </div>
 
             {/* Share Checkbox */}
@@ -174,7 +199,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
         </div>
 
         {/* Common Traps */}
-        <div className="grid grid-cols-[82%_18%] gap-8 mt-8 items-end relative">
+        <div className="grid grid-cols-[100%_18%] gap-8 mt-8 items-end relative">
           {/* Common Traps */}
           <div className="bg-[#F5F0EB] rounded-[18px] p-6">
             <h5 className="text-[#4BA6A6] font-[RocaTwo] text-[21px] mb-2">
@@ -193,7 +218,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
           </div>
 
           {/* Add another reflection */}
-          <div className="flex justify-center items-center absolute right-0 top-[12px]">
+          {/* <div className="flex justify-center items-center absolute right-0 top-[12px]">
             <PolygonButton
               width="150px"
               height="105px"
@@ -207,12 +232,14 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
                 </span>
               </div>
             </PolygonButton>
-          </div>
+          </div> */}
         </div>
         <div className="mt-[35px]">
           <SuccessMessage
             text="Congratulations! Another team ritual in the bag —
 your dashboard is beaming"
+            // text={randomMessage || ""}
+
             fontSize="text-[23px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
@@ -231,6 +258,8 @@ your dashboard is beaming"
           <SuccessMessage
             text="Congratulations! Another team ritual in the bag —
 your dashboard is beaming"
+            // text={randomMessage || ""}
+
             fontSize="text-[21px]"
             maxWidth="max-w-[445px]"
             leftImg={{
@@ -342,6 +371,7 @@ your dashboard is beaming"
           </div>
         </div>
       </div>
+      <FillUpFormModal />
     </div>
   );
 }

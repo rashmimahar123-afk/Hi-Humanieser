@@ -88,6 +88,27 @@ function FillUpFormModal() {
       });
       return;
     }
+
+    if (pathname === "/start-team-journey") {
+      const payload = {
+        team_id: selectedTeamId ? selectedTeamId : user?.team_id, // replace if available
+        shared_anonymously: share,
+        reflection: reflection,
+        source: "mtj",
+      };
+
+      addReflectionMutate(payload, {
+        onSuccess: async () => {
+          setReflection("");
+          setShare(false);
+          setIsOpen(false);
+          await queryClient.invalidateQueries({
+            queryKey: ["getReflectionWallsQueryKey"],
+          });
+        },
+      });
+      return;
+    }
     // ✅ ===== MILESTONE 3 =====
     if (actionKey === "milestone3") {
       const payload = {
