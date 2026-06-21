@@ -416,7 +416,9 @@ function LandingPage() {
             <div className="text-[#0F4F58] text-[clamp(24px,6vw,38px)] font-[RocaTwo]">
               Frequently Asked Questions
             </div>
-            <div className="text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex flex-wrap items-end justify-end">
+            <div
+              className={`text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex-wrap items-end  ${styles.faqText}`}
+            >
               Find answers to common questions below, read the full FAQs{" "}
               <Link
                 href="/faq"
@@ -524,7 +526,9 @@ function LandingPage() {
                 alt="Land Footer"
                 className="max-w-full h-auto"
               />
-              <div className="absolute bottom-4 left-0 right-0 px-4 md:px-6 text-[#0F4F58] font-[Roboto] text-center md:text-left">
+              <div
+                className={`absolute bottom-4 left-0 right-0 px-4 md:px-6 text-[#0F4F58] font-[Roboto] text-center md:text-left ${styles.footerText}`}
+              >
                 <p className="text-[clamp(10px,3vw,15px)]">
                   © 2026 Humanising Our Workplaces Ltd. All rights reserved.
                 </p>
