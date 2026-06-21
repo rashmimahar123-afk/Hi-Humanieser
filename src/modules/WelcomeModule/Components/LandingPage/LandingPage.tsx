@@ -401,12 +401,12 @@ function LandingPage() {
             HumanisingOurWorkplaces.com
           </Link>{" "}
           or check the{" "}
-          <Link
-            href="/faq"
+          <button
+            onClick={() => router.push("/faq")}
             className="underline hover:text-[#0F4F58] transition-colors"
           >
             FAQ
-          </Link>
+          </button>
         </p>
       </div>
 

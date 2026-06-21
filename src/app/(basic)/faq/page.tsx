@@ -13,4 +13,4 @@ function FaqPage() {
   );
 }
 
-export default withProtectedRoute(FaqPage);
+export default FaqPage;
