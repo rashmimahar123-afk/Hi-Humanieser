@@ -857,7 +857,6 @@
 // export default LoginForm;
 
 
-
 "use client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -876,14 +875,52 @@ import Link from "next/link";
 import { useLoginMutation } from "../../Hooks/useLoginMutation";
 import { setAuthValue } from "../../Hooks/useAuthValue";
 import AuthService from "../../Services/AuthService";
-import styles from "./LoginForm.module.css";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Breakpoints
+   xs  : 0   – 479   (small phones  e.g. iPhone SE)
+   sm  : 480 – 767   (large phones  e.g. iPhone Pro Max)
+   md  : 768 – 1023  (tablets       e.g. iPad)
+   lg  : 1024+       (laptops / desktops) ← unchanged from original
+───────────────────────────────────────────────────────────── */
+type BP = "xs" | "sm" | "md" | "lg";
+
+function useBP(): { bp: BP; width: number } {
+  const get = () => {
+    if (typeof window === "undefined") return { bp: "lg" as BP, width: 1280 };
+    const w = window.innerWidth;
+    if (w < 480) return { bp: "xs" as BP, width: w };
+    if (w < 768) return { bp: "sm" as BP, width: w };
+    if (w < 1024) return { bp: "md" as BP, width: w };
+    return { bp: "lg" as BP, width: w };
+  };
+  const [state, setState] = useState(get);
+  useEffect(() => {
+    const handler = () => setState(get());
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return state;
+}
+
+/* ════════════════════════════════════════════
+   Main LoginForm
+════════════════════════════════════════════ */
 function LoginForm({ onForgotPassword }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const { bp, width: viewportW } = useBP();
+
+  const isLg = bp === "lg";
+  const isMd = bp === "md";
+  const isSm = bp === "sm";
+  const isXs = bp === "xs";
+  /* 1024px laptop band — wider desktops (≥1280px) stay unchanged */
+  const isLg1024 = isLg && viewportW >= 1024 && viewportW < 1280;
 
   const {
     register,
@@ -900,15 +937,25 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
 
   const handleLoginFrom = handleSubmit((values: any) => {
     loginUser(
-      { email_address: values.email, password: values.password },
+      {
+        email_address: values.email,
+        password: values.password,
+      },
       {
         onSuccess: (res: any) => {
           const token = res?.token;
           const decoded = decodeJWT(token);
 
+          //  USE rememberMe HERE
+          if (values.rememberMe) {
+            localStorage.setItem("token", token);
+          } else {
+            sessionStorage.setItem("token", token);
+          }
+
           setAuthValue({
             loggedIn: true,
-            token,
+            token: token,
             user: decoded,
             accountType: "GOOGLE",
             latitude: undefined,
@@ -917,9 +964,9 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             language: "en",
             isCompleteProfile: true,
           });
-
           if (values.rememberMe) {
             localStorage.setItem("token", token);
+
             AuthService.rememberMe$.next({
               email: values.email,
               password: values.password,
@@ -927,13 +974,13 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             });
           } else {
             sessionStorage.setItem("token", token);
+
             AuthService.rememberMe$.next({
               email: "",
               password: "",
               rememberMe: false,
             });
           }
-
           router.push("/home");
         },
       },
@@ -942,89 +989,335 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
 
   useEffect(() => {
     const rememberData = AuthService.rememberMe$.getValue();
+
     if (rememberData?.rememberMe) {
       setValue("email", rememberData.email);
       setValue("password", rememberData.password);
       setValue("rememberMe", true);
     }
   }, []);
+  /* ── Corner image ── */
+  const cornerW = isLg1024 ? 460 : isLg ? 630 : isMd ? 460 : isSm ? 280 : 150;
 
+  /* ── Header ── */
+  const hPadX = isLg ? 32 : isMd ? 28 : isSm ? 20 : 16;
+  const hPadT = isLg ? 32 : isMd ? 28 : isSm ? 24 : 20;
+
+  /* Logo */
+  const logoW = isLg ? 80 : isMd ? 68 : isSm ? 56 : 46;
+  const logoFontSize = isLg ? 28 : isMd ? 22 : isSm ? 20 : 17;
+  const taglineSize = isLg ? 16 : 13;
+
+  /* Header inner layout — column on mobile, row on tablet+desktop */
+  const headerRowStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: isSm || isXs ? "column" : "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    width: "100%",
+    gap: isLg1024 ? 16 : isMd ? 16 : isLg ? 20 : 6,
+  };
+
+  /* "Hi Humaniser!" — single line at 1024px; absolute positioning on wider lg */
+  const hiStyle: React.CSSProperties = isLg1024
+    ? {
+        position: "relative",
+        alignSelf: "flex-end",
+        textAlign: "right",
+        marginLeft: "auto",
+        flexShrink: 0,
+        maxWidth: "55%",
+        zIndex: 2,
+      }
+    : isLg
+      ? { position: "absolute", left: 679, top: 89, textAlign: "right" }
+      : {
+          position: "relative",
+          textAlign: isMd ? "right" : "left",
+          marginTop: isMd ? 0 : 6,
+        };
+
+  const hiFontSize = isLg1024
+    ? "clamp(28px, 4.2vw, 52px)"
+    : isLg
+      ? "clamp(32px, 6vw, 84.8px)"
+      : isMd
+        ? "clamp(28px, 5vw, 52px)"
+        : isSm
+          ? "clamp(24px, 7.5vw, 42px)"
+          : "clamp(22px, 9vw, 34px)";
+
+  const tmFontSize = isLg1024
+    ? "clamp(12px, 1.4vw, 20px)"
+    : isLg
+      ? "clamp(14px, 2vw, 32px)"
+      : isMd
+        ? "clamp(12px, 1.8vw, 22px)"
+        : "clamp(10px, 3vw, 16px)";
+
+  const tmLineH = isLg1024 ? "1" : isLg ? "clamp(40px, 8vw, 92px)" : "1";
+
+  /* ── Main ── */
+  const mainPadX = isLg ? 0 : isMd ? 32 : isSm ? 20 : 16;
+  const mainPadT = isLg ? 0 : isMd ? 32 : isSm ? 24 : 16;
+  const mainPadB = isLg ? 20 : isMd ? 24 : 16;
+  const cardPadT = isLg ? 100 : 0;
+
+  /* ── Banner ── */
+  const bannerMb = isLg ? 20 : isMd ? 24 : 20;
+  const bannerFontSize = isLg
+    ? "clamp(15px, 3vw, 24px)"
+    : isMd
+      ? "clamp(14px, 2.2vw, 19px)"
+      : isSm
+        ? 16
+        : 14;
+
+  /* ── Inputs ── */
+  const inputMl: number = isLg ? 43 : 0;
+  const inputW: React.CSSProperties["width"] = isLg ? 494 : "100%";
+  const inputFontSize = isLg
+    ? "clamp(15px, 2.5vw, 21px)"
+    : isMd
+      ? "clamp(14px, 2vw, 18px)"
+      : 15;
+
+  /* ── Remember / Forgot row ── */
+  const rfMb = isLg ? 24 : isMd ? 28 : isSm ? 20 : 16;
+  // CHANGED: forgotMr set to 0 for all breakpoints so Forgot Password sits at far right
+  const forgotMr = 0;
+  const rfFontSize = isLg
+    ? "clamp(14px, 2vw, 18px)"
+    : isMd
+      ? 16
+      : isSm
+        ? 15
+        : 13;
+
+  /* ── Login button ── */
+  const btnW = isLg ? 573 : "100%";
+  const btnFontSize = isLg
+    ? "clamp(22px, 4vw, 32px)"
+    : isMd
+      ? "clamp(18px, 3vw, 26px)"
+      : isSm
+        ? 21
+        : 19;
+
+  /* ── Footer ── */
+  const footerMt = isLg ? 0 : isMd ? 20 : 14;
+  const footerPad = isLg ? 24 : 16;
+  const ftLeft = isLg ? "15%" : isMd ? "14%" : isSm ? "5%" : "3%";
+  const ftTop = isLg ? "12%" : "7%";
+  const ftFontSize = isLg
+    ? "clamp(9px, 1.5vw, 18px)"
+    : isMd
+      ? "clamp(9px, 1.4vw, 14px)"
+      : isSm
+        ? "clamp(8px, 2vw, 12px)"
+        : "clamp(7px, 2.2vw, 10px)";
+  const footerDbSize = isXs ? 20 : 24;
+  const privacyFontSize = isLg
+    ? "clamp(13px, 2vw, 20px)"
+    : isMd
+      ? "clamp(13px, 1.8vw, 16px)"
+      : isSm
+        ? 14
+        : 12;
+
+  /* ════════════════ JSX ════════════════ */
   return (
-    <div className={styles.root}>
+    <div
+      style={{
+        minHeight: isLg ? undefined : "100vh",
+        height: isLg ? "100vh" : undefined,
+        maxHeight: isLg ? "100vh" : undefined,
+        backgroundColor: "#e8e4df",
+        display: "flex",
+        flexDirection: "column",
+        overflow: isLg ? "hidden" : undefined,
+        overflowX: "hidden",
+        position: "relative",
+      }}
+    >
       {/* ── Corner decorative image ── */}
       <Image
         src={images.loginRectangle}
         alt="login-rectangle"
         width={630}
         height={630}
-        className={styles.cornerImage}
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          zIndex: 0,
+          width: cornerW,
+          height: "auto",
+          pointerEvents: "none",
+        }}
       />
 
       {/* ════════ HEADER ════════ */}
-      <header className={styles.header}>
-        <div className={styles.headerRow}>
+      <header
+        style={{
+          position: "relative",
+          paddingLeft: hPadX,
+          paddingRight: hPadX,
+          paddingTop: hPadT,
+          flexShrink: 0,
+          zIndex: 1,
+        }}
+      >
+        <div style={headerRowStyle}>
           {/* Logo */}
-          <Link
-            href="https://humanisingourworkplaces.com"
-            target="_blank"
-            className={styles.logoLink}
-          >
-            <div>
-              <div className={styles.logoInner}>
+          <Link href="https://humanisingourworkplaces.com" target="_blank">
+            <div style={{ flexShrink: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <Image
                   src={images.humaniserLogo}
                   alt="Humanising Our Workplaces Logo"
-                  width={80}
-                  className={styles.inputIcon}
+                  width={logoW}
+                  style={{ objectFit: "contain", flexShrink: 0 }}
                   priority
                 />
-                <div className={styles.logoText}>
-                  <span>Humanising our</span>
-                  <span>Workplaces</span>
+                <div
+                  style={{
+                    fontSize: logoFontSize,
+                    fontFamily: "Aptos, sans-serif",
+                    fontWeight: "bold",
+                    lineHeight: 1,
+                  }}
+                >
+                  <span style={{ display: "block" }}>Humanising our</span>
+                  <span style={{ display: "block", marginTop: -2 }}>
+                    Workplaces
+                  </span>
                 </div>
               </div>
-              <div className={styles.tagline}>
+              <div
+                style={{
+                  fontFamily: "Aptos, sans-serif",
+                  fontWeight: 400,
+                  marginLeft: 18,
+                  fontSize: taglineSize,
+                  marginTop: 4,
+                }}
+              >
                 Human Habits. Clear Decision. Reliable Execution.
               </div>
             </div>
           </Link>
-
           {/* "Hi Humaniser!" heading */}
-          <div className={styles.hiWrapper}>
-            <h1 className={styles.hiHeading}>
+          <div style={hiStyle}>
+            <h1
+              style={{
+                fontFamily: "RocaTwo-Bold, serif",
+                fontSize: hiFontSize,
+                fontWeight: "bold",
+                display: "inline-block",
+                color: "#0F4F58",
+                margin: 0,
+                lineHeight: 1,
+                whiteSpace: isLg1024 ? "nowrap" : undefined,
+              }}
+            >
               Hi Humaniser!
-              <span className={styles.tmMark}>™</span>
+              <span
+                style={{
+                  fontFamily: "RocaTwo-Bold, serif",
+                  fontSize: tmFontSize,
+                  lineHeight: tmLineH,
+                  fontWeight: "bold",
+                  verticalAlign: "top",
+                }}
+              >
+                ™
+              </span>
             </h1>
           </div>
         </div>
       </header>
 
-      {/* ════════ MAIN — form only, no footer ════════ */}
-      <main className={styles.main}>
-        <div className={styles.formCard}>
+      {/* ════════ MAIN ════════ */}
+      <main
+        style={{
+          flex: isLg ? "1 1 0" : undefined,
+          minHeight: isLg ? 0 : undefined,
+          display: "flex",
+          alignItems: isLg ? "center" : "flex-start",
+          justifyContent: "center",
+          overflowY: isLg ? "auto" : undefined,
+          paddingLeft: mainPadX,
+          paddingRight: mainPadX,
+          paddingTop: mainPadT,
+          paddingBottom: mainPadB,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            maxWidth: 573,
+            paddingTop: cardPadT,
+          }}
+        >
           {/* Green banner */}
-          <div className={styles.loginBanner}>
-            <p className={styles.loginBannerText}>
+          <div
+            style={{
+              width: "100%",
+              borderRadius: 12,
+              padding: "12px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: bannerMb,
+              backgroundColor: "#8BBE8A",
+              boxSizing: "border-box",
+            }}
+          >
+            <p
+              style={{
+                textAlign: "center",
+                color: "#000",
+                margin: 0,
+                fontFamily: "Aptos, sans-serif",
+                fontWeight: 400,
+                fontSize: bannerFontSize,
+                lineHeight: 1.3,
+              }}
+            >
               Please login to access to Hi Humaniser! Portal
             </p>
           </div>
 
           {/* ── Form ── */}
-          <form className={styles.form} onSubmit={handleLoginFrom}>
+          <form style={{ width: "100%" }} onSubmit={handleLoginFrom}>
             {/* Email */}
-            <div className={styles.inputGroup}>
-              <div className={`${styles.inputRow} ${errors?.email ? styles.inputError : ""}`}>
+            <div style={{ marginBottom: 10, marginLeft: inputMl }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  backgroundColor: "#fff",
+                  borderRadius: 8,
+                  padding: isLg ? "10px 16px" : "12px 16px",
+                  border: `1px solid ${errors?.email ? "#ef4444" : "#e5e7eb"}`,
+                  width: inputW,
+                  boxSizing: "border-box",
+                }}
+              >
                 <Image
                   src={images.email}
                   alt="email-icon"
-                  width={24}
-                  height={14}
-                  className={styles.inputIcon}
+                  width={30}
+                  height={16}
+                  style={{ flexShrink: 0 }}
                 />
                 <input
                   type="email"
                   placeholder="Email Address"
-                  className={styles.inputField}
                   {...register(
                     "email",
                     getEmailValidationRules(
@@ -1032,27 +1325,61 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                       emailMessage.invalidMessage,
                     ),
                   )}
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    background: "transparent",
+                    outline: "none",
+                    border: "none",
+                    fontWeight: 400,
+                    lineHeight: 1.5,
+                    color: "#000",
+                    padding: 0,
+                    fontFamily: "Aptos, sans-serif",
+                    fontSize: inputFontSize,
+                  }}
                 />
               </div>
               {errors?.email && (
-                <span className={styles.errorText}>{errors.email?.message}</span>
+                <span
+                  style={{
+                    display: "block",
+                    color: "#ef4444",
+                    fontSize: 13,
+                    marginTop: 6,
+                    marginLeft: 4,
+                  }}
+                >
+                  {errors.email?.message}
+                </span>
               )}
             </div>
 
             {/* Password */}
-            <div className={styles.inputGroup}>
-              <div className={`${styles.inputRow} ${errors?.password ? styles.inputError : ""}`}>
+            <div style={{ marginBottom: 10, marginLeft: inputMl }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  backgroundColor: "#fff",
+                  borderRadius: 8,
+                  padding: isLg ? "10px 16px" : "12px 16px",
+                  border: `1px solid ${errors?.password ? "#ef4444" : "#e5e7eb"}`,
+                  width: inputW,
+                  boxSizing: "border-box",
+                }}
+              >
                 <Image
                   src={images.lock}
                   alt="lock-icon"
-                  width={24}
-                  height={14}
-                  className={styles.inputIcon}
+                  width={30}
+                  height={16}
+                  style={{ flexShrink: 0 }}
                 />
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
-                  className={styles.inputField}
                   {...register(
                     "password",
                     getPasswordValidationRules(
@@ -1060,41 +1387,141 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                       passwordMessage.password_message,
                     ),
                   )}
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    background: "transparent",
+                    outline: "none",
+                    border: "none",
+                    fontWeight: 400,
+                    lineHeight: 1.5,
+                    color: "#000",
+                    padding: 0,
+                    fontFamily: "Aptos, sans-serif",
+                    fontSize: inputFontSize,
+                  }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className={styles.eyeButton}
+                  style={{
+                    flexShrink: 0,
+                    outline: "none",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
                 >
                   <Image
                     src={showPassword ? images.eyeOpen : images.eyeClose}
                     alt={showPassword ? "Hide password" : "Show password"}
                     width={24}
                     height={24}
-                    className={styles.eyeIcon}
+                    style={{ opacity: 0.6 }}
                   />
                 </button>
               </div>
               {errors?.password && (
-                <span className={styles.errorText}>{errors.password?.message}</span>
+                <div
+                  style={{
+                    color: "#ef4444",
+                    fontSize: 13,
+                    marginTop: 6,
+                    marginLeft: 4,
+                    width: isLg ? 494 : "100%",
+                    lineHeight: 1.3,
+                    boxSizing: "border-box",
+                  }}
+                >
+                  {errors.password?.message}
+                </div>
               )}
             </div>
 
             {/* Remember Me + Forgot Password */}
-            <div className={styles.rememberForgotRow}>
-              <label className={styles.rememberLabel}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: rfMb,
+                marginLeft: inputMl,
+                flexWrap: "nowrap",
+                gap: 12,
+                width: inputW,
+                boxSizing: "border-box",
+                position: "relative",
+                zIndex: isLg1024 ? 10 : 2,
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+              >
                 <input
                   type="checkbox"
-                  className={styles.rememberCheckbox}
                   {...register("rememberMe")}
-                />
-                <span className={styles.rememberText}>Remember Me</span>
+                  style={{ width: 18, height: 18, cursor: "pointer" }}
+                />{" "}
+                <span
+                  style={{
+                    color: "#E6A757",
+                    fontWeight: "bold",
+                    lineHeight: 1,
+                    whiteSpace: "nowrap",
+                    fontFamily: "Aptos, sans-serif",
+                    fontSize: rfFontSize,
+                  }}
+                >
+                  Remember Me
+                </span>
               </label>
+
               <button
                 type="button"
                 onClick={onForgotPassword}
-                className={styles.forgotBtn}
+                style={{
+                  color: "#E6A757",
+                  fontWeight: "bold",
+                  lineHeight: 1,
+                  // CHANGED: marginRight is now 0 for all breakpoints — sits at far right via space-between
+                  marginRight: forgotMr,
+                  cursor: "pointer",
+                  flexShrink: 0,
+                  whiteSpace: "nowrap",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  fontFamily: "Aptos, sans-serif",
+                  fontSize: rfFontSize,
+                  textDecoration: "none",
+                  position: "relative",
+                  zIndex: isLg1024 ? 10 : undefined,
+                  ...(isLg1024
+                    ? {
+                        backgroundColor: "rgba(232, 228, 223, 0.92)",
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                      }
+                    : {}),
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.textDecoration =
+                    "underline")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.textDecoration =
+                    "none")
+                }
               >
                 Forgot Password
               </button>
@@ -1103,35 +1530,97 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             {/* Login Button */}
             <button
               type="submit"
-              className={styles.loginBtn}
+              style={{
+                width: btnW,
+                backgroundColor: "#8BBE8A",
+                borderRadius: 12,
+                padding: isLg ? "10px 16px" : isXs ? "10px 12px" : "12px 16px",
+                fontFamily: "Aptos, sans-serif",
+                fontWeight: 700,
+                fontSize: btnFontSize,
+                color: "#000000",
+                textDecoration: "underline",
+                textDecorationStyle: "solid",
+                cursor: "pointer",
+                border: "none",
+                transition: "background-color 0.15s ease",
+                boxSizing: "border-box",
+                letterSpacing: 0,
+                display: "block",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "#7aad79")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLButtonElement).style.backgroundColor =
+                  "#8BBE8A")
+              }
               disabled={isPending}
             >
               {isPending ? "Logging..." : "Login"}
             </button>
           </form>
         </div>
-
-        {/* Flex spacer — pushes footer to bottom */}
-        <div className={styles.spacer} />
       </main>
 
-      {/* ════════ FOOTER — direct child of root for full-bleed ════════ */}
-      <footer className={styles.footer}>
-        {/* Full-width banner with overlay text */}
-        <div className={styles.footerBannerWrapper}>
+      {/* ════════ FOOTER ════════ */}
+      <footer
+        style={{
+          flexShrink: 0,
+          marginTop: footerMt,
+          zIndex: 1,
+          position: "relative",
+        }}
+      >
+        {/* Banner image with overlay text */}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            width: "110%",
+          }}
+        >
           <Image
             src={images.landRectangle}
             alt="Footer Rectangle"
-            className={styles.footerBannerImage}
+            style={{
+              width: isLg || isMd ? "75%" : "100%",
+              maxHeight: isLg ? 112 : isMd ? 100 : isSm ? 90 : 82,
+              objectFit: "fill",
+              display: "block",
+            }}
           />
-          <div className={styles.footerBannerText}>
-            <p className={styles.footerBannerParagraph}>
+          <div
+            style={{
+              position: "absolute",
+              top: ftTop,
+              left: ftLeft,
+              // CHANGED: right offset keeps text well inside the 75% banner
+              right: isLg || isMd ? "" : "3%",
+              // bottom: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "RocaTwo-Bold, serif",
+                fontSize: ftFontSize,
+                color: "#0F4F58",
+                fontWeight: "bold",
+                margin: 0,
+                lineHeight: 1.35,
+              }}
+            >
               New here? Hi Humaniser!™ is part of Humanising Our Workplaces, a
-              movement bringing humanity back into performance. Discover more at{" "}
+              movement bringing humanity back into performance.
+              {(isLg || isMd) && <br />} Discover more at{" "}
               <Link
                 href="https://humanisingourworkplaces.com"
                 target="_blank"
-                className={styles.footerBannerLink}
+                style={{ textDecoration: "underline", color: "inherit" }}
               >
                 HumanisingOurWorkplaces.com
               </Link>
@@ -1140,20 +1629,36 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         </div>
 
         {/* Privacy row */}
-        <div className={styles.privacyRow}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginTop: 8,
+            padding: footerPad,
+          }}
+        >
           <Image
             src={images.footerDb}
             alt="footer-db"
-            width={24}
-            height={24}
-            className={styles.inputIcon}
+            width={footerDbSize}
+            height={footerDbSize}
+            style={{ flexShrink: 0 }}
           />
-          <span className={styles.privacyText}>
+          <span
+            style={{
+              fontFamily: "Aptos, sans-serif",
+              fontWeight: 400,
+              fontSize: privacyFontSize,
+              lineHeight: 1.3,
+              color: "#567F55",
+            }}
+          >
             Your data stays yours. Learn more in our{" "}
             <Link
               href="/privacy-policy"
               target="_blank"
-              className={styles.privacyLink}
+              style={{ textDecoration: "underline", color: "inherit" }}
             >
               Privacy Policy
             </Link>
