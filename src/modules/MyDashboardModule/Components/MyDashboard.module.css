@@ -224,8 +224,8 @@
   object-fit: contain;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* Responsive — 4 columns at 1024px+; 2 columns below tablet */
+@media (max-width: 768px) {
   .cardGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;

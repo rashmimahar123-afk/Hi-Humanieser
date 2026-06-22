@@ -46,7 +46,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
               {topStrengthDetails.map((item: any, index: number) => (
                 <div
                   key={index}
-                  className="relative pl-8 md:pl-0"
+                  className="relative pl-8"
                   style={{ fontFamily: "Aptos" }}
                 >
                   <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px]">
@@ -54,7 +54,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                   </span>
 
                   {/* Arrow */}
-                  <div className="absolute left-0 md:-left-8 top-1/2 -translate-y-1/2 z-20">
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 z-20">
                     <div className="relative bg-[#E6A757] w-[18px] h-[14px] rounded-[4px] flex items-center justify-center">
                       <Image src={images.smallArrow} alt="small-arrow" />
                     </div>
@@ -64,18 +64,17 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
             </div>
 
             {/* Celebration quote */}
-            <div className="w-full flex justify-center mt-[30px] md:mt-[40px] relative px-2 md:px-0">
+            <div className="w-full flex justify-center mt-[30px] md:mt-[40px] relative px-2 md:px-0 overflow-visible">
               {/* Left decoration */}
               <Image
                 src={images.arrowImg}
                 alt="left decoration"
                 width={40}
                 height={40}
-                className="shrink-0 absolute hidden lg:block"
-                style={{ left: `157px`, bottom: "50px" }}
+                className="shrink-0 absolute block w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] md:w-[32px] md:h-[32px] lg:w-[40px] lg:h-[40px] left-0 md:left-2 lg:-left-2 xl:left-[30px] bottom-[72px] sm:bottom-[75px] lg:bottom-[90px]"
               />
 
-              <div className="text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px] font-[700] font-[Roboto] max-w-full md:max-w-[823px] text-center mt-[10px] md:mt-[20px]">
+              <div className="text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px] font-[700] font-[Roboto] max-w-full md:max-w-[823px] text-center mt-[10px] md:mt-[20px] px-6 sm:px-10 md:px-12 lg:px-16 xl:px-0">
                 These are qualities worth celebrating. They're not just traits
                 you have — they're the foundations you can keep building on as
                 you grow in your Pathway.
@@ -87,8 +86,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                 alt="right decoration"
                 width={60}
                 height={40}
-                className="shrink-0 absolute hidden lg:block"
-                style={{ right: "148px", bottom: "50px", rotate: "-35deg" }}
+                className="shrink-0 absolute block w-[30px] h-[20px] sm:w-[40px] sm:h-[28px] md:w-[50px] md:h-[32px] lg:w-[60px] lg:h-[40px] right-0 md:right-2 lg:-right-2 xl:right-[25px] -rotate-[35deg] bottom-[72px] sm:bottom-[75px] lg:bottom-[90px]"
               />
             </div>
           </div>
