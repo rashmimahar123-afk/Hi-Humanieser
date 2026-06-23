@@ -101,8 +101,7 @@ function TopPartnerRow({ profileData, teamChampion }: any) {
         <p className="text-[13px] sm:text-[15px] md:text-[18px] text-[#0F4F58]">
           {teamChampion
             ? `${teamChampion.first_name} ${teamChampion.last_name}`
-            : "No Champion"}
-          ``
+            : `${profileData?.first_name} ${profileData?.last_name}`}
         </p>
       </div>
     </div>
@@ -161,7 +160,7 @@ function CompanyStructure({
 
       {/* ══ Champions Card ══ */}
       <StructureCard>
-        <TopPartnerRow />
+        <TopPartnerRow profileData={profileData} teamChampion={teamChampion} />
         <h3 className="text-[20px] sm:text-[24px] md:text-[28px] font-[RocaTwo] font-bold text-[#0F4F58] mb-4 sm:mb-6 md:mb-8">
           Hi Humaniser! Champions
         </h3>
@@ -174,7 +173,7 @@ function CompanyStructure({
 
       {/* ══ Members Card ══ */}
       <StructureCard>
-        <TopPartnerRow />
+        <TopPartnerRow profileData={profileData} teamChampion={teamChampion} />
         <h3 className="text-[20px] sm:text-[24px] md:text-[28px] font-[RocaTwo] font-bold text-[#0F4F58] mb-4 sm:mb-6 md:mb-8">
           Hi Humaniser! Members
         </h3>
