@@ -27,6 +27,8 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
 import useTeamKpisQuery from "../../Hooks/useTeamKpisQuery";
+import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import React from "react";
 
 function OrganizationSnapshot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -165,8 +167,53 @@ function OrganizationSnapshot() {
   const { data: teamKpiResponse } = useTeamKpisQuery(selectedTeam?.id);
 
   const teamKpiData = teamKpiResponse?.data;
+
   const teamSnapshot = teamKpiData?.quiz?.team_snapshot;
-  console.log("teamSnapshotteamSnapshotteamSnapshot", teamSnapshot);
+  const getGaugePercent = (value: number = 0) => {
+    return Math.min(Math.max(value / 5, 0), 1);
+  };
+  const { data: chooseMyselfResponse } = useChooseMyselfQuery();
+
+  const pathwayMap = React.useMemo(() => {
+    const map: Record<number, string> = {};
+
+    const frameworkData = chooseMyselfResponse?.data?.[1];
+
+    frameworkData?.pillars?.forEach((pillar) => {
+      pillar.principles?.forEach((principle) => {
+        map[principle.pathway_number] = principle.pathway_title;
+      });
+    });
+
+    return map;
+  }, [chooseMyselfResponse]);
+
+  const focusAreaChartData =
+    teamKpiData?.individual_focus_areas
+      ?.filter((item) => item.active_count > 0)
+      ?.sort((a, b) => b.active_count - a.active_count)
+      ?.map((item) => ({
+        name: pathwayMap[item.pathway],
+        value: item.active_count,
+        activeCount: item.active_count,
+      })) || [];
+
+  const getWeeksRemaining = (seconds: number = 0) => {
+    return Math.ceil(seconds / (60 * 60 * 24 * 7));
+  };
+
+  const latestReflections = teamKpiData?.engagement?.shared_reflections || [];
+  const noDataFocusAreas =
+    teamKpiData?.individual_focus_areas
+      ?.sort((a, b) => b.active_count - a.active_count)
+      ?.map((item) => ({
+        name: pathwayMap[item.pathway],
+        value: item.active_count || 0,
+        activeCount: item.active_count || 0,
+      })) || [];
+  const isAllZero =
+    noDataFocusAreas.length > 0 &&
+    noDataFocusAreas.every((item) => item.value === 0);
   return (
     <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
       {/* TOP LEFT SHAPE */}
@@ -412,16 +459,20 @@ function OrganizationSnapshot() {
                     <GaugeChart
                       id="pillar-1-gauge"
                       nrOfLevels={1}
-                      percent={teamSnapshot?.pillar_01_avg}
-                      hideText={true}
+                      percent={getGaugePercent(teamSnapshot?.pillar_01_avg)}
+                      hideText
                       arcWidth={0.38}
                       colors={["#D3CBB6"]}
                       needleColor="#F28B82"
                     />
 
-                    <div className="absolute top-[55%] left-1/2 -translate-x-1/2 text-[#0F4F58] text-[22px] font-bold">
-                      {teamSnapshot?.pillar_01_avg}
-                    </div>
+                    <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      0
+                    </span>
+
+                    <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                      5
+                    </span>
                   </div>
                 </div>
 
@@ -445,16 +496,16 @@ function OrganizationSnapshot() {
                     <GaugeChart
                       id="connect-gauge"
                       nrOfLevels={1}
-                      percent={(teamSnapshot?.pillar_02_avg || 0) / 5}
-                      hideText={true}
-                      arcWidth={0.38} // thicker arc
+                      percent={getGaugePercent(teamSnapshot?.pillar_02_avg)}
+                      hideText
+                      arcWidth={0.38}
                       colors={["#D3CBB6"]}
                       needleColor="#F28B82"
                     />
 
                     {/* Labels */}
                     <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
-                      1
+                      0
                     </span>
 
                     <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
@@ -484,16 +535,16 @@ function OrganizationSnapshot() {
                     <GaugeChart
                       id="pillar-3-gauge"
                       nrOfLevels={1}
-                      percent={(teamSnapshot?.pillar_03_avg || 0) / 5}
-                      hideText={true}
-                      arcWidth={0.38} // thicker arc
+                      percent={getGaugePercent(teamSnapshot?.pillar_03_avg)}
+                      hideText
+                      arcWidth={0.38}
                       colors={["#D3CBB6"]}
                       needleColor="#F28B82"
                     />
 
                     {/* Labels */}
                     <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
-                      1
+                      0
                     </span>
 
                     <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
@@ -508,7 +559,9 @@ function OrganizationSnapshot() {
             <div className="flex justify-end mt-20">
               <div className="bg-[#86c9c9] px-8 py-2 rounded-full">
                 <p className="text-[#0F4F58] text-[22px] font-bold">
-                  Participation: 12/18 have responded to the quiz
+                  Participation: {teamKpiData?.quiz?.participation?.responded}/
+                  {teamKpiData?.quiz?.participation?.total} have responded to
+                  the quiz
                 </p>
               </div>
             </div>
@@ -518,7 +571,7 @@ function OrganizationSnapshot() {
           <div className="mt-10">
             {/* Title */}
             <h2 className="text-[32px] text-[#0F4F58] font-[RocaTwo] font-bold">
-              Individual Focus Areas{" "}
+              Individual Personal Pathways{" "}
             </h2>
 
             {/* Subtitle */}
@@ -529,61 +582,85 @@ function OrganizationSnapshot() {
 
             {/* Chart Card */}
             <div className="bg-[#f8e1b8] rounded-[20px] p-16 mt-6">
-              <ResponsiveContainer
-                width="100%"
-                height={450}
-                style={{ background: "#D7D8C8" }}
-              >
-                <BarChart
-                  data={data}
-                  layout="vertical"
-                  margin={{ top: 10, right: 30, left: 120, bottom: 40 }}
+              {isAllZero ? (
+                <div className="relative">
+                  <ResponsiveContainer
+                    width="100%"
+                    height={450}
+                    style={{ background: "#D7D8C8" }}
+                  >
+                    <BarChart
+                      data={noDataFocusAreas}
+                      layout="vertical"
+                      margin={{ top: 10, right: 30, left: 120, bottom: 40 }}
+                    >
+                      <XAxis
+                        type="number"
+                        domain={[0, 35]}
+                        ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
+                      />
+                      <YAxis type="category" dataKey="name" width={260} />
+                      <Bar dataKey="value" fill="#86c9c9" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <ResponsiveContainer
+                  width="100%"
+                  height={450}
+                  style={{ background: "#D7D8C8" }}
                 >
-                  <CartesianGrid
-                    stroke="#A8A99A"
-                    strokeOpacity={0.4}
-                    horizontal={false}
-                  />
+                  <BarChart
+                    data={focusAreaChartData}
+                    layout="vertical"
+                    margin={{ top: 10, right: 30, left: 120, bottom: 40 }}
+                  >
+                    <CartesianGrid
+                      stroke="#A8A99A"
+                      strokeOpacity={0.4}
+                      horizontal={false}
+                    />
 
-                  <XAxis
-                    type="number"
-                    domain={[0, 35]}
-                    ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
-                    tick={{ fontSize: 20, fill: "#000" }}
-                    axisLine={false}
-                    tickLine={false}
-                    label={{
-                      value: "% of people",
-                      position: "bottom",
-                      offset: 10,
-                      style: { fontSize: 22, fill: "#000" },
-                    }}
-                  />
+                    <XAxis
+                      type="number"
+                      domain={[0, 35]}
+                      ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
+                      tick={{ fontSize: 20, fill: "#000" }}
+                      axisLine={false}
+                      tickLine={false}
+                      label={{
+                        value: "% of people",
+                        position: "bottom",
+                        offset: 10,
+                        style: { fontSize: 22, fill: "#000" },
+                      }}
+                    />
 
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    tick={{ fontSize: 22, fill: "#000" }}
-                    axisLine={false}
-                    tickLine={false}
-                    width={260}
-                  />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      tick={{ fontSize: 22, fill: "#000" }}
+                      axisLine={false}
+                      tickLine={false}
+                      width={260}
+                    />
 
-                  <Bar
-                    dataKey="value"
-                    barSize={40}
-                    shape={renderBar}
-                    isAnimationActive
-                    animationDuration={2000}
-                    animationEasing="ease-in-out"
-                  />
+                    <Bar
+                      dataKey="value"
+                      barSize={40}
+                      shape={renderBar}
+                      isAnimationActive
+                      animationDuration={2000}
+                      animationEasing="ease-in-out"
+                    />
 
-                  <Tooltip
-                    cursor={false}
-                    content={(props) => <CustomTooltip {...props} />}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+                    <Tooltip
+                      cursor={false}
+                      content={(props) => <CustomTooltip {...props} />}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
             </div>
           </div>
 
@@ -619,14 +696,13 @@ function OrganizationSnapshot() {
                   </h3>
 
                   <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-6">
-                    <ProgressPill label="Built Trust" percent={70} />
-                    <ProgressPill label="Improve Clarity" percent={60} />
-                    <ProgressPill
-                      label="Strengthen Collaboration"
-                      percent={65}
-                    />
-                    <ProgressPill label="Foster Belonging" percent={45} />
-                    <ProgressPill label="Sustain Wellbeing" percent={25} />
+                    {teamKpiData?.poll?.results?.map((item) => (
+                      <ProgressPill
+                        key={item.option}
+                        label={item.option}
+                        percent={item.vote_percentage}
+                      />
+                    ))}
                   </div>
                 </div>
 
@@ -668,7 +744,9 @@ function OrganizationSnapshot() {
               {/* Bottom Participation */}
               <div className="mt-6 ml-4">
                 <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
-                  Participation: 8 of 12 team members responded (67%)
+                  Participation: {teamKpiData?.poll?.participation?.responded}{" "}
+                  of {teamKpiData?.poll?.participation?.total} team members
+                  responded ({teamKpiData?.poll?.participation?.percentage}%)
                 </p>
               </div>
             </div>
@@ -683,7 +761,7 @@ function OrganizationSnapshot() {
                 </h3>
 
                 <div className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px] w-full">
-                  Everything feels urgent
+                  {teamKpiData?.cycle?.champion_pp || "-"}
                 </div>
               </div>
 
@@ -694,29 +772,23 @@ function OrganizationSnapshot() {
                 </h3>
 
                 <div className="flex justify-center items-center ">
-                  {/* Card 1 */}
-                  <div className={styles.card}>
-                    <Image
-                      src={images.orgSnapPoly}
-                      alt="Build Trust"
-                      fill
-                      className={styles.cardImage}
-                    />
-                    <h3 className={styles.cardTitle}>Build Trust</h3>
-                  </div>
-
-                  {/* Card 2 */}
-                  <div className={styles.card}>
-                    <Image
-                      src={images.overseerToolPoly}
-                      alt="Strengthen Collaboration"
-                      fill
-                      className={styles.cardImage}
-                    />
-                    <h3 className={styles.cardTitle}>
-                      Strengthen <br /> Collaboration
-                    </h3>
-                  </div>
+                  {teamKpiData?.cycle?.recommended_focus_areas?.map(
+                    (focusArea: string, index: number) => (
+                      <div key={focusArea} className={styles.card}>
+                        <Image
+                          src={
+                            index % 2 === 0
+                              ? images.orgSnapPoly
+                              : images.overseerToolPoly
+                          }
+                          alt={focusArea}
+                          fill
+                          className={styles.cardImage}
+                        />
+                        <h3 className={styles.cardTitle}>{focusArea}</h3>
+                      </div>
+                    ),
+                  )}
                 </div>
               </div>
 
@@ -727,13 +799,16 @@ function OrganizationSnapshot() {
                 </h3>
 
                 <div className="flex flex-col gap-4">
-                  <div className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px]">
-                    Say It in One Line
-                  </div>
-
-                  <div className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px]">
-                    Say It in One Line
-                  </div>
+                  {teamKpiData?.cycle?.chosen_team_rituals?.map(
+                    (ritual: any) => (
+                      <div
+                        key={ritual.team_ritual_id}
+                        className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px]"
+                      >
+                        {ritual.title}
+                      </div>
+                    ),
+                  )}
                 </div>
               </div>
             </div>
@@ -751,104 +826,124 @@ function OrganizationSnapshot() {
               {/* Two Column Layout */}
               <div className="grid grid-cols-2 gap-12">
                 {/* CARD */}
-                {[1, 2].map((_, index) => (
-                  <div key={index} className="bg-[#b9cbb7] rounded-[20px] p-10">
-                    {/* TOP INFO SECTION */}
-                    <div className="space-y-6">
-                      {/* Focus Area */}
-                      <div className="flex items-center justify-between">
-                        <span className="text-[20px] font-[RocaTwo] text-[#0F4F58]">
-                          Focus Area
-                        </span>
-                        <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          {index === 0 ? "Improve Clarity" : "Build Trust"}
+                {teamKpiData?.cycle?.chosen_team_rituals?.map(
+                  (ritual: any, index: number) => (
+                    <div
+                      key={ritual.team_ritual_id}
+                      className="bg-[#b9cbb7] rounded-[20px] p-10"
+                    >
+                      {/* TOP INFO SECTION */}
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[20px] font-[RocaTwo] text-[#0F4F58]">
+                            Focus Area
+                          </span>
+
+                          <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                            {ritual.focus_area}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
+                            Active Team <br /> Ritual
+                          </span>
+
+                          <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                            {ritual.title}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
+                            Time remaining <br /> in this cycle
+                          </span>
+
+                          <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                            [
+                            {getWeeksRemaining(
+                              teamKpiData?.cycle?.time_remaining_seconds,
+                            )}{" "}
+                            Weeks]
+                          </div>
                         </div>
                       </div>
 
-                      {/* Active Team Ritual */}
-                      <div className="flex items-center justify-between">
-                        <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
-                          Active Team <br /> Ritual
-                        </span>
-                        <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          {index === 0
-                            ? "What Happens Next"
-                            : "Say It in One Line"}
-                        </div>
-                      </div>
+                      {/* Engagement Section */}
+                      <div className="mt-12">
+                        <h3 className="text-[28px] font-[RocaTwo] text-[#0F4F58] mb-8">
+                          Engagement so far:
+                        </h3>
 
-                      {/* Time Remaining */}
-                      <div className="flex items-center justify-between">
-                        <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
-                          Time remaining <br /> in this cycle
-                        </span>
-                        <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          [5 Weeks]
-                        </div>
+                        <ul className="space-y-6 text-[18px] text-[#0F4F58] font-[Roboto]">
+                          <li className="flex items-start gap-4">
+                            <Image
+                              src={images.engagementImg}
+                              alt="arrow"
+                              width={22}
+                              height={22}
+                              className="mt-1"
+                            />
+                            <span>
+                              Awareness:{" "}
+                              {teamKpiData?.engagement?.awareness?.percentage ??
+                                0}
+                              % have viewed the ritual
+                            </span>
+                          </li>
+
+                          <li className="flex items-start gap-4">
+                            <Image
+                              src={images.engagementImg}
+                              alt="arrow"
+                              width={22}
+                              height={22}
+                              className="mt-1"
+                            />
+                            <span>
+                              Participation:{" "}
+                              {teamKpiData?.engagement
+                                ?.team_ritual_participation?.percentage ?? 0}
+                              % have contributed at least one team reflection
+                            </span>
+                          </li>
+
+                          <li className="flex items-start gap-4">
+                            <Image
+                              src={images.engagementImg}
+                              alt="arrow"
+                              width={22}
+                              height={22}
+                              className="mt-1"
+                            />
+                            <span>
+                              Momentum:{" "}
+                              {teamKpiData?.engagement?.momentum?.percentage ??
+                                0}
+                              % have contributed more than once
+                            </span>
+                          </li>
+
+                          <li className="flex items-start gap-4">
+                            <Image
+                              src={images.engagementImg}
+                              alt="arrow"
+                              width={22}
+                              height={22}
+                              className="mt-1"
+                            />
+                            <span>
+                              Sharing:{" "}
+                              {teamKpiData?.engagement?.sharing?.shared_count ??
+                                0}{" "}
+                              reflections shared on Reflection Wall
+                            </span>
+                          </li>
+                        </ul>
                       </div>
                     </div>
-
-                    {/* Engagement Section */}
-                    <div className="mt-12">
-                      <h3 className="text-[28px] font-[RocaTwo] text-[#0F4F58] mb-8">
-                        Engagement so far:
-                      </h3>
-
-                      <ul className="space-y-6 text-[18px] text-[#0F4F58] font-[Roboto]">
-                        <li className="flex items-start gap-4">
-                          <Image
-                            src={images.engagementImg}
-                            alt="arrow"
-                            width={22}
-                            height={22}
-                            className="mt-1"
-                          />
-                          <span>Awareness: 92% have viewed the ritual</span>
-                        </li>
-
-                        <li className="flex items-start gap-4">
-                          <Image
-                            src={images.engagementImg}
-                            alt="arrow"
-                            width={22}
-                            height={22}
-                            className="mt-1"
-                          />
-                          <span>
-                            Participation: 67% have contributed at least one
-                            team reflection
-                          </span>
-                        </li>
-
-                        <li className="flex items-start gap-4">
-                          <Image
-                            src={images.engagementImg}
-                            alt="arrow"
-                            width={22}
-                            height={22}
-                            className="mt-1"
-                          />
-                          <span>
-                            Momentum: 41% have contributed more than once
-                          </span>
-                        </li>
-
-                        <li className="flex items-start gap-4">
-                          <Image
-                            src={images.engagementImg}
-                            alt="arrow"
-                            width={22}
-                            height={22}
-                            className="mt-1"
-                          />
-                          <span>
-                            Sharing: 14 reflections shared on Reflection Wall
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             </div>
           </div>
@@ -860,75 +955,56 @@ function OrganizationSnapshot() {
               Recent insights shared by the team.
             </div>
             {/* Cards Section */}
-            <div className="bg-[#c2e2e2] rounded-[32px] mt-10 px-4 py-4 relative max-w-[1150px] h-[873px] ml-[95px] ">
-              {/* <div
-          className="grid grid-cols-3 gap-x-[65px] gap-y-[40px]
-"
-        >
-          {reflections.map((item, index) => (
-            <div
-              key={index}
-              className="
-       bg-[#CDE3CC]
-        rounded-[16px]
-       
-        h-[266px]
-        px-[10px]
-        py-[20px]
-        flex
-        flex-col
-        justify-between
-      "
-            >
-              <p className="text-[18px] leading-[20px] text-[#0F4F58] text-center font-[Roboto] font-[400]">
-                {item.text}
-              </p>
-
-              <div className="flex items-center justify-between text-[15px] text-[#0F4F58] font-[Aptos] font-[400]">
-                <span className="flex items-center gap-1">⏱ {item.time}</span>
-
-                <span className="flex items-center gap-1">❤️ {item.likes}</span>
-              </div>
-            </div>
-          ))}
-        </div> */}
-              <div className="absolute -left-[53px]">
-                <div className="flex flex-col items-center">
-                  {rows.map((row: any, rowIndex: any) => (
-                    <div key={rowIndex} className={`flex gap-10`}>
-                      {row.map((item: any) => (
-                        <ViewAllReflectionCard
-                          key={item.id}
-                          text={item.text}
-                          rotate={item.rotate}
-                          imageKey={item.imageKey}
-                          index={item.id}
-                        />
+            {latestReflections.length > 0 ? (
+              <>
+                <div className="bg-[#c2e2e2] rounded-[32px] mt-10 px-4 py-4 relative max-w-[1150px] h-[873px] ml-[95px] ">
+                  <div className="absolute -left-[53px]">
+                    <div className="flex flex-col items-center">
+                      {rows.map((row: any, rowIndex: any) => (
+                        <div key={rowIndex} className={`flex gap-10`}>
+                          {row.map((item: any) => (
+                            <ViewAllReflectionCard
+                              key={item.id}
+                              text={item.text}
+                              rotate={item.rotate}
+                              imageKey={item.imageKey}
+                              index={item.id}
+                            />
+                          ))}
+                        </div>
                       ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
+              </>
+            ) : (
+              <div className="bg-[#c2e2e2] rounded-[32px] mt-10 py-20 flex justify-center items-center">
+                <p className="text-[#0F4F58] text-[24px] font-[RocaTwo]">
+                  No Latest Reflections Shared By Team
+                </p>
               </div>
+            )}
+          </div>
+          {latestReflections.length > 0 && (
+            <div className="flex justify-end ">
+              {/* View All Reflections Button */}
+              <PolygonButton
+                height="106px"
+                width="87px"
+                bgColor="#f5c882"
+                radius={14}
+                topTilt={18}
+                slantSide="right"
+                clipPath={`polygon(17% 28px, 77% 17%, 100% 79%, 0% calc(100% - 25px))`}
+              >
+                <div className="h-full flex items-center justify-center text-center">
+                  <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[18px]">
+                    View All Reflections
+                  </span>
+                </div>
+              </PolygonButton>
             </div>
-          </div>
-          <div className="flex justify-end ">
-            {/* View All Reflections Button */}
-            <PolygonButton
-              height="106px"
-              width="87px"
-              bgColor="#f5c882"
-              radius={14}
-              topTilt={18}
-              slantSide="right"
-              clipPath={`polygon(17% 28px, 77% 17%, 100% 79%, 0% calc(100% - 25px))`}
-            >
-              <div className="h-full flex items-center justify-center text-center">
-                <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[18px]">
-                  View All Reflections
-                </span>
-              </div>
-            </PolygonButton>
-          </div>
+          )}
         </>
       )}
       <div className="flex flex-col justify-end mt-10 relative z-20">
