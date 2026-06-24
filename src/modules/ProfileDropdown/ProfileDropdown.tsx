@@ -5,6 +5,7 @@ import images from "@/src/assets/images";
 import { USER_INFO_TYPE } from "../AuthModule/Types/CommonTypes";
 import { usePathname, useRouter } from "next/navigation";
 import { openLogoutModal } from "../WelcomeModule/Components/LogoutModal/LogoutModal";
+import useGetMtjPollQuery from "../ChampionHubModule/Hooks/useGetMtjPollQuery";
 
 type PROFILE_DROPDOWN_PROPS = {
   userInfo?: USER_INFO_TYPE;
@@ -68,6 +69,21 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
     "/spread-ripple",
   ].includes(pathname);
 
+  const { data, isLoading } = useGetMtjPollQuery();
+
+  const pollData = data?.data;
+  const cycleStarted = pollData?.cycle_started;
+
+  const handleChampionHubClick = () => {
+    if (isLoading) return;
+
+    if (cycleStarted) {
+      router.push("/pressure-point-record");
+    } else {
+      router.push("/champion-hub");
+    }
+  };
+
   return (
     <div
       className={`absolute right-0 top-[150px] w-[320px] bg-[#E9E6E2] rounded-xl shadow-xl p-6 z-50 ${
@@ -83,7 +99,13 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
           <li
             key={item.path}
             className={getClass(item.path)}
-            onClick={() => router.push(item.path)}
+            onClick={() => {
+              if (item.path === "/champion-hub") {
+                handleChampionHubClick();
+              } else {
+                router.push(item.path);
+              }
+            }}
           >
             {item.label}
           </li>
