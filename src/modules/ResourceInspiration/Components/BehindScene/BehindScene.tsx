@@ -42,38 +42,65 @@ function BehindScene() {
     setEnter(true);
   }, []);
 
+  const renderPrinciplesColumn = (
+    data: { num: string; title: string }[],
+    isFirst = false
+  ) => (
+    <div
+      className={`${styles.principlesCol} ${
+        isFirst ? styles.principlesColFirst : ""
+      }`}
+    >
+      {data.map(({ num, title }) => (
+        <div key={num} className={styles.principleRow}>
+          <div className={styles.principleInner}>
+            <div className={styles.principleNum}>
+              <span className={styles.principleNumText}>{num}</span>
+            </div>
+            <p className={styles.principleTitle}>{title}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div
       className={`min-h-screen bg-[#F5F0EB] font-sans ${styles.page} ${
         enter ? styles.enterActive : styles.enter
       }`}
     >
-      <Image
-        src={images.behindSceneImg}
-        alt="shape"
-        width={1500}
-        className="absolute top-0 right-0 z-0"
-      />
-      <div className="relative z-10 px-8 py-6">
+      <div className={styles.bgImageWrap} aria-hidden="true">
+        <Image
+          src={images.behindSceneImg}
+          alt=""
+          width={images.behindSceneImg.width}
+          height={images.behindSceneImg.height}
+          className={styles.bgImage}
+          sizes="100vw"
+          priority
+        />
+      </div>
+      <div className={styles.content}>
         <UserProfileHeader
           greetingColor="#0F4F58"
           nameColor="#0F4F58"
           userInfo={user}
         />
-        <div className=" text-center mt-20 px-4">
-          <h1 className="text-[#0F4F58] text-[45px] font-[RocaTwo] leading-tight mb-10 font-bold">
+        <div className={styles.hero}>
+          <h1 className={styles.heroTitle}>
             Behind The Scenes Of
             <br />
             Hi Humaniser!
           </h1>
 
-          <p className="text-[#0F4F58] text-[26px] leading-relaxed mb-8 font-bold font-[RocaTwo]">
+          <p className={styles.heroParagraph}>
             Hi Humaniser! is built around one simple truth: work feels better —
             and delivers better — when we centre people, clarity, and
             connection.
           </p>
 
-          <p className="text-[#0F4F58] text-[26px] leading-relaxed mb-8 font-bold font-[RocaTwo]">
+          <p className={styles.heroParagraph}>
             Every part of Hi Humaniser! works like a living system. The Pillars
             define what we stand for. The Principles turn those ideas into ways
             of working. And the Pathways and Team Rituals bring it all to life —
@@ -81,26 +108,24 @@ function BehindScene() {
             connect, and perform.
           </p>
 
-          <p className="text-[#0F4F58] text-[26px] leading-relaxed font-bold font-[RocaTwo]">
-            It’s a framework designed to make human habits visible — and
+          <p className={`${styles.heroParagraph} ${styles.heroParagraphLast}`}>
+            It&apos;s a framework designed to make human habits visible — and
             performance sustainable.
           </p>
         </div>
 
         {/* Heart & Structure Section */}
-        <div className="mt-32 ml-[100px]">
-          {/* Heading */}
-          <h2 className="text-[40px] font-[RocaTwo] mb-6 text-[#4BA6A6] font-bold">
+        <div className={styles.heartSection}>
+          <h2 className={styles.sectionHeading}>
             The Heart And Structure Of Hi Humaniser!
           </h2>
-          <div className="ml-[28px]">
-            {/* Intro Text */}
-            <p className="text-[22px] leading-relaxed mb-4 text-[#0F4F58] font-[400] font-[Roboto]">
+          <div className={styles.sectionIndent}>
+            <p className={`${styles.bodyText} ${styles.bodyTextSpaced}`}>
               At the foundation of Hi Humaniser! are three pillars — The Mindset
               We Bring, The Way We Connect, and The Culture We Shape.
             </p>
 
-            <p className="text-[22px] leading-relaxed text-[#0F4F58] font-[400] font-[Roboto]">
+            <p className={styles.bodyText}>
               Together, they hold 12 guiding principles that show what
               human-centred performance looks like in action — from owning our
               impact to making work sustainable.
@@ -108,29 +133,14 @@ function BehindScene() {
           </div>
 
           {/* Tilted Highlight Box */}
-          <div className="relative max-w-[640px] mx-auto mb-20">
-            {/* Image container */}
-            <div className="relative transform -rotate-2">
+          <div className={styles.highlightBox}>
+            <div className={styles.highlightInner}>
               <Image
                 src={images.screenPolygon}
                 alt="shape"
                 className="w-full h-auto"
               />
-
-              {/* Text OVER image */}
-              <p
-                className="
-        absolute inset-0
-        flex items-center justify-center
-        px-12
-        text-center
-        text-[23px]
-        leading-relaxed
-        font-bold
-        font-[RocaTwo]
-        text-[#0F4F58]
-      "
-              >
+              <p className={styles.highlightText}>
                 These pillars and principles give every team a shared language
                 for how we think, communicate, and build trust — turning good
                 intentions into everyday habits that make work feel better and
@@ -140,11 +150,9 @@ function BehindScene() {
           </div>
 
           {/* Pillars */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {/* Pillar 1 */}
-            <div className="bg-[#86C9C9] rounded-[18px] w-[312px] h-[270px] mx-auto relative overflow-hidden">
-              {/* Polygon Shape (Behind) */}
-              <div className="absolute left-0 top-0 h-full w-[221px] z-0">
+          <div className={styles.pillarsGrid}>
+            <div className={styles.pillarCard}>
+              <div className={styles.pillarShape}>
                 <Image
                   src={images.scenePolygon1}
                   alt="polygon"
@@ -152,10 +160,8 @@ function BehindScene() {
                   className="object-contain"
                 />
               </div>
-
-              {/* Text (Above Shape & shifted up) */}
-              <div className="relative z-10 h-full flex items-start pt-[52px] pl-[42px]">
-                <h3 className="text-[#0F4F58] font-[RocaTwo-Bold] font-bold text-[36px] leading-[44px] text-left">
+              <div className={styles.pillarTextWrap}>
+                <h3 className={styles.pillarTitle}>
                   THE MINDSET
                   <br />
                   WE
@@ -165,11 +171,8 @@ function BehindScene() {
               </div>
             </div>
 
-            {/* Pillar 2 */}
-
-            <div className="bg-[#B9D9B1] rounded-[18px] w-[312px] h-[270px] mx-auto relative overflow-hidden">
-              {/* Polygon Shape (Behind) */}
-              <div className="absolute left-0 top-0 h-full w-[221px] z-0">
+            <div className={`${styles.pillarCard} ${styles.pillarCardGreen}`}>
+              <div className={styles.pillarShape}>
                 <Image
                   src={images.scenePolygon1}
                   alt="polygon"
@@ -177,10 +180,8 @@ function BehindScene() {
                   className="object-contain"
                 />
               </div>
-
-              {/* Text (Above Shape & shifted up) */}
-              <div className="relative z-10 h-full flex items-start pt-[52px] pl-[42px]">
-                <h3 className="text-[#0F4F58] font-[RocaTwo-Bold] font-bold text-[36px] leading-[44px] text-left">
+              <div className={styles.pillarTextWrap}>
+                <h3 className={styles.pillarTitle}>
                   THE
                   <br />
                   WAY
@@ -192,10 +193,8 @@ function BehindScene() {
               </div>
             </div>
 
-            {/* Pillar 3 */}
-            <div className="bg-[#F5C882] rounded-[18px] w-[312px] h-[270px] mx-auto relative overflow-hidden">
-              {/* Polygon Shape (Behind) */}
-              <div className="absolute left-0 top-0 h-full w-[221px] z-0">
+            <div className={`${styles.pillarCard} ${styles.pillarCardGold}`}>
+              <div className={styles.pillarShape}>
                 <Image
                   src={images.scenePolygon1}
                   alt="polygon"
@@ -203,10 +202,8 @@ function BehindScene() {
                   className="object-contain"
                 />
               </div>
-
-              {/* Text (Above Shape & shifted up) */}
-              <div className="relative z-10 h-full flex items-start pt-[52px] pl-[42px]">
-                <h3 className="text-[#0F4F58] font-[RocaTwo-Bold] font-bold text-[36px] leading-[44px] text-left">
+              <div className={styles.pillarTextWrap}>
+                <h3 className={styles.pillarTitle}>
                   THE
                   <br />
                   CULTURE
@@ -220,78 +217,16 @@ function BehindScene() {
           </div>
 
           {/* Principles Section */}
-          <div className="mt-14">
-            <div className="  grid grid-cols-1 md:grid-cols-3 gap-16 text-[#0F4F58]">
-              {/* Column 1 */}
-              <div className="space-y-6 ml-[90px]">
-                {column1Data.map(({ num, title }) => (
-                  <div key={num} className="flex items-center gap-4">
-                    {/* Number + Text */}
-                    <div className="flex items-center gap-6">
-                      {/* BIG NUMBER */}
-                      <div className="w-[56px] text-center">
-                        <span className="block text-[48px] font-[RocaTwo] font-bold leading-none text-[#2F6F6A]">
-                          {num}
-                        </span>
-                      </div>
-
-                      {/* TITLE */}
-                      <p className="text-[16px] leading-[26px] max-w-[220px] font-normal font-[Roboto]">
-                        {title}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Column 2 */}
-              <div className="space-y-6">
-                {column2Data.map(({ num, title }) => (
-                  <div key={num} className="flex items-center gap-4">
-                    {/* Number + Text */}
-                    <div className="flex items-center gap-6">
-                      {/* BIG NUMBER */}
-                      <div className="w-[56px] text-center">
-                        <span className="block text-[48px] font-[RocaTwo] font-bold leading-none text-[#2F6F6A]">
-                          {num}
-                        </span>
-                      </div>
-
-                      {/* TITLE */}
-                      <p className="text-[16px] leading-[26px] max-w-[220px] font-normal font-[Roboto]">
-                        {title}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Column 3 */}
-              <div className="space-y-6">
-                {column3Data.map(({ num, title }) => (
-                  <div key={num} className="flex items-center gap-4">
-                    {/* Number + Text */}
-                    <div className="flex items-center gap-6">
-                      {/* BIG NUMBER */}
-                      <div className="w-[56px] text-center">
-                        <span className="block text-[48px] font-[RocaTwo] font-bold leading-none text-[#2F6F6A]">
-                          {num}
-                        </span>
-                      </div>
-
-                      {/* TITLE */}
-                      <p className="text-[16px] leading-[26px] max-w-[220px] font-normal font-[Roboto]">
-                        {title}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className={styles.principlesSection}>
+            <div className={styles.principlesGrid}>
+              {renderPrinciplesColumn(column1Data, true)}
+              {renderPrinciplesColumn(column2Data)}
+              {renderPrinciplesColumn(column3Data)}
             </div>
           </div>
 
-          <div className="flex justify-end mt-14 items-center gap-6">
-            <div className="text-[16px] leading-relaxed max-w-[500px] text-[#0F4F58] font-[400] font-[Aptos]">
+          <div className={styles.downloadRow}>
+            <div className={styles.downloadText}>
               Download the Hi Humaniser! Framework — a one-page view of the
               pillars and principles that shape how we think, connect and
               perform together.
@@ -302,39 +237,38 @@ function BehindScene() {
           </div>
         </div>
 
-        <div className=" mt-14 mx-auto">
-          {/* Heading */}
-          <h2 className="text-[#4BA6A6] text-[40px] font-[RocaTwo] font-bold mb-6">
+        <div className={styles.sectionBlock}>
+          <h2 className={styles.sectionHeading}>
             Designed To Work As A System
           </h2>
-          <div className="ml-[28px]">
-            {/* Description */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed  mb-8 font-[Roboto] font-[400]">
+          <div className={styles.sectionIndent}>
+            <p
+              className={`${styles.sectionBodyText} ${styles.sectionBodyTextSpaced}`}
+            >
               These pillars and principles give teams a shared language for how
               they think, communicate, and build trust — turning good intentions
               into everyday behaviours.
             </p>
 
-            {/* Bullet points */}
-            <div className="text-[#0F4F58] text-[23px] font-[Roboto] mb-8 font-[400]">
+            <div className={styles.bulletBlock}>
               <p className="mb-2">HH! is designed to work:</p>
-              <ul className="list-disc ml-[38px] space-y-1 ">
+              <ul className={styles.bulletList}>
                 <li>within teams</li>
                 <li>across teams</li>
-                <li>and even alongside teams who aren’t using the platform</li>
+                <li>and even alongside teams who aren&apos;t using the platform</li>
               </ul>
             </div>
 
-            {/* Bottom text */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed max-w-[760px] mb-12 font-[Roboto] font-[400  ]">
-              You don’t need perfect adoption for impact.
+            <p
+              className={`${styles.sectionBodyText} ${styles.sectionBodyTextWide}`}
+            >
+              You don&apos;t need perfect adoption for impact.
               <br />
               When a few people start working differently, the system begins to
               shift.
             </p>
           </div>
-          {/* CTA Button */}
-          <div className="flex justify-end">
+          <div className={styles.ctaRow}>
             <CommonButtons
               label="Explore Pathways &
 Team Rituals"
@@ -343,25 +277,25 @@ Team Rituals"
             />
           </div>
         </div>
-        <div className=" mt-14 mx-auto">
-          {/* Heading */}
-          <h2 className="text-[#4BA6A6] text-[40px] font-[RocaTwo] font-bold mb-6">
+
+        <div className={styles.sectionBlock}>
+          <h2 className={styles.sectionHeading}>
             An Evidence-Led Framework
           </h2>
-          <div className="ml-[28px]">
-            {/* Description */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed mb-8 font-[Roboto] font-[400]">
+          <div className={styles.sectionIndent}>
+            <p
+              className={`${styles.sectionBodyText} ${styles.sectionBodyTextSpaced}`}
+            >
               Hi Humaniser! is underpinned by a strong evidence base.
             </p>
 
-            {/* Bullet points */}
-            <div className="text-[#0F4F58] text-[23px] font-[Roboto] mb-8 font-[400]">
+            <div className={styles.bulletBlock}>
               <p className="mb-2">
                 Every element of the framework — from guiding principles and
                 behaviours to practical tools and shared practices — has been
                 shaped through four complementary lenses:
               </p>
-              <ul className="list-disc ml-[38px] space-y-1 ">
+              <ul className={styles.bulletList}>
                 <li>The brain — neuroscience</li>
                 <li>The person — psychology and human behaviour</li>
                 <li>
@@ -371,16 +305,16 @@ Team Rituals"
               </ul>
             </div>
 
-            {/* Bottom text */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed  mb-12 font-[Roboto] font-[400  ]">
+            <p
+              className={`${styles.sectionBodyText} ${styles.sectionBodyTextBottom}`}
+            >
               Together, these lenses form the intellectual backbone of Hi
               Humaniser! — ensuring the framework is robust enough to support
               meaningful, human-centred performance in complex, real-world
               systems.
             </p>
           </div>
-          {/* CTA Button */}
-          <div className="flex justify-end">
+          <div className={styles.ctaRow}>
             <CommonButtons
               label="Explore the
 Research Room"
@@ -389,28 +323,31 @@ Research Room"
             />
           </div>
         </div>
-        <div className="mt-14 mx-auto">
+
+        <div className={styles.successWrap}>
           <SuccessMessage
-            text="You’ve seen what shapes Hi Humaniser!
+            text="You've seen what shapes Hi Humaniser!
  Now go experience it in motion."
-            fontSize="text-[23px]"
+            fontSize="text-[23px] max-lg:text-[18px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
             fontColor="#0F4F58"
             bottom="3px"
             rightImgBottom="3px"
             rotate="-35deg"
+            wrapperClassName="px-2 lg:px-0"
           />
         </div>
-        <div className="flex justify-start ">
-          <div className="mt-14 flex">
-            <div className="max-w-[350px] text-[#0F4F58] font-[Aptos] text-[17px]">
+
+        <div className={styles.inviteOuter}>
+          <div className={styles.inviteRow}>
+            <div className={styles.inviteText}>
               Feeling inspired?
               <br />
               Invite someone to explore Hi Humaniser!™
             </div>
             <div
-              className="ml-[15px] cursor-pointer"
+              className={styles.inviteBtn}
               onClick={() => router.push("/spread-ripple")}
             >
               <PolygonButton

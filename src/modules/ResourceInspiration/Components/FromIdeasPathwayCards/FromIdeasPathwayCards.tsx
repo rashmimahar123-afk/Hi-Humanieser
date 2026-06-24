@@ -1,5 +1,6 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import styles from "./FromIdeasPathwayCards.module.css";
 
 type PATHWAY_CARD = {
   title: string;
@@ -38,7 +39,7 @@ function FromIdeasPathwayCard(props: IDEA_PATHWAY_CARD_PROPS) {
 
   return (
     <div
-      className="rounded-[24px] pl-[40px] py-[40px] flex gap-[40px] w-full max-w-[1017px] overflow-visible"
+      className={`rounded-[24px] pl-[40px] py-[40px] flex gap-[40px] w-full max-w-[1017px] overflow-visible ${styles.root}`}
       style={{ backgroundColor: bgColor }}
     >
       {/* LEFT TITLE */}
@@ -52,6 +53,26 @@ function FromIdeasPathwayCard(props: IDEA_PATHWAY_CARD_PROPS) {
           </div>
         )}
 
+        <div
+          className={`text-[42px] text-[#0F4F58] leading-tight ${
+            type === "focus-area" ? "mt-[15px]" : ""
+          }`}
+          style={{ fontFamily: "RocaTwo-Bold" }}
+        >
+          {sectionTitle}
+        </div>
+      </div>
+
+      {/* Mobile/tablet title — hidden on desktop (lg+) */}
+      <div className={`hidden max-lg:block ${styles.mobileTitle}`}>
+        {type === "focus-area" && (
+          <div
+            className="text-[42px] text-[#0F4F58] leading-tight"
+            style={{ fontFamily: "RocaTwo-Bold" }}
+          >
+            Focus Area:
+          </div>
+        )}
         <div
           className={`text-[42px] text-[#0F4F58] leading-tight ${
             type === "focus-area" ? "mt-[15px]" : ""

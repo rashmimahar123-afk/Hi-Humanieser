@@ -15,7 +15,6 @@ import { CHOOSE_MYSELF_PILLAR_TYPE } from "@/src/modules/ChoosePathwayModule/Typ
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function FromIdeas() {
-  const [animateText, setAnimateText] = useState(false);
   const [enter, setEnter] = useState(false);
 
   useEffect(() => {
@@ -23,30 +22,134 @@ function FromIdeas() {
   }, []);
 
   const router = useRouter();
-  const { data, isLoading, isError } = useChooseMyselfQuery();
+  const { data } = useChooseMyselfQuery();
   const pillarsData = data?.data?.[1];
 
   const pillarsList =
     pillarsData && "pillars" in pillarsData ? pillarsData.pillars : [];
 
-  // const pillarsList = data?.data?.slice(1)?.[0]?.pillars || [];
   const { user } = useAuthValue();
+
+  const focusAreaCards = [
+    {
+      sectionTitle: "The Mindset We Bring",
+      bgColor: "#4ba6a6",
+      cards: [
+        {
+          title: "Own Your Impact",
+          description:
+            "Transform your messages into clear direction that people can actually act on.",
+          learnMoreColor: "#4ba6a6",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+        {
+          title: "Be Real, Not Right",
+          description:
+            "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
+          learnMoreColor: "#4ba6a6",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+      ],
+    },
+    {
+      sectionTitle: "The Way We Connect",
+      bgColor: "#f5c882",
+      cards: [
+        {
+          title: "Make it Safe",
+          description:
+            "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
+          learnMoreColor: "#f5c882",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+        {
+          title: "Be Real, Not Right",
+          description:
+            "Transform your messages into clear direction that people can actually act on.",
+          learnMoreColor: "#f5c882",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+      ],
+    },
+    {
+      sectionTitle: "The Culture We Shape",
+      bgColor: "#acd5ab",
+      cards: [
+        {
+          title: "Culture by Design",
+          description:
+            "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
+          learnMoreColor: "#acd5ab",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+        {
+          title: "Wellbeing is Performance Infrastructure",
+          description:
+            "Learn how energy, recovery, and care directly strengthen performance.",
+          learnMoreColor: "#acd5ab",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+      ],
+    },
+    {
+      sectionTitle: "The Culture We Shape",
+      bgColor: "#f7c3be",
+      cards: [
+        {
+          title: "Culture by Design",
+          description:
+            "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
+          learnMoreColor: "#f7c3be",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+        {
+          title: "Wellbeing is Performance Infrastructure",
+          description:
+            "Learn how energy, recovery, and care directly strengthen performance.",
+          learnMoreColor: "#f7c3be",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+      ],
+    },
+    {
+      sectionTitle: "The Culture We Shape",
+      bgColor: "#4ba6a6",
+      cards: [
+        {
+          title: "Culture by Design",
+          description:
+            "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
+          learnMoreColor: "#4ba6a6",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+        {
+          title: "Wellbeing is Performance Infrastructure",
+          description:
+            "Learn how energy, recovery, and care directly strengthen performance.",
+          learnMoreColor: "#4ba6a6",
+          onLearnMore: () => router.push(`/conversation`),
+        },
+      ],
+    },
+  ];
+
   return (
     <div
       className={`bg-[#F5F0EB] min-h-screen ${styles.page} ${
         enter ? styles.enterActive : styles.enter
       }`}
     >
-      <div className="relative">
+      <div className={styles.decorWrap}>
         <Image
           src={images.quizPolygon}
-          alt="login-rectangle"
+          alt=""
           width={630}
-          height={630}
-          className="absolute top-0 right-0 z-0"
+          height={542}
+          className={styles.decorImage}
         />
       </div>
-      <div className="px-8 py-6">
+
+      <div className={styles.headerSection}>
         <UserProfileHeader
           greetingColor="#0F4F58"
           nameColor="#0F4F58"
@@ -54,57 +157,48 @@ function FromIdeas() {
         />
       </div>
 
-      <div className="relative text-center z-10">
-        <h2
-          className="text-[56px] text-[#0F4F58] font-bold"
-          style={{ fontFamily: "RocaTwo" }}
-        >
-          From Ideas To Everyday
-        </h2>
-
-        <p className="mt-2 text-[26px] text-[#0F4F58] font-[400] font-[RocaTwo]">
+      <div className={styles.hero}>
+        <h2 className={styles.heroTitle}>From Ideas To Everyday</h2>
+        <p className={styles.heroSubtitle}>
           This Is Where Hi Humaniser! Moves From Understanding To Doing
         </p>
       </div>
-      <div className="px-8 py-6">
-        <div className="relative mt-[40px] ">
-          {/* Polygon Background */}
-          <Image
-            src={images.ideaPolygon}
-            alt="polygon"
-            width={516}
-            className={`-top-[71px] left-[60px] `}
-          />
 
-          {/* Text ON TOP of Polygon */}
-          <div className="absolute inset-0 flex items-center px-[64px] max-w-[500px]">
-            <p
-              className="text-[22px] text-[#0F4F58] leading-[140%]"
-              style={{ fontFamily: "Aptos" }}
-            >
-              Pathways and Team Rituals help turn human-centred principles into
-              everyday behaviours — through small actions, shared moments and
-              consistent practice.
-            </p>
+      <div className={styles.mainContent}>
+        <div className={styles.highlightSection}>
+          <div className={styles.highlightInner}>
+            <Image
+              src={images.ideaPolygon}
+              alt=""
+              width={516}
+              height={228}
+              className={styles.highlightPolygon}
+            />
+            <div className={styles.highlightTextWrap}>
+              <p className={styles.highlightText}>
+                Pathways and Team Rituals help turn human-centred principles into
+                everyday behaviours — through small actions, shared moments and
+                consistent practice.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="mt-14 mx-auto">
-          {/* Heading */}
-          <h2 className="text-[#4BA6A6] text-[40px] font-[RocaTwo] font-bold mb-6">
+        <div className={styles.sectionBlock}>
+          <h2 className={styles.sectionHeading}>
             Pathways — Building Personal Practice
           </h2>
-          <div className="ml-[28px]">
-            {/* Description */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed  mb-8 font-[Roboto] font-[400]">
+          <div className={styles.sectionIndent}>
+            <p
+              className={`${styles.sectionBodyText} ${styles.sectionBodyTextSpaced}`}
+            >
               Pathways support individuals to grow human habits that make
               performance sustainable.
             </p>
 
-            {/* Bullet points */}
-            <div className="text-[#0F4F58] text-[23px] font-[Roboto] mb-8 font-[400]">
+            <div className={styles.bulletBlock}>
               <p className="mb-2">Each Pathway offers:</p>
-              <ul className="list-disc ml-[38px] space-y-1 ">
+              <ul className={styles.bulletList}>
                 <li>A clear focus</li>
                 <li>Moments for reflection</li>
                 <li>
@@ -114,73 +208,64 @@ function FromIdeas() {
               </ul>
             </div>
 
-            {/* Bottom text */}
-            <p className="text-[#0F4F58] text-[23px] leading-relaxed  mb-12 font-[Roboto] font-[400  ]">
-              The aim is not change all at once — it’s steady practice that
+            <p
+              className={`${styles.sectionBodyText} ${styles.sectionBodyTextBottom}`}
+            >
+              The aim is not change all at once — it&apos;s steady practice that
               compounds over time.
             </p>
           </div>
 
-          <div className="mt-[70px]">
-            <div>
-              {pillarsList?.map(
-                (item: CHOOSE_MYSELF_PILLAR_TYPE, index: any) => {
-                  return (
-                    <>
-                      <div
-                        className="mt-[32px] px-[40px]"
-                        key={`item ${index}`}
-                      >
-                        <FromIdeasPathwayCard
-                          sectionTitle={item?.pillar_name}
-                          bgColor={
-                            item?.pillar_number === 1
-                              ? "#4ba6a6"
-                              : item?.pillar_number === 2
-                                ? "#8BBE8A"
-                                : "#F5C882"
-                          }
-                          cards={item?.principles?.map((principleItem) => ({
-                            title: principleItem?.principle_name,
-                            description: principleItem?.definition,
-                            learnMoreColor:
-                              item?.pillar_number === 1
-                                ? "#4ba6a6"
-                                : item?.pillar_number === 2
-                                  ? "#8BBE8A"
-                                  : "#F5C882",
-                            onLearnMore: () =>
-                              router.push(
-                                `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
-                              ),
-                          }))}
-                        />
-                      </div>
-                    </>
-                  );
-                },
-              )}
-            </div>
+          <div className={styles.pathwayCardsSection}>
+            {pillarsList?.map(
+              (item: CHOOSE_MYSELF_PILLAR_TYPE, index: number) => (
+                <div
+                  className={styles.pathwayCardWrap}
+                  key={`pillar-${item?.pillar_number ?? index}`}
+                >
+                  <FromIdeasPathwayCard
+                    sectionTitle={item?.pillar_name}
+                    bgColor={
+                      item?.pillar_number === 1
+                        ? "#4ba6a6"
+                        : item?.pillar_number === 2
+                          ? "#8BBE8A"
+                          : "#F5C882"
+                    }
+                    cards={item?.principles?.map((principleItem) => ({
+                      title: principleItem?.principle_name,
+                      description: principleItem?.definition,
+                      learnMoreColor:
+                        item?.pillar_number === 1
+                          ? "#4ba6a6"
+                          : item?.pillar_number === 2
+                            ? "#8BBE8A"
+                            : "#F5C882",
+                      onLearnMore: () =>
+                        router.push(
+                          `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
+                        ),
+                    }))}
+                  />
+                </div>
+              ),
+            )}
           </div>
 
-          <div className=" mt-14 mx-auto">
-            {/* Heading */}
-            <h2 className="text-[#4BA6A6] text-[40px] font-[RocaTwo] font-bold mb-6">
+          <div className={styles.sectionBlock}>
+            <h2 className={styles.sectionHeading}>
               Team Rituals — Practising Together
             </h2>
-            <div className="ml-[28px]">
-              {/* Description */}
-              <p className="text-[#0F4F58] text-[23px] leading-relaxed font-[Roboto] font-[400]">
-                Some shifts can’t happen alone.
+            <div className={styles.sectionIndent}>
+              <p className={styles.sectionBodyText}>
+                Some shifts can&apos;t happen alone.
               </p>
-
-              {/* Bottom text */}
-              <p className="text-[#0F4F58] text-[23px] leading-relaxed font-[Roboto] font-[400  ]">
+              <p className={styles.sectionBodyText}>
                 Team Rituals help groups strengthen trust, clarity and
                 collaboration through small, shared practices woven into
                 everyday work.
               </p>
-              <p className="text-[#0F4F58] text-[23px] leading-relaxed font-[Roboto] font-[400  ]">
+              <p className={styles.sectionBodyText}>
                 Rituals sit within Focus Areas — themes your team chooses to
                 develop — each linked back to the Hi Humaniser! pillars and
                 principles.
@@ -188,157 +273,46 @@ function FromIdeas() {
             </div>
           </div>
 
-          <div className="mt-[70px]">
-            <div>
-              <div className="mt-[32px] px-[40px]">
+          <div className={styles.pathwayCardsSection}>
+            {focusAreaCards.map((card, index) => (
+              <div className={styles.pathwayCardWrap} key={`focus-${index}`}>
                 <FromIdeasPathwayCard
-                  sectionTitle="The Mindset We Bring"
-                  bgColor="#4ba6a6"
-                  cards={[
-                    {
-                      title: "Own Your Impact",
-                      description:
-                        "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#4ba6a6",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                    {
-                      title: "Be Real, Not Right",
-                      description:
-                        "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
-                      learnMoreColor: "#4ba6a6",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                  ]}
+                  sectionTitle={card.sectionTitle}
+                  bgColor={card.bgColor}
+                  cards={card.cards}
                   type="focus-area"
                 />
               </div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Way We Connect"
-                  bgColor="#f5c882"
-                  cards={[
-                    {
-                      title: "Make it Safe",
-                      description:
-                        "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
-                      learnMoreColor: "#f5c882",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                    {
-                      title: "Be Real, Not Right",
-                      description:
-                        "Transform your messages into clear direction that people can actually act on.",
-                      learnMoreColor: "#f5c882",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                  ]}
-                  type="focus-area"
-                />
-              </div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Culture We Shape"
-                  bgColor="#acd5ab"
-                  cards={[
-                    {
-                      title: "Culture by Design",
-                      description:
-                        "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-                      learnMoreColor: "#acd5ab",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                    {
-                      title: "Wellbeing is Performance Infrastructure",
-                      description:
-                        "Learn how energy, recovery, and care directly strengthen performance.",
-                      learnMoreColor: "#acd5ab",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                  ]}
-                  type="focus-area"
-                />
-              </div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Culture We Shape"
-                  bgColor="#f7c3be"
-                  cards={[
-                    {
-                      title: "Culture by Design",
-                      description:
-                        "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-                      learnMoreColor: "#f7c3be",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                    {
-                      title: "Wellbeing is Performance Infrastructure",
-                      description:
-                        "Learn how energy, recovery, and care directly strengthen performance.",
-                      learnMoreColor: "#f7c3be",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                  ]}
-                  type="focus-area"
-                />
-              </div>
-              <div className="mt-[32px] px-[40px]">
-                <FromIdeasPathwayCard
-                  sectionTitle="The Culture We Shape"
-                  bgColor="#4ba6a6"
-                  cards={[
-                    {
-                      title: "Culture by Design",
-                      description:
-                        "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-                      learnMoreColor: "#4ba6a6",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                    {
-                      title: "Wellbeing is Performance Infrastructure",
-                      description:
-                        "Learn how energy, recovery, and care directly strengthen performance.",
-                      learnMoreColor: "#4ba6a6",
-                      onLearnMore: () => router.push(`/conversation`),
-                    },
-                  ]}
-                  type="focus-area"
-                />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="flex justify-center flex-col gap-10 mt-[100px]">
+        <div className={styles.ritualVisualSection}>
           <Image
             src={images.ritualArrow}
-            alt="dotted path"
-            className="absolute bottom-[800px] right-[120px] w-[625px] opacity-80 pointer-events-none"
+            alt=""
+            width={625}
+            height={400}
+            className={styles.ritualArrow}
           />
-
-          {/* Magnifier */}
           <Image
             src={images.ritualLens}
-            alt="magnifier"
-            className="absolute bottom-[281px] right-[120px] w-[360px] opacity-70 pointer-events-none"
+            alt=""
+            width={360}
+            height={360}
+            className={styles.ritualLens}
           />
 
-          {/* ===== CONTENT ===== */}
-          <div className="relative z-10 ">
-            {/* Heading */}
-            <h2
-              className="text-[42px] text-[#0F4F58] mb-6"
-              style={{ fontFamily: "RocaTwo-Bold" }}
-            >
+          <div className={styles.ritualContent}>
+            <h2 className={styles.ritualHeading}>
               Team Rituals – What to expect
             </h2>
 
-            <p className="text-[20px] text-[#0F4F58] mb-10">
+            <p className={styles.ritualIntro}>
               Most teams move through a simple rhythm:
             </p>
 
-            {/* List */}
-            <div className="space-y-8 text-[20px] text-[#0F4F58] leading-[150%]">
+            <div className={styles.ritualList}>
               <div>
                 <p className="font-semibold">Try it</p>
                 <p>
@@ -354,14 +328,14 @@ function FromIdeas() {
                   <Link href="/moments" className="font-bold mr-1 underline">
                     HH! Moments
                   </Link>{" "}
-                  to pause, reflect, and notice how it’s landing.
+                  to pause, reflect, and notice how it&apos;s landing.
                 </p>
               </div>
 
               <div>
                 <p className="font-semibold">Decide what stays</p>
                 <p>
-                  Over time, teams reflect on what’s genuinely helping.
+                  Over time, teams reflect on what&apos;s genuinely helping.
                   <br />
                   Some rituals fade. Others become habits. Some reveal bigger
                   system shifts.
@@ -369,34 +343,25 @@ function FromIdeas() {
               </div>
             </div>
 
-            {/* Highlight Line */}
-            <p className="mt-10 text-[20px] text-[#4FB3AE] font-semibold">
+            <p className={styles.ritualHighlight}>
               Small steps. Shared moments. Real change.
             </p>
 
-            {/* SECOND SECTION */}
-            <h3
-              className="mt-[120px] mb-6 text-[42px] text-[#0F4F58]"
-              style={{ fontFamily: "RocaTwo-Bold" }}
-            >
-              Making Progress Visible
-            </h3>
+            <h3 className={styles.progressHeading}>Making Progress Visible</h3>
 
-            <div className="space-y-6 text-[20px] text-[#0F4F58] leading-[150%]">
+            <div className={styles.progressText}>
               <p>
                 As you complete Pathways, try micro-actions, and take part in
                 Team Rituals, your practice is captured automatically in your
-                Dashboard. Over time, this creates a living record of how you’ve
-                shown up — what you’ve tried, reflected on, and shaped with
-                others.
+                Dashboard. Over time, this creates a living record of how
+                you&apos;ve shown up — what you&apos;ve tried, reflected on, and
+                shaped with others.
               </p>
-
               <p>
                 It means when it comes to PDRs, annual reviews, or development
-                conversations, you’re not starting from scratch or relying on
-                memory.
+                conversations, you&apos;re not starting from scratch or relying
+                on memory.
               </p>
-
               <p>
                 The story of your contribution is already there — grounded in
                 real moments, not last-minute summaries.
@@ -404,14 +369,13 @@ function FromIdeas() {
             </div>
           </div>
 
-          {/* ===== BOTTOM ACTIONS ===== */}
-          <div className="flex justify-between mt-14">
-            <div className=" flex">
-              <div className="max-w-[305px] text-[#0F4F58] font-[Aptos] text-[17px]">
-                Enjoying Hi Humaniser!™ ? Share it with someone who’d love it
-                too.
+          <div className={styles.bottomActions}>
+            <div className={styles.shareBlock}>
+              <div className={styles.shareText}>
+                Enjoying Hi Humaniser!™ ? Share it with someone who&apos;d love
+                it too.
               </div>
-              <div className="relative">
+              <div className={styles.shareBtnWrap}>
                 <PolygonButton
                   width="85px"
                   height="95px"
@@ -419,25 +383,13 @@ function FromIdeas() {
                   radius={14}
                   clipPath={`polygon(0% 0%, 100% 18px,100% calc(100% - 14px),0% 100%)`}
                 />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none -top-[38px]">
-                  <span
-                    className="
-        text-[#0F4F58]
-        text-[18px]
-        font-bold
-        leading-[120%]
-        text-center
-        whitespace-normal
-      "
-                    style={{ fontFamily: "RocaTwo-Bold" }}
-                  >
-                    Share Hi <br /> Humaniser!
-                  </span>
+                <div className={styles.shareBtnLabel}>
+                  Share Hi <br /> Humaniser!
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col gap-6">
+            <div className={styles.buttonsCol}>
               <CommonButtons
                 label="Go to Dashboard"
                 bgColor="#4BA6A6"
@@ -453,10 +405,10 @@ Reflection Walls"
           </div>
         </div>
 
-        <div className="mt-14 mx-auto">
+        <div className={styles.successWrap}>
           <SuccessMessage
             text="Connection builds culture. Performance follows."
-            fontSize="text-[23px]"
+            fontSize="text-[23px] max-lg:text-[18px]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
             left="438px"
@@ -465,6 +417,7 @@ Reflection Walls"
             rightImgRight="426px"
             rotate="-35deg"
             fontColor="#0F4F58"
+            wrapperClassName="px-2 lg:px-0"
           />
         </div>
       </div>
