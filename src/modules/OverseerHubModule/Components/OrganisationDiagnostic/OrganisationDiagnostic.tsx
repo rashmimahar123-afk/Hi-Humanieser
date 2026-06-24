@@ -180,18 +180,18 @@ function OrganisationDiagnostic() {
             ></PolygonButton>
             <div className="flex flex-col items-start absolute top-0 left-0 px-10 py-6 gap-2">
               <div>
-                <p className="text-[20px] font-[Roboto]">
+                <p className="text-[20px] font-[Roboto] text-[#0f4f58]">
                   <span className="font-bold">Sent:</span> Today, 10:32
                 </p>
               </div>
               <div>
-                <p className="text-[20px] font-[Roboto] mt-2">
+                <p className="text-[20px] font-[Roboto] mt-2 text-[#0f4f58]">
                   <span className="font-bold">Responses:</span> 0 out of x (or X
                   as they come in)
                 </p>
               </div>
               <div>
-                <p className="text-[20px] font-[Roboto] mt-2">
+                <p className="text-[20px] font-[Roboto] mt-2 text-[#0f4f58]">
                   <span className="font-bold">Participation:</span> 0%
                 </p>
               </div>
