@@ -3,6 +3,7 @@
   width: 100%;
   top: 0;
   left: 0;
+  overflow-x: hidden;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
@@ -26,3 +27,415 @@
   opacity: 0;
 }
 
+.decorWrap {
+  position: relative;
+}
+
+.decorImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: 630px;
+  height: auto;
+}
+
+.headerSection {
+  padding: 24px 32px;
+}
+
+.hero {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 56px;
+  color: #0f4f58;
+  font-weight: bold;
+  font-family: RocaTwo, serif;
+}
+
+.heroSubtitle {
+  margin-top: 8px;
+  font-size: 26px;
+  color: #0f4f58;
+  font-weight: 400;
+  font-family: RocaTwo, serif;
+}
+
+.mainContent {
+  padding: 24px 32px;
+}
+
+.highlightSection {
+  position: relative;
+  margin-top: 40px;
+}
+
+.highlightInner {
+  position: relative;
+  width: 516px;
+  margin-left: 60px;
+  margin-top: -71px;
+}
+
+.highlightPolygon {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.highlightTextWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 64px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.highlightText {
+  font-size: 22px;
+  color: #0f4f58;
+  line-height: 140%;
+  font-family: Aptos, sans-serif;
+  pointer-events: auto;
+}
+
+.sectionBlock {
+  margin-top: 56px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sectionHeading {
+  color: #4ba6a6;
+  font-size: 40px;
+  font-family: RocaTwo, serif;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.sectionIndent {
+  margin-left: 28px;
+}
+
+.sectionBodyText {
+  color: #0f4f58;
+  font-size: 23px;
+  line-height: 1.625;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+}
+
+.sectionBodyTextSpaced {
+  margin-bottom: 32px;
+}
+
+.sectionBodyTextBottom {
+  margin-bottom: 48px;
+}
+
+.bulletBlock {
+  color: #0f4f58;
+  font-size: 23px;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  margin-bottom: 32px;
+}
+
+.bulletList {
+  list-style-type: disc;
+  margin-left: 38px;
+}
+
+.bulletList li + li {
+  margin-top: 4px;
+}
+
+.pathwayCardsSection {
+  margin-top: 70px;
+}
+
+.pathwayCardWrap {
+  margin-top: 32px;
+  padding: 0 40px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.ritualVisualSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 100px;
+}
+
+.ritualArrow {
+  position: absolute;
+  bottom: 800px;
+  right: 120px;
+  width: 625px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.ritualLens {
+  position: absolute;
+  bottom: 281px;
+  right: 120px;
+  width: 360px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.ritualContent {
+  position: relative;
+  z-index: 10;
+}
+
+.ritualHeading {
+  font-size: 42px;
+  color: #0f4f58;
+  margin-bottom: 24px;
+  font-family: "RocaTwo-Bold", RocaTwo, serif;
+}
+
+.ritualIntro {
+  font-size: 20px;
+  color: #0f4f58;
+  margin-bottom: 40px;
+}
+
+.ritualList {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-size: 20px;
+  color: #0f4f58;
+  line-height: 150%;
+}
+
+.ritualHighlight {
+  margin-top: 40px;
+  font-size: 20px;
+  color: #4fb3ae;
+  font-weight: 600;
+}
+
+.progressHeading {
+  margin-top: 120px;
+  margin-bottom: 24px;
+  font-size: 42px;
+  color: #0f4f58;
+  font-family: "RocaTwo-Bold", RocaTwo, serif;
+}
+
+.progressText {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-size: 20px;
+  color: #0f4f58;
+  line-height: 150%;
+}
+
+.bottomActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 56px;
+  gap: 24px;
+}
+
+.shareBlock {
+  display: flex;
+  align-items: flex-start;
+}
+
+.shareText {
+  max-width: 305px;
+  color: #0f4f58;
+  font-family: Aptos, sans-serif;
+  font-size: 17px;
+}
+
+.shareBtnWrap {
+  position: relative;
+}
+
+.shareBtnLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  top: -38px;
+  color: #0f4f58;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 120%;
+  text-align: center;
+  font-family: "RocaTwo-Bold", RocaTwo, serif;
+}
+
+.buttonsCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.successWrap {
+  margin-top: 56px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Tablet & mobile only — desktop (≥1024px) unchanged ── */
+@media (max-width: 1023px) {
+  .decorImage {
+    width: min(48vw, 320px);
+  }
+
+  .headerSection,
+  .mainContent {
+    padding: 16px;
+  }
+
+  .heroTitle {
+    font-size: clamp(28px, 6vw, 44px);
+  }
+
+  .heroSubtitle {
+    font-size: clamp(17px, 3.5vw, 22px);
+    padding: 0 8px;
+  }
+
+  .highlightSection {
+    margin-top: 24px;
+  }
+
+  .highlightInner {
+    width: min(100%, 516px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+  }
+
+  .highlightTextWrap {
+    padding: 0 clamp(20px, 6vw, 48px);
+  }
+
+  .highlightText {
+    font-size: clamp(14px, 3.2vw, 20px);
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .sectionHeading {
+    font-size: clamp(26px, 5vw, 34px);
+  }
+
+  .sectionIndent {
+    margin-left: 0;
+  }
+
+  .sectionBodyText,
+  .bulletBlock {
+    font-size: clamp(16px, 3vw, 20px);
+  }
+
+  .sectionBodyTextBottom {
+    margin-bottom: 32px;
+  }
+
+  .bulletList {
+    margin-left: 24px;
+  }
+
+  .pathwayCardsSection {
+    margin-top: 40px;
+  }
+
+  .pathwayCardWrap {
+    padding: 0;
+  }
+
+  .ritualVisualSection {
+    margin-top: 48px;
+    gap: 24px;
+  }
+
+  .ritualArrow,
+  .ritualLens {
+    display: none;
+  }
+
+  .ritualHeading,
+  .progressHeading {
+    font-size: clamp(26px, 5vw, 36px);
+  }
+
+  .ritualIntro,
+  .ritualList,
+  .progressText {
+    font-size: clamp(16px, 3vw, 18px);
+  }
+
+  .progressHeading {
+    margin-top: 56px;
+  }
+
+  .ritualHighlight {
+    font-size: clamp(16px, 3vw, 18px);
+    margin-top: 24px;
+  }
+
+  .bottomActions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 32px;
+  }
+
+  .shareBlock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .buttonsCol {
+    align-items: center;
+  }
+
+  .successWrap {
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 639px) {
+  .headerSection,
+  .mainContent {
+    padding: 12px 16px;
+  }
+
+  .decorImage {
+    width: min(55vw, 240px);
+  }
+
+  .highlightTextWrap {
+    padding: 0 clamp(14px, 5vw, 28px);
+  }
+
+  .highlightText {
+    font-size: clamp(12px, 3.4vw, 16px);
+    line-height: 1.3;
+  }
+
+}

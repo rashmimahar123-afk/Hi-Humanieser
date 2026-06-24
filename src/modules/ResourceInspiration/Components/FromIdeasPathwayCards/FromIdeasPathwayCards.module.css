@@ -1,0 +1,88 @@
+/* Desktop (≥1024px): no overrides — original Tailwind in TSX */
+
+/* Medium desktop / laptop — keep forward arrow visible (large desktop unchanged) */
+@media (min-width: 1024px) and (max-width: 1535px) {
+  .root :global(.flex-1) {
+    min-width: 0;
+    position: relative;
+    padding-right: 24px;
+    box-sizing: border-box;
+  }
+
+  .root :global(.react-multiple-carousel__arrow--right) {
+    right: 8px;
+    z-index: 1001;
+  }
+
+  .root :global(.react-multiple-carousel__arrow--left) {
+    left: 8px;
+    z-index: 1001;
+  }
+}
+
+/* ── Tablet & mobile only (<1024px) ── */
+@media (max-width: 1023px) {
+  .root {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 16px !important;
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mobileTitle,
+  .mobileTitle div {
+    font-size: clamp(24px, 5.5vw, 34px);
+    line-height: 1.25;
+  }
+
+  .root :global(.flex-1) {
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .root :global(.react-multi-carousel-list),
+  .root :global(.react-multi-carousel-track) {
+    overflow: hidden;
+  }
+
+  .root :global(.react-multi-carousel-item) {
+    min-width: 0;
+  }
+
+  .root :global(.react-multi-carousel-item) > div {
+    padding: 20px 18px !important;
+    min-height: 260px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .root :global(.react-multi-carousel-item) h3 {
+    font-size: clamp(20px, 5vw, 26px) !important;
+    margin-bottom: 12px !important;
+  }
+
+  .root :global(.react-multi-carousel-item) p {
+    font-size: clamp(15px, 3.8vw, 18px) !important;
+    line-height: 1.45;
+    word-wrap: break-word;
+  }
+
+  .root :global(.react-multi-carousel-item) button {
+    font-size: 16px !important;
+    padding: 8px 22px !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .root {
+    padding: 16px 12px !important;
+  }
+
+  .root :global(.react-multi-carousel-item) > div {
+    padding: 18px 14px !important;
+    min-height: 240px;
+  }
+}
