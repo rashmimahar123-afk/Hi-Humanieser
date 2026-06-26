@@ -1,4 +1,5 @@
 "use client";
+import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
 import BehindScene from "@/src/modules/ResourceInspiration/Components/BehindScene/BehindScene";
 import React, { Suspense } from "react";
 
