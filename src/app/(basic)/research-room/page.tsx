@@ -14,6 +14,6 @@ function ResearchRoomPage() {
   );
 }
 
-// export default withProtectedRoute(ResearchRoomPage);
+//  export default withProtectedRoute(ResearchRoomPage);
 
 export default (ResearchRoomPage);

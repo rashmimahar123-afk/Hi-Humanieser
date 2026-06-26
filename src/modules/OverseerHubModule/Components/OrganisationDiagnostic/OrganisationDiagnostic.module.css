@@ -1,24 +1,567 @@
-.card {
+.page {
   position: relative;
-  width: 125px;    
-  height: 100px;   
+  min-height: 100vh;
+  background: #f3eee7;
+  padding: 40px;
+  z-index: 10;
+  font-family: RocaTwo, serif;
+  overflow-x: hidden;
+}
+
+.bgLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: 330px;
+  height: auto;
+}
+
+.bgRight {
+  position: absolute;
+  top: 176px;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+  width: 630px;
+  height: auto;
+}
+
+.headerWrap {
+  position: relative;
+  z-index: 20;
+}
+
+.pageTitle {
+  position: relative;
+  z-index: 10;
+  margin-left: 80px;
+  font-weight: bold;
+  color: #0f4f58;
+  font-size: 45px;
+  font-family: RocaTwo, serif;
+}
+
+.introSection {
+  position: relative;
+  z-index: 10;
+  margin-top: 64px;
+}
+
+.introTitle {
+  color: #0f4f58;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  font-family: RocaTwo, serif;
+}
+
+.introIndent {
+  margin-left: 48px;
+}
+
+.introText {
+  color: #0f4f58;
+  font-size: 22px;
+  line-height: 1.625;
+  font-weight: bold;
+}
+
+.introTextSpaced {
+  margin-top: 40px;
+  font-weight: 400;
+}
+
+.actionRow {
+  margin-top: 150px;
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+  position: relative;
+  z-index: 20;
+}
+
+.actionBtnCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.actionArrow {
+  position: absolute;
+  left: -25px;
+  top: -16px;
+}
+
+.polygonBtnContent {
+  inset: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 10px 12px;
+  box-sizing: border-box;
+}
+
+.polygonLabel {
+  color: #0f4f58;
+  font-size: 22px;
+  font-family: RocaTwo, serif;
+  font-weight: bold;
+  line-height: 1.15;
+  text-align: center;
+  max-width: 102px;
+}
+
+.previewBtn {
+  margin-top: 16px;
+  color: #4ba6a6;
+  font-size: 16px;
+  font-family: Roboto, sans-serif;
+}
+
+.actionTextCol {
+  max-width: 1050px;
+}
+
+.bodyText {
+  color: #0f4f58;
+  font-size: 20px;
+  line-height: 1.625;
+  font-family: Roboto, sans-serif;
+}
+
+.bodyTextSpaced {
+  margin-top: 44px;
+}
+
+.surveySection {
+  margin-top: 150px;
+}
+
+.sectionHeading {
+  color: #0f4f58;
+  font-size: 32px;
+  font-family: RocaTwo, serif;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.surveyCardWrap {
+  position: relative;
+  width: min(480px, 100%);
+}
+
+.surveyCardOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.surveyCardLine {
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+}
+
+.surveyCardLineSpaced {
+  margin-top: 8px;
+}
+
+.resultsSection {
+  margin-top: 80px;
+}
+
+.resultsPanel {
+  position: relative;
+  margin-top: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dottedCurve {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 500px;
+  max-width: 55%;
+  height: auto;
+  pointer-events: none;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 64px;
+  margin-top: 8px;
+  margin-left: 32px;
+}
+
+.resultsCol {
+  max-width: 575px;
+}
+
+.resultsColTitle {
+  color: #0f4f58;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24px;
+  font-family: Roboto, sans-serif;
+}
+
+.metricBox {
+  background: #b9cbb7;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metricBoxMeaning {
+  background: #b9cbb7;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #0f4f58;
+  font-size: 18px;
+  line-height: 1.625;
+  font-family: Roboto, sans-serif;
+}
+
+.metricBoxComparison {
+  background: #b9cbb7;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comparisonHeader {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 24px;
+  color: #0f4f58;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+}
+
+.comparisonHeaderText {
+  text-align: center;
+  line-height: 1.25;
+}
+
+.comparisonRow {
+  display: grid;
+  grid-template-columns: 1fr 50px 50px;
+  align-items: center;
+  gap: 16px;
+}
+
+.comparisonArrow {
   display: flex;
   justify-content: center;
+  font-size: 26px;
+}
+
+.comparisonChange {
+  color: #0f4f58;
+  font-size: 16px;
+  font-family: Roboto, sans-serif;
+}
+
+.participation {
+  margin-top: 24px;
+  margin-left: 16px;
+  color: #0f4f58;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: RocaTwo, serif;
+}
+
+.reminderRow {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  font-family: Roboto, sans-serif;
+  color: #0f4f58;
+}
+
+.baselineRow {
+  margin-top: 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: #0f4f58;
+  font-family: Roboto, sans-serif;
+}
+
+.footerBtnsWrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+}
+
+.footerBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   align-items: center;
 }
 
-.cardImage {
-  object-fit: contain;  /* 👈 very important */
+.clickable {
+  cursor: pointer;
 }
 
-.cardTitle {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  font-family: "RocaTwo";
-  font-size: 20px;
-  font-weight: 700;
-  color: #0F4F58;
-  line-height: 1.2;
-  pointer-events: none;
+/* ── Tablet (768–1023px) ── */
+@media (max-width: 1023px) {
+  .page {
+    padding: 24px 20px;
+  }
+
+  .bgLeft {
+    width: min(42vw, 220px);
+  }
+
+  .bgRight {
+    top: 120px;
+    width: min(52vw, 360px);
+  }
+
+  .pageTitle {
+    margin-left: 0;
+    font-size: clamp(32px, 5vw, 42px);
+  }
+
+  .introSection {
+    margin-top: 40px;
+  }
+
+  .introTitle {
+    font-size: clamp(24px, 4vw, 28px);
+  }
+
+  .introIndent {
+    margin-left: 0;
+  }
+
+  .introText {
+    font-size: clamp(17px, 2.8vw, 20px);
+  }
+
+  .introTextSpaced {
+    margin-top: 24px;
+  }
+
+  .actionRow {
+    margin-top: 72px;
+    gap: 32px;
+  }
+
+  .polygonLabel {
+    font-size: clamp(16px, 2.5vw, 20px);
+    max-width: 96px;
+  }
+
+  .polygonBtnContent {
+    padding: 22px 8px 10px;
+  }
+
+  .bodyText {
+    font-size: clamp(16px, 2.5vw, 18px);
+  }
+
+  .bodyTextSpaced {
+    margin-top: 24px;
+  }
+
+  .surveySection {
+    margin-top: 72px;
+  }
+
+  .sectionHeading {
+    font-size: clamp(26px, 4vw, 30px);
+  }
+
+  .surveyCardOverlay {
+    padding: 20px 28px;
+  }
+
+  .surveyCardLine {
+    font-size: clamp(15px, 2.2vw, 18px);
+  }
+
+  .resultsSection {
+    margin-top: 56px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-left: 0;
+  }
+
+  .resultsCol {
+    max-width: none;
+  }
+
+  .dottedCurve {
+    max-width: 45%;
+    opacity: 0.85;
+  }
+
+  .metricBox,
+  .metricBoxMeaning,
+  .metricBoxComparison {
+    padding: 24px;
+  }
+
+  .participation {
+    margin-left: 0;
+    font-size: clamp(16px, 2.5vw, 18px);
+  }
+
+  .reminderRow {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .footerBtnsWrap {
+    justify-content: center;
+  }
+}
+
+/* ── Mobile (≤767px) ── */
+@media (max-width: 767px) {
+  .page {
+    padding: 16px;
+  }
+
+  .bgLeft {
+    width: min(48vw, 160px);
+  }
+
+  .bgRight {
+    top: 88px;
+    width: min(58vw, 240px);
+    opacity: 0.75;
+  }
+
+  .introSection {
+    margin-top: 28px;
+  }
+
+  .actionRow {
+    margin-top: 48px;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .actionTextCol {
+    max-width: none;
+    text-align: center;
+  }
+
+  .actionArrow {
+    top: -6px;
+    left: -18px;
+  }
+
+  .surveySection {
+    margin-top: 48px;
+  }
+
+  .surveyCardWrap {
+    width: 100%;
+  }
+
+  .surveyCardOverlay {
+    padding: 16px 20px;
+  }
+
+  .surveyCardLine {
+    font-size: clamp(14px, 3.8vw, 16px);
+  }
+
+  .resultsGrid {
+    gap: 24px;
+  }
+
+  .resultsColTitle {
+    font-size: clamp(16px, 4vw, 18px);
+    margin-bottom: 16px;
+  }
+
+  .metricBox,
+  .metricBoxMeaning,
+  .metricBoxComparison {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .metricBoxMeaning {
+    font-size: clamp(14px, 3.6vw, 16px);
+  }
+
+  .comparisonHeader {
+    padding-right: 8px;
+    font-size: 12px;
+  }
+
+  .comparisonRow {
+    grid-template-columns: 1fr 36px 40px;
+    gap: 8px;
+  }
+
+  .comparisonArrow {
+    font-size: 20px;
+  }
+
+  .comparisonChange {
+    font-size: 14px;
+  }
+
+  .baselineRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── Small mobile (≤479px) ── */
+@media (max-width: 479px) {
+  .page {
+    padding: 12px 14px;
+  }
+
+  .dottedCurve {
+    max-width: 38%;
+  }
+
+  .polygonLabel {
+    font-size: clamp(14px, 4vw, 17px);
+    max-width: 88px;
+    line-height: 1.2;
+  }
+
+  .polygonBtnContent {
+    padding: 20px 6px 8px;
+  }
+
+  .comparisonRow {
+    grid-template-columns: 1fr 28px 34px;
+  }
 }
