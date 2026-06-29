@@ -15,3 +15,8 @@ export type CHANGE_PASSWORD_REQUEST_TYPE = {
   current_password: string;
   new_password: string;
 };
+export type RESET_PASSWORD_REQUEST_TYPE = {
+  email: string;
+  token: string;
+  new_password: string;
+};

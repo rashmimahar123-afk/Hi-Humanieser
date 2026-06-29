@@ -74,15 +74,15 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
   const pollData = data?.data;
   const cycleStarted = pollData?.cycle_started;
 
-  const handleChampionHubClick = () => {
-    if (isLoading) return;
+  // const handleChampionHubClick = () => {
+  //   if (isLoading) return;
 
-    if (cycleStarted) {
-      router.push("/pressure-point-record");
-    } else {
-      router.push("/champion-hub");
-    }
-  };
+  //   if (cycleStarted) {
+  //     router.push("/pressure-point-record");
+  //   } else {
+  //     router.push("/champion-hub");
+  //   }
+  // };
 
   return (
     <div
@@ -100,11 +100,11 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
             key={item.path}
             className={getClass(item.path)}
             onClick={() => {
-              if (item.path === "/champion-hub") {
-                handleChampionHubClick();
-              } else {
-                router.push(item.path);
-              }
+              // if (item.path === "/champion-hub") {
+              //   handleChampionHubClick();
+              // } else {
+              router.push(item.path);
+              // }
             }}
           >
             {item.label}

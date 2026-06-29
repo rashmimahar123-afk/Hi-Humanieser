@@ -7,11 +7,8 @@ import { useEffect, useState } from "react";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import { useRouter } from "next/navigation";
-type CHAMPION_TEAM_JOURNEY_PROPS={
-  cycleStarted?:boolean
-}
-function ChampionTeamJourney(props:CHAMPION_TEAM_JOURNEY_PROPS) {
-  const {cycleStarted}=props;
+
+function ChampionTeamJourney() {
   const [enter, setEnter] = useState(false);
   const router = useRouter();
   const { user } = useAuthValue();
@@ -95,13 +92,10 @@ function ChampionTeamJourney(props:CHAMPION_TEAM_JOURNEY_PROPS) {
             <div className="flex justify-center mr-[86px]">
               <button
                 className="relative "
-onClick={() => {
-  if (cycleStarted) {
-    router.push("/pressure-point-record");
-  } else {
-    router.push("/champion-hub");
-  }
-}}              >
+                onClick={() => {
+                  router.push("/champion-hub");
+                }}
+              >
                 {/* Arrow strokes */}
                 <Image
                   src={images.pathwayArrowRight}

@@ -1,5 +1,6 @@
 "use client";
 import withProtectedRoute from "@/src/components/HOCs/withProtectedRoute";
+import useGetMtjPollQuery from "@/src/modules/ChampionHubModule/Hooks/useGetMtjPollQuery";
 import AccountSetting from "@/src/modules/ProfileModule/Components/AccountSetting/AccountSetting";
 import ChampionHub from "@/src/modules/ProfileModule/Components/ChampionHub/ChampionHub";
 import Profile from "@/src/modules/ProfileModule/Components/Profile";

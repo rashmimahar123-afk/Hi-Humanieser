@@ -10,12 +10,17 @@ import { emailMessage, passwordMessage } from "@/src/lib/ErrorMessages";
 import { useState } from "react";
 import Link from "next/link";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import { useSearchParams } from "next/navigation";
+import { useResetPasswordMutation } from "../../Hooks/useResetPasswordMutation";
 
 function ResetPassword() {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
+  const searchParams = useSearchParams();
 
+  const email = searchParams.get("email") || "";
+  const token = searchParams.get("token") || "";
   const {
     register,
     handleSubmit,
@@ -23,8 +28,17 @@ function ResetPassword() {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
+  const { mutate: resetPasswordMutation, isPending } =
+    useResetPasswordMutation();
+
   const onSubmit = (data: any) => {
-    console.log("Change Password Data:", data);
+    console.log("Form Submitted", data);
+
+    resetPasswordMutation({
+      email: data.email,
+      token,
+      new_password: data.newPassword,
+    });
   };
 
   return (
@@ -130,8 +144,10 @@ function ResetPassword() {
                 </label>
                 <input
                   type="email"
-                  value="prefilled@email.com"
-                  readOnly
+                  defaultValue={email}
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
                   className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
                 />
               </div>
@@ -166,7 +182,10 @@ function ResetPassword() {
                 </div>
               </div>
               {/* Button */}
-              <div className="flex justify-end">
+              <div
+                className="flex justify-end cursor-pointer"
+                onClick={handleSubmit(onSubmit)}
+              >
                 <PolygonButton
                   width="106px"
                   height="75px"

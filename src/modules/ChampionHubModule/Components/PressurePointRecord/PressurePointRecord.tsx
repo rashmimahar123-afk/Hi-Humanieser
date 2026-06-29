@@ -142,7 +142,6 @@ Thanks!`,
 
   const { data: mtjKpiData } = useGetKpiQuery(user?.team_id);
   const engagementData = mtjKpiData?.data?.engagement;
-  console.log("engagementDataengagementDataengagementData", engagementData);
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -361,10 +360,9 @@ Thanks!`,
                 </h1>
 
                 <p className="text-[#0F4F58] text-[20px] mb-6 leading-relaxed font-[Roboto] ml-8 max-w-[900px]">
-                  Your team has shared where focused improvement would help them
-                  most right now. These results don’t replace the pressure
-                  you’re managing — they help translate it into a clear, shared
-                  focus the team can work on together.
+                  {isLessThan70
+                    ? "Your team is currently answering the Focus Poll. These early results are still taking shape — you’ll get a clearer picture as more people respond."
+                    : "  Your team has shared where focused improvement would help them most right now. These results don’t replace the pressure you’re managing — they help translate it into a clear, shared focus the team can work on together."}
                 </p>
                 {isLessThan70 && (
                   <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8 font-bold">
@@ -799,75 +797,76 @@ Thanks!`,
             </div>
           </div>
         )}
-
-        <div className="ml-20">
-          <div className="flex items-center justify-between  mt-10">
-            {/* LEFT SECTION */}
-            <div className="flex items-center gap-10 ">
-              <div className="cursor-pointer" onClick={openNeedMoreTimeModal}>
-                {/* Polygon */}
-                <PolygonButton
-                  width="106px"
-                  height="107px"
-                  bgColor="#86c9c9"
-                  radius={14}
-                  clipPath={`polygon(
+        {!pollData?.poll_open && (
+          <div className="ml-20">
+            <div className="flex items-center justify-between  mt-10">
+              {/* LEFT SECTION */}
+              <div className="flex items-center gap-10 ">
+                <div className="cursor-pointer" onClick={openNeedMoreTimeModal}>
+                  {/* Polygon */}
+                  <PolygonButton
+                    width="106px"
+                    height="107px"
+                    bgColor="#86c9c9"
+                    radius={14}
+                    clipPath={`polygon(
     15% 11%,
     81% 0%,
     100% 87%,
     3% calc(100% - 15px)
   )`}
-                >
-                  <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
-                    Need a bit <br />
-                    <span className="whitespace-nowrap">more time? </span>
-                  </span>
-                </PolygonButton>
+                  >
+                    <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                      Need a bit <br />
+                      <span className="whitespace-nowrap">more time? </span>
+                    </span>
+                  </PolygonButton>
+                </div>
+
+                {/* Middle Text */}
+                <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
+                  Extend this cycle for up to 2 more weeks.
+                </p>
               </div>
-
-              {/* Middle Text */}
-              <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
-                Extend this cycle for up to 2 more weeks.
-              </p>
             </div>
-          </div>
 
-          {/* ROW 2 */}
-          <div className="flex items-center justify-between">
-            {/* LEFT SECTION */}
-            <div className="flex items-center gap-10">
-              <div
-                className="cursor-pointer"
-                onClick={() => openFinishEarlyModal()}
-              >
-                {/* Polygon */}
-                <PolygonButton
-                  width="106px"
-                  height="107px"
-                  bgColor="#acd5ab"
-                  radius={14}
-                  clipPath={`polygon(
+            {/* ROW 2 */}
+            <div className="flex items-center justify-between">
+              {/* LEFT SECTION */}
+              <div className="flex items-center gap-10">
+                <div
+                  className="cursor-pointer"
+                  onClick={() => openFinishEarlyModal()}
+                >
+                  {/* Polygon */}
+                  <PolygonButton
+                    width="106px"
+                    height="107px"
+                    bgColor="#acd5ab"
+                    radius={14}
+                    clipPath={`polygon(
     15% 11%,
     81% 0%,
     100% 87%,
     3% calc(100% - 15px)
   )`}
-                >
-                  <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
-                    Finished
-                    <br />
-                    <span className="whitespace-nowrap">early?</span>
-                  </span>
-                </PolygonButton>
-              </div>
+                  >
+                    <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                      Finished
+                      <br />
+                      <span className="whitespace-nowrap">early?</span>
+                    </span>
+                  </PolygonButton>
+                </div>
 
-              {/* Middle Text */}
-              <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
-                Mark these rituals as completed and start a new cycle.
-              </p>
+                {/* Middle Text */}
+                <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
+                  Mark these rituals as completed and start a new cycle.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* <div className="flex justify-end ">
           <div className="mt-[60px] flex flex-col items-center gap-[14px] ">

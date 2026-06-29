@@ -48,14 +48,14 @@ function CompletePressurePointModal() {
   const handleAction = () => {
     if (isError) {
       //  Go to active cycle / record page
-      router.push("/pressure-point-record");
+      router.push("/champion-hub");
       setIsOpen(false);
       return;
     }
 
     //  Normal flow (you can integrate API here if needed)
 
-    router.push("/pressure-point-record");
+    router.push("/champion-hub");
     setIsOpen(false);
   };
 

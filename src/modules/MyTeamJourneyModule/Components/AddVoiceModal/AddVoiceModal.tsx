@@ -9,6 +9,7 @@ import useEventEmitter, {
 } from "@/src/components/Hooks/useEventEmitter";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 
 const EVENT = "ADD_VOICE_MODAL_EVENT";
 
@@ -23,7 +24,9 @@ function AddVoiceModal() {
     setIsOpen(true);
   });
   const router = useRouter();
-
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
@@ -50,7 +53,7 @@ function AddVoiceModal() {
             className="text-[51px] font-bold text-[#0F4F58] mb-6 font-[RocaTwo ] ml-[40px]"
             style={{ fontFamily: "RocaTwo" }}
           >
-            Thank You Maria!
+            {`Thank You ${profileData?.first_name}!`}
           </DialogTitle>
           <div className="ml-[80px]">
             {/* Subtitle */}

@@ -13,6 +13,9 @@ import MyNotes from "../MyNotes/MyNotes";
 import ProfilePathwayCard from "@/src/modules/ProfileModule/Components/ProfilePathwayCard/ProfilePathwayCard";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useGetKpiQuery from "../../Hooks/useGetKpiQuery";
+import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
+import FieldColumn from "@/src/components/FieldColumn/FieldColumn";
 
 function ChampionNotes() {
   const [openCurrent, setOpenCurrent] = useState(false);
@@ -33,6 +36,37 @@ function ChampionNotes() {
   };
 
   const router = useRouter();
+
+  const { data: mtjKpiData } = useGetKpiQuery(user?.team_id);
+  const kpiData = mtjKpiData;
+
+  const cycleKpi = kpiData?.data?.cycle;
+
+  const pressurePoint = cycleKpi?.champion_pp;
+
+  const recommendedFocusAreas = cycleKpi?.recommended_focus_areas || [];
+
+  const chosenTeamRituals = cycleKpi?.chosen_team_rituals || [];
+  const poll = kpiData?.data?.poll;
+
+  const { data: cycleOverviewData } = useGetMtjCycleOverviewQuery(
+    user?.team_id,
+  );
+
+  const cycle = cycleOverviewData?.data?.cycle;
+  const teamRituals = cycle?.team_rituals || [];
+
+  const getRemainingWeeks = (endAt?: number | null) => {
+    if (!endAt) return "--";
+
+    const now = Date.now();
+    const end = new Date(endAt * 1000).getTime();
+
+    const diff = end - now;
+    const weeks = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24 * 7)));
+
+    return `${weeks} Weeks`;
+  };
   return (
     <div className=" min-h-screen bg-[#F5F0EB] ">
       {/* TOP LEFT SHAPE */}
@@ -87,29 +121,48 @@ function ChampionNotes() {
               {/* ===== LEFT COLUMN ===== */}
               <div className="space-y-10">
                 {/* Pressure Point */}
-                <Field label="Pressure Point" value="Everything feels urgent" />
+                <FieldColumn
+                  label="Pressure Point"
+                  value={cycle?.pressure_point || "--"}
+                />
 
                 {/* Focus Area */}
-                <Field label="Focus Area" value="Build Trust" />
+                <FieldColumn
+                  label="Focus Area"
+                  value={teamRituals?.[0]?.focus_area || "--"}
+                />
 
                 {/* Team Ritual */}
-                <Field label="Team Ritual" value="Say it in One Line" />
+                <FieldColumn
+                  label="Team Ritual"
+                  value={teamRituals?.[0]?.title || "--"}
+                />
               </div>
 
               {/* ===== RIGHT COLUMN ===== */}
               <div className="space-y-10">
                 {/* Started On */}
-                <Field label="Started on" value="Date PP was chosen" />
+                <FieldColumn
+                  label="Started on"
+                  value={
+                    cycle?.started_at
+                      ? new Date(cycle.started_at * 1000).toLocaleDateString()
+                      : "--"
+                  }
+                />
 
                 {/* Time Remaining */}
-                <Field label="Time Remaining" value="5 Weeks" />
+                <FieldColumn
+                  label="Time Remaining"
+                  value={getRemainingWeeks(cycle?.end_at)}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className="mt-8">
-          <ChampionNotesSecondSection />
+          <ChampionNotesSecondSection cycleKpi={cycleKpi} poll={poll} />
         </div>
 
         <div className="mt-10 relative">
@@ -195,6 +248,7 @@ function ChampionNotes() {
             description="Try one small structural shift to reduce friction this week."
             shapeImg={images.profileQuiz}
             width="44px"
+            onClick={() => router.push("/ease-pressure")}
           />
 
           {/* Card 2 */}
@@ -202,6 +256,7 @@ function ChampionNotes() {
             title="Cross-Team Workshops"
             description="Share patterns, surface issues early, and borrow what works elsewhere."
             shapeImg={images.profilePathway}
+            onClick={() => router.push("/team-workshops")}
           />
 
           {/* Card 3 */}
@@ -209,6 +264,7 @@ function ChampionNotes() {
             title="HH! Moments"
             description="Start meetings with a 3-minute reset to improve focus and flow."
             shapeImg={images.profileChange}
+            onClick={() => router.push("/moments")}
           />
         </div>
 
@@ -239,17 +295,3 @@ Champion Hub"
 }
 
 export default ChampionNotes;
-
-function Field({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between">
-      <h4 className="text-[25px] text-[#0F4F58] font-bold font-[RocaTwo] w-[260px]">
-        {label}
-      </h4>
-
-      <div className="w-[420px] h-[64px] bg-[#ffffff] rounded-full px-8 flex items-center text-[#567F55] text-[22px] font-[Roboto]">
-        {value}
-      </div>
-    </div>
-  );
-}

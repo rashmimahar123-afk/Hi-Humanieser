@@ -20,8 +20,6 @@ function StartTeamJourneyPage() {
 
   const { data, isLoading } = useGetMtjPollQuery();
   const pollData = data?.data;
-  const cycleStarted = pollData?.cycle_started;
-  console.log("pollDatapollDatapollDatapollData", pollData?.poll_open);
 
   if (isLoading) {
     return (
@@ -31,12 +29,14 @@ function StartTeamJourneyPage() {
     );
   }
 
+  console.log(pollData?.ready, "pollData?.readypollData?.readypollData?.ready");
+  console.log("pollData?.poll_openpollData?.poll_open", pollData?.poll_open);
   return (
     <Suspense fallback={"Loading..."}>
       {user?.user_type === 3 ? (
         <PartnerTeamJourney />
       ) : user?.user_type === 2 ? (
-        <ChampionTeamJourney cycleStarted={cycleStarted} />
+        <ChampionTeamJourney />
       ) : //  : pollData?.team_members_left_to_respond !== 0 ? (
       //   <HoldTeamJourney pollData={pollData} profileData={profileData} />
       // )
@@ -47,7 +47,7 @@ function StartTeamJourneyPage() {
           <StartTeamJourney />
         )
       ) : (
-        <TeamJourney />
+        <TeamJourney /> // make this page visible whenteam ritual is selected
       )}
     </Suspense>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import images from "@/src/assets/images";
-import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
@@ -17,6 +16,7 @@ function ChampionHub() {
   useEffect(() => {
     setEnter(true);
   }, []);
+
   return (
     <>
       <div
@@ -99,7 +99,7 @@ function ChampionHub() {
           {/* TEAM FOCUS */}
           <div
             className="relative bg-[#CFE8E6] rounded-xl p-4 cursor-pointer"
-            onClick={() => router.push("/team-focus")}
+            onClick={() => router.push(`/champion-hub/team-focus`)}
           >
             {/* Heading */}
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold">
@@ -128,7 +128,7 @@ function ChampionHub() {
 
           <div
             className="relative bg-[#CDE3CC] rounded-xl p-6 cursor-pointer"
-            onClick={() => router.push("/champion-notes")}
+            onClick={() => router.push(`/champion-hub/champion-notes`)}
           >
             {/* Heading */}
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">

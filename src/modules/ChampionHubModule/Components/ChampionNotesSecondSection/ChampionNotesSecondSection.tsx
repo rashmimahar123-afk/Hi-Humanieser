@@ -3,18 +3,26 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import ChampionNotes from "../ChampionNotes/ChampionNotes";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import {
+  GET_MTJ_KPI_CHOSEN_TEAM_RITUAL_DATA,
+  GET_MTJ_KPI_POLL_RESULTS_DATA,
+} from "../../Types/ResponseTypes";
 
-const data = [
-  { name: "Trust", value: 33.3 },
-  { name: "Clarity", value: 26.7 },
-  { name: "Collaboration", value: 20 },
-  { name: "Belonging", value: 13.3 },
-  { name: "Wellbeing", value: 6.7 },
-];
+type CHAMPION_NOTES_SECOND_SECTION = {
+  cycleKpi: any;
+  poll: any;
+};
 
-const COLORS = ["#63C0C5", "#49A6BC", "#3A88AE", "#5977A3", "#6C6498"];
+function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
+  const { cycleKpi, poll } = props;
 
-function ChampionNotesSecondSection() {
+  const COLORS = ["#63C0C5", "#49A6BC", "#3A88AE", "#5977A3", "#6C6498"];
+
+  const chartData =
+    poll?.results?.map((item: any) => ({
+      name: item.option,
+      value: item.vote_percentage,
+    })) || [];
   return (
     <>
       {/* ================= TITLE ================= */}
@@ -25,24 +33,49 @@ function ChampionNotesSecondSection() {
       {/* ================= MAIN GRID ================= */}
       <div className="grid grid-cols-2 gap-10">
         {/* ================= LEFT POLL CARD ================= */}
-        <div className="bg-[#f8e1b8] rounded-3xl p-10 ">
+        <div className="bg-[#f8e1b8] rounded-3xl p-12 ">
           <h3 className="text-[25px] text-[#0F4F58] font-bold font-[RocaTwo] self-start">
             Team Poll Results
           </h3>
 
-          <div className="w-[420px] h-[420px] mt-2">
-            <ResponsiveContainer>
+          <div className="w-[650px] h-[450px] mt-2">
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={data}
+                  data={chartData}
                   dataKey="value"
+                  nameKey="name"
                   outerRadius={170}
-                  label={({ name, percent }) =>
-                    `${name} ${(percent ?? 0 * 100).toFixed(1)}%`
-                  }
+                  label={({ x, y, name, value, textAnchor }: any) => {
+                    const words = name.split(" ");
+
+                    return (
+                      <text
+                        x={x}
+                        y={y}
+                        textAnchor={textAnchor}
+                        fill="#0F4F58"
+                        fontSize={16}
+                      >
+                        <tspan x={x} dy="0">
+                          {words
+                            .slice(0, Math.ceil(words.length / 2))
+                            .join(" ")}
+                        </tspan>
+
+                        <tspan x={x} dy="18">
+                          {words.slice(Math.ceil(words.length / 2)).join(" ")}
+                        </tspan>
+
+                        <tspan x={x} dy="18">
+                          {value}%
+                        </tspan>
+                      </text>
+                    );
+                  }}
                 >
-                  {data.map((entry, index) => (
-                    <Cell key={index} fill={COLORS[index]} />
+                  {chartData.map((_: any, index: any) => (
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
               </PieChart>
@@ -63,7 +96,7 @@ function ChampionNotesSecondSection() {
             </h3>
 
             <div className="mt-2 bg-[#ffffff] h-[64px] rounded-full px-8 flex items-center text-[#567F55] text-[20px] font-[Roboto] mb-4">
-              Everything feels urgent
+              {cycleKpi?.champion_pp || "--"}{" "}
             </div>
 
             <p className="text-center text-[20px] text-[#0F4F58] font-[RocaTwo] font-bold">
@@ -76,55 +109,28 @@ function ChampionNotesSecondSection() {
             <h3 className="text-[25px] text-[#0F4F58] font-bold font-[RocaTwo] ">
               Recommended Focus Area
             </h3>
-
-            <div className="mt-2 flex justify-center gap-16">
-              <div>
-                <PolygonButton
-                  height="106px"
-                  width="87px"
-                  bgColor="#acd5ab"
-                  clipPath={`polygon(
+            <div className="mt-4 flex justify-center gap-10 flex-wrap">
+              {cycleKpi?.recommended_focus_areas?.map(
+                (item: string, index: number) => (
+                  <PolygonButton
+                    height="106px"
+                    width="87px"
+                    bgColor={index % 2 === 0 ? "#acd5ab" : "#86c9c9"}
+                    clipPath={`polygon(
     0% 29px,
     100% 7%,
     87% 89%,
     20% calc(100% - 13px)
   )`}
-                >
-                  <div className="h-full flex items-center justify-center text-center">
-                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[28px]">
-                      Build Trust{" "}
-                    </span>
-                  </div>
-                </PolygonButton>
-              </div>
-              {/* -------slant Right Btn-------- */}
-              <div>
-                <PolygonButton
-                  height="106px"
-                  width="87px"
-                  bgColor="#86c9c9"
-                  radius={14}
-                  topTilt={18}
-                  slantSide="right"
-                  clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
-                >
-                  <div className="h-full flex items-center justify-center text-center">
-                    <span
-                      className="
-      text-[#0F4F58]
-      text-[18px]
-      font-[RocaTwo]
-      font-bold
-      leading-[18px]
-      text-center
-      whitespace-normal
-    "
-                    >
-                      Strengthen Collaboration{" "}
-                    </span>
-                  </div>
-                </PolygonButton>
-              </div>
+                  >
+                    <div className="flex h-full items-center justify-center px-2 text-center">
+                      <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold">
+                        {item}
+                      </span>
+                    </div>
+                  </PolygonButton>
+                ),
+              )}
             </div>
           </div>
 
@@ -134,8 +140,15 @@ function ChampionNotesSecondSection() {
               Chosen Team Ritual
             </h3>
 
-            <div className="mt-2 bg-[#ffffff] h-[64px] rounded-full px-8 flex items-center text-[#567F55] text-[20px] font-[Roboto]">
-              Say It in One Line
+            <div className="flex flex-col gap-4 mt-3">
+              {cycleKpi?.chosen_team_rituals?.map((ritual: any) => (
+                <div
+                  key={ritual.team_ritual_id}
+                  className="bg-white rounded-full h-[64px] px-8 flex items-center text-[#567F55]"
+                >
+                  {ritual.title}
+                </div>
+              ))}
             </div>
           </div>
         </div>

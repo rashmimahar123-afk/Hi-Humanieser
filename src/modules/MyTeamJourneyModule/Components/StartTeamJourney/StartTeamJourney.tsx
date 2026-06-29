@@ -6,6 +6,8 @@ import styles from "./StartTeamJourney.module.css";
 import { useEffect, useState } from "react";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
+import { useRouter } from "next/navigation";
 
 function StartTeamJourney() {
   const [enter, setEnter] = useState(false);
@@ -13,6 +15,10 @@ function StartTeamJourney() {
   useEffect(() => {
     setEnter(true);
   }, []);
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
+  const router = useRouter();
   return (
     <>
       <div
@@ -67,9 +73,9 @@ function StartTeamJourney() {
 
           {/* Sub heading */}
           <p className="text-[#0F4F58] text-[30px] font-[400] font-[RocaTwo]">
-            Hold Tight Maria, your Champion is getting the team poll ready — a
+            {` Hold Tight ${profileData?.first_name}, your Champion is getting the team poll ready — a
             space where everyone’s voice helps shape what the team focuses on
-            next.
+            next.`}
           </p>
 
           {/* Description */}
@@ -90,7 +96,10 @@ function StartTeamJourney() {
 
             {/* Image-based button */}
             <div className="flex justify-center mr-[86px]">
-              <button className="relative ">
+              <button
+                className="relative "
+                onClick={() => router.push("/home")}
+              >
                 {/* Arrow strokes */}
                 <Image
                   src={images.pathwayArrowRight}

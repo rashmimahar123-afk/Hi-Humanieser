@@ -117,7 +117,7 @@ function PressurePointDetails() {
           <div className="flex justify-end  mb-[7px]">
             <div className="cursor-pointer" onClick={handleContinue}>
               <PolygonButton
-                width="106px"
+                width="142px"
                 height="107px"
                 bgColor="#acd5ab"
                 radius={14}

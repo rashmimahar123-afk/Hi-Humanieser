@@ -267,10 +267,10 @@ function PressureOne() {
   return (
     <>
       {pressureData.map((item) => (
-        <div key={item.id} className="mt-10 ml-20">
+        <div key={item.id} className="mt-[100px] ml-20">
           {/* Title */}
           <h1 className="text-[#0F4F58] text-[32px] leading-[40px] font-[RocaTwo] font-bold">
-            Pressure Point <br />
+            Pressure Point {"-"} {""}
             {item.title}
           </h1>
 
