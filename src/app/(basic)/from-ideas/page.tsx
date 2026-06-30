@@ -17,4 +17,4 @@ function BehindScenePage() {
 }
 
 // export default(BehindScenePage);
-export default withProtectedRoute(BehindScenePage);
+ export default withProtectedRoute(BehindScenePage);

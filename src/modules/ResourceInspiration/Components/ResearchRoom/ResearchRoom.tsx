@@ -144,7 +144,7 @@ function ResearchRoom() {
                 height: 48,
               }}
               decorationPosition={{
-                className: "-left-[44px] -top-[12px]",
+                className: styles.downloadArrowFirst,
               }}
             >
               <div className="h-full flex items-center justify-center text-center pointer-events-none">
@@ -172,7 +172,7 @@ function ResearchRoom() {
                 height: 48,
               }}
               decorationPosition={{
-                className: "-right-[27px] -top-[20px]",
+                className: styles.downloadArrowSecond,
               }}
             >
               <div className="h-full flex items-center justify-center text-center pointer-events-none">

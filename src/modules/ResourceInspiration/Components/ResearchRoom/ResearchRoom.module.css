@@ -190,6 +190,16 @@
   margin-left: 0;
 }
 
+.downloadArrowFirst {
+  left: -44px;
+  top: -12px;
+}
+
+.downloadArrowSecond {
+  right: -27px;
+  top: -20px;
+}
+
 .downloadLabel {
   color: #0f4f58;
   font-size: 24px;
@@ -396,7 +406,7 @@
   }
 
   .footerBtnSpaced {
-    margin-top: 0;
+    margin-top: 24px;
   }
 }
 
@@ -515,6 +525,16 @@
 
   .downloadLabel {
     font-size: clamp(17px, 4.5vw, 21px);
+  }
+
+  .downloadArrowFirst {
+    top: -2px;
+    left: -30px;
+  }
+
+  .downloadArrowSecond {
+    top: -6px;
+    right: -18px;
   }
 }
 

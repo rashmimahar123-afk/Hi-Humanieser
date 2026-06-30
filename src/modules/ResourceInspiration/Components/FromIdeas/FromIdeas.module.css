@@ -106,6 +106,17 @@
   pointer-events: auto;
 }
 
+/* Desktop & laptop (≥1024px) — extra space between subtitle and yellow highlight */
+@media (min-width: 1024px) {
+  .highlightSection {
+    margin-top: 64px;
+  }
+
+  .highlightInner {
+    margin-top: -48px;
+  }
+}
+
 .sectionBlock {
   margin-top: 56px;
   margin-left: auto;
