@@ -29,8 +29,7 @@ function StartTeamJourneyPage() {
     );
   }
 
-  console.log(pollData?.ready, "pollData?.readypollData?.readypollData?.ready");
-  console.log("pollData?.poll_openpollData?.poll_open", pollData?.poll_open);
+  console.log("pollData?.poll_openpollData?.poll_open", pollData);
   return (
     <Suspense fallback={"Loading..."}>
       {user?.user_type === 3 ? (

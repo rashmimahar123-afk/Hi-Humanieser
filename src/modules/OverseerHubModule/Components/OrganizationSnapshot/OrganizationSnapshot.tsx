@@ -215,6 +215,8 @@ function OrganizationSnapshot() {
   const isAllZero =
     noDataFocusAreas.length > 0 &&
     noDataFocusAreas.every((item) => item.value === 0);
+  console.log("noDataFocusAreasnoDataFocusAreas", noDataFocusAreas);
+  console.log("isAllZeroisAllZeroisAllZero", isAllZero);
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -576,95 +578,109 @@ function OrganizationSnapshot() {
               <h2 className="text-[32px] text-[#0F4F58] font-[RocaTwo] font-bold">
                 Individual Personal Pathways{" "}
               </h2>
+              {isAllZero ? (
+                <div className="bg-[#f8e1b8] rounded-[32px] mt-10 py-20 flex justify-center items-center">
+                  <p className="text-[#0F4F58] text-[24px] font-[RocaTwo]">
+                    No Data Found
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Subtitle */}
+                  <p className="text-[20px] text-[#0F4F58] font-[Roboto]">
+                    Where team members are currently directing their personal
+                    attention.
+                  </p>
 
-              {/* Subtitle */}
-              <p className="text-[20px] text-[#0F4F58] font-[Roboto]">
-                Where team members are currently directing their personal
-                attention.
-              </p>
-
-              {/* Chart Card */}
-              <div className="bg-[#f8e1b8] rounded-[20px] p-16 mt-6">
-                {isAllZero ? (
-                  <div className="relative">
-                    <ResponsiveContainer
-                      width="100%"
-                      height={450}
-                      style={{ background: "#D7D8C8" }}
-                    >
-                      <BarChart
-                        data={noDataFocusAreas}
-                        layout="vertical"
-                        margin={{ top: 10, right: 30, left: 120, bottom: 40 }}
+                  {/* Chart Card */}
+                  <div className="bg-[#f8e1b8] rounded-[20px] p-16 mt-6">
+                    {isAllZero ? (
+                      <div className="relative">
+                        <ResponsiveContainer
+                          width="100%"
+                          height={450}
+                          style={{ background: "#D7D8C8" }}
+                        >
+                          <BarChart
+                            data={noDataFocusAreas}
+                            layout="vertical"
+                            margin={{
+                              top: 10,
+                              right: 30,
+                              left: 120,
+                              bottom: 40,
+                            }}
+                          >
+                            <XAxis
+                              type="number"
+                              domain={[0, 35]}
+                              ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
+                            />
+                            <YAxis type="category" dataKey="name" width={260} />
+                            <Bar dataKey="value" fill="#86c9c9" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    ) : (
+                      <ResponsiveContainer
+                        width="100%"
+                        height={450}
+                        style={{ background: "#D7D8C8" }}
                       >
-                        <XAxis
-                          type="number"
-                          domain={[0, 35]}
-                          ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
-                        />
-                        <YAxis type="category" dataKey="name" width={260} />
-                        <Bar dataKey="value" fill="#86c9c9" />
-                      </BarChart>
-                    </ResponsiveContainer>
+                        <BarChart
+                          data={focusAreaChartData}
+                          layout="vertical"
+                          margin={{ top: 10, right: 30, left: 120, bottom: 40 }}
+                        >
+                          <CartesianGrid
+                            stroke="#A8A99A"
+                            strokeOpacity={0.4}
+                            horizontal={false}
+                          />
+
+                          <XAxis
+                            type="number"
+                            domain={[0, 35]}
+                            ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
+                            tick={{ fontSize: 20, fill: "#000" }}
+                            axisLine={false}
+                            tickLine={false}
+                            label={{
+                              value: "% of people",
+                              position: "bottom",
+                              offset: 10,
+                              style: { fontSize: 22, fill: "#000" },
+                            }}
+                          />
+
+                          <YAxis
+                            type="category"
+                            dataKey="name"
+                            tick={{ fontSize: 22, fill: "#000" }}
+                            axisLine={false}
+                            tickLine={false}
+                            width={260}
+                          />
+
+                          <Bar
+                            dataKey="value"
+                            barSize={40}
+                            shape={renderBar}
+                            isAnimationActive
+                            animationDuration={2000}
+                            animationEasing="ease-in-out"
+                          />
+
+                          <Tooltip
+                            cursor={false}
+                            content={(props) => <CustomTooltip {...props} />}
+                          />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    )}
                   </div>
-                ) : (
-                  <ResponsiveContainer
-                    width="100%"
-                    height={450}
-                    style={{ background: "#D7D8C8" }}
-                  >
-                    <BarChart
-                      data={focusAreaChartData}
-                      layout="vertical"
-                      margin={{ top: 10, right: 30, left: 120, bottom: 40 }}
-                    >
-                      <CartesianGrid
-                        stroke="#A8A99A"
-                        strokeOpacity={0.4}
-                        horizontal={false}
-                      />
-
-                      <XAxis
-                        type="number"
-                        domain={[0, 35]}
-                        ticks={[0, 5, 10, 15, 20, 25, 30, 35]}
-                        tick={{ fontSize: 20, fill: "#000" }}
-                        axisLine={false}
-                        tickLine={false}
-                        label={{
-                          value: "% of people",
-                          position: "bottom",
-                          offset: 10,
-                          style: { fontSize: 22, fill: "#000" },
-                        }}
-                      />
-
-                      <YAxis
-                        type="category"
-                        dataKey="name"
-                        tick={{ fontSize: 22, fill: "#000" }}
-                        axisLine={false}
-                        tickLine={false}
-                        width={260}
-                      />
-
-                      <Bar
-                        dataKey="value"
-                        barSize={40}
-                        shape={renderBar}
-                        isAnimationActive
-                        animationDuration={2000}
-                        animationEasing="ease-in-out"
-                      />
-
-                      <Tooltip
-                        cursor={false}
-                        content={(props) => <CustomTooltip {...props} />}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                )}
-              </div>
+                </>
+              )}
             </div>
 
             {/* Latest Poll Result */}
@@ -675,84 +691,94 @@ function OrganizationSnapshot() {
                   Latest Team Poll Results{" "}
                 </h1>
               </div>
-              <div className="relative bg-[#f8e1b8] p-4 mt-6 rounded-xl overflow-hidden">
-                {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
+              {!teamKpiData?.poll ? (
+                <div className="bg-[#f8e1b8] rounded-[32px] mt-10 py-20 flex justify-center items-center">
+                  <p className="text-[#0F4F58] text-[24px] font-[RocaTwo]">
+                    No Latest Team Poll Result Found
+                  </p>
+                </div>
+              ) : (
+                <div className="relative bg-[#f8e1b8] p-4 mt-6 rounded-xl overflow-hidden">
+                  {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
           <p>State 4 – Poll reached threshold</p>
           <p>(≥ 50% responses, Champion can act)</p>
         </div> */}
 
-                <div className="absolute right-0 top-0 ">
-                  <Image
-                    src={images.dottedCurve}
-                    alt="pattern"
-                    width={500}
-                    height={270}
-                  />
-                </div>
+                  <div className="absolute right-0 top-0 ">
+                    <Image
+                      src={images.dottedCurve}
+                      alt="pattern"
+                      width={500}
+                      height={270}
+                    />
+                  </div>
 
-                {/* Two Column Section */}
-                <div className="grid grid-cols-2 gap-16 mt-16 ml-8">
-                  {/* LEFT COLUMN */}
-                  <div>
-                    <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
-                      What the team says would most support progress right now
-                    </h3>
+                  {/* Two Column Section */}
+                  <div className="grid grid-cols-2 gap-16 mt-16 ml-8">
+                    {/* LEFT COLUMN */}
+                    <div>
+                      <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
+                        What the team says would most support progress right now
+                      </h3>
 
-                    <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-6">
-                      {teamKpiData?.poll?.results?.map((item) => (
-                        <ProgressPill
-                          key={item.option}
-                          label={item.option}
-                          percent={item.vote_percentage}
-                        />
-                      ))}
+                      <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-6">
+                        {teamKpiData?.poll?.results?.map((item) => (
+                          <ProgressPill
+                            key={item.option}
+                            label={item.option}
+                            percent={item.vote_percentage}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* RIGHT COLUMN */}
+                    <div>
+                      <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
+                        How this helps your leadership
+                      </h3>
+
+                      <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-8 text-[#0F4F58] text-[18px] leading-relaxed font-[Roboto] ">
+                        <p>
+                          Earlier issue-raising, better judgement in decisions,
+                          and fewer surprises later.
+                        </p>
+
+                        <p>
+                          Clear priorities, faster decision-making, and less
+                          rework across the team.
+                        </p>
+
+                        <p>
+                          Better coordination across teams, reducing silos,
+                          friction, and delays in delivery.
+                        </p>
+
+                        <p>
+                          Stronger ownership, more discretionary effort, and
+                          better retention of key people.
+                        </p>
+
+                        <p>
+                          More sustainable pace, fewer energy crashes, and
+                          steadier delivery over time.
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* RIGHT COLUMN */}
-                  <div>
-                    <h3 className="text-[#0F4F58] text-[20px] font-bold text-center mb-6 font-[Roboto]">
-                      How this helps your leadership
-                    </h3>
-
-                    <div className="bg-[#b9cbb7] rounded-2xl p-8 space-y-8 text-[#0F4F58] text-[18px] leading-relaxed font-[Roboto] ">
-                      <p>
-                        Earlier issue-raising, better judgement in decisions,
-                        and fewer surprises later.
-                      </p>
-
-                      <p>
-                        Clear priorities, faster decision-making, and less
-                        rework across the team.
-                      </p>
-
-                      <p>
-                        Better coordination across teams, reducing silos,
-                        friction, and delays in delivery.
-                      </p>
-
-                      <p>
-                        Stronger ownership, more discretionary effort, and
-                        better retention of key people.
-                      </p>
-
-                      <p>
-                        More sustainable pace, fewer energy crashes, and
-                        steadier delivery over time.
-                      </p>
-                    </div>
+                  {/* Bottom Participation */}
+                  <div className="mt-6 ml-4">
+                    <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
+                      Participation:{" "}
+                      {teamKpiData?.poll?.participation?.responded} of{" "}
+                      {teamKpiData?.poll?.participation?.total} team members
+                      responded ({teamKpiData?.poll?.participation?.percentage}
+                      %)
+                    </p>
                   </div>
                 </div>
-
-                {/* Bottom Participation */}
-                <div className="mt-6 ml-4">
-                  <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
-                    Participation: {teamKpiData?.poll?.participation?.responded}{" "}
-                    of {teamKpiData?.poll?.participation?.total} team members
-                    responded ({teamKpiData?.poll?.participation?.percentage}%)
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="mt-10">
@@ -764,7 +790,7 @@ function OrganizationSnapshot() {
                   </h3>
 
                   <div className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px] w-full">
-                    {teamKpiData?.cycle?.champion_pp || "-"}
+                    {teamKpiData?.cycle?.champion_pp || "No Data Found"}
                   </div>
                 </div>
 
@@ -773,26 +799,31 @@ function OrganizationSnapshot() {
                   <h3 className="text-[#0F4F58] text-[20px] font-[RocaTwo] mb-2">
                     Recommended Focus Area
                   </h3>
-
-                  <div className="flex justify-center items-center ">
-                    {teamKpiData?.cycle?.recommended_focus_areas?.map(
-                      (focusArea: string, index: number) => (
-                        <div key={focusArea} className={styles.card}>
-                          <Image
-                            src={
-                              index % 2 === 0
-                                ? images.orgSnapPoly
-                                : images.overseerToolPoly
-                            }
-                            alt={focusArea}
-                            fill
-                            className={styles.cardImage}
-                          />
-                          <h3 className={styles.cardTitle}>{focusArea}</h3>
-                        </div>
-                      ),
-                    )}
-                  </div>
+                  {!teamKpiData?.cycle ? (
+                    <div className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px] w-full mt-6">
+                      No Data Found
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-center ">
+                      {teamKpiData?.cycle?.recommended_focus_areas?.map(
+                        (focusArea: string, index: number) => (
+                          <div key={focusArea} className={styles.card}>
+                            <Image
+                              src={
+                                index % 2 === 0
+                                  ? images.orgSnapPoly
+                                  : images.overseerToolPoly
+                              }
+                              alt={focusArea}
+                              fill
+                              className={styles.cardImage}
+                            />
+                            <h3 className={styles.cardTitle}>{focusArea}</h3>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Card 3 */}
@@ -800,19 +831,24 @@ function OrganizationSnapshot() {
                   <h3 className="text-[#0F4F58] text-[20px] font-[RocaTwo] mb-6">
                     Chosen Team Ritual
                   </h3>
-
-                  <div className="flex flex-col gap-4">
-                    {teamKpiData?.cycle?.chosen_team_rituals?.map(
-                      (ritual: any) => (
-                        <div
-                          key={ritual.team_ritual_id}
-                          className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px]"
-                        >
-                          {ritual.title}
-                        </div>
-                      ),
-                    )}
-                  </div>
+                  {!teamKpiData?.cycle ? (
+                    <div className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px] w-full mt-6">
+                      No Data Found
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-4">
+                      {teamKpiData?.cycle?.chosen_team_rituals?.map(
+                        (ritual: any) => (
+                          <div
+                            key={ritual.team_ritual_id}
+                            className="bg-[#E9E9E9] rounded-[14px] px-5 py-3 text-[#567F55] text-[16px]"
+                          >
+                            {ritual.title}
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -823,133 +859,142 @@ function OrganizationSnapshot() {
               <h2 className="text-[32px] font-[RocaTwo] text-[#0F4F58] mt-6 font-bold">
                 Active Focus & Engagement
               </h2>
-
-              {/* Outer Beige Container */}
-              <div className="bg-[#f8e1b8] rounded-[24px] p-10">
-                {/* Two Column Layout */}
-                <div className="grid grid-cols-2 gap-12">
-                  {/* CARD */}
-                  {teamKpiData?.cycle?.chosen_team_rituals?.map(
-                    (ritual: any, index: number) => (
-                      <div
-                        key={ritual.team_ritual_id}
-                        className="bg-[#b9cbb7] rounded-[20px] p-10"
-                      >
-                        {/* TOP INFO SECTION */}
-                        <div className="space-y-6">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[20px] font-[RocaTwo] text-[#0F4F58]">
-                              Focus Area
-                            </span>
-
-                            <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                              {ritual.focus_area}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
-                              Active Team <br /> Ritual
-                            </span>
-
-                            <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                              {ritual.title}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
-                              Time remaining <br /> in this cycle
-                            </span>
-
-                            <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                              [
-                              {getWeeksRemaining(
-                                teamKpiData?.cycle?.time_remaining_seconds,
-                              )}{" "}
-                              Weeks]
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Engagement Section */}
-                        <div className="mt-12">
-                          <h3 className="text-[28px] font-[RocaTwo] text-[#0F4F58] mb-8">
-                            Engagement so far:
-                          </h3>
-
-                          <ul className="space-y-6 text-[18px] text-[#0F4F58] font-[Roboto]">
-                            <li className="flex items-start gap-4">
-                              <Image
-                                src={images.engagementImg}
-                                alt="arrow"
-                                width={22}
-                                height={22}
-                                className="mt-1"
-                              />
-                              <span>
-                                Awareness:{" "}
-                                {teamKpiData?.engagement?.awareness
-                                  ?.percentage ?? 0}
-                                % have viewed the ritual
-                              </span>
-                            </li>
-
-                            <li className="flex items-start gap-4">
-                              <Image
-                                src={images.engagementImg}
-                                alt="arrow"
-                                width={22}
-                                height={22}
-                                className="mt-1"
-                              />
-                              <span>
-                                Participation:{" "}
-                                {teamKpiData?.engagement
-                                  ?.team_ritual_participation?.percentage ?? 0}
-                                % have contributed at least one team reflection
-                              </span>
-                            </li>
-
-                            <li className="flex items-start gap-4">
-                              <Image
-                                src={images.engagementImg}
-                                alt="arrow"
-                                width={22}
-                                height={22}
-                                className="mt-1"
-                              />
-                              <span>
-                                Momentum:{" "}
-                                {teamKpiData?.engagement?.momentum
-                                  ?.percentage ?? 0}
-                                % have contributed more than once
-                              </span>
-                            </li>
-
-                            <li className="flex items-start gap-4">
-                              <Image
-                                src={images.engagementImg}
-                                alt="arrow"
-                                width={22}
-                                height={22}
-                                className="mt-1"
-                              />
-                              <span>
-                                Sharing:{" "}
-                                {teamKpiData?.engagement?.sharing
-                                  ?.shared_count ?? 0}{" "}
-                                reflections shared on Reflection Wall
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    ),
-                  )}
+              {!teamKpiData?.cycle ? (
+                <div className="bg-[#f8e1b8] rounded-[32px] mt-10 py-20 flex justify-center items-center">
+                  <p className="text-[#0F4F58] text-[24px] font-[RocaTwo]">
+                    No Active Focus & Engagement Found
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-[#f8e1b8] rounded-[24px] p-10">
+                  {/* Two Column Layout */}
+                  <div className="grid grid-cols-2 gap-12">
+                    {/* CARD */}
+                    {teamKpiData?.cycle?.chosen_team_rituals?.map(
+                      (ritual: any, index: number) => (
+                        <div
+                          key={ritual.team_ritual_id}
+                          className="bg-[#b9cbb7] rounded-[20px] p-10"
+                        >
+                          {/* TOP INFO SECTION */}
+                          <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[20px] font-[RocaTwo] text-[#0F4F58]">
+                                Focus Area
+                              </span>
+
+                              <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                                {ritual.focus_area}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
+                                Active Team <br /> Ritual
+                              </span>
+
+                              <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                                {ritual.title}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <span className="text-[20px] font-[RocaTwo] text-[#0F4F58] leading-tight">
+                                Time remaining <br /> in this cycle
+                              </span>
+
+                              <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
+                                [
+                                {getWeeksRemaining(
+                                  teamKpiData?.cycle?.time_remaining_seconds,
+                                )}{" "}
+                                Weeks]
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Engagement Section */}
+                          <div className="mt-12">
+                            <h3 className="text-[28px] font-[RocaTwo] text-[#0F4F58] mb-8">
+                              Engagement so far:
+                            </h3>
+
+                            <ul className="space-y-6 text-[18px] text-[#0F4F58] font-[Roboto]">
+                              <li className="flex items-start gap-4">
+                                <Image
+                                  src={images.engagementImg}
+                                  alt="arrow"
+                                  width={22}
+                                  height={22}
+                                  className="mt-1"
+                                />
+                                <span>
+                                  Awareness:{" "}
+                                  {teamKpiData?.engagement?.awareness
+                                    ?.percentage ?? 0}
+                                  % have viewed the ritual
+                                </span>
+                              </li>
+
+                              <li className="flex items-start gap-4">
+                                <Image
+                                  src={images.engagementImg}
+                                  alt="arrow"
+                                  width={22}
+                                  height={22}
+                                  className="mt-1"
+                                />
+                                <span>
+                                  Participation:{" "}
+                                  {teamKpiData?.engagement
+                                    ?.team_ritual_participation?.percentage ??
+                                    0}
+                                  % have contributed at least one team
+                                  reflection
+                                </span>
+                              </li>
+
+                              <li className="flex items-start gap-4">
+                                <Image
+                                  src={images.engagementImg}
+                                  alt="arrow"
+                                  width={22}
+                                  height={22}
+                                  className="mt-1"
+                                />
+                                <span>
+                                  Momentum:{" "}
+                                  {teamKpiData?.engagement?.momentum
+                                    ?.percentage ?? 0}
+                                  % have contributed more than once
+                                </span>
+                              </li>
+
+                              <li className="flex items-start gap-4">
+                                <Image
+                                  src={images.engagementImg}
+                                  alt="arrow"
+                                  width={22}
+                                  height={22}
+                                  className="mt-1"
+                                />
+                                <span>
+                                  Sharing:{" "}
+                                  {teamKpiData?.engagement?.sharing
+                                    ?.shared_count ?? 0}{" "}
+                                  reflections shared on Reflection Wall
+                                </span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
+
             <div className="mt-10">
               <div className="font-bold text-[32px] font-[RocaTwo] text-[#0f4f58]">
                 Latest Reflections
