@@ -4,10 +4,11 @@ import images from "@/src/assets/images";
 import Image from "next/image";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useRouter } from "next/navigation";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 function PressureOne() {
   // pressureData.ts
-
+  const { user } = useAuthValue();
   const pressureData = [
     {
       id: 1,
@@ -366,9 +367,17 @@ function PressureOne() {
             {/* Bottom Buttons */}
             <div className="flex flex-col gap-4 items-center">
               <CommonButtons
-                label={`Return to Champion Hub`}
+                label={
+                  user?.user_type === 3
+                    ? `Return to Partner Hub`
+                    : `Return to Champion Hub`
+                }
                 bgColor="#fbe1de"
-                onClick={() => router.push("/champion-hub")}
+                onClick={() =>
+                  router.push(
+                    user?.user_type === 3 ? "/overseer-hub" : "/champion-hub",
+                  )
+                }
               />
 
               <CommonButtons

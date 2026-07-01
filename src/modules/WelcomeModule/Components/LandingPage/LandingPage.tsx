@@ -405,7 +405,7 @@ function LandingPage() {
             onClick={() => router.push("/faq")}
             className="underline hover:text-[#0F4F58] transition-colors"
           >
-            FAQ
+            FAQs
           </button>
         </p>
       </div>

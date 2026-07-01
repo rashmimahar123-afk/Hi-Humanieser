@@ -2,8 +2,6 @@
 
 import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
-import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
-import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
