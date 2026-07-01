@@ -1058,18 +1058,21 @@ function OrganizationSnapshot() {
         <div className="flex flex-col justify-end mt-10 relative z-20">
           <div className="flex justify-end">
             {/* Bottom Buttons */}
-            <div className="flex flex-col gap-4 items-center">
-              <CommonButtons
-                label={`Return to Champion Hub`}
-                bgColor="#cde3cc"
-                onClick={() => router.push("/champion-hub")}
-              />
-
-              <CommonButtons
-                label="Go to Homepage"
-                bgColor="#cde3cc"
-                onClick={() => router.push("/home")}
-              />
+            <div className="flex flex-col gap-4 items-center ">
+              <div className="cursor-pointer">
+                <CommonButtons
+                  label={`Return to Partner Hub`}
+                  bgColor="#cde3cc"
+                  onClick={() => router.push("/overseer-hub")}
+                />
+              </div>
+              <div className="cursor-pointer">
+                <CommonButtons
+                  label="Go to Homepage"
+                  bgColor="#cde3cc"
+                  onClick={() => router.push("/home")}
+                />
+              </div>
             </div>
           </div>
         </div>

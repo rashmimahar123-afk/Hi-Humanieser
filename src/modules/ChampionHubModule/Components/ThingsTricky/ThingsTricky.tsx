@@ -216,9 +216,17 @@ function ThingsTricky() {
         {/* Bottom Buttons */}
         <div className="flex flex-col gap-4 items-center">
           <CommonButtons
-            label={`Return to Champion Hub`}
+            label={
+              user?.user_type === 3
+                ? `Return to Partner Hub`
+                : `Return to Champion Hub`
+            }
             bgColor="#fbe1de"
-            onClick={() => router.push("/champion-hub")}
+            onClick={() =>
+              router.push(
+                user?.user_type === 3 ? "/overseer-hub" : "/champion-hub",
+              )
+            }
           />
 
           <CommonButtons

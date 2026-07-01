@@ -32,12 +32,12 @@ function PreviewQuestionsModal() {
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-[720px] max-h-[90vh] overflow-y-auto rounded-[28px] bg-white p-8 text-left space-y-6">
           {/* Close */}
-          <button
+          {/* <button
             onClick={() => setIsOpen(false)}
             className="absolute right-6 top-4 text-xl font-bold cursor-pointer"
           >
             ✕
-          </button>
+          </button> */}
 
           {/* Title */}
           <DialogTitle className="text-[26px] font-[700] text-[#0F4F58]">
@@ -57,7 +57,7 @@ function PreviewQuestionsModal() {
             {/* CLARITY */}
             <div>
               <p className="font-semibold text-blue-600">🔵 CLARITY</p>
-              <ul className="list-disc ml-5 mt-1 space-y-1">
+              <ul className="list-disc ml-5 mt-1 space-y-1 text-gray-600">
                 <li>
                   When I start a piece of work, I’m clear on what good looks
                   like
@@ -72,7 +72,7 @@ function PreviewQuestionsModal() {
             {/* ALIGNMENT */}
             <div>
               <p className="font-semibold text-purple-600">🟣 ALIGNMENT</p>
-              <ul className="list-disc ml-5 mt-1 space-y-1">
+              <ul className="list-disc ml-5 mt-1 space-y-1 text-gray-600">
                 <li>
                   I have a good sense of who to involve to move work forward
                 </li>
@@ -86,7 +86,7 @@ function PreviewQuestionsModal() {
             {/* LOAD */}
             <div>
               <p className="font-semibold text-orange-500">🟠 LOAD</p>
-              <ul className="list-disc ml-5 mt-1 space-y-1">
+              <ul className="list-disc ml-5 mt-1 space-y-1 text-gray-600">
                 <li>I have enough time to do my work to a good standard</li>
                 <li>I have enough space to think before acting on my work</li>
               </ul>
@@ -95,7 +95,7 @@ function PreviewQuestionsModal() {
             {/* SAFETY */}
             <div>
               <p className="font-semibold text-green-600">🟢 SAFETY</p>
-              <ul className="list-disc ml-5 mt-1 space-y-1">
+              <ul className="list-disc ml-5 mt-1 space-y-1 text-gray-600">
                 <li>
                   People raise concerns when they notice something is not right
                 </li>
@@ -106,7 +106,7 @@ function PreviewQuestionsModal() {
             {/* OWNERSHIP */}
             <div>
               <p className="font-semibold text-red-600">🔴 OWNERSHIP</p>
-              <ul className="list-disc ml-5 mt-1 space-y-1">
+              <ul className="list-disc ml-5 mt-1 space-y-1 text-gray-600">
                 <li>
                   When something needs to move forward, people take initiative
                   to help

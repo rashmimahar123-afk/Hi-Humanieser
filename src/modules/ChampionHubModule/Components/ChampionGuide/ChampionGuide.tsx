@@ -51,9 +51,9 @@ function ChampionGuide() {
               </h3>
 
               <p className="text-[#0F4F58] text-[18px] sm:text-[20px] md:text-[24px] leading-relaxed mb-4">
-                Inside, you’ll find the essentials that make everything easier: a
-                short training to get you oriented and a one-page guide to keep
-                within reach.
+                Inside, you’ll find the essentials that make everything easier:
+                a short training to get you oriented and a one-page guide to
+                keep within reach.
               </p>
               <p className="text-[#0F4F58] text-[18px] sm:text-[20px] md:text-[24px] leading-relaxed mb-4">
                 Nothing heavy. Nothing corporate. Just the fundamentals to help
@@ -75,7 +75,7 @@ function ChampionGuide() {
                       className={styles.trainingImage}
                     />
 
-                    <h3 className={styles.polyTitle}>Champion Training</h3>
+                    <h3 className={styles.polyTitle}>Champion Guide</h3>
                   </div>
 
                   <p className={styles.trainingSubtitle}>
@@ -111,7 +111,9 @@ function ChampionGuide() {
           {/* SKY SHAPE CARD */}
         </div>
 
-        <div className={`${styles.backButtonRow} mt-10 flex flex-col sm:flex-row gap-4 justify-end`}>
+        <div
+          className={`${styles.backButtonRow} mt-10 flex flex-col sm:flex-row gap-4 justify-end`}
+        >
           <CommonButtons
             label="Back to Champion Resources"
             bgColor="#cde3cc"
