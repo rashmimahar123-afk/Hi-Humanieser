@@ -153,7 +153,10 @@ function ChampionHub() {
           </div>
 
           {/* TEAM INSIGHTS */}
-          <div className="relative bg-[#F8E1B8] rounded-xl p-4 ml-16 cursor-pointer">
+          <div
+            className="relative bg-[#F8E1B8] rounded-xl p-4 ml-16 cursor-pointer"
+            onClick={() => router.push("/champion-hub/team-insight")}
+          >
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
               Team Insights
             </h3>
@@ -177,7 +180,7 @@ function ChampionHub() {
           {/* CHAMPION RESOURCES */}
           <div
             className="relative bg-[#FBE1DE] rounded-xl p-4 mr-16 cursor-pointer"
-            onClick={() => router.push("champion-resources")}
+            onClick={() => router.push("/champion-hub/champion-resources")}
           >
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
               Champion Resources

@@ -9,10 +9,39 @@ import styles from "./ChampionResources.module.css";
 import ChampionResourceCards from "../ChampionResourceCards/ChampionResourceCards";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
 
 function ChampionResources() {
   const router = useRouter();
   const { user } = useAuthValue();
+
+  const { data, isLoading } = useHhFrameworkMtjQuery();
+
+  const focusAreas = data?.data?.focus_areas || [];
+
+  const focusAreaColors = [
+    {
+      bgColor: "#4ba6a6",
+      cardBgColor: "#c2e2e2",
+    },
+    {
+      bgColor: "#f5c882",
+      cardBgColor: "#f8e1b8",
+    },
+    {
+      bgColor: "#acd5ab",
+      cardBgColor: "#cde3cc",
+    },
+    {
+      bgColor: "#f7c3be",
+      cardBgColor: "#fbe1de",
+    },
+    {
+      bgColor: "#4ba6a6",
+      cardBgColor: "#c2e2e2",
+    },
+  ];
+
   return (
     <div className="relative bg-[#F5F0EB] min-h-screen ">
       {/* TOP LEFT SHAPE */}
@@ -77,10 +106,10 @@ function ChampionResources() {
             </div>
           </div>
 
-<div
+          <div
             className={`${styles.card} bg-[#f5c882] w-full max-w-[325px] min-h-[240px] cursor-pointer transition-shadow duration-200 hover:shadow-lg`}
             onClick={() => router.push("/champion-resources/champion-toolkit")}
-          > 
+          >
             <div className={styles.imageWrapper}>
               <Image
                 src={images.trainingImg}
@@ -94,7 +123,12 @@ function ChampionResources() {
             </div>
           </div>
 
-          <div className={`${styles.card} bg-[#f5c882] w-full max-w-[325px] min-h-[240px]`}  onClick={() => router.push("/champion-resources/focus-area-rituals")}>
+          <div
+            className={`${styles.card} bg-[#f5c882] w-full max-w-[325px] min-h-[240px]`}
+            onClick={() =>
+              router.push("/champion-resources/focus-area-rituals")
+            }
+          >
             <div className={styles.imageWrapper}>
               <Image
                 src={images.focusImg}
@@ -103,7 +137,7 @@ function ChampionResources() {
                 className={styles.cardImage}
               />
             </div>
-            <div className={styles.cardContent} >
+            <div className={styles.cardContent}>
               <h3>Focus Areas & Rituals</h3>
             </div>
           </div>
@@ -322,175 +356,66 @@ function ChampionResources() {
         </div> */}
 
         <div className="relative px-4 sm:px-6 lg:px-0">
-            <Image
-              src={images.targetImg} // toolbox illustration
-              alt="toolkit"
-              width={200}
-              height={200}
-              className="absolute right-10 top-0 z-0"
+          <Image
+            src={images.targetImg} // toolbox illustration
+            alt="toolkit"
+            width={200}
+            height={200}
+            className="absolute right-10 top-0 z-0"
+          />
+          <div className="relative z-10">
+            <h2 className="text-[44px] font-[RocaTwo] text-[#0F4F58] mb-4">
+              Focus Areas & Rituals
+            </h2>
+            <h3 className="text-[24px] font-semibold text-[#0F4F58] mb-6">
+              Explore the foundations behind each team rituals.
+            </h3>
+            <p className="text-[22px] text-[#0F4F58] leading-relaxed mb-14">
+              Here you’ll find clear explanations of every Focus Area and the
+              full library of rituals, including what each one builds and the
+              operational impact you can expect. Most Champions use this space
+              as a reference alongside Team Focus, so ritual choices stay linked
+              to real pressure and team input.
+            </p>
+            <div className="mt-[70px]">
+              {focusAreas.map((focusArea, index) => {
+                const colors = focusAreaColors[index % focusAreaColors.length];
+
+                return (
+                  <div key={focusArea.focus_area_id} className="mt-[32px]">
+                    <ChampionResourceCards
+                      sectionTitle={focusArea.title}
+                      bgColor={colors.bgColor}
+                      cardBgColor={colors.cardBgColor}
+                      cards={focusArea.team_rituals.map((ritual) => ({
+                        title: ritual.title,
+                        description: ritual.short_description,
+                        impact: ritual.operational_impact,
+                        learnMoreColor: colors.bgColor,
+                      }))}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center lg:justify-end mt-10">
+          {/* Bottom Buttons */}
+          <div className="flex flex-col gap-4 items-center">
+            <CommonButtons
+              label={`Return to Champion Hub`}
+              bgColor="#cde3cc"
+              onClick={() => router.push("/champion-hub")}
             />
-            <div className="relative z-10">
-              <h2 className="text-[44px] font-[RocaTwo] text-[#0F4F58] mb-4">
-                Focus Areas & Rituals
-              </h2>
-              <h3 className="text-[24px] font-semibold text-[#0F4F58] mb-6">
-                Explore the foundations behind each team rituals.
-              </h3>
-              <p className="text-[22px] text-[#0F4F58] leading-relaxed mb-14">
-                Here you’ll find clear explanations of every Focus Area and the
-                full library of rituals, including what each one builds and the
-                operational impact you can expect. Most Champions use this space
-                as a reference alongside Team Focus, so ritual choices stay
-                linked to real pressure and team input.
-              </p>
-              <div className="mt-[70px]">
-                <div className="mt-[32px]">
-                  <ChampionResourceCards
-                    sectionTitle="Build Trust"
-                    bgColor="#4ba6a6"
-                    cardBgColor="#c2e2e2"
-                    cards={[
-                      {
-                        title: "What’s the Purpose?",
-                        description:
-                          "Create clarity by naming the purpose of a conversation upfront, so everyone knows why they’re there and what matters.",
-                        learnMoreColor: "#4ba6a6",
 
-                        impact:
-                          "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                      },
-                      {
-                        title: "What Happens Next",
-                        description:
-                          "Reduce confusion by clearly naming next steps, ownership, and timing — instead of assuming alignment at the end of discussions.",
-                        learnMoreColor: "#4ba6a6",
-                        impact:
-                          "Cuts down chasing, reminders, and “I thought you were doing it” escalations.",
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="mt-[32px]">
-                  <ChampionResourceCards
-                    sectionTitle="Improve
-Clarity"
-                    bgColor="#f5c882"
-                    cardBgColor="#f8e1b8"
-                    cards={[
-                      {
-                        title: "What’s the Purpose?",
-                        description:
-                          "Create clarity by naming the purpose of a conversation upfront, so everyone knows why they’re there and what matters.",
-                        learnMoreColor: "#f5c882",
-                        impact:
-                          "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                      },
-                      {
-                        title: "What Happens Next",
-                        description:
-                          "Reduce confusion by clearly naming next steps, ownership, and timing — instead of assuming alignment at the end of discussions.",
-                        learnMoreColor: "#f5c882",
-                        impact:
-                          "Cuts down chasing, reminders, and “I thought you were doing it” escalations.",
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="mt-[32px] ">
-                  <ChampionResourceCards
-                    sectionTitle="Strengthen Collaboration"
-                    bgColor="#acd5ab"
-                    cardBgColor="#cde3cc"
-                    cards={[
-                      {
-                        title: "What’s the Purpose?",
-                        description:
-                          "Create clarity by naming the purpose of a conversation upfront, so everyone knows why they’re there and what matters.",
-                        learnMoreColor: "#acd5ab",
-                        impact:
-                          "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                      },
-                      {
-                        title: "What Happens Next",
-                        description:
-                          "Reduce confusion by clearly naming next steps, ownership, and timing — instead of assuming alignment at the end of discussions.",
-                        learnMoreColor: "#acd5ab",
-                        impact:
-                          "Cuts down chasing, reminders, and “I thought you were doing it” escalations.",
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="mt-[32px]">
-                  <ChampionResourceCards
-                    sectionTitle="Foster Belonging"
-                    bgColor="#f7c3be"
-                    cardBgColor="#fbe1de"
-                    cards={[
-                      {
-                        title: "What’s the Purpose?",
-                        description:
-                          "Create clarity by naming the purpose of a conversation upfront, so everyone knows why they’re there and what matters.",
-                        learnMoreColor: "#f7c3be",
-                        impact:
-                          "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                      },
-                      {
-                        title: "What Happens Next",
-                        description:
-                          "Reduce confusion by clearly naming next steps, ownership, and timing — instead of assuming alignment at the end of discussions.",
-                        learnMoreColor: "#f7c3be",
-                        impact:
-                          "Cuts down chasing, reminders, and “I thought you were doing it” escalations.",
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="mt-[32px] ">
-                  <ChampionResourceCards
-                    sectionTitle="Sustain Wellbeing"
-                    bgColor="#4ba6a6"
-                    cardBgColor="#c2e2e2"
-                    cards={[
-                      {
-                        title: "What’s the Purpose?",
-                        description:
-                          "Create clarity by naming the purpose of a conversation upfront, so everyone knows why they’re there and what matters.",
-                        learnMoreColor: "#4ba6a6",
-                        impact:
-                          "Reduces wasted meeting time and follow-up clarification by preventing conversations that drift or never land.",
-                      },
-                      {
-                        title: "What Happens Next",
-                        description:
-                          "Reduce confusion by clearly naming next steps, ownership, and timing — instead of assuming alignment at the end of discussions.",
-                        learnMoreColor: "#4ba6a6",
-                        impact:
-                          "Cuts down chasing, reminders, and “I thought you were doing it” escalations.",
-                      },
-                    ]}
-                  />
-                </div>
-              </div>
-            </div>
+            <CommonButtons
+              label="Go to Homepage"
+              bgColor="#cde3cc"
+              onClick={() => router.push("/home")}
+            />
           </div>
-          <div className="flex justify-center lg:justify-end mt-10">
-            {/* Bottom Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
-              <CommonButtons
-                label={`Return to Champion Hub`}
-                bgColor="#cde3cc"
-                onClick={() => router.push("/champion-hub")}
-              />
-
-              <CommonButtons
-                label="Go to Homepage"
-                bgColor="#cde3cc"
-                onClick={() => router.push("/home")}
-              />
-            </div>
-          </div>
-       
+        </div>
       </div>
     </div>
   );

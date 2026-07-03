@@ -7,6 +7,7 @@ import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { useRouter } from "next/navigation";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function PartnerToolkit() {
   const router = useRouter();
@@ -322,6 +323,7 @@ Clarity"
           </div>
         </div>
       </div>
+      <LogoutModal />
     </>
   );
 }

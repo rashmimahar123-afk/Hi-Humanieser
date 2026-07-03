@@ -10,6 +10,8 @@ import TeamSnapshot from "../TeamSnapshot/TeamSnapshot";
 import TeamWorkingOn from "../TeamWorkingOn/TeamWorkingOn";
 import TeamSayingSection from "../TeamSayingSection/TeamSayingSection";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useGetKpiQuery from "../../Hooks/useGetKpiQuery";
+import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 
 function TeamInsight() {
   const teamMembers = [
@@ -48,6 +50,38 @@ function TeamInsight() {
   const rows = chunkByPattern(teamMembers);
   const router = useRouter();
   const { user } = useAuthValue();
+
+  const { data: mtjKpiData } = useGetKpiQuery(user?.team_id);
+  const kpiData = mtjKpiData;
+
+  const cycleKpi = kpiData?.data?.cycle;
+
+  const pressurePoint = cycleKpi?.champion_pp;
+
+  const recommendedFocusAreas = cycleKpi?.recommended_focus_areas || [];
+
+  const chosenTeamRituals = cycleKpi?.chosen_team_rituals || [];
+  const poll = kpiData?.data?.poll;
+
+  const { data: cycleOverviewData } = useGetMtjCycleOverviewQuery(
+    user?.team_id,
+  );
+
+  const cycle = cycleOverviewData?.data?.cycle;
+  const teamRituals = cycle?.team_rituals || [];
+
+  const getRemainingWeeks = (endAt?: number | null) => {
+    if (!endAt) return "--";
+
+    const now = Date.now();
+    const end = new Date(endAt * 1000).getTime();
+
+    const diff = end - now;
+    const weeks = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24 * 7)));
+
+    return `${weeks} Weeks`;
+  };
+
   return (
     <div className=" min-h-screen bg-[#F5F0EB] ">
       {/* TOP LEFT SHAPE */}

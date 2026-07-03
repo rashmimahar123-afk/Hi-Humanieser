@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import styles from "./ChampionGuide.module.css";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { downloadPdf } from "@/src/lib/Helpers";
 
 function ChampionGuide() {
   const router = useRouter();
@@ -63,8 +64,13 @@ function ChampionGuide() {
               <div className={styles.trainingCardRow}>
                 {/* LEFT CARD */}
                 <div
-                  className={styles.trainingCardWrapper}
-                  onClick={() => router.push("/start-quiz")}
+                  className={`${styles.trainingCardWrapper} cursor-pointer`}
+                  onClick={() =>
+                    downloadPdf(
+                      "/championGuide/championGuide.pdf",
+                      "championGuide.pdf",
+                    )
+                  }
                 >
                   <div className={styles.polyContainer}>
                     <Image
@@ -85,8 +91,13 @@ function ChampionGuide() {
 
                 {/* RIGHT CARD */}
                 <div
-                  className={styles.trainingCardWrapper}
-                  onClick={() => router.push("/choose-myself")}
+                  className={`${styles.trainingCardWrapper} cursor-pointer`}
+                  onClick={() =>
+                    downloadPdf(
+                      "/championRole/championRole.pdf",
+                      "championRole.pdf",
+                    )
+                  }
                 >
                   <div className={styles.polyContainer}>
                     <Image
@@ -110,20 +121,21 @@ function ChampionGuide() {
 
           {/* SKY SHAPE CARD */}
         </div>
-
-        <div
-          className={`${styles.backButtonRow} mt-10 flex flex-col sm:flex-row gap-4 justify-end`}
-        >
-          <CommonButtons
-            label="Back to Champion Resources"
-            bgColor="#cde3cc"
-            onClick={() => router.push("/champion-resources")}
-          />
-          <CommonButtons
-            label="Start Champion Training"
-            bgColor="#86C9C9"
-            onClick={() => router.push("/start-quiz")}
-          />
+        <div className="flex justify-end mt-10">
+          <div
+            className={`${styles.backButtonRow} mt-10 flex flex-col gap-4 justify-end`}
+          >
+            <CommonButtons
+              label="Back to Champion Resources"
+              bgColor="#cde3cc"
+              onClick={() => router.push("/champion-resources")}
+            />
+            <CommonButtons
+              label="Start Champion Training"
+              bgColor="#86C9C9"
+              onClick={() => router.push("/start-quiz")}
+            />
+          </div>
         </div>
       </div>
     </div>

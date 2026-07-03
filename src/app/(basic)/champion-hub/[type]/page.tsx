@@ -6,6 +6,7 @@ import PressurePointRecord from "@/src/modules/ChampionHubModule/Components/Pres
 import TeamFocus from "@/src/modules/ChampionHubModule/Components/TeamFocus/TeamFocus";
 import ChampionNotes from "@/src/modules/ChampionHubModule/Components/ChampionNotes/ChampionNotes";
 import ChampionResources from "@/src/modules/ChampionHubModule/Components/ChampionResources/ChampionResources";
+import TeamInsight from "@/src/modules/ChampionHubModule/Components/TeamInsight/TeamInsight";
 
 type Props = {
   params: Promise<{
@@ -18,13 +19,16 @@ export default function ChampionHubTypePage({ params }: Props) {
 
   const { data } = useGetMtjPollQuery();
   const cycleStarted = data?.data?.cycle_started;
-  console.log("cycleStartedcycleStarted", cycleStarted);
+
   switch (type) {
     case "team-focus":
       return cycleStarted ? <PressurePointRecord /> : <TeamFocus />;
 
     case "champion-notes":
       return cycleStarted ? <ChampionNotes /> : <TeamFocus />;
+
+    case "team-insight":
+      return cycleStarted ? <TeamInsight /> : <TeamFocus />;
 
     case "champion-resources":
       return cycleStarted ? <ChampionResources /> : <TeamFocus />;
