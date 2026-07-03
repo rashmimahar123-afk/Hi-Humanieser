@@ -16,7 +16,11 @@ export const openPressurePointRecorded = () => {
   emitEvent(EVENT);
 };
 
-function PressurePointRecordedModal() {
+type Props = {
+  type: string;
+};
+
+function PressurePointRecordedModal({ type }: Props) {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -92,7 +96,7 @@ function PressurePointRecordedModal() {
               {/* Button */}
               <div className="flex justify-end mt-8">
                 <button
-                  onClick={() => router.push("/pressure-point-record")}
+                  onClick={() => router.push(`/champion-hub/${type}`)}
                   className="border border-[#cde3cc] text-[#567F55] bg-[#cde3cc] px-6 py-3 rounded-full cursor-pointer"
                 >
                   Close

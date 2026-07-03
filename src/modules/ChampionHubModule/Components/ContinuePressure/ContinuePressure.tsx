@@ -13,11 +13,13 @@ import { MY_TEAM_RITUALS_DATA } from "@/src/modules/MyTeamJourneyModule/Types/Re
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
-import MaxTwoRitualModal, { openMaxTwoRitual } from "../MaxTwoRitualModal/MaxTwoRitualModal";
+import MaxTwoRitualModal, {
+  openMaxTwoRitual,
+} from "../MaxTwoRitualModal/MaxTwoRitualModal";
 
 function ContinuePressure() {
   const [enter, setEnter] = useState(false);
-const {user}=useAuthValue()
+  const { user } = useAuthValue();
 
   useEffect(() => {
     setEnter(true);
@@ -34,21 +36,20 @@ const {user}=useAuthValue()
     setOpen(false);
   };
 
-const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
-const focusAreaFromQuery = searchParams.get("focusArea");
+  const focusAreaFromQuery = searchParams.get("focusArea");
 
   const { mutate, data, isPending } = useRecommendFocusAreaMutation();
 
-const { data: cycleOverviewData } =
-  useGetMtjCycleOverviewQuery(user?.team_id);
+  const { data: cycleOverviewData } = useGetMtjCycleOverviewQuery(
+    user?.team_id,
+  );
 
-  
-const activeRitualIds =
-  cycleOverviewData?.data?.cycle?.team_rituals?.map(
-    (item: any) => item.team_ritual_id,
-  ) || [];
-
+  const activeRitualIds =
+    cycleOverviewData?.data?.cycle?.team_rituals?.map(
+      (item: any) => item.team_ritual_id,
+    ) || [];
 
   useEffect(() => {
     mutate();
@@ -76,18 +77,15 @@ const activeRitualIds =
 
   const ritualOptions = focusAreas.map((item: any) => item.title);
 
-
-
   const ritualCards =
     selectedFocusArea?.team_rituals?.map((ritual: MY_TEAM_RITUALS_DATA) => ({
-      
       ritual_id: ritual.team_ritual_id,
       title: ritual.title,
       description: ritual.long_description,
       impact: ritual.operational_impact,
       learnMoreColor: "#cde3cc",
 
-selected:  activeRitualIds.includes(ritual.team_ritual_id),
+      selected: activeRitualIds.includes(ritual.team_ritual_id),
       onLearnMore: () =>
         router.push(
           `/conversation?focusArea=${selectedFocusArea?.focus_area_id}`,
@@ -95,35 +93,32 @@ selected:  activeRitualIds.includes(ritual.team_ritual_id),
       onSelect: () => handleRitualSelect(ritual),
     })) || [];
 
-const handleRitualSelect = (ritual: MY_TEAM_RITUALS_DATA) => {
-  const alreadySelected = activeRitualIds.includes(
-    ritual.team_ritual_id,
-  );
+  const handleRitualSelect = (ritual: MY_TEAM_RITUALS_DATA) => {
+    const alreadySelected = activeRitualIds.includes(ritual.team_ritual_id);
 
-  // already selected hai toh allow karo
-  if (!alreadySelected && activeRitualIds.length >= 2) {
-    openMaxTwoRitual();
-    return;
-  }
-
-  
-  setSelectedRitual(ritual.team_ritual_id);
-
-  openSelectTeamRitualModal({
-    ritualId: ritual.team_ritual_id ?? "",
-    focusAreaId: selected ?? "",
-  });
-};
-
-useEffect(() => {
-  if (focusAreas.length > 0) {
-    if (focusAreaFromQuery) {
-      setSelected(focusAreaFromQuery);
-    } else if (!selected) {
-      setSelected(focusAreas[0].title);
+    // already selected hai toh allow karo
+    if (!alreadySelected && activeRitualIds.length >= 2) {
+      openMaxTwoRitual();
+      return;
     }
-  }
-}, [focusAreas, focusAreaFromQuery]);
+
+    setSelectedRitual(ritual.team_ritual_id);
+
+    openSelectTeamRitualModal({
+      ritualId: ritual.team_ritual_id ?? "",
+      focusAreaId: selected ?? "",
+    });
+  };
+
+  useEffect(() => {
+    if (focusAreas.length > 0) {
+      if (focusAreaFromQuery) {
+        setSelected(focusAreaFromQuery);
+      } else if (!selected) {
+        setSelected(focusAreas[0].title);
+      }
+    }
+  }, [focusAreas, focusAreaFromQuery]);
   return (
     <>
       <div className={`bg-[#F5F0EB] min-h-screen `}>
@@ -215,7 +210,6 @@ useEffect(() => {
             <ContinuePressureCards
               bgColor="#f5c882"
               ritualCards={ritualCards}
-              
             />
           </div>
 
@@ -224,7 +218,7 @@ useEffect(() => {
               <CommonButtons
                 label="Go back to Team Focus"
                 bgColor="#FBE1DE"
-                onClick={() => router.push("/pressure-point-record")}
+                onClick={() => router.push("/champion-hub/team-focus")}
               />
             </div>
           </div>

@@ -171,7 +171,7 @@ function MyTeamJourney() {
 
             <p className="text-[#0f4f58] text-[15px] sm:text-[18px] md:text-[21px] lg:text-[24px] max-w-[716px] mb-6 sm:mb-8 font-[Aptos] font-[400]">
               If your team could make real progress on a few things over the
-              next few weeks, which would matter most to you?
+              next few weeks, which would matter most to you? (please choose 2)
             </p>
 
             {/* Poll options grid — 1 col on mobile, 2 on sm+ */}

@@ -68,17 +68,13 @@ function PressurePointRecord() {
   }));
   const rows = chunkByPattern(mappedTeamMembers || []);
 
-  const { data, isLoading, refetch } = useGetMtjPollQuery();
-  const pollData = data?.data;
+  // const { data, isLoading, refetch } = useGetMtjPollQuery();
+  // const pollData = data?.data;
 
-  const options = pollData?.options || [];
-  const totalMembers = pollData?.team_member_count || 0;
-  const responded = pollData?.team_members_responded || 0;
-  const percentage = pollData?.team_response_percentage || 0;
+  // const totalMembers = pollData?.team_member_count || 0;
+  // const responded = pollData?.team_members_responded || 0;
 
-  const isLessThan70 = percentage < 70;
   const memberEmails = allTeamMembers.map((m: any) => m.email).filter(Boolean);
-
   const handleSendReminder = () => {
     if (!memberEmails.length) return;
 
@@ -140,8 +136,16 @@ Thanks!`,
     return `${weeks} Weeks`;
   };
 
-  const { data: mtjKpiData } = useGetKpiQuery(user?.team_id);
+  const { data: mtjKpiData, refetch } = useGetKpiQuery(user?.team_id);
   const engagementData = mtjKpiData?.data?.engagement;
+  // console.log("pollData?.poll_openpollData?.poll_open", pollData?.poll_open);
+
+  const kpiPollData = mtjKpiData?.data?.poll;
+  const participation = kpiPollData?.participation;
+  const isLessThan70 = participation?.percentage || 0 < 70;
+
+  const options = kpiPollData?.results || [];
+
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
@@ -325,309 +329,308 @@ Thanks!`,
             </div>
           </div>
         </div> */}
-        {pollData?.poll_open ? (
-          <>
-            <div className="relative bg-[#FBE6BF] p-10 mt-10 rounded-xl overflow-hidden">
-              {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
+
+        <div className="relative bg-[#FBE6BF] p-10 mt-10 rounded-xl overflow-hidden">
+          {/* <div className="absolute top-8 right-10 text-right text-[#0F4F58] text-sm leading-tight">
           <p>State 4 – Poll reached threshold</p>
           <p>(≥ 50% responses, Champion can act)</p>
         </div> */}
 
-              <div className="absolute left-0 top-0 ">
-                <Image
-                  src={images.dottedCurve}
-                  alt="pattern"
-                  width={500}
-                  height={270}
-                />
-              </div>
-              {isLessThan70 && (
-                <div className="absolute right-[180px] top-[60px] opacity-80">
-                  <Image
-                    src={images.signupTimer}
-                    alt="hourglass"
-                    width={110}
-                    height={110}
-                  />
-                </div>
-              )}
-
-              {/* Header Section */}
-
-              <div>
-                <h1 className="text-[#0F4F58] text-[32px] font-bold font-[RocaTwo]">
-                  Team Poll Results
-                </h1>
-
-                <p className="text-[#0F4F58] text-[20px] mb-6 leading-relaxed font-[Roboto] ml-8 max-w-[900px]">
-                  {isLessThan70
-                    ? "Your team is currently answering the Focus Poll. These early results are still taking shape — you’ll get a clearer picture as more people respond."
-                    : "  Your team has shared where focused improvement would help them most right now. These results don’t replace the pressure you’re managing — they help translate it into a clear, shared focus the team can work on together."}
-                </p>
-                {isLessThan70 && (
-                  <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8 font-bold">
-                    So far: {responded} of {totalMembers} members have responded
-                    ( {percentage}%)
-                  </p>
-                )}
-              </div>
-
-              {isLessThan70 && (
-                <div className="mt-10 flex justify-end items-center gap-4">
-                  <Image
-                    src={images.email}
-                    alt="email-icon"
-                    width={30}
-                    height={16}
-                    style={{ flexShrink: 0 }}
-                  />
-                  <div
-                    className="text-[#0F4F58] font-[Roboto] text-[20px] cursor-pointer "
-                    onClick={handleSendReminder}
-                  >
-                    Send a quick reminder
-                  </div>
-                </div>
-              )}
-
-              {/* Two Column Section */}
-              <div className="grid lg:grid-cols-2 grid-cols-1 gap-12 items-start">
-                {" "}
-                {/* LEFT */}
-                <div className="mt-6">
-                  <h3 className="text-center text-[#0F4F58] text-[24px] font-bold font-[RocaTwo] mb-6">
-                    What the team says would most support
-                    <br />
-                    progress right now
-                  </h3>
-
-                  <div className="bg-[#D8CFBB] rounded-[26px] p-8 flex flex-col gap-6 h-full">
-                    {options.map((item, index) => (
-                      <ProgressPill
-                        key={index}
-                        label={item.option}
-                        percent={item.vote_percentage}
-                      />
-                    ))}
-                  </div>
-                </div>
-                {/* RIGHT */}
-                <div className="mt-10">
-                  <h3 className="text-center text-[#0F4F58] text-[24px] font-bold font-[RocaTwo] mb-10">
-                    How this helps your leadership
-                  </h3>
-
-                  <div className="bg-[#D8CFBB] rounded-[26px] p-8 h-full flex flex-col justify-around">
-                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
-                      Earlier issue-raising, better judgement in decisions, and
-                      fewer surprises later.
-                    </p>
-
-                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
-                      Clear priorities, faster decision-making, and less rework
-                      across the team.
-                    </p>
-
-                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
-                      Better coordination across teams, reducing silos,
-                      friction, and delays in delivery.
-                    </p>
-
-                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
-                      Stronger ownership, more discretionary effort, and better
-                      retention of key people.
-                    </p>
-
-                    <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
-                      More sustainable pace, fewer energy crashes, and steadier
-                      delivery over time.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
-                  Participation: {responded} of {totalMembers} members have
-                  responded ( {percentage}%)
-                </p>
-              </div>
-
-              {!isLessThan70 && (
-                <div>
-                  <button
-                    onClick={() =>
-                      closePollMutation(undefined, {
-                        onSuccess: async () => {
-                          await refetch();
-
-                          recommendFocusAreas();
-                        },
-                      })
-                    }
-                    disabled={isClosingPoll}
-                    className="bg-[#0F4F58] text-white px-6 py-3 rounded-[14px] font-[RocaTwo] text-[18px] disabled:opacity-50"
-                  >
-                    {isClosingPoll ? "Closing..." : "Close Poll"}
-                  </button>
-                </div>
-              )}
-
-              {/* Bottom Participation */}
+          <div className="absolute left-0 top-0 ">
+            <Image
+              src={images.dottedCurve}
+              alt="pattern"
+              width={500}
+              height={270}
+            />
+          </div>
+          {isLessThan70 && (
+            <div className="absolute right-[180px] top-[60px] opacity-80">
+              <Image
+                src={images.signupTimer}
+                alt="hourglass"
+                width={110}
+                height={110}
+              />
             </div>
-            {isLessThan70 && (
-              <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
-                {/* LEFT CONTENT */}
-                <div>
-                  <h1 className="text-[#0F4F58] text-[34px] font-bold font-[RocaTwo]">
-                    Choosing the focus for this cycle
-                  </h1>
+          )}
 
-                  <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto]">
-                    We’re still gathering input from your team...
-                  </p>
+          {/* Header Section */}
 
-                  <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto] leading-relaxed">
-                    Suggested focus areas will appear once participation reaches
-                    70% or after the poll has been open for a few days.
-                  </p>
-                </div>
+          <div>
+            <h1 className="text-[#0F4F58] text-[32px] font-bold font-[RocaTwo]">
+              Team Poll Results
+            </h1>
 
-                {/* CENTER TEXT */}
-                <div className="flex justify-center mt-16">
-                  <p className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-semibold">
-                    Focus suggestion: calculating...
-                  </p>
-                </div>
-
-                {/* RIGHT HOURGLASS */}
-                <div className="absolute right-[230px] -bottom-[4px] opacity-80">
-                  <Image
-                    src={images.signupTimer}
-                    alt="hourglass"
-                    width={110}
-                    height={110}
-                  />
-                </div>
-              </div>
+            <p className="text-[#0F4F58] text-[20px] mb-6 leading-relaxed font-[Roboto] ml-8 max-w-[900px]">
+              {isLessThan70 && kpiPollData?.status === "open"
+                ? "Your team is currently answering the Focus Poll. These early results are still taking shape — you’ll get a clearer picture as more people respond."
+                : "  Your team has shared where focused improvement would help them most right now. These results don’t replace the pressure you’re managing — they help translate it into a clear, shared focus the team can work on together."}
+            </p>
+            {isLessThan70 && kpiPollData?.status === "open" && (
+              <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8 font-bold">
+                So far: {participation?.responded || 0} of{" "}
+                {participation?.total || 0} members have responded ({" "}
+                {participation?.percentage || 0}%)
+              </p>
             )}
-          </>
-        ) : (
-          activeRitualIds.length < 2 && (
-            <>
-              <div className="mt-8">
-                <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
-                  Choosing the focus for this cycle
-                </h1>
+          </div>
 
-                <p className="text-[#0F4F58] text-lg leading-relaxed ml-8">
-                  Based on the pressure you’re managing and what your team says
-                  would help most, the focus areas below are the strongest
-                  candidates right now.
+          {isLessThan70 && kpiPollData?.status === "open" && (
+            <div className="mt-10 flex justify-end items-center gap-4">
+              <Image
+                src={images.email}
+                alt="email-icon"
+                width={30}
+                height={16}
+                style={{ flexShrink: 0 }}
+              />
+              <div
+                className="text-[#0F4F58] font-[Roboto] text-[20px] cursor-pointer "
+                onClick={handleSendReminder}
+              >
+                Send a quick reminder
+              </div>
+            </div>
+          )}
+
+          {/* Two Column Section */}
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-12 items-start">
+            {" "}
+            {/* LEFT */}
+            <div className="mt-6">
+              <h3 className="text-center text-[#0F4F58] text-[24px] font-bold font-[RocaTwo] mb-6">
+                What the team says would most support
+                <br />
+                progress right now
+              </h3>
+
+              <div className="bg-[#D8CFBB] rounded-[26px] p-8 flex flex-col gap-6 h-full">
+                {options.map((item, index) => (
+                  <ProgressPill
+                    key={index}
+                    label={item.option}
+                    percent={item.vote_percentage}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* RIGHT */}
+            <div className="mt-10">
+              <h3 className="text-center text-[#0F4F58] text-[24px] font-bold font-[RocaTwo] mb-10">
+                How this helps your leadership
+              </h3>
+
+              <div className="bg-[#D8CFBB] rounded-[26px] p-8 h-full flex flex-col justify-around">
+                <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
+                  Earlier issue-raising, better judgement in decisions, and
+                  fewer surprises later.
                 </p>
-                <div className="flex justify-center mt-[20px]">
-                  <div className="grid grid-cols-2 gap-10">
-                    {recommendedFocusAreas.map((item: any, index: number) => {
-                      const isFirst = index === 0;
 
-                      return (
-                        <div
-                          key={item.rank}
-                          className="cursor-pointer"
-                          onClick={() =>
-                            router.push(
-                              `/continue-pressure?focusArea=${encodeURIComponent(
-                                item.option,
-                              )}`,
-                            )
-                          }
-                        >
-                          <PolygonButton
-                            height="129px"
-                            bgColor={isFirst ? "#f8e1b8" : "#86c9c9"}
-                            radius={14}
-                            topTilt={!isFirst ? 18 : undefined}
-                            slantSide={!isFirst ? "right" : undefined}
-                            clipPath={
-                              isFirst
-                                ? `polygon(
+                <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
+                  Clear priorities, faster decision-making, and less rework
+                  across the team.
+                </p>
+
+                <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
+                  Better coordination across teams, reducing silos, friction,
+                  and delays in delivery.
+                </p>
+
+                <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
+                  Stronger ownership, more discretionary effort, and better
+                  retention of key people.
+                </p>
+
+                <p className="text-center text-[#0F4F58] text-[22px] leading-[38px]">
+                  More sustainable pace, fewer energy crashes, and steadier
+                  delivery over time.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
+              Participation: {participation?.responded || 0} of{" "}
+              {participation?.total || 0} members have responded ({" "}
+              {participation?.percentage || 0}%)
+            </p>
+          </div>
+
+          {!isLessThan70 && (
+            <div>
+              <button
+                onClick={() =>
+                  closePollMutation(undefined, {
+                    onSuccess: async () => {
+                      await refetch();
+
+                      recommendFocusAreas();
+                    },
+                  })
+                }
+                disabled={isClosingPoll}
+                className="bg-[#0F4F58] text-white px-6 py-3 rounded-[14px] font-[RocaTwo] text-[18px] disabled:opacity-50"
+              >
+                {isClosingPoll ? "Closing..." : "Close Poll"}
+              </button>
+            </div>
+          )}
+
+          {/* Bottom Participation */}
+        </div>
+        {isLessThan70 && kpiPollData?.status === "open" && (
+          <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
+            {/* LEFT CONTENT */}
+            <div>
+              <h1 className="text-[#0F4F58] text-[34px] font-bold font-[RocaTwo]">
+                Choosing the focus for this cycle
+              </h1>
+
+              <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto]">
+                We’re still gathering input from your team...
+              </p>
+
+              <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto] leading-relaxed">
+                Suggested focus areas will appear once participation reaches 70%
+                or after the poll has been open for a few days.
+              </p>
+            </div>
+
+            {/* CENTER TEXT */}
+            <div className="flex justify-center mt-16">
+              <p className="text-[#0F4F58] text-[22px] font-[RocaTwo] font-semibold">
+                Focus suggestion: calculating...
+              </p>
+            </div>
+
+            {/* RIGHT HOURGLASS */}
+            <div className="absolute right-[230px] -bottom-[4px] opacity-80">
+              <Image
+                src={images.signupTimer}
+                alt="hourglass"
+                width={110}
+                height={110}
+              />
+            </div>
+          </div>
+        )}
+
+        {kpiPollData?.status === "closed" && activeRitualIds.length < 2 && (
+          <>
+            <div className="mt-8">
+              <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
+                Choosing the focus for this cycle
+              </h1>
+
+              <p className="text-[#0F4F58] text-lg leading-relaxed ml-8">
+                Based on the pressure you’re managing and what your team says
+                would help most, the focus areas below are the strongest
+                candidates right now.
+              </p>
+              <div className="flex justify-center mt-[20px]">
+                <div className="grid grid-cols-2 gap-10">
+                  {recommendedFocusAreas.map((item: any, index: number) => {
+                    const isFirst = index === 0;
+
+                    return (
+                      <div
+                        key={item.rank}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          router.push(
+                            `/continue-pressure?focusArea=${encodeURIComponent(
+                              item.option,
+                            )}`,
+                          )
+                        }
+                      >
+                        <PolygonButton
+                          height="129px"
+                          bgColor={isFirst ? "#f8e1b8" : "#86c9c9"}
+                          radius={14}
+                          topTilt={!isFirst ? 18 : undefined}
+                          slantSide={!isFirst ? "right" : undefined}
+                          clipPath={
+                            isFirst
+                              ? `polygon(
                       0% 29px,
                       100% 7%,
                       87% 89%,
                       20% calc(100% - 13px)
                     )`
-                                : `polygon(
+                              : `polygon(
                       17% 17px,
                       77% 11%,
                       100% 81%,
                       0% calc(100% - 15px)
                     )`
-                            }
-                          >
-                            <div className="h-full flex items-center justify-center text-center px-4">
-                              <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
-                                {item.option}
-                              </span>
-                            </div>
-                          </PolygonButton>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                {/* Middle Text Section */}
-                <div className=" mb-16 mt-4 ml-8">
-                  <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
-                    Selecting a focus area gives the team a shared direction.
-                  </p>
-
-                  <p className="text-[#0F4F58] text-[20px] leading-relaxed">
-                    In the next step, you can choose up to two team rituals —
-                    from the same focus area or from different ones — depending
-                    on what will help most.
-                  </p>
-                </div>
-                <div className="relative">
-                  <SuccessMessage
-                    text="Data informs the decision. Leadership makes the call.
-"
-                    fontSize="text-[23px]"
-                    leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-                    rightImg={{
-                      src: images.leftArrowImg,
-                      width: 60,
-                      height: 60,
-                    }}
-                    fontColor="#0F4F58"
-                    left="375px"
-                    bottom="-1px"
-                    rightImgRight="375px"
-                    rotate="-35deg"
-                    rightImgBottom="-1px"
-                  />
-                </div>
-
-                {/* Bottom Decorative + Footer */}
-                <div className="flex items-start gap-6 mt-10 relative">
-                  {/* Hanging Dots Graphic */}
-                  <Image
-                    src={images.pollResultImg}
-                    alt="poll-img"
-                    width={100}
-                    height={100}
-                    className="absolute top-0 left-0 -z-10"
-                    priority
-                  />
-
-                  <p className="text-[#0F4F58] text-[18px] font-[Roboto]  leading-relaxed ml-[125px] mt-4">
-                    To keep your team’s rhythm flowing, we’ll automatically
-                    select a Team Ritual from the top-voted Focus Area if the
-                    ritual hasn’t been chosen after a few days.
-                  </p>
+                          }
+                        >
+                          <div className="h-full flex items-center justify-center text-center px-4">
+                            <span className="text-[#0F4F58] text-[29px] font-[RocaTwo] font-bold leading-[28px]">
+                              {item.option}
+                            </span>
+                          </div>
+                        </PolygonButton>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            </>
-          )
+              {/* Middle Text Section */}
+              <div className=" mb-16 mt-4 ml-8">
+                <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
+                  Selecting a focus area gives the team a shared direction.
+                </p>
+
+                <p className="text-[#0F4F58] text-[20px] leading-relaxed">
+                  In the next step, you can choose up to two team rituals — from
+                  the same focus area or from different ones — depending on what
+                  will help most.
+                </p>
+              </div>
+              <div className="relative">
+                <SuccessMessage
+                  text="Data informs the decision. Leadership makes the call.
+"
+                  fontSize="text-[23px]"
+                  leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
+                  rightImg={{
+                    src: images.leftArrowImg,
+                    width: 60,
+                    height: 60,
+                  }}
+                  fontColor="#0F4F58"
+                  left="375px"
+                  bottom="-1px"
+                  rightImgRight="375px"
+                  rotate="-35deg"
+                  rightImgBottom="-1px"
+                />
+              </div>
+
+              {/* Bottom Decorative + Footer */}
+              <div className="flex items-start gap-6 mt-10 relative">
+                {/* Hanging Dots Graphic */}
+                <Image
+                  src={images.pollResultImg}
+                  alt="poll-img"
+                  width={100}
+                  height={100}
+                  className="absolute top-0 left-0 -z-10"
+                  priority
+                />
+
+                <p className="text-[#0F4F58] text-[18px] font-[Roboto]  leading-relaxed ml-[125px] mt-4">
+                  To keep your team’s rhythm flowing, we’ll automatically select
+                  a Team Ritual from the top-voted Focus Area if the ritual
+                  hasn’t been chosen after a few days.
+                </p>
+              </div>
+            </div>
+          </>
         )}
 
         {activeRitualIds?.length === 2 && (
@@ -797,7 +800,7 @@ Thanks!`,
             </div>
           </div>
         )}
-        {!pollData?.poll_open && (
+        {kpiPollData?.status === "closed" && (
           <div className="ml-20">
             <div className="flex items-center justify-between  mt-10">
               {/* LEFT SECTION */}

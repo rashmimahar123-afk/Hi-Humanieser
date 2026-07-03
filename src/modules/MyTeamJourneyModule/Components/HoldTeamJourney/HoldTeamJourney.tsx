@@ -8,6 +8,7 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import { GET_MTJ_POLL_RESPONSE } from "@/src/modules/ChampionHubModule/Types/ResponseTypes";
 import { MY_PROFILE_RESPONSE } from "@/src/modules/ProfileModule/Types/ResponseTypes";
+import { useRouter } from "next/navigation";
 
 type HOLD_TEAM_JOURNEY_PROPS = {
   pollData?: GET_MTJ_POLL_RESPONSE;
@@ -18,6 +19,7 @@ function HoldTeamJourney(props: HOLD_TEAM_JOURNEY_PROPS) {
   const { pollData, profileData } = props;
   const [enter, setEnter] = useState(false);
   const { user } = useAuthValue();
+  const router = useRouter();
   useEffect(() => {
     setEnter(true);
   }, []);
@@ -75,7 +77,7 @@ function HoldTeamJourney(props: HOLD_TEAM_JOURNEY_PROPS) {
 
           {/* Sub heading */}
           <p className="text-[#4ba6a6] text-[31px] font-[700] font-[RocaTwo]">
-            {` Hold Tight ${profileData?.first_name || ""}, - your champion is gathering everyone’s input.`}
+            {` Hold Tight ${profileData?.first_name || ""},  your champion is gathering everyone’s input.`}
           </p>
 
           {/* Description */}
@@ -96,7 +98,10 @@ function HoldTeamJourney(props: HOLD_TEAM_JOURNEY_PROPS) {
 
             {/* Image-based button */}
             <div className="flex justify-center mr-[86px]">
-              <button className="relative ">
+              <button
+                className="relative "
+                onClick={() => router.push("/home")}
+              >
                 {/* Arrow strokes */}
                 <Image
                   src={images.pathwayArrowRight}

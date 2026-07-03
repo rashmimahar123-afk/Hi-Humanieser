@@ -3,7 +3,7 @@
 import images from "@/src/assets/images";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SuggestPressurePointModal, {
   openSuggestPressurePointModal,
 } from "../SuggestPressurePointModal/SuggestPressurePointModal";
@@ -16,7 +16,9 @@ import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/Logo
 function TeamFocus() {
   const router = useRouter();
   const { user } = useAuthValue();
+  const pathname = usePathname(); // "/champion-hub/team-focus"
 
+  const from = pathname.split("/")[2];
   const { data: teamsData } = useGetTeamsQuery();
   const teamName =
     teamsData?.data?.teams?.find((team: any) => team.id === user?.team_id)
@@ -196,7 +198,9 @@ function TeamFocus() {
               {/* CARD 1 */}
               <div
                 className="bg-[#f8e1b8] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
-                onClick={() => router.push("/pressure-point/urgent")}
+                onClick={() =>
+                  router.push(`/pressure-point/urgent?from=${from}`)
+                }
               >
                 <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                   Everything feels urgent.{" "}
@@ -221,7 +225,9 @@ function TeamFocus() {
               {/* CARD 2 */}
               <div
                 className="bg-[#fbe1de] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
-                onClick={() => router.push("/pressure-point/alignment")}
+                onClick={() =>
+                  router.push(`/pressure-point/alignment?from=${from}`)
+                }
               >
                 <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                   Teams are busy, but not aligned{" "}
@@ -246,7 +252,7 @@ function TeamFocus() {
               {/* CARD 3 */}
               <div
                 className="bg-[#D2E5E6] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
-                onClick={() => router.push("/pressure-point/late")}
+                onClick={() => router.push(`/pressure-point/late?from=${from}`)}
               >
                 <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                   Problems surface too late{" "}
@@ -271,7 +277,9 @@ function TeamFocus() {
                 {/* CARD 4 */}
                 <div
                   className="bg-[#CDE1D0] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl "
-                  onClick={() => router.push("/pressure-point/dependency")}
+                  onClick={() =>
+                    router.push(`/pressure-point/dependency?from=${from}`)
+                  }
                 >
                   <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                     Too much depends on me.{" "}
@@ -295,7 +303,9 @@ function TeamFocus() {
                 {/* CARD 5 */}
                 <div
                   className="bg-[#F8E1B8] rounded-2xl pt-[20px] cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-xl "
-                  onClick={() => router.push("/pressure-point/other")}
+                  onClick={() =>
+                    router.push(`/pressure-point/other?from=${from}`)
+                  }
                 >
                   <h3 className="text-[#0F4F58] font-[RocaTwo] text-center mb-4 text-[22px] font-bold">
                     Something else is making work heavier{" "}

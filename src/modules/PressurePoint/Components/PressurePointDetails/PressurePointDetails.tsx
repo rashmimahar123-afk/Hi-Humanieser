@@ -4,7 +4,7 @@ import images from "@/src/assets/images";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import PressurePointSection from "../PressurePointSection/PressurePointSection";
 import { PRESSURE_POINT_CONFIG } from "@/src/lib/Helpers";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
@@ -20,7 +20,9 @@ import PressurePointRecordedModal, {
 function PressurePointDetails() {
   const { type } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+  const from = searchParams.get("from");
   const data = PRESSURE_POINT_CONFIG[type as string];
 
   if (!data) return <div>Invalid Type</div>;
@@ -149,7 +151,7 @@ Another Pressure"
         </div>
       </div>
       <CompletePressurePointModal />
-      <PressurePointRecordedModal />
+      <PressurePointRecordedModal type={from || ""} />
     </>
   );
 }
