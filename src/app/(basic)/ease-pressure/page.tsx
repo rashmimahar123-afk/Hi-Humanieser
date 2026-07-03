@@ -14,3 +14,4 @@ function EasePressurePage() {
 }
 
 export default withProtectedRoute(EasePressurePage);
+

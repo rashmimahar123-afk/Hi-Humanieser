@@ -268,32 +268,32 @@ function PressureOne() {
   return (
     <>
       {pressureData.map((item) => (
-        <div key={item.id} className="mt-[100px] ml-20">
+        <div key={item.id} className="mt-[100px] ml-20 max-lg:ml-0 max-lg:mt-16 max-sm:mt-12">
           {/* Title */}
-          <h1 className="text-[#0F4F58] text-[32px] leading-[40px] font-[RocaTwo] font-bold">
+          <h1 className="text-[#0F4F58] text-[32px] leading-[40px] font-[RocaTwo] font-bold max-lg:text-[26px] max-lg:leading-[34px] max-sm:text-[22px] max-sm:leading-[30px]">
             Pressure Point {"-"} {""}
             {item.title}
           </h1>
 
           {/* Highlight Box */}
-          <div className="mt-10 bg-[#f8e1b8] rounded-[22px] p-8 max-w-[1100px] text-[#0F4F58] text-[24px] leading-[40px] font-[Roboto]">
+          <div className="mt-10 bg-[#f8e1b8] rounded-[22px] p-8 max-w-[1100px] text-[#0F4F58] text-[24px] leading-[40px] font-[Roboto] max-lg:mt-6 max-lg:p-6 max-lg:text-[18px] max-lg:leading-[30px] max-sm:p-5 max-sm:text-[16px] max-sm:leading-[27px]">
             {item.highlight}
           </div>
 
           {/* Underneath */}
-          <div className="mt-10 flex items-start gap-4">
-            <div className="mt-[8px]">
+          <div className="mt-10 flex items-start gap-4 max-lg:mt-6 max-sm:gap-3">
+            <div className="mt-[8px] max-sm:mt-[4px]">
               <ArrowSquare width="40" height="24" />
             </div>
             <div>
-              <h3 className="text-[#0F4F58] text-[28px] font-[RocaTwo] font-bold">
+              <h3 className="text-[#0F4F58] text-[28px] font-[RocaTwo] font-bold max-lg:text-[22px] max-sm:text-[19px]">
                 What’s usually underneath
               </h3>
 
               {item.underneath.map((para, i) => (
                 <p
                   key={i}
-                  className="mt-4 text-[#0F4F58] text-[20px] leading-[36px] font-[Roboto]"
+                  className="mt-4 text-[#0F4F58] text-[20px] leading-[36px] font-[Roboto] max-lg:text-[16px] max-lg:leading-[28px] max-sm:text-[15px] max-sm:leading-[25px]"
                 >
                   {para}
                 </p>
@@ -302,26 +302,36 @@ function PressureOne() {
           </div>
 
           {/* Leadership Response */}
-          <div className="mt-8 flex items-start gap-4">
+          <div className="mt-8 flex items-start gap-4 max-sm:gap-3">
             <ArrowSquare width="40" height="24" />
             <div>
-              <h3 className="text-[#0F4F58] text-[28px] font-[RocaTwo] font-bold">
+              <h3 className="text-[#0F4F58] text-[28px] font-[RocaTwo] font-bold max-lg:text-[22px] max-sm:text-[19px]">
                 A common leadership response
               </h3>
 
-              <p className="text-[#0F4F58] text-[20px] leading-[36px] font-[Roboto]">
+              <p className="text-[#0F4F58] text-[20px] leading-[36px] font-[Roboto] max-lg:text-[16px] max-lg:leading-[28px] max-sm:text-[15px] max-sm:leading-[25px]">
                 {item.leadershipResponse}
               </p>
             </div>
           </div>
 
           {/* Success Message */}
-          <div className="mt-20 relative">
+          <div className="mt-20 relative max-lg:mt-12">
             <SuccessMessage
               text={item.SuccessMessage}
-              fontSize="text-[22px]"
-              leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-              rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+              fontSize="text-[22px] max-sm:text-[16px]"
+              leftImg={{
+                src: images.arrowImg,
+                width: 40,
+                height: 40,
+                className: "-translate-y-3",
+              }}
+              rightImg={{
+                src: images.leftArrowImg,
+                width: 60,
+                height: 60,
+                className: "-translate-y-3",
+              }}
               fontColor="#0F4F58"
               left={item.successPosition.left}
               bottom={item.successPosition.bottom}
@@ -333,29 +343,29 @@ function PressureOne() {
           </div>
 
           {/* Structural Moves */}
-          <div className="mt-20 flex items-start gap-4">
+          <div className="mt-20 flex items-start gap-4 max-lg:mt-12 max-sm:gap-3">
             <ArrowSquare width="40" height="24" />
 
             <div>
-              <h2 className="text-[#0F4F58] text-[28px] font-[RocaTwo] font-bold">
+              <h2 className="text-[#0F4F58] text-[28px] font-[RocaTwo] font-bold max-lg:text-[22px] max-sm:text-[19px]">
                 Small Structural Moves That Help
               </h2>
 
-              <p className="text-[#0F4F58] text-[20px] leading-[36px] font-[Roboto]">
+              <p className="text-[#0F4F58] text-[20px] leading-[36px] font-[Roboto] max-lg:text-[16px] max-lg:leading-[28px] max-sm:text-[15px] max-sm:leading-[25px]">
                 {item.structuralIntro}
               </p>
 
               {item.moves.map((move, index) => (
                 <div key={index} className="mt-6">
-                  <h3 className="text-[#0F4F58] text-[24px] font-semibold font-[Roboto]">
+                  <h3 className="text-[#0F4F58] text-[24px] font-semibold font-[Roboto] max-lg:text-[19px] max-sm:text-[17px]">
                     {move.title}
                   </h3>
 
-                  <p className="mt-2 text-[#0F4F58] text-[21px] leading-[34px] font-[Roboto]">
+                  <p className="mt-2 text-[#0F4F58] text-[21px] leading-[34px] font-[Roboto] max-lg:text-[16px] max-lg:leading-[28px] max-sm:text-[15px] max-sm:leading-[25px]">
                     {move.description}
                   </p>
 
-                  <p className="mt-2 text-[#0F4F58] text-[21px] leading-[34px] font-[Roboto]">
+                  <p className="mt-2 text-[#0F4F58] text-[21px] leading-[34px] font-[Roboto] max-lg:text-[16px] max-lg:leading-[28px] max-sm:text-[15px] max-sm:leading-[25px]">
                     Why this works: {move.why}
                   </p>
                 </div>
@@ -363,9 +373,9 @@ function PressureOne() {
             </div>
           </div>
 
-          <div className="flex justify-end mt-10">
+          <div className="flex justify-end mt-10 max-lg:justify-center">
             {/* Bottom Buttons */}
-            <div className="flex flex-col gap-4 items-center">
+            <div className="flex flex-col gap-4 items-center max-sm:w-full">
               <CommonButtons
                 label={
                   user?.user_type === 3

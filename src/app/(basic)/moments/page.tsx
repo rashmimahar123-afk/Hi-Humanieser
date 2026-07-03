@@ -17,4 +17,5 @@ function MomentsPage() {
   );
 }
 
-export default withProtectedRoute(MomentsPage);
+ export default withProtectedRoute(MomentsPage);
+

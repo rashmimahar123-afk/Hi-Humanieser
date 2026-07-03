@@ -16,4 +16,4 @@ function TeamWorkshopsPage() {
   );
 }
 
-export default withProtectedRoute(TeamWorkshopsPage);
+ export default withProtectedRoute(TeamWorkshopsPage);
