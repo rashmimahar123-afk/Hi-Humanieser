@@ -97,7 +97,7 @@ function PartnerTeamJourney() {
               <div className="mr-[86px]">
                 <button
                   className="relative "
-                  onClick={() => router.push("/home")}
+                  onClick={() => router.push("/overseer-hub")}
                 >
                   {/* Arrow strokes */}
                   <Image
