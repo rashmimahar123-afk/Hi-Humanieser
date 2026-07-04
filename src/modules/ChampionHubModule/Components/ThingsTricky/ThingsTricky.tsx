@@ -15,7 +15,7 @@ function ThingsTricky() {
   const router = useRouter();
   const { user } = useAuthValue();
   return (
-    <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+    <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif overflow-x-hidden max-lg:px-6 max-sm:px-4 max-lg:py-6">
       {/* TOP LEFT SHAPE */}
 
       <div>
@@ -31,7 +31,7 @@ function ThingsTricky() {
         alt="left-bg"
         width={421}
         height={414}
-        className="absolute top-0 left-0 -z-10"
+        className="absolute top-0 left-0 -z-10 max-lg:w-[260px] max-lg:h-auto max-sm:w-[170px]"
         priority
       />
       <Image
@@ -39,15 +39,15 @@ function ThingsTricky() {
         alt="left-bg"
         width={630}
         height={630}
-        className="absolute top-40 right-0 -z-10"
+        className="absolute top-40 right-0 -z-10 max-lg:top-24 max-lg:w-[320px] max-lg:h-auto max-sm:top-16 max-sm:w-[190px]"
         priority
       />
       {/* WELCOME TEXT */}
-      <div className="relative z-10 mt-8 ml-[85px]">
-        <h3 className="text-[#0f4f58] text-[45px] font-bold font-[RocaTwo] font-[#0f4f58]">
+      <div className="relative z-10 mt-8 ml-[85px] max-lg:ml-0 max-lg:mt-6">
+        <h3 className="text-[#0f4f58] text-[45px] font-bold font-[RocaTwo] font-[#0f4f58] max-lg:text-[32px] max-sm:text-[26px]">
           When things get tricky...
         </h3>
-        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto]">
+        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] max-lg:text-[18px] max-sm:text-[16px]">
           <div className="mb-2">
             Every leader encounters moments that feel tricky.
           </div>
@@ -58,11 +58,11 @@ function ThingsTricky() {
           </div>
         </div>
       </div>
-      <div className=" mt-10 ml-10">
-        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58]">
+      <div className=" mt-10 ml-10 max-lg:ml-0">
+        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58] max-lg:text-[32px] max-sm:text-[26px]">
           Normalise the Wobble
         </h3>
-        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4">
+        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4 max-lg:ml-0 max-lg:text-[18px] max-sm:text-[16px]">
           <div>Not every cycle will feel the same.</div>
           <div className="mb-4">
             Some weeks feel energised and open; others feel quieter or slower.
@@ -85,11 +85,11 @@ function ThingsTricky() {
           </div>
         </div>
       </div>
-      <div className=" mt-10 ml-10">
-        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58]">
+      <div className=" mt-10 ml-10 max-lg:ml-0">
+        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58] max-lg:text-[32px] max-sm:text-[26px]">
           What you might be noticing{" "}
         </h3>
-        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4">
+        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4 max-lg:ml-0 max-lg:text-[18px] max-sm:text-[16px]">
           <div className="mb-4">
             When things feel tricky, it often shows up in subtle ways. You might
             notice fewer voices than you expected, shorter reflections, mixed
@@ -109,11 +109,11 @@ function ThingsTricky() {
           </div>
         </div>
       </div>
-      <div className=" mt-10 ml-10">
-        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58]">
+      <div className=" mt-10 ml-10 max-lg:ml-0">
+        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58] max-lg:text-[32px] max-sm:text-[26px]">
           A few things that usually help
         </h3>
-        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4">
+        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4 max-lg:ml-0 max-lg:text-[18px] max-sm:text-[16px]">
           <div className="mb-4">
             When things feel uncertain, the most helpful moves are often quieter
             than we expect. Research on trust, behaviour change, and group
@@ -138,7 +138,7 @@ function ThingsTricky() {
         </div>
       </div>
       {/* RIGHT PINK POLYGON */}
-      <div className="flex justify-end mt-10">
+      <div className="flex justify-end mt-10 max-lg:justify-center">
         <PolygonButton
           width="476px"
           height="190px"
@@ -147,18 +147,18 @@ function ThingsTricky() {
           clipPath={`polygon(0% 0%, 94% 13%, 84% 80%, -4% 87%)`}
           childTop={8}
         >
-          <div className="px-8 text-left text-[#0F4F58] text-[18px] leading-relaxed font-bold font-[Roboto]">
+          <div className="px-8 text-left text-[#0F4F58] text-[18px] leading-relaxed font-bold font-[Roboto] max-sm:px-5 max-sm:text-[15px]">
             If you’re holding the space with care - even when it feels slow or
             uncertain - you’re already doing something important. This kind of
             leadership often works quietly, but its impact runs deep.
           </div>
         </PolygonButton>
       </div>
-      <div className=" mt-10 ml-10">
-        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58]">
+      <div className=" mt-10 ml-10 max-lg:ml-0">
+        <h3 className="text-[#0f4f58] text-[45px] font-[400] font-[RocaTwo] font-[#0f4f58] max-lg:text-[32px] max-sm:text-[26px]">
           Where to go next
         </h3>
-        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4">
+        <div className="text-[#0F4F58] text-[22px] leading-relaxed font-[Roboto] ml-4 max-lg:ml-0 max-lg:text-[18px] max-sm:text-[16px]">
           <div className="mb-4">
             If it feels helpful to shift the energy or create a fresh moment of
             connection, you don’t have to start from scratch.
@@ -199,9 +199,19 @@ function ThingsTricky() {
       <div className="mt-20 relative">
         <SuccessMessage
           text="There’s no single right move here. Trust your judgement — and remember that creating the conditions is already a powerful step forward."
-          fontSize="text-[22px]"
-          leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-          rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
+          fontSize="text-[22px] max-sm:text-[16px]"
+          leftImg={{
+            src: images.arrowImg,
+            width: 40,
+            height: 40,
+            className: "-translate-y-5 max-[375px]:-translate-y-2",
+          }}
+          rightImg={{
+            src: images.leftArrowImg,
+            width: 60,
+            height: 60,
+            className: "-translate-y-5 max-[375px]:-translate-y-3",
+          }}
           fontColor="#0F4F58"
           left="341px"
           bottom="32px"
@@ -212,9 +222,9 @@ function ThingsTricky() {
         />
       </div>
 
-      <div className="flex justify-end mt-20">
+      <div className="flex justify-end mt-20 max-lg:justify-center">
         {/* Bottom Buttons */}
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center max-sm:w-full">
           <CommonButtons
             label={
               user?.user_type === 3
