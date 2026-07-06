@@ -7,16 +7,16 @@ import images from "@/src/assets/images";
 import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
-import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
 import { useQueryClient } from "@tanstack/react-query";
-import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
 import { usePathname } from "next/navigation";
-import { useAddReflectionMutation } from "../../Hooks/useAddReflectionMutation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
+import { useUpdateMppMilestoneMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useUpdateMppMilestoneMutation";
+import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
 
-const EVENT = "FILL_UP_FORM_MODAL_EVENT";
+const EVENT = "ADD_CHAMPION_NOTE_MODAL_EVENT";
 
-export const openFillupModal = (
+export const openChampionNotes = (
   microActionType: string,
   uuid: string,
   selectedPulse?: number,
@@ -32,7 +32,7 @@ export const openFillupModal = (
   });
 };
 
-function FillUpFormModal() {
+function AddChampionNoteModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [reflection, setReflection] = useState("");
   const [share, setShare] = useState(false);
@@ -220,7 +220,7 @@ function FillUpFormModal() {
 
           {/* Title */}
           <DialogTitle className="text-[26px] font-bold text-[#567F55] text-center">
-            Take a moment to reflect
+            Take a moment to add note or reflection
           </DialogTitle>
 
           {/* ===== Textarea ===== */}
@@ -228,7 +228,7 @@ function FillUpFormModal() {
             value={reflection}
             onChange={(e) => setReflection(e.target.value)}
             maxLength={400}
-            placeholder="Write your reflection here…"
+            placeholder="Write your notes here…"
             className="
               w-full
               min-h-[180px]
@@ -294,7 +294,7 @@ function FillUpFormModal() {
               transition
             "
           >
-            {isPending ? "Saving..." : "Save reflection"}
+            {isPending ? "Saving..." : "Save Notes"}
           </button>
         </DialogPanel>
       </div>
@@ -302,4 +302,4 @@ function FillUpFormModal() {
   );
 }
 
-export default FillUpFormModal;
+export default AddChampionNoteModal;

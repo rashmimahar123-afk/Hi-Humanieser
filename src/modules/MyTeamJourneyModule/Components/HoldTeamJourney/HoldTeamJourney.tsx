@@ -153,11 +153,10 @@ function HoldTeamJourney(props: HOLD_TEAM_JOURNEY_PROPS) {
           {/* Bottom note */}
           <div className="mt-6 flex  gap-4 justify-end">
             <p className="text-[#0f4f58] text-[20px] font-[Aptos] max-w-[520px] font-[Roboto] font-[700]">
-              {` So far: ${pollData?.team_members_left_to_respond} of 
+              {` So far: ${pollData?.team_members_responded} of 
               ${pollData?.team_member_count} members have responded 
-              (
-              
-              ${pollData?.team_response_percentage}%)`}
+       
+              `}
             </p>
           </div>
         </div>

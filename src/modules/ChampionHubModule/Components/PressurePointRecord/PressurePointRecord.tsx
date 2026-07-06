@@ -139,7 +139,11 @@ Thanks!`,
   const { data: mtjKpiData, refetch } = useGetKpiQuery(user?.team_id);
   const engagementData = mtjKpiData?.data?.engagement;
   // console.log("pollData?.poll_openpollData?.poll_open", pollData?.poll_open);
-
+  const cycleData = mtjKpiData?.data?.cycle;
+  console.log(
+    "cycleData?.chosen_team_rituals?.length !== 0",
+    cycleData?.chosen_team_rituals?.length === 0,
+  );
   const kpiPollData = mtjKpiData?.data?.poll;
   const participation = kpiPollData?.participation;
   const isLessThan70 = participation?.percentage || 0 < 70;
@@ -519,7 +523,7 @@ Thanks!`,
 
         {kpiPollData?.status === "closed" && activeRitualIds.length < 2 && (
           <>
-            <div className="mt-8">
+            <div className="mt-[100px]">
               <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
                 Choosing the focus for this cycle
               </h1>
@@ -537,7 +541,7 @@ Thanks!`,
                     return (
                       <div
                         key={item.rank}
-                        className="cursor-pointer"
+                        className="group cursor-pointer transition-all duration-300 ease-out hover:-translate-y-3 hover:scale-105 active:scale-95"
                         onClick={() =>
                           router.push(
                             `/continue-pressure?focusArea=${encodeURIComponent(
@@ -580,7 +584,7 @@ Thanks!`,
                 </div>
               </div>
               {/* Middle Text Section */}
-              <div className=" mb-16 mt-4 ml-8">
+              <div className=" mb-16 mt-[100px] ml-8">
                 <p className="text-[#0F4F58] text-[20px] font-semibold mb-6">
                   Selecting a focus area gives the team a shared direction.
                 </p>
@@ -800,7 +804,7 @@ Thanks!`,
             </div>
           </div>
         )}
-        {kpiPollData?.status === "closed" && (
+        {cycleData?.chosen_team_rituals?.length !== 0 && (
           <div className="ml-20">
             <div className="flex items-center justify-between  mt-10">
               {/* LEFT SECTION */}
@@ -888,7 +892,7 @@ Champion Notes"
           </div>
         </div> */}
 
-        <div className="relative mt-[50px]">
+        <div className="relative mt-[100px]">
           <h1 className="text-4xl font-semibold text-[#144f4f] font-serif">
             Previous Cycles
           </h1>

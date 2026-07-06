@@ -22,7 +22,7 @@ function ProfilePathwayCard({
   return (
     <div className="flex flex-col items-center text-center px-0.5 min-[400px]:px-1 sm:px-2 md:px-0">
       <div
-        className="relative w-[80px] h-[80px] min-[400px]:w-[100px] min-[400px]:h-[100px] min-[500px]:w-[120px] min-[500px]:h-[120px] sm:w-[150px] sm:h-[150px] md:w-[170px] md:h-[170px] flex items-center justify-center cursor-pointer"
+        className={`relative w-[80px] h-[80px] min-[400px]:w-[100px] min-[400px]:h-[100px] min-[500px]:w-[120px] min-[500px]:h-[120px] sm:w-[150px] sm:h-[150px] md:w-[170px] md:h-[170px] flex items-center justify-center cursor-pointer transition-all duration-300 ease-out hover:-translate-y-4 hover:scale-105 hover:drop-shadow-[0_18px_30px_rgba(15,79,88,0.25)] cursor-pointer`}
         onClick={onClick}
       >
         {/* Background Shape */}

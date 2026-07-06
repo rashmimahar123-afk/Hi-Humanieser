@@ -19,10 +19,12 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
   const COLORS = ["#63C0C5", "#49A6BC", "#3A88AE", "#5977A3", "#6C6498"];
 
   const chartData =
-    poll?.results?.map((item: any) => ({
-      name: item.option,
-      value: item.vote_percentage,
-    })) || [];
+    poll?.results
+      ?.filter((item: any) => item.vote_percentage > 0)
+      .map((item: any) => ({
+        name: item.option,
+        value: item.vote_percentage,
+      })) || [];
   return (
     <>
       {/* ================= TITLE ================= */}
@@ -113,15 +115,16 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
               {cycleKpi?.recommended_focus_areas?.map(
                 (item: string, index: number) => (
                   <PolygonButton
+                    key={`${item}-${index}`}
                     height="106px"
                     width="87px"
                     bgColor={index % 2 === 0 ? "#acd5ab" : "#86c9c9"}
                     clipPath={`polygon(
-    0% 29px,
-    100% 7%,
-    87% 89%,
-    20% calc(100% - 13px)
-  )`}
+        0% 29px,
+        100% 7%,
+        87% 89%,
+        20% calc(100% - 13px)
+      )`}
                   >
                     <div className="flex h-full items-center justify-center px-2 text-center">
                       <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold">

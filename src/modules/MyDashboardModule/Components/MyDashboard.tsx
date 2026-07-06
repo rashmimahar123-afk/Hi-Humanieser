@@ -816,26 +816,6 @@
 
 // export default MyDashboard;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import UserProfileHeader from "../../UserProfileHeader/Components/UserProfileHeader";
@@ -894,6 +874,7 @@ function MyDashboard() {
   const router = useRouter();
   const { user } = useAuthValue();
   const { data, isLoading } = useMyQuizResultQuery();
+  console.log("datadatadatadatadata", data);
   const pdfRef = useRef<HTMLDivElement>(null);
   const [enter, setEnter] = useState(false);
 
@@ -1443,23 +1424,24 @@ function MyDashboard() {
                 <h3>My Active Practice List</h3>
               </div>
             </div>
-
-            <div
-              className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
-              onClick={() => scrollToSection(teamRef)}
-            >
-              <div className={styles.imageWrapper}>
-                <Image
-                  src={images.progressPoly}
-                  alt="green-icon"
-                  fill
-                  className={styles.cardImage}
-                />
+            {user?.user_type !== 3 && (
+              <div
+                className={`${styles.card} bg-[#F5F0EB] cursor-pointer`}
+                onClick={() => scrollToSection(teamRef)}
+              >
+                <div className={styles.imageWrapper}>
+                  <Image
+                    src={images.progressPoly}
+                    alt="green-icon"
+                    fill
+                    className={styles.cardImage}
+                  />
+                </div>
+                <div className={styles.cardContent}>
+                  <h3>My Team Progress</h3>
+                </div>
               </div>
-              <div className={styles.cardContent}>
-                <h3>My Team Progress</h3>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Download Row */}
@@ -1490,6 +1472,7 @@ function MyDashboard() {
                 formattedDate={formattedDate}
                 resultData={resultData}
                 weakStrengthDetails={weakStrengthDetails}
+                data={data}
               />
             </div>
 
