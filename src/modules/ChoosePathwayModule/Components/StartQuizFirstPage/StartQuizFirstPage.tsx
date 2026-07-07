@@ -13,10 +13,11 @@ type START_QUIZ_FIRST_PROPS_TYPES = {
   questionsRef: React.RefObject<HTMLDivElement | null>;
   trackHeight: number;
   pillarOne?: PILLAR_DATA;
+  firstName?: string;
 };
 
 function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
-  const { questionsRef, trackHeight, pillarOne } = props;
+  const { questionsRef, trackHeight, pillarOne, firstName } = props;
   const [animateText, setAnimateText] = useState(false);
   const [enter, setEnter] = useState(false);
 
@@ -127,7 +128,7 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
               className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
-              Hi Maria!
+              Hi {firstName}!
             </h1>
             <div className="flex justify-center mt-[40px]">
               <div>

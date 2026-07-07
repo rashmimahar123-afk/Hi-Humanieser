@@ -3,6 +3,7 @@ import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
 import { useRouter } from "next/navigation";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 
 type MY_QUIZ_RESULT_PROPS = {
   topStrengthDetails: any;
@@ -21,7 +22,9 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
     data,
   } = props;
   const router = useRouter();
-  console.log("datadatadatadata", !data);
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
   return (
     <>
       {/* Section Title */}
@@ -78,8 +81,8 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
               What's already working well
             </div>
             <p className="text-[#0F4F58] font-[Aptos] text-[13px] md:text-[17px] lg:text-[22px] mt-[10px] ml-0 sm:ml-[10px] md:ml-[20px]">
-              Maria, from what you shared, a few things are already coming
-              through strongly:
+              {`${profileData?.first_name || ""}, from what you shared, a few
+              things are already coming through strongly:`}
             </p>
 
             <div className="mt-[16px] md:mt-[20px] ml-0 sm:ml-6 md:ml-14">
@@ -113,7 +116,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                   alt="left decoration"
                   width={40}
                   height={40}
-                  className="shrink-0 absolute block w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] md:w-[32px] md:h-[32px] lg:w-[40px] lg:h-[40px] left-0 md:left-2 lg:-left-2 xl:left-[30px] bottom-[72px] sm:bottom-[75px] lg:bottom-[90px]"
+                  className="shrink-0 absolute block w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] md:w-[32px] md:h-[32px] lg:w-[40px] lg:h-[40px] left-0 md:left-2 lg:-left-2 xl:left-[76px] bottom-[72px] sm:bottom-[75px] lg:bottom-[46px] rotate-[10deg]"
                 />
 
                 <div className="text-[#0F4F58] text-[13px] md:text-[16px] lg:text-[20px] font-[700] font-[Roboto] max-w-full md:max-w-[823px] text-center mt-[10px] md:mt-[20px] px-6 sm:px-10 md:px-12 lg:px-16 xl:px-0">
@@ -128,7 +131,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                   alt="right decoration"
                   width={60}
                   height={40}
-                  className="shrink-0 absolute block w-[30px] h-[20px] sm:w-[40px] sm:h-[28px] md:w-[50px] md:h-[32px] lg:w-[60px] lg:h-[40px] right-0 md:right-2 lg:-right-2 xl:right-[25px] -rotate-[35deg] bottom-[72px] sm:bottom-[75px] lg:bottom-[90px]"
+                  className="shrink-0 absolute block w-[30px] h-[20px] sm:w-[40px] sm:h-[28px] md:w-[50px] md:h-[32px] lg:w-[60px] lg:h-[40px] right-0 md:right-2 lg:-right-2 xl:right-[62px] -rotate-[35deg] bottom-[72px] sm:bottom-[75px] lg:bottom-[46px]"
                 />
               </div>
             </div>
@@ -152,7 +155,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
               </p>
 
               {/* Cards — 1 col mobile, 2 col tablet/mid, 3 col xl+ */}
-              <div className="mt-[24px] md:mt-[40px] ml-0 xl:ml-[65px]">
+              <div className="mt-[24px] md:mt-[40px] ml-0 ">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[20px] xl:gap-[40px]">
                   {weakStrengthDetails.map((item: any, index: any) => (
                     <QuizPathwayCards
@@ -179,7 +182,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
               onClick={() => router.push("/start-quiz")}
             >
               <PolygonButton
-                width="106px"
+                width="126px"
                 height="107px"
                 bgColor="#F6E3BF"
                 radius={14}
@@ -189,7 +192,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                   className: "-left-[37px] -top-[47px] rotate-[20deg]",
                 }}
               >
-                <span className="text-[#0F4F58] text-[17px] md:text-[20px] lg:text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
+                <span className="text-[#0F4F58] text-[17px] md:text-[20px] lg:text-[24px] font-[RocaTwo] font-bold leading-tight text-center">
                   Retake the Check-In
                 </span>
               </PolygonButton>

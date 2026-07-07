@@ -17,6 +17,7 @@ import {
   ENRICH_PROGRESS_LIST,
   PRACTICE_LIST_ITEM,
 } from "../../Types/ResponseTypes";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 
 type Principle = {
   key: string;
@@ -51,7 +52,9 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
   } = props;
 
   const reflections = Array.from({ length: 3 });
-
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
   return (
     <div className="min-h-screen bg-[#F5F0EB] font-sans">
       <div className="relative">
@@ -150,7 +153,7 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
                   Your Strenghts
                 </div>
                 <p className="text-[#737373] font-[Aptos]text-[20px] mt-[10px]">
-                  Maria, your results show clear strengths in:
+                  {`${profileData?.first_name || ""}, your results show clear strengths in:`}
                 </p>
                 <div className="mt-[20px] ml-14">
                   <div className=" mt-2 ml-[65px]">
@@ -194,7 +197,7 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
                     Your Pillars Scores
                   </h3>
                   <p
-                    className="text-[22px] text-[#737373] ml-[20px] w-[900px] "
+                    className="text-[22px] text-[#737373] ml-[20px]  "
                     style={{ fontFamily: "Aptos" }}
                   >
                     Here’s how you scored across the 3 pillars — showing where

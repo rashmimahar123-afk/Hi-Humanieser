@@ -19,6 +19,13 @@ import { useGetCompPathwayQuery } from "@/src/modules/WelcomeModule/Hooks/useGet
 import { useQueryClient } from "@tanstack/react-query";
 import { MILESTONE_THREE_DATA } from "../../Types/ResponseTypes";
 import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
+import RemoveShareReflectionModal, {
+  openRemoveShareModal,
+} from "../RemoveShareReflectionModal/RemoveShareReflectionModal";
+import ConfirmShareReflectionModal, {
+  openConfirmShareReflectionModal,
+} from "../ConfirmShareReflectionModal/ConfirmShareReflectionModal";
+import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
 
 type MILESTONE_THREE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -49,13 +56,14 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
   const [selectedMicroActions, setSelectedMicroActions] = useState<string[]>(
     [],
   );
+  const [isPulseInitialized, setIsPulseInitialized] = useState(false);
 
   const handlePulseSelect = (value: number) => {
-    setSelectedPulse(value);
-    const msg = getPulseMessage(value, m1Pulse, pulseConfig);
-    setPulseMessage(msg);
-  };
+    setIsPulseInitialized(true);
 
+    setSelectedPulse(value);
+    setPulseMessage(getPulseMessage(value, m1Pulse, pulseConfig));
+  };
   const reflectionText = m3Data?.reflection?.reflection || "";
   const isReflectionFilled = !!reflectionText?.trim();
   const isCompleteEnabled = selectedPulse && isReflectionFilled;
@@ -90,13 +98,15 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (m3Data?.pulse_check && pulseConfig) {
-      setSelectedPulse(m3Data.pulse_check);
-      const msg = getPulseMessage(m3Data.pulse_check, m1Pulse, pulseConfig);
-      setPulseMessage(msg);
+    if (isPulseInitialized || !m3Data?.pulse_check || !pulseConfig) {
+      return;
     }
-  }, [m3Data, pulseConfig]);
 
+    setSelectedPulse(m3Data.pulse_check);
+    setPulseMessage(getPulseMessage(m3Data.pulse_check, m1Pulse, pulseConfig));
+
+    setIsPulseInitialized(true);
+  }, [isPulseInitialized, m3Data?.pulse_check, m1Pulse, pulseConfig]);
   const { mutate: updateM3 } = useUpdateMppMilestoneMutation();
 
   const handleCheckboxChange = (index: number) => {
@@ -131,6 +141,60 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     });
   };
 
+  const handleShareToggle = async (value: boolean) => {
+    await queryClient.refetchQueries({
+      queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+      type: "active",
+    });
+
+    const freshData = queryClient.getQueryData<any>(
+      GET_PERSONAL_PATHWAY_QUERY_KEY,
+    );
+
+    const pathways = freshData?.data?.pathways || [];
+    const currentPathway = pathways.find((p: any) => p.uuid === id);
+
+    const firstKey = Object.keys(currentPathway || {}).find(
+      (k) => !["uuid", "created", "active"].includes(k),
+    );
+
+    const existingM3 = firstKey ? currentPathway?.[firstKey]?.m3 || {} : {};
+
+    const payload = {
+      uuid: id,
+      milestone_key: "m3",
+      data: {
+        kind: "m3",
+        reflection: {
+          reflection:
+            existingM3?.reflection?.reflection ??
+            m3Data?.reflection?.reflection ??
+            "",
+          share: value,
+        },
+        // Keep existing pulse value
+        pulse_check:
+          selectedPulse ?? existingM3?.pulse_check ?? m3Data?.pulse_check,
+
+        // Keep pinned micro actions
+        pin_to_dash: existingM3?.pin_to_dash ?? m3Data?.pin_to_dash ?? [],
+      },
+    };
+
+    updateM3(payload, {
+      onSuccess: () => {
+        if (value) {
+          openConfirmShareReflectionModal(id);
+        } else {
+          openRemoveShareModal(id);
+        }
+
+        queryClient.invalidateQueries({
+          queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
+        });
+      },
+    });
+  };
   return (
     <div className="animate-slideInRight">
       <StartPracticePerspective pathwayDetails={pathwayDetails} />
@@ -336,7 +400,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
               )}
             </div>
 
-            <div className="flex justify-end mt-[7px]">
+            {/* <div className="flex justify-end mt-[7px]">
               <div
                 className={
                   selectedPulse
@@ -372,8 +436,61 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                   </div>
                 </PolygonButton>
               </div>
-            </div>
+            </div> */}
+            {!reflectionText ? (
+              <div className="flex justify-end mt-[7px]">
+                <div
+                  className={
+                    selectedPulse
+                      ? "cursor-pointer"
+                      : "cursor-not-allowed opacity-50"
+                  }
+                  onClick={() => {
+                    if (!selectedPulse) return;
 
+                    openFillupModal(
+                      "milestone3",
+                      id,
+                      selectedPulse,
+                      selectedMicroActions,
+                    );
+                  }}
+                >
+                  <PolygonButton
+                    width="90px"
+                    height="68px"
+                    bgColor="#4ba6a6"
+                    radius={14}
+                    clipPath={`polygon(18% 12%, 82% 2%, 100% 88%, 6% 100%)`}
+                  >
+                    <div className="relative z-20 flex flex-col items-center justify-center w-full h-full text-[#0F4F58] font-[RocaTwo] font-bold">
+                      <span>Click Me To</span>
+                      <span>Fill up</span>
+                    </div>
+                  </PolygonButton>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-6">
+                <div className="flex justify-between">
+                  <div className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">
+                    Share your insights with your team?
+                  </div>
+
+                  <input
+                    type="checkbox"
+                    checked={m3Data?.reflection?.share ?? false}
+                    onChange={(e) => handleShareToggle(e.target.checked)}
+                    className="mt-1 w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
+                  />
+                </div>
+
+                <p className="text-[14px] italic text-[#0F4F58] font-[Aptos] font-[400]">
+                  If yes, your reflection will be shared anonymously on
+                  Reflection Walls
+                </p>
+              </div>
+            )}
             {showPulseError && !selectedPulse && (
               <p className="text-red-500 text-[12px] sm:text-[14px] text-right">
                 First select the pulse check then move forward
@@ -570,6 +687,8 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
       )}
 
       <FillUpFormModal />
+      <ConfirmShareReflectionModal />
+      <RemoveShareReflectionModal />
     </div>
   );
 }

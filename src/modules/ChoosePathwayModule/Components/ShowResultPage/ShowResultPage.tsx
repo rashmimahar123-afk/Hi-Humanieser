@@ -27,6 +27,7 @@ import DeletePathwayModal, {
 } from "../DeletePathwayModal/DeletePathwayModal";
 import useEventEmitter from "@/src/components/Hooks/useEventEmitter";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 
 type Principle = {
   key: string;
@@ -367,6 +368,11 @@ function ShowResultPage() {
     // here principleNumber = index (we passed index)
     setSelectedPathways((prev) => [...prev, principleNumber]);
   });
+
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
+
   return (
     <>
       <div
@@ -405,7 +411,7 @@ function ShowResultPage() {
                 className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                Hi Maria!
+                Hi {profileData?.first_name || ""}!
               </h1>
             </div>
           </div>

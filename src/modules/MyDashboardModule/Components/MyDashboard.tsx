@@ -874,7 +874,6 @@ function MyDashboard() {
   const router = useRouter();
   const { user } = useAuthValue();
   const { data, isLoading } = useMyQuizResultQuery();
-  console.log("datadatadatadatadata", data);
   const pdfRef = useRef<HTMLDivElement>(null);
   const [enter, setEnter] = useState(false);
 

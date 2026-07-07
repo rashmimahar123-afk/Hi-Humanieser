@@ -13,10 +13,11 @@ type START_QUIZ_SECOND_PROPS_TYPES = {
   questionsRef: React.RefObject<HTMLDivElement | null>;
   trackHeight: number;
   pillarTwo?: PILLAR_DATA;
+  firstName?: string;
 };
 
 function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
-  const { questionsRef, trackHeight, pillarTwo } = props;
+  const { questionsRef, trackHeight, pillarTwo, firstName } = props;
   const [animateText, setAnimateText] = useState(false);
 
   const [enter, setEnter] = useState(false);
@@ -135,7 +136,7 @@ function StartQuizSecondPage(props: START_QUIZ_SECOND_PROPS_TYPES) {
               className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
-              Hi Maria!
+              Hi {firstName}!
             </h1>
           </div>
         </div>

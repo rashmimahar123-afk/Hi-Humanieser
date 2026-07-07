@@ -21,6 +21,7 @@ import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useCho
 import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import { enrichProgressWithPractice } from "@/src/lib/Helpers";
 import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 
 type Principle = {
   key: string;
@@ -137,7 +138,9 @@ function AllDashboardData() {
     return result;
   };
   const { data: quizDetails } = useQuizDetailsQuery();
-
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
   const getWeakStrengthDetails = (growthTargets: any[], quizData: any) => {
     if (!quizData?.pillars) return [];
 
@@ -508,7 +511,8 @@ function AllDashboardData() {
                   Your Strenghts
                 </div>
                 <p className="text-[#737373] font-[Aptos]text-[20px] mt-[10px]">
-                  Maria, your results show clear strengths in:
+                  {/* {` ${profileData?.first_name || ""}, your results show clear strengths in:`} */}
+                  {`${profileData?.first_name || ""}, from what you shared, a few things are already coming through strongly:`}
                 </p>
                 <div className="mt-[20px] ml-14">
                   <div className=" mt-2 ml-[65px]">
@@ -519,7 +523,7 @@ function AllDashboardData() {
                         style={{ fontFamily: "Aptos" }}
                       >
                         <span className="relative z-10 px-2 py-1 rounded text-[#0F4F58] text-[20px]">
-                          <span className="font-[700]">{item.title} — </span>
+                          {/* <span className="font-[700]">{item.title} — </span> */}
                           {item.description}
                         </span>
 
@@ -552,7 +556,7 @@ function AllDashboardData() {
                     Your Pillars Scores
                   </h3>
                   <p
-                    className="text-[22px] text-[#737373] ml-[20px] w-[900px] "
+                    className="text-[22px] text-[#737373] ml-[20px]  "
                     style={{ fontFamily: "Aptos" }}
                   >
                     Here’s how you scored across the 3 pillars — showing where

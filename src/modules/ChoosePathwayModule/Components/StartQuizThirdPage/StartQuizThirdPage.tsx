@@ -19,10 +19,11 @@ type START_QUIZ_THIRD_PROPS_TYPES = {
   questionsRef: React.RefObject<HTMLDivElement | null>;
   trackHeight: number;
   pillarThree?: PILLAR_DATA;
+  firstName?: string;
 };
 
 function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
-  const { questionsRef, trackHeight, pillarThree } = props;
+  const { questionsRef, trackHeight, pillarThree, firstName } = props;
   const [animateText, setAnimateText] = useState(false);
 
   const [enter, setEnter] = useState(false);
@@ -156,7 +157,7 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
               className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
-              Hi Maria!
+              Hi {firstName}!
             </h1>
           </div>
         </div>
