@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import styles from "./ShowResultPage.module.css";
@@ -10,8 +10,6 @@ import GaugeChart from "react-gauge-chart";
 import useMyQuizResultQuery from "../../Hooks/useMyQuizResultQuery";
 import { useCreateMppMutation } from "../../Hooks/useCreateMppMutation";
 import useQuizDetailsQuery from "../../Hooks/useQuizDetailsQuery";
-import useResultMessagesQuery from "../../Hooks/useResultMessagesQuery";
-import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import ShowMaxTwoMppModal, {
   openShowMaxTwoMpp,
 } from "../ShowMaxTwoMppModal/ShowMaxTwoMppModal";
@@ -43,6 +41,12 @@ type PillarItem = {
 
 type PillarDataType = Record<string, PillarItem>;
 
+type ActivePathwayType = {
+  pathwayNumber: string;
+  uuid: string;
+  data: any;
+};
+
 function ShowResultPage() {
   const [animateText, setAnimateText] = useState(false);
   const { user } = useAuthValue();
@@ -51,7 +55,7 @@ function ShowResultPage() {
     pillarData: PillarDataType;
     pillarAvg: Record<string, number>;
   } | null>(null);
-
+  console.log("resultDataresultDataresultDataresultData", resultData);
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [topMessage, setTopMessage] = useState<any>(null);
@@ -59,7 +63,6 @@ function ShowResultPage() {
   const [pathwayUuids, setPathwayUuids] = useState<Record<number, string>>({});
   const [enter] = useState(true);
   const router = useRouter();
-
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
   const isPathwaySelected = selectedPathways.length > 0;
 
@@ -199,7 +202,7 @@ function ShowResultPage() {
     return result;
   };
   const { data: quizDetails } = useQuizDetailsQuery();
-
+  console.log("quizDetailsquizDetailsquizDetails", quizDetails);
   const getRangeMessage = (score: number) => {
     if (score >= 1 && score <= 2) {
       return "You’re laying the groundwork. This is the perfect time to focus on a few pathways that will give you quick wins and confidence.";
@@ -286,6 +289,38 @@ function ShowResultPage() {
 
   const { data: mppList } = useGetListMppQuery();
   const { mutate: deleteMutate } = useDeletePathwayMutation();
+  const pathwayData = mppList?.data?.pathways;
+  console.log("pathwayDatapathwayDatapathwayDatapathwayData", pathwayData);
+  const activePathways = pathwayData?.filter((item) => item.active);
+
+  const formattedActivePathways: ActivePathwayType[] = useMemo(() => {
+    if (!activePathways) return [];
+
+    return activePathways
+      .map((item) => {
+        const pathwayKey = Object.keys(item).find(
+          (key) => !["created", "uuid", "active"].includes(key),
+        );
+
+        if (!pathwayKey) return null;
+
+        return {
+          pathwayNumber: pathwayKey,
+          uuid: item.uuid,
+          data: item[pathwayKey as keyof typeof item],
+        };
+      })
+      .filter(Boolean) as ActivePathwayType[];
+  }, [activePathways]);
+
+  const activeFromAPI = (formattedActivePathways || []).map((item) =>
+    Number(item.pathwayNumber),
+  );
+
+  const totalSelectedCount = activeFromAPI.length;
+
+  const currentSelectedCount = selectedPathways.length;
+  const totalCount = totalSelectedCount + currentSelectedCount;
 
   const handleDelete = (uuid: string, index: number) => {
     deleteMutate(
@@ -347,7 +382,7 @@ function ShowResultPage() {
     });
 
     setSelectedPathways(activeIndexes);
-    setPathwayUuids(uuidMap); // 👈 VERY IMPORTANT
+    setPathwayUuids(uuidMap); //  VERY IMPORTANT
   }, [mppList, weakStrengthDetails, resultData]);
 
   const { data: pathwayMessage, refetch: getRandomMessage } =
@@ -438,8 +473,8 @@ function ShowResultPage() {
                     className="text-[22px] text-[#737373] ml-[20px] "
                     style={{ fontFamily: "Aptos" }}
                   >
-                    Maria, from what you shared, a few things are already coming
-                    through strongly:{" "}
+                    {profileData?.first_name || ""}, from what you shared, a few
+                    things are already coming through strongly:{" "}
                   </p>
                   <div className="mt-2 ml-[65px]">
                     {topStrengthDetails.map((item, index) => (
@@ -712,39 +747,43 @@ function ShowResultPage() {
                               selectedTarget.key.split("_")[1],
                               10,
                             );
-
-                            // ✅ CASE 1: Already selected → DELETE
-                            if (selectedPathways.includes(index)) {
-                              const uuid = pathwayUuids[index];
-                              if (!uuid) return;
-
-                              openDeletePathwayModal({ uuid, index });
-                            }
-
-                            // ✅ CASE 2: Select new
-                            else if (selectedPathways.length < 2) {
-                              try {
-                                const res = await getRandomMessage();
-
-                                const messageObj = {
-                                  message: res?.data || "",
-                                };
-
-                                setSelectedWeakMessage(messageObj);
-
-                                handleSelectPathway(
-                                  principleNumber,
-                                  index,
-                                  messageObj,
-                                  selectedPathways.length + 1,
-                                );
-
-                                //  DO NOT SELECT HERE
-                              } catch (err) {
-                                console.log(err);
-                              }
-                            } else {
+                            if (totalSelectedCount === 2) {
                               openShowMaxTwoMpp();
+                              return;
+                            } else {
+                              //  CASE 1: Already selected → DELETE
+                              if (selectedPathways.includes(index)) {
+                                const uuid = pathwayUuids[index];
+                                if (!uuid) return;
+
+                                openDeletePathwayModal({ uuid, index });
+                              }
+
+                              //  CASE 2: Select new
+                              else if (selectedPathways.length < 2) {
+                                try {
+                                  const res = await getRandomMessage();
+
+                                  const messageObj = {
+                                    message: res?.data || "",
+                                  };
+
+                                  setSelectedWeakMessage(messageObj);
+
+                                  handleSelectPathway(
+                                    principleNumber,
+                                    index,
+                                    messageObj,
+                                    selectedPathways.length + 1,
+                                  );
+
+                                  //  DO NOT SELECT HERE
+                                } catch (err) {
+                                  console.log(err);
+                                }
+                              } else {
+                                openShowMaxTwoMpp();
+                              }
                             }
                           }}
                         />
@@ -763,15 +802,15 @@ function ShowResultPage() {
               <CommonButtons
                 label="Return to My Personal Pathway"
                 bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
-                disabled={!isPathwaySelected}
+                disabled={totalCount < 1}
                 onClick={() => router.push("/personal-pathway")}
               />
 
               <CommonButtons
                 label="Go to Dashboard"
                 bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
-                disabled={!isPathwaySelected}
-                onClick={() => router.push("/dashboar")}
+                disabled={totalCount < 1}
+                onClick={() => router.push("/my-dashboard")}
               />
             </div>
           </div>

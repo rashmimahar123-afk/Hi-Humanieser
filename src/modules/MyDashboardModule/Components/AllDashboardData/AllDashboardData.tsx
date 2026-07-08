@@ -409,6 +409,10 @@ function AllDashboardData() {
 
   const { data: randomMessage } = useGetMppMessagesQuery();
 
+  const currentMonthYear = new Date().toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
   return (
     <div className="min-h-screen bg-[#F5F0EB] font-sans">
       <div className="relative">
@@ -448,8 +452,9 @@ function AllDashboardData() {
               </label>
               <input
                 type="text"
+                value={profileData?.first_name}
                 placeholder="pre-filled if possible"
-                className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none placeholder:text-[#9E9E9E]"
+                className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none text-[#737373]"
               />
             </div>
 
@@ -460,8 +465,9 @@ function AllDashboardData() {
               </label>
               <input
                 type="text"
+                value={currentMonthYear}
                 placeholder="pre-filled if possible"
-                className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none placeholder:text-[#9E9E9E]"
+                className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none text-[#737373]"
               />
             </div>
           </div>

@@ -4,6 +4,7 @@ import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
 import { useRouter } from "next/navigation";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
+import GaugeChart from "react-gauge-chart";
 
 type MY_QUIZ_RESULT_PROPS = {
   topStrengthDetails: any;
@@ -136,7 +137,149 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
               </div>
             </div>
           </div>
+          <div className="mt-[60px]">
+            {/* TEXT (Always on top) */}
+            <div className="relative z-20 text-[#567F55] font-[400]">
+              <h3 className="text-[#737373] text-[26px] font-[RocaRwo]">
+                Your Pillars Scores
+              </h3>
+              <p
+                className="text-[22px] text-[#737373] ml-[20px]  "
+                style={{ fontFamily: "Aptos" }}
+              >
+                Here’s how you scored across the 3 pillars — showing where your
+                strengths shine, and where there’s room to grow:
+              </p>
+              {/* PILLARS GRID */}
+              <div className="mt-[40px] ml-[65px]">
+                <div className="grid grid-cols-3 gap-[60px] text-center ">
+                  {/* Pillar 1 */}
+                  <div className="flex flex-col items-center">
+                    <h4
+                      className="text-[#4BA6A6] text-[22px] leading-[100%] font-[700]"
+                      style={{ fontFamily: "RocaTwo-BI" }}
+                    >
+                      The Mindset We Bring
+                    </h4>
 
+                    <p
+                      className="mt-2 text-[#737373] text-[20px] w-[300px]"
+                      style={{ fontFamily: "Aptos" }}
+                    >
+                      How you show up — your habits, openness, and
+                      self-awareness.
+                    </p>
+
+                    <div className="mt-6 relative w-[250px]">
+                      <GaugeChart
+                        id="connect-gauge"
+                        nrOfLevels={1}
+                        percent={
+                          (resultData?.pillarData?.pillar_03?.top?.score || 0) /
+                          5
+                        }
+                        hideText={true}
+                        arcWidth={0.38} // thicker arc
+                        colors={["#D3CBB6"]}
+                        needleColor="#F28B82"
+                      />
+                      {/* Labels */}
+                      <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                        1
+                      </span>
+
+                      <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                        5
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Pillar 2 */}
+                  <div className="flex flex-col items-center">
+                    <h4
+                      className="text-[#4BA6A6] text-[22px] leading-[100%] font-[700]"
+                      style={{ fontFamily: "RocaTwo-BI" }}
+                    >
+                      The Way We Connect
+                    </h4>
+
+                    <p
+                      className="mt-2 text-[#737373] text-[20px] w-[300px]"
+                      style={{ fontFamily: "Aptos" }}
+                    >
+                      How you communicate, listen, and build trust with others.
+                    </p>
+
+                    <div className="mt-6 relative w-[250px]">
+                      <GaugeChart
+                        id="connect-gauge"
+                        nrOfLevels={1}
+                        percent={
+                          (resultData?.pillarData?.pillar_02?.top?.score || 0) /
+                          5
+                        }
+                        hideText={true}
+                        arcWidth={0.38} // thicker arc
+                        colors={["#D3CBB6"]}
+                        needleColor="#F28B82"
+                      />
+                      {/* Labels */}
+                      <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                        1
+                      </span>
+
+                      <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                        5
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Pillar 3 */}
+                  <div className="flex flex-col items-center">
+                    <h4
+                      className="text-[#4BA6A6] text-[22px] leading-[100%] font-[700]"
+                      style={{ fontFamily: "RocaTwo-BI" }}
+                    >
+                      The Culture We Shape
+                    </h4>
+
+                    <p
+                      className="mt-2 text-[#737373] text-[20px] w-[300px]"
+                      style={{ fontFamily: "Aptos" }}
+                    >
+                      How your actions influence the team environment and
+                      wellbeing.
+                    </p>
+
+                    <div className="mt-6 relative w-[250px]">
+                      <GaugeChart
+                        id="connect-gauge"
+                        nrOfLevels={1}
+                        percent={
+                          (resultData?.pillarData?.pillar_03?.top?.score || 0) /
+                          5
+                        }
+                        hideText={true}
+                        arcWidth={0.38} // thicker arc
+                        colors={["#D3CBB6"]}
+                        needleColor="#F28B82"
+                      />
+                      {/* Labels */}
+                      <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                        1
+                      </span>
+
+                      <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
+                        5
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SKY SHAPE CARD */}
+          </div>
           {/* Suggested Pathways */}
           <div className="mt-14 md:mt-20">
             <div className="relative z-20 text-[#567F55] font-[400]">

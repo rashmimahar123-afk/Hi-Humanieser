@@ -129,7 +129,9 @@ function MySelfPage() {
 
   const { data: listMppData, refetch } = useGetListMppQuery();
   const pathwayData = listMppData?.data?.pathways;
+
   const activePathways = pathwayData?.filter((item) => item.active);
+
   const formattedActivePathways: ActivePathwayType[] = useMemo(() => {
     if (!activePathways) return [];
 
@@ -159,6 +161,7 @@ function MySelfPage() {
   );
 
   const totalSelectedCount = finalSelectedPathways.length;
+
   const isPathwaySelected = finalSelectedPathways.length > 0;
 
   const pathwayUuids = useMemo(() => {

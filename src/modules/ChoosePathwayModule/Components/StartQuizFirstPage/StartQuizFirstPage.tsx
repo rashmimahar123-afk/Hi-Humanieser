@@ -118,18 +118,24 @@ function StartQuizFirstPage(props: START_QUIZ_FIRST_PROPS_TYPES) {
           {/* Left */}
           <div>
             <div
-              className="text-[#567F55]"
-              style={{ fontFamily: "Aptos", fontSize: "22px" }}
+              className="cursor-pointer"
+              onClick={() => router.push("/home")}
             >
-              Hi Humaniser! <span className="align-super text-[0.7em]">™</span>
-            </div>
+              <div
+                className="text-[#567F55] cursor-pointer"
+                style={{ fontFamily: "Aptos", fontSize: "22px" }}
+              >
+                Hi Humaniser!{" "}
+                <span className="align-super text-[0.7em]">™</span>
+              </div>
 
-            <h1
-              className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
-              style={{ fontFamily: "RocaTwo-Bold" }}
-            >
-              Hi {firstName}!
-            </h1>
+              <h1
+                className="mt-4 text-[56px] text-[#0F4F58] font-bold leading-[40%]"
+                style={{ fontFamily: "RocaTwo-Bold" }}
+              >
+                Hi {firstName}!
+              </h1>
+            </div>
             <div className="flex justify-center mt-[40px]">
               <div>
                 <h2

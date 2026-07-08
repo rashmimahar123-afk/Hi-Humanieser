@@ -12,6 +12,7 @@ import RemovePathwayModal, {
 import { getPathwayProgress } from "@/src/lib/Helpers";
 import styles from "./ChangeMyPathway.module.css";
 import { useEffect, useState } from "react";
+import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 
 type ActivePathwayType = {
   pathwayNumber: string;
@@ -74,6 +75,11 @@ function ChangeMyPathway() {
       principle: null,
     };
   };
+
+  const { data: myProfileDaa, isLoading: myProfileLoading } =
+    useMyProfileQuery();
+  const profileData = myProfileDaa?.data;
+
   return (
     <>
       <div
@@ -90,7 +96,7 @@ function ChangeMyPathway() {
         <div className="px-12 flex justify-between">
           {" "}
           {/* Left */}
-          <div>
+          <div className="cursor-pointer" onClick={() => router.push("/home")}>
             <div
               className="text-[#0F4F58] leading-none"
               style={{ fontFamily: "Aptos", fontSize: "22px" }}
@@ -102,7 +108,7 @@ function ChangeMyPathway() {
               className="mt-1 leading-tight text-[56px] text-[#0F4F58] font-bold"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
-              Hi Maria!
+              Hi ${profileData?.first_name || ""}!
             </h1>
           </div>
         </div>
