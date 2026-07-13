@@ -26,6 +26,7 @@ function StartTeamJourneyPage() {
   const hasResponses =
     pollData?.options?.some((option: any) => option.responses?.length > 0) ??
     false;
+  console.log("pollDatapollDatapollData", pollData);
   if (isLoading) {
     return (
       <div>
@@ -34,7 +35,6 @@ function StartTeamJourneyPage() {
     );
   }
 
-  console.log("pollData?.poll_openpollData?.poll_open", pollData);
   return (
     <Suspense fallback={"Loading..."}>
       {user?.user_type === 3 ? (
@@ -53,14 +53,20 @@ function StartTeamJourneyPage() {
       // ) : (
       //   <StartTeamJourney /> // make this page visible whenteam ritual is selected
 
+      // pollData?.cycle_started ? (
+      //   pollData?.team_member_count === 0 ? (
+      //     <TeamJourney />
+      //   ) : !hasResponses ? (
+      //     <HoldTeamJourney pollData={pollData} profileData={profileData} /> //this will manage according to userId
+      //   ) : (
+      //     <MyTeamJourney />
+      //   )
+      // ) : (
+      //   <StartTeamJourney />
+      // )
+
       pollData?.cycle_started ? (
-        pollData?.team_member_count === 0 ? (
-          <TeamJourney />
-        ) : !hasResponses ? (
-          <HoldTeamJourney pollData={pollData} profileData={profileData} /> //this will manage according to userId
-        ) : (
-          <MyTeamJourney />
-        )
+        <MyTeamJourney />
       ) : (
         <StartTeamJourney />
       )}

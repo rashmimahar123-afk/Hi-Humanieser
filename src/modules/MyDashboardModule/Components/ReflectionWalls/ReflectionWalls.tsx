@@ -25,7 +25,6 @@ import useGetReflectionWallsQuery from "../../Hooks/useGetReflectionWallsQuery";
 
 function ReflectionWalls() {
   const [progressList, setProgressList] = useState<any>([]);
-  console.log("progressList", progressList);
   const [practiceList, setPracticeList] = useState<any[]>([]);
   const [enter, setEnter] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState("");

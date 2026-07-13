@@ -1,4 +1,3 @@
-
 // "use client";
 
 // /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -856,7 +855,6 @@
 
 // export default LoginForm;
 
-
 "use client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -865,6 +863,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {
+  authFetcher,
   decodeJWT,
   getEmailValidationRules,
   getPasswordValidationRules,
@@ -942,9 +941,17 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         password: values.password,
       },
       {
-        onSuccess: (res: any) => {
+        onSuccess: async (res: any) => {
           const token = res?.token;
           const decoded = decodeJWT(token);
+
+          // Get profile
+          const profileRes = await authFetcher({
+            url: "/my-user-profile",
+            method: "GET",
+          });
+
+          const profile = profileRes.data;
 
           //  USE rememberMe HERE
           if (values.rememberMe) {
@@ -956,7 +963,10 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
           setAuthValue({
             loggedIn: true,
             token: token,
-            user: decoded,
+            user: {
+              ...decoded,
+              user_id: profile.user_id, // <-- save user_id
+            },
             accountType: "GOOGLE",
             latitude: undefined,
             longitude: undefined,

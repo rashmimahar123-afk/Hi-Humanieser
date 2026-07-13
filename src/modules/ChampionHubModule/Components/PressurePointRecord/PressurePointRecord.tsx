@@ -140,10 +140,7 @@ Thanks!`,
   const engagementData = mtjKpiData?.data?.engagement;
   // console.log("pollData?.poll_openpollData?.poll_open", pollData?.poll_open);
   const cycleData = mtjKpiData?.data?.cycle;
-  console.log(
-    "cycleData?.chosen_team_rituals?.length !== 0",
-    cycleData?.chosen_team_rituals?.length === 0,
-  );
+
   const kpiPollData = mtjKpiData?.data?.poll;
   const participation = kpiPollData?.participation;
   const isLessThan70 = participation?.percentage || 0 < 70;

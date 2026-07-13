@@ -6,6 +6,7 @@ export type MY_PROFILE_RESPONSE = {
   user_type: number;
   org_id: string;
   team_id: string | null;
+  user_id: string;
   has_profile_picture: boolean;
   profile_picture_path: string;
 };
@@ -115,9 +116,7 @@ export type GET_FIND_USERS_RESPONSE = {
   profile: USER_PROFILE_DATA;
 };
 
-export type TOGGLE_PARTNER_RESPONSE={
-  
-  message: string,
-  user_type: number
-
-}
+export type TOGGLE_PARTNER_RESPONSE = {
+  message: string;
+  user_type: number;
+};

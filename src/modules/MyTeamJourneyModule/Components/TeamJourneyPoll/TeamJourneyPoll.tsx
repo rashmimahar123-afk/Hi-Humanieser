@@ -10,13 +10,20 @@ import FillUpFormModal, {
   openFillupModal,
 } from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
 import { useGetMtjMessagesQuery } from "../../Hooks/useGetMtjMessagesQuery";
+type TeamRitual = {
+  team_ritual_id: string;
+  title: string;
+  focus_area: string;
+  short_description: string;
+};
 
 type PRACTICE_PERSPECTIVE_PROPS = {
   ClosePracticePerspective: () => void;
+  ritual: TeamRitual;
 };
 
 function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
-  const { ClosePracticePerspective } = props;
+  const { ClosePracticePerspective, ritual } = props;
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -84,15 +91,11 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             {/* Ritual Card */}
             <div className="bg-[#F5F0EB] rounded-[18px] p-6">
               <h4 className="text-[21px] font-[RocaTwo] font-bold text-[#4BA6A6] mb-4">
-                Your Team Ritual: Check the Story
+                Your Team Ritual: {ritual.title}
               </h4>
 
               <p className="text-[18px] font-[Aptos] font-[400] text-[#244E52] mb-4">
-                This ritual helps teams slow down when frustration kicks in.
-                Instead of jumping to conclusions, people pause to check the
-                story they’re telling themselves. It doesn’t mean ignoring
-                problems — it means approaching them with a bit more generosity
-                and curiosity first.
+                {ritual.short_description}
               </p>
 
               <p className="text-[18px] font-[Aptos] font-[400] text-[#244E52] mb-2">

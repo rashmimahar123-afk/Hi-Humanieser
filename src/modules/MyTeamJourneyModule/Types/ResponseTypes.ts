@@ -42,3 +42,27 @@ export type FOCUS_AREA_DATA = {
 export type HH_FRAMEWORK_MTJ_RESPONSE_TYPES = {
   focus_areas: Array<FOCUS_AREA_DATA>;
 };
+
+export type MTJ_TEAM_RITUAL_DATA = {
+  team_ritual_id: string;
+  title: string;
+  focus_area: string;
+  short_description: string;
+};
+export type GET_MTJ_LIST_RESPONSE = {
+  message: string;
+  active: boolean;
+  team_id: string;
+  cycle_id: string;
+  cycle_stage: string;
+  pressure_point: string;
+  focus_areas: Array<any>;
+  team_rituals: Array<MTJ_TEAM_RITUAL_DATA>;
+  ritual_practice: {
+    status: string;
+    duration_weeks: number;
+    started_at: number;
+    scheduled_end_at: number;
+    extended: boolean;
+  };
+};
