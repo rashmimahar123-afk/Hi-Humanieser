@@ -6,7 +6,7 @@ import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChampionNotesSecondSection from "../ChampionNotesSecondSection/ChampionNotesSecondSection";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import MyNotes from "../MyNotes/MyNotes";
@@ -18,6 +18,8 @@ import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 import FieldColumn from "@/src/components/FieldColumn/FieldColumn";
 import FillUpFormModal from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
 import AddChampionNoteModal from "../AddChampionNoteModal/AddChampionNoteModal";
+import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
+import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function ChampionNotes() {
   const [openCurrent, setOpenCurrent] = useState(false);
@@ -44,9 +46,22 @@ function ChampionNotes() {
 
   const cycleKpi = kpiData?.data?.cycle;
 
+  const {
+    mutate: recommendFocusAreas,
+    data: recommendedFocusData,
+    isPending: isRecommendLoading,
+  } = useRecommendFocusAreaMutation();
+
+  useEffect(() => {
+    recommendFocusAreas();
+  }, []);
+
+  const recommendedFocusAreas =
+    recommendedFocusData?.recommended_focus_areas || [];
+
   const pressurePoint = cycleKpi?.champion_pp;
 
-  const recommendedFocusAreas = cycleKpi?.recommended_focus_areas || [];
+  // const recommendedFocusAreas = cycleKpi?.recommended_focus_areas || [];
 
   const chosenTeamRituals = cycleKpi?.chosen_team_rituals || [];
   const poll = kpiData?.data?.poll;
@@ -154,7 +169,11 @@ function ChampionNotes() {
           </div>
 
           <div className="mt-8">
-            <ChampionNotesSecondSection cycleKpi={cycleKpi} poll={poll} />
+            <ChampionNotesSecondSection
+              cycleKpi={cycleKpi}
+              poll={poll}
+              recommendedFocusAreas={recommendedFocusAreas}
+            />
           </div>
 
           <div className="mt-10 relative">
@@ -284,6 +303,7 @@ Champion Hub"
         </div>
       </div>
       <AddChampionNoteModal />
+      <LogoutModal />
     </>
   );
 }

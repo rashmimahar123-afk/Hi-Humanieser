@@ -4,7 +4,7 @@ import { authFetcher } from "@/src/lib/Helpers";
 const recommendFocusArea = async () => {
   const response = await authFetcher({
     url: "/mtj/champion/recommend-focus-areas",
-    method: "POST",
+    method: "GET",
   });
 
   return response.data;

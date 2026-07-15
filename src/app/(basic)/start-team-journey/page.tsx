@@ -9,6 +9,7 @@ import MyTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/MyTeamJo
 import PartnerTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/PartnerTeamJourney/PartnerTeamJourney";
 import StartTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/StartTeamJourney/StartTeamJourney";
 import TeamJourney from "@/src/modules/MyTeamJourneyModule/Components/TeamJourney/TeamJourney";
+import useGetMtjListQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useGetMtjListQuery";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 import { Suspense } from "react";
 
@@ -20,13 +21,18 @@ function StartTeamJourneyPage() {
 
   const { data, isLoading } = useGetMtjPollQuery();
   const pollData = data?.data;
-  const hasVotes =
-    pollData?.options?.some((option: any) => option.vote_count > 0) ?? false;
 
-  const hasResponses =
-    pollData?.options?.some((option: any) => option.responses?.length > 0) ??
-    false;
-  console.log("pollDatapollDatapollData", pollData);
+  const hasCurrentUserResponded =
+    pollData?.options?.some((option: any) =>
+      option.responses?.some(
+        (response: any) => response.user_id === user?.user_id,
+      ),
+    ) ?? false;
+
+  const { data: mtjListData } = useGetMtjListQuery();
+
+  const rituals = mtjListData?.data?.team_rituals || [];
+
   if (isLoading) {
     return (
       <div>
@@ -65,10 +71,18 @@ function StartTeamJourneyPage() {
       //   <StartTeamJourney />
       // )
 
-      pollData?.cycle_started ? (
-        <MyTeamJourney />
-      ) : (
+      !pollData?.cycle_started ? (
         <StartTeamJourney />
+      ) : !pollData?.poll_open ? (
+        rituals?.length === 0 ? (
+          <HoldTeamJourney pollData={pollData} profileData={profileData} />
+        ) : (
+          <TeamJourney rituals={rituals} />
+        )
+      ) : hasCurrentUserResponded ? (
+        <HoldTeamJourney pollData={pollData} profileData={profileData} />
+      ) : (
+        <MyTeamJourney />
       )}
     </Suspense>
   );

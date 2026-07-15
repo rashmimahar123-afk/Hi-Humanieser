@@ -11,10 +11,11 @@ import {
 type CHAMPION_NOTES_SECOND_SECTION = {
   cycleKpi: any;
   poll: any;
+  recommendedFocusAreas: any;
 };
 
 function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
-  const { cycleKpi, poll } = props;
+  const { cycleKpi, poll, recommendedFocusAreas } = props;
 
   const COLORS = ["#63C0C5", "#49A6BC", "#3A88AE", "#5977A3", "#6C6498"];
 
@@ -25,6 +26,8 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
         name: item.option,
         value: item.vote_percentage,
       })) || [];
+
+  console.log("cycleKpicycleKpicycleKpi", cycleKpi);
   return (
     <>
       {/* ================= TITLE ================= */}
@@ -112,7 +115,7 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
               Recommended Focus Area
             </h3>
             <div className="mt-4 flex justify-center gap-10 flex-wrap">
-              {cycleKpi?.recommended_focus_areas?.map(
+              {/* {cycleKpi?.recommended_focus_areas?.map(
                 (item: string, index: number) => (
                   <PolygonButton
                     key={`${item}-${index}`}
@@ -133,7 +136,27 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
                     </div>
                   </PolygonButton>
                 ),
-              )}
+              )} */}
+              {recommendedFocusAreas.map((item: any, index: number) => (
+                <PolygonButton
+                  key={item.rank ?? index}
+                  height="106px"
+                  width="87px"
+                  bgColor={index % 2 === 0 ? "#acd5ab" : "#86c9c9"}
+                  clipPath={`polygon(
+      0% 29px,
+      100% 7%,
+      87% 89%,
+      20% calc(100% - 13px)
+    )`}
+                >
+                  <div className="flex h-full items-center justify-center px-2 text-center">
+                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold">
+                      {item.option}
+                    </span>
+                  </div>
+                </PolygonButton>
+              ))}
             </div>
           </div>
 

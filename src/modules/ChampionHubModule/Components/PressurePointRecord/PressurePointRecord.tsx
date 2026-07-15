@@ -111,7 +111,10 @@ Thanks!`,
 
   const recommendedFocusAreas =
     recommendedFocusData?.recommended_focus_areas || [];
-
+  console.log(
+    "recommendedFocusAreasrecommendedFocusAreas",
+    recommendedFocusAreas,
+  );
   const { data: cycleOverviewData } = useGetMtjCycleOverviewQuery(
     user?.team_id,
   );
@@ -146,7 +149,7 @@ Thanks!`,
   const isLessThan70 = participation?.percentage || 0 < 70;
 
   const options = kpiPollData?.results || [];
-
+  console.log("kpiPollData", kpiPollData);
   return (
     <>
       <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
