@@ -108,7 +108,7 @@ function ChangeMyPathway() {
               className="mt-1 leading-tight text-[56px] text-[#0F4F58] font-bold"
               style={{ fontFamily: "RocaTwo-Bold" }}
             >
-              Hi ${profileData?.first_name || ""}!
+              Hi {profileData?.first_name || ""}!
             </h1>
           </div>
         </div>

@@ -1,19 +1,29 @@
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
-import { openFillupModal } from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
 import { useState } from "react";
 import { openChampionNotes } from "../AddChampionNoteModal/AddChampionNoteModal";
 
-function MyNotes() {
+type Props = {
+  reflection?: {
+    id: string;
+    reflection: string;
+    created_at: string;
+    shared_anonymously: boolean;
+  };
+};
+
+function MyNotes({ reflection }: Props) {
   const [checked, setChecked] = useState(false);
-  const [reflection, setReflection] = useState("");
   const { user } = useAuthValue();
+
   return (
     <div className="bg-[#f8e1b8] rounded-[28px] px-12 py-12 relative">
       <div className="space-y-6 relative">
         {reflection ? (
-          <p className="text-[#567F55] text-[20px] leading-relaxed whitespace-pre-wrap min-h-[260px]">
-            {reflection}
-          </p>
+          <div className="border-b border-[#D8C39A] pb-4">
+            <p className="text-[#567F55] text-[20px] whitespace-pre-wrap">
+              {reflection.reflection}
+            </p>
+          </div>
         ) : (
           <>
             {[...Array(8)].map((_, i) => (
@@ -23,7 +33,7 @@ function MyNotes() {
               />
             ))}
 
-            <div className="absolute top-[59px] left-1/2 -translate-x-1/2 text-[#567F55] text-[20px] font-[Aptos]">
+            <div className="absolute top-[59px] left-1/2 -translate-x-1/2 text-[#567F55] text-[20px]">
               500 words
             </div>
           </>
@@ -35,8 +45,8 @@ function MyNotes() {
           <button
             onClick={() =>
               openChampionNotes(
-                "champion_notes", // dummy action key
-                "", // uuid not needed
+                "champion_notes",
+                "",
                 undefined,
                 undefined,
                 user?.team_id,
@@ -44,11 +54,11 @@ function MyNotes() {
             }
             className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
           >
-            Add note or reflection{" "}
+            Add note or reflection
           </button>
         ) : (
           <button className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold">
-            edit
+            Edit
           </button>
         )}
       </div>

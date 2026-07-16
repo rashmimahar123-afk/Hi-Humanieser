@@ -41,7 +41,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
   // const { data: mtjListData, isLoading } = useGetMtjListQuery();
 
   // const rituals = mtjListData?.data?.team_rituals || [];
-  console.log("ritualsritualsrituals", rituals);
+
   return (
     <>
       <div

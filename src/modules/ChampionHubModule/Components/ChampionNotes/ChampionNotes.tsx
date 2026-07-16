@@ -20,6 +20,7 @@ import FillUpFormModal from "@/src/modules/PersonalPathwayModule/Components/Fill
 import AddChampionNoteModal from "../AddChampionNoteModal/AddChampionNoteModal";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
 
 function ChampionNotes() {
   const [openCurrent, setOpenCurrent] = useState(false);
@@ -84,6 +85,14 @@ function ChampionNotes() {
 
     return `${weeks} Weeks`;
   };
+
+  const { data } = useGetReflectionWallsQuery(user?.team_id);
+
+  const reflections =
+    data?.data?.reflections
+      ?.filter((item) => item.source === "mtj")
+      ?.slice(0, 2) ?? [];
+
   return (
     <>
       <div className=" min-h-screen bg-[#F5F0EB] ">
@@ -203,8 +212,16 @@ function ChampionNotes() {
 
             {/* ================= TWO CARDS ================= */}
             <div className="grid grid-cols-2 gap-14 mt-6">
-              <MyNotes />
-              <MyNotes />
+              {reflections.length > 0 ? (
+                reflections.map((item) => (
+                  <MyNotes key={item.id} reflection={item} />
+                ))
+              ) : (
+                <>
+                  <MyNotes />
+                  <MyNotes />
+                </>
+              )}
             </div>
           </div>
 

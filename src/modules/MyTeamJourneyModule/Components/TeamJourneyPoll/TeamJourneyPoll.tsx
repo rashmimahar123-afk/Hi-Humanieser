@@ -4,7 +4,7 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import { useEffect, useState } from "react";
 import styles from "./TeamJourneyPoll.module.css";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import FillUpFormModal, {
   openFillupModal,
@@ -49,7 +49,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   };
 
   const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
-
+  const router = useRouter();
   return (
     <div>
       {/* Yellow Poll Box */}
@@ -126,34 +126,25 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
               Track & Reflect
             </h4>
 
-            {/* Question 1 */}
-            <div className="grid grid-cols-[200px_1fr] gap-6 mb-8">
-              <p className="text-[18px] text-[#0F4F58] font-[Aptos] font-[400]">
-                What did you notice when you try it?
-              </p>
+            <div className="grid grid-cols-[200px_1fr] gap-6">
+              {/* Left */}
+              <div className="flex flex-col justify-between">
+                <p className="text-[18px] text-[#0F4F58]">
+                  What did you notice when you try it?
+                </p>
 
-              <div className="space-y-2">
-                {[...Array(7)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="border-b border-dotted border-[#000000] h-[10px]"
-                  />
-                ))}
+                <p className="text-[18px] text-[#0F4F58] mt-24">
+                  What’s one small change you’ve noticed in your team since
+                  starting this ritual?
+                </p>
               </div>
-            </div>
 
-            {/* Question 2 */}
-            <div className="grid grid-cols-[200px_1fr] gap-6 mb-6">
-              <p className="text-[18px] text-[#0F4F58] font-[Aptos] font-[400]">
-                What’s one small change you’ve noticed in your team since
-                starting this ritual?
-              </p>
-
+              {/* Right */}
               <div className="space-y-2">
-                {[...Array(6)].map((_, i) => (
+                {[...Array(13)].map((_, i) => (
                   <div
                     key={i}
-                    className="border-b border-dotted border-[#000000] h-[10px]"
+                    className="border-b border-dotted border-[#000] h-[10px]"
                   />
                 ))}
               </div>
@@ -342,7 +333,10 @@ your dashboard is beaming"
               </p>
 
               {/* Center badge */}
-              <div className="relative flex items-center justify-center shrink-0">
+              <div
+                className="relative flex items-center justify-center shrink-0 cursor-pointer"
+                onClick={() => router.push("/reflection-walls")}
+              >
                 <Image
                   src={images.reflectionPoly}
                   alt="Reflection Wall"

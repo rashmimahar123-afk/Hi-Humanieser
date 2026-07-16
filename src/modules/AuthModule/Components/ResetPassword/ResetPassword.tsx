@@ -1,12 +1,9 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import images from "@/src/assets/images";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import {
-  getEmailValidationRules,
-  getPasswordValidationRules,
-} from "@/src/lib/Helpers";
-import { emailMessage, passwordMessage } from "@/src/lib/ErrorMessages";
 import { useState } from "react";
 import Link from "next/link";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
