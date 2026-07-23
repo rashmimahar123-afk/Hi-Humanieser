@@ -4,14 +4,18 @@ import images from "@/src/assets/images";
 
 type MY_TEAM_PROGRESS_PROPS = {
   teamProgressList: Array<any>;
+  ritualPractice?: {
+    status?: string;
+  };
 };
 
 function MyTeamProgress(props: MY_TEAM_PROGRESS_PROPS) {
-  const { teamProgressList } = props;
+  const { teamProgressList, ritualPractice } = props;
   console.log(
     "teamProgressListteamProgressListteamProgressList",
     teamProgressList,
   );
+
   return (
     <>
       {/* Heading */}

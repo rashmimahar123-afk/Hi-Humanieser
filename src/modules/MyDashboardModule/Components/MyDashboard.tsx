@@ -842,6 +842,7 @@ import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessa
 import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
 import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
 import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
+import useGetMtjListQuery from "../../MyTeamJourneyModule/Hooks/useGetMtjListQuery";
 
 type Principle = {
   key: string;
@@ -1268,6 +1269,9 @@ function MyDashboard() {
   );
   const { data: randomMessage } = useGetMppMessagesQuery();
 
+  const { data: mtjListData } = useGetMtjListQuery();
+
+  const rituals = mtjListData?.data?.team_rituals || [];
   return (
     <>
       <div
@@ -1484,7 +1488,10 @@ function MyDashboard() {
             </div>
 
             <div className="mx-auto mt-10 md:mt-14" ref={teamRef}>
-              <MyTeamProgress teamProgressList={teamProgressList} />
+              <MyTeamProgress
+                teamProgressList={teamProgressList}
+                ritualPractice={mtjListData?.data?.ritual_practice}
+              />
             </div>
           </div>
 

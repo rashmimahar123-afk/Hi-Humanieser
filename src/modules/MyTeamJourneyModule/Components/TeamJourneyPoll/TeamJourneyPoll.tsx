@@ -10,11 +10,21 @@ import FillUpFormModal, {
   openFillupModal,
 } from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
 import { useGetMtjMessagesQuery } from "../../Hooks/useGetMtjMessagesQuery";
+import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
+import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { useEditReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useEditReflectionMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import ConfirmShareReflectionModal, {
+  openConfirmShareReflectionModal,
+} from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
+
 type TeamRitual = {
   team_ritual_id: string;
   title: string;
   focus_area: string;
   short_description: string;
+  activation_message?: string;
 };
 
 type PRACTICE_PERSPECTIVE_PROPS = {
@@ -24,14 +34,12 @@ type PRACTICE_PERSPECTIVE_PROPS = {
 
 function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   const { ClosePracticePerspective, ritual } = props;
-
+  const { user } = useAuthValue();
   const [showSuccess, setShowSuccess] = useState(false);
 
   const [animateText, setAnimateText] = useState(false);
 
   const [enter, setEnter] = useState(false);
-  const [reflections, setReflections] = useState<string[]>([]);
-  const [reflectionCount, setReflectionCount] = useState(0);
 
   const searchParams = useSearchParams();
   const pathname = searchParams.get("step");
@@ -41,15 +49,78 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   }, []);
 
   const handleAddReflection = () => {
-    // Open your reflection modal
-    openFillupModal("", "");
+    openFillupModal(
+      "",
+      "",
+      undefined,
+      undefined,
+      undefined,
+      ritual.team_ritual_id,
+      latestReflection.id,
 
-    // Agar local testing karna ho
-    // setReflectionCount((prev) => prev + 1);
+      latestReflection.reflection,
+    );
   };
-
   const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
   const router = useRouter();
+
+  const { data: reflectionData } = useGetReflectionWallsQuery(user?.team_id);
+
+  const ritualReflections =
+    reflectionData?.data?.reflections
+      ?.filter((item: any) => item.team_ritual_id === ritual.team_ritual_id)
+      ?.sort(
+        (a: any, b: any) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      ) || [];
+
+  const latestReflection = ritualReflections[0];
+
+  const [share, setShare] = useState(
+    latestReflection?.shared_anonymously ?? false,
+  );
+
+  useEffect(() => {
+    setShare(latestReflection?.shared_anonymously ?? false);
+  }, [latestReflection]);
+
+  const { mutate: editReflectionMutate, isPending: isEditing } =
+    useEditReflectionMutation();
+
+  const queryClient = useQueryClient();
+
+  const handleShareChange = (checked: boolean) => {
+    setShare(checked);
+
+    if (!latestReflection) return;
+
+    editReflectionMutate(
+      {
+        reflection_id: latestReflection.id,
+        reflection: latestReflection.reflection,
+        shared_anonymously: checked,
+        team_ritual_id: ritual.team_ritual_id,
+      },
+      {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: ["getReflectionWallsQueryKey"],
+          });
+
+          // Sirf check karne par modal dikhao
+          if (checked) {
+            openConfirmShareReflectionModal(latestReflection.id);
+          }
+        },
+
+        onError: () => {
+          // API fail ho to checkbox wapas previous state me
+          setShare(!checked);
+        },
+      },
+    );
+  };
+
   return (
     <div>
       {/* Yellow Poll Box */}
@@ -115,7 +186,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
               </h4>
 
               <p className="text-[#0F4F58] font-[Aptos] font-[400] text-[18px]">
-                50 words
+                {ritual.activation_message || "No note from your Champion yet."}
               </p>
             </div>
           </div>
@@ -140,13 +211,24 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
               </div>
 
               {/* Right */}
-              <div className="space-y-2">
-                {[...Array(13)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="border-b border-dotted border-[#000] h-[10px]"
-                  />
-                ))}
+              <div className="space-y-3">
+                {ritualReflections.length > 0
+                  ? ritualReflections.map((item: any) => (
+                      <div
+                        key={item.id}
+                        className="border-b border-dotted border-[#000] pb-2"
+                      >
+                        <p className="text-[16px] text-[#0F4F58]">
+                          {item.reflection}
+                        </p>
+                      </div>
+                    ))
+                  : [...Array(13)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="border-b border-dotted border-[#000] h-[10px]"
+                      />
+                    ))}
               </div>
             </div>
             <div className="flex justify-end">
@@ -156,21 +238,32 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             </div>
             {/* Save Button */}
             <div className="flex justify-end mb-8">
-              {reflections.length === 0 ? (
+              {ritualReflections.length === 0 ? (
                 <button
                   className="bg-[#F8E1B8] px-6 py-2 rounded-full text-[14px] font-[RocaTwo] font-bold text-[#0F4F58]"
                   onClick={handleAddReflection}
                 >
                   add reflection
                 </button>
-              ) : reflections.length < 2 ? (
+              ) : (
                 <button
                   className="bg-[#F8E1B8] px-6 py-2 rounded-full text-[14px] font-[RocaTwo] font-bold text-[#0F4F58]"
-                  onClick={handleAddReflection}
+                  onClick={() =>
+                    openFillupModal(
+                      "",
+                      "",
+                      undefined,
+                      undefined,
+                      undefined,
+                      ritual.team_ritual_id,
+                      latestReflection.id,
+                      latestReflection.reflection,
+                    )
+                  }
                 >
-                  add another reflection
+                  edit reflection
                 </button>
-              ) : null}
+              )}
             </div>
 
             {/* Share Checkbox */}
@@ -186,7 +279,10 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
               </div>
               <input
                 type="checkbox"
-                className="mt-1 w-5 h-5 rounded border-[#0F4F58]"
+                className="mt-1 w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
+                checked={share}
+                disabled={isEditing}
+                onChange={(e) => handleShareChange(e.target.checked)}
               />
             </div>
           </div>
@@ -369,6 +465,7 @@ your dashboard is beaming"
         </div>
       </div>
       <FillUpFormModal />
+      <ConfirmShareReflectionModal />
     </div>
   );
 }

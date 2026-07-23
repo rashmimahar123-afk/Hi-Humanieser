@@ -2,7 +2,36 @@ import images from "@/src/assets/images";
 import Image from "next/image";
 import GaugeChart from "react-gauge-chart";
 
-export default function TeamSnapshot() {
+type TEAM_SNAPSHOT_PROPS = {
+  teamSnapshot?: {
+    pillar_01_avg: number;
+    pillar_02_avg: number;
+    pillar_03_avg: number;
+  };
+  participation?: {
+    responded: number;
+    total: number;
+    percentage: number;
+  };
+  quadrimester?: string;
+};
+
+export default function TeamSnapshot(props: TEAM_SNAPSHOT_PROPS) {
+  const { teamSnapshot, participation, quadrimester } = props;
+
+  const pillar1 = Number(teamSnapshot?.pillar_01_avg ?? 0);
+  const pillar2 = Number(teamSnapshot?.pillar_02_avg ?? 0);
+  const pillar3 = Number(teamSnapshot?.pillar_03_avg ?? 0);
+
+  const responded = participation?.responded ?? 0;
+  const total = participation?.total ?? 0;
+
+  const quadrimesterLabel: Record<string, string> = {
+    "26-01": "Jan-Apr 2026",
+    "26-02": "May-Aug 2026",
+    "26-03": "Sept-Dec 2026",
+  };
+
   const Gauge = ({ value }: any) => {
     const rotation = (value - 1) * 45; // maps 1–5 scale
 
@@ -87,7 +116,7 @@ export default function TeamSnapshot() {
               <GaugeChart
                 id="connect-gauge"
                 nrOfLevels={1}
-                percent={3.5 / 5}
+                percent={pillar1 / 5}
                 hideText={true}
                 arcWidth={0.38} // thicker arc
                 colors={["#D3CBB6"]}
@@ -96,7 +125,7 @@ export default function TeamSnapshot() {
 
               {/* Labels */}
               <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
-                1
+                {pillar1 === 0 ? 0 : 1}
               </span>
 
               <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
@@ -125,7 +154,7 @@ export default function TeamSnapshot() {
               <GaugeChart
                 id="connect-gauge"
                 nrOfLevels={1}
-                percent={3.5 / 5}
+                percent={pillar2 / 5}
                 hideText={true}
                 arcWidth={0.38} // thicker arc
                 colors={["#D3CBB6"]}
@@ -134,7 +163,7 @@ export default function TeamSnapshot() {
 
               {/* Labels */}
               <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
-                1
+                {pillar2 === 0 ? 0 : 1}
               </span>
 
               <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
@@ -163,7 +192,7 @@ export default function TeamSnapshot() {
               <GaugeChart
                 id="connect-gauge"
                 nrOfLevels={1}
-                percent={3.5 / 5}
+                percent={pillar3 / 5}
                 hideText={true}
                 arcWidth={0.38} // thicker arc
                 colors={["#D3CBB6"]}
@@ -172,7 +201,7 @@ export default function TeamSnapshot() {
 
               {/* Labels */}
               <span className="absolute left-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
-                1
+                {pillar3 === 0 ? 0 : 1}
               </span>
 
               <span className="absolute right-[45px] -bottom-[8px] text-[#4BA6A6]  text-[16px] font-[400]">
@@ -187,7 +216,7 @@ export default function TeamSnapshot() {
       <div className="flex justify-end mt-20">
         <div className="bg-[#86c9c9] px-8 py-4 rounded-full">
           <p className="text-[#0F4F58] text-[22px] font-bold">
-            Participation: 12/18 have responded to the quiz
+            Participation: {responded}/{total} have responded to the quiz{" "}
           </p>
         </div>
       </div>

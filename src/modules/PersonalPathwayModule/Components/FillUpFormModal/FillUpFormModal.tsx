@@ -13,6 +13,7 @@ import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQu
 import { usePathname } from "next/navigation";
 import { useAddReflectionMutation } from "../../Hooks/useAddReflectionMutation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { useEditReflectionMutation } from "../../Hooks/useEditReflectionMutation";
 
 const EVENT = "FILL_UP_FORM_MODAL_EVENT";
 
@@ -22,6 +23,11 @@ export const openFillupModal = (
   selectedPulse?: number,
   pinToDash?: string[],
   selectedTeam?: string,
+  teamRitualId?: string,
+  reflectionId?: string,
+
+  reflectionText?: string,
+  sharedAnonymously?: boolean,
 ) => {
   emitEvent(EVENT, {
     microActionType,
@@ -29,6 +35,11 @@ export const openFillupModal = (
     selectedPulse,
     pinToDash,
     selectedTeam,
+    teamRitualId,
+    reflectionId,
+
+    reflectionText,
+    sharedAnonymously,
   });
 };
 
@@ -40,24 +51,37 @@ function FillUpFormModal() {
   const [pulseCheck, setPulseCheck] = useState<number>();
   const [id, setId] = useState("");
   const [selectedTeamId, setSelectedTeamId] = useState("");
-
+  const [teamRitualId, setTeamRitualId] = useState("");
   const charCount = reflection.length;
   const pathname = usePathname();
   const { mutate: addReflectionMutate, isPending: isAdding } =
     useAddReflectionMutation();
   const [pinToDash, setPinToDash] = useState<string[]>([]);
-
+  const [reflectionId, setReflectionId] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
   useEventEmitter(
     EVENT,
-    ({ microActionType, uuid, selectedPulse, selectedTeam }) => {
+    ({
+      microActionType,
+      uuid,
+      selectedPulse,
+      selectedTeam,
+      teamRitualId,
+      reflectionId,
+      reflectionText,
+    }) => {
       setTimeout(() => {
         setActionKey(microActionType);
         setId(uuid);
         setPulseCheck(selectedPulse);
-        setPinToDash(pinToDash || []);
-        setReflection("");
-        setShare(false);
         setSelectedTeamId(selectedTeam);
+        setTeamRitualId(teamRitualId || "");
+
+        setReflection(reflectionText || "");
+        setReflectionId(reflectionId || "");
+        setIsEdit(!!reflectionId);
+
+        setShare(false);
         setIsOpen(true);
       }, 0);
     },
@@ -65,6 +89,9 @@ function FillUpFormModal() {
   const queryClient = useQueryClient();
   const { mutate, isPending } = useUpdateMppMilestoneMutation();
   const { user } = useAuthValue();
+
+  const { mutate: editReflectionMutate, isPending: isEditing } =
+    useEditReflectionMutation();
 
   const handleSave = async () => {
     const newReflection = { reflection, share };
@@ -93,23 +120,49 @@ function FillUpFormModal() {
       pathname === "/start-team-journey" ||
       pathname === "/champion-hub/champion-notes"
     ) {
-      const payload = {
-        team_id: selectedTeamId ? selectedTeamId : user?.team_id, // replace if available
-        shared_anonymously: share,
-        reflection: reflection,
-        source: "mtj",
-      };
+      if (isEdit) {
+        const payload = {
+          reflection_id: reflectionId,
+          reflection,
+          shared_anonymously: share,
+          team_ritual_id: teamRitualId,
+        };
 
-      addReflectionMutate(payload, {
-        onSuccess: async () => {
-          setReflection("");
-          setShare(false);
-          setIsOpen(false);
-          await queryClient.invalidateQueries({
-            queryKey: ["getReflectionWallsQueryKey"],
-          });
-        },
-      });
+        editReflectionMutate(payload, {
+          onSuccess: async () => {
+            setReflection("");
+            setReflectionId("");
+            setIsEdit(false);
+            setShare(false);
+            setIsOpen(false);
+
+            await queryClient.invalidateQueries({
+              queryKey: ["getReflectionWallsQueryKey"],
+            });
+          },
+        });
+      } else {
+        const payload = {
+          team_id: selectedTeamId || user?.team_id,
+          shared_anonymously: share,
+          reflection,
+          source: "mtj",
+          team_ritual_id: teamRitualId,
+        };
+
+        addReflectionMutate(payload, {
+          onSuccess: async () => {
+            setReflection("");
+            setShare(false);
+            setIsOpen(false);
+
+            await queryClient.invalidateQueries({
+              queryKey: ["getReflectionWallsQueryKey"],
+            });
+          },
+        });
+      }
+
       return;
     }
     // ✅ ===== MILESTONE 3 =====
@@ -280,7 +333,12 @@ function FillUpFormModal() {
           {/* ===== Save Button ===== */}
           <button
             onClick={handleSave}
-            disabled={isPending || reflection.trim().length === 0}
+            disabled={
+              isPending ||
+              isAdding ||
+              isEditing ||
+              reflection.trim().length === 0
+            }
             className="
               mt-4
               w-full
@@ -294,7 +352,11 @@ function FillUpFormModal() {
               transition
             "
           >
-            {isPending ? "Saving..." : "Save reflection"}
+            {isPending || isAdding || isEditing
+              ? "Saving..."
+              : isEdit
+                ? "Update reflection"
+                : "Save reflection"}{" "}
           </button>
         </DialogPanel>
       </div>

@@ -7,9 +7,10 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import TeamJourneyPoll from "../TeamJourneyPoll/TeamJourneyPoll";
 import styles from "./TeamJourney.module.css";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
-import useGetMtjListQuery from "../../Hooks/useGetMtjListQuery";
 import { MTJ_TEAM_RITUAL_DATA } from "../../Types/ResponseTypes";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
+import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
 type TEAM_JOURNEY_PROPS = {
   rituals: Array<MTJ_TEAM_RITUAL_DATA>;
 };
@@ -37,10 +38,6 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
       setActivePathway(null);
     }, 200);
   };
-
-  // const { data: mtjListData, isLoading } = useGetMtjListQuery();
-
-  // const rituals = mtjListData?.data?.team_rituals || [];
 
   return (
     <>

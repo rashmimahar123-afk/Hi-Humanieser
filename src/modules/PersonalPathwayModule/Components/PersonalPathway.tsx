@@ -33,9 +33,12 @@ function PersonalPathway() {
 
   const practiceRef = useRef<HTMLDivElement | null>(null);
 
-  const openPracticePerspective = (index: number) => {
+  const openPracticePerspective = (index: number, currentMilestone: number) => {
     setActiveIndex(index);
-    router.push("?step=1", { scroll: false });
+
+    router.push(`?step=${currentMilestone}`, {
+      scroll: false,
+    });
 
     setTimeout(() => {
       practiceRef.current?.scrollIntoView({
@@ -44,7 +47,6 @@ function PersonalPathway() {
       });
     }, 200);
   };
-
   const searchParams = useSearchParams();
   const pathname = searchParams.get("step");
 
@@ -165,6 +167,8 @@ function PersonalPathway() {
               {formattedActivePathways?.map((item, index) => {
                 const details = getPathwayDetails(item.pathwayNumber);
                 const progressData = getPathwayProgress(item.data);
+                const currentMilestone =
+                  progressData.steps >= 3 ? 3 : progressData.steps + 1;
                 return (
                   <div key={item.uuid}>
                     {/* ── DESKTOP (1024px+): original full single-row layout ── */}
@@ -201,7 +205,10 @@ function PersonalPathway() {
                             onClick={() =>
                               pathname !== null
                                 ? ClosePracticePerspective()
-                                : openPracticePerspective(index)
+                                : openPracticePerspective(
+                                    index,
+                                    currentMilestone,
+                                  )
                             }
                           >
                             <Image
@@ -307,7 +314,10 @@ function PersonalPathway() {
                             onClick={() =>
                               pathname !== null
                                 ? ClosePracticePerspective()
-                                : openPracticePerspective(index)
+                                : openPracticePerspective(
+                                    index,
+                                    currentMilestone,
+                                  )
                             }
                           >
                             <Image
@@ -419,7 +429,10 @@ function PersonalPathway() {
                             onClick={() =>
                               pathname !== null
                                 ? ClosePracticePerspective()
-                                : openPracticePerspective(index)
+                                : openPracticePerspective(
+                                    index,
+                                    currentMilestone,
+                                  )
                             }
                           >
                             <Image
@@ -501,6 +514,7 @@ function PersonalPathway() {
                           id={item?.uuid}
                           pathwayData={pathwayData}
                           formattedActivePathways={formattedActivePathways}
+                          currentMilestone={currentMilestone}
                         />
                       </div>
                     )}

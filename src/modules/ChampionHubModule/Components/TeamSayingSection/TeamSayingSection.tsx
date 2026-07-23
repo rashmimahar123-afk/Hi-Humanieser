@@ -5,26 +5,26 @@ import images from "@/src/assets/images";
 import { createPatternRows } from "@/src/lib/Helpers";
 import { useRouter } from "next/navigation";
 
-export default function TeamSayingSection() {
-  const reflectionTexts = [
-    "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
-    "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
-    "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
+type TEAM_SAYING_SECTIONS_PROPS = {
+  reflections: any[];
+};
+export default function TeamSayingSection(props: TEAM_SAYING_SECTIONS_PROPS) {
+  const { reflections } = props;
 
-    "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
-    "I’ve started pausing before reacting in meetings, just to understand what others might be trying to say. It’s surprising how much smoother conversations feel when I do that. People seem more open, and I feel less defensive. It’s such a small change, but it’s helping me focus on the bigger picture instead of winning the moment — and honestly, it’s making collaboration feel lighter and more human",
-  ];
+  const reflectionCards = reflections
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    )
+    .slice(0, 5)
+    .map((item, i) => ({
+      id: i + 1,
+      text: item.reflection,
+      rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
+      imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
+    }));
 
-  const reflections = Array.from({ length: 5 }).map((_, i) => ({
-    id: i + 1,
-    text: reflectionTexts[i % reflectionTexts.length],
-    rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
-    imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
-  }));
-
-  const rows = createPatternRows(reflections, [3, 2]);
-
-  const router = useRouter();
+  const rows = createPatternRows(reflectionCards, [3, 2]);
 
   return (
     <section className="bg-[#F5F0EB] py-2">
@@ -43,23 +43,29 @@ export default function TeamSayingSection() {
 
         {/* WALL BACKGROUND */}
         {/* WALL BACKGROUND */}
-        <div className="mt-10 bg-[#cae0de] py-16">
-          <div className="flex flex-col items-center gap-16">
-            {rows.map((row: any, rowIndex: any) => (
-              <div key={rowIndex} className="flex gap-10">
-                {row.map((item: any) => (
-                  <ViewAllReflectionCard
-                    key={item.id}
-                    text={item.text}
-                    rotate={item.rotate}
-                    imageKey={item.imageKey}
-                    index={item.id}
-                  />
-                ))}
-              </div>
-            ))}
+        {reflectionCards.length === 0 ? (
+          <div className="py-16 text-center text-[#0F4F58] text-[20px]">
+            No reflections available.
           </div>
-        </div>
+        ) : (
+          <div className="mt-10 bg-[#cae0de] py-16">
+            <div className="flex flex-col items-center gap-16">
+              {rows.map((row: any, rowIndex: number) => (
+                <div key={rowIndex} className="flex gap-10">
+                  {row.map((item: any) => (
+                    <ViewAllReflectionCard
+                      key={item.id}
+                      text={item.text}
+                      rotate={item.rotate}
+                      imageKey={item.imageKey}
+                      index={item.id}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

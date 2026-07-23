@@ -46,7 +46,11 @@ function StartTeamJourneyPage() {
       {user?.user_type === 3 ? (
         <PartnerTeamJourney />
       ) : user?.user_type === 2 ? (
-        <ChampionTeamJourney />
+        rituals.length === 0 ? (
+          <ChampionTeamJourney />
+        ) : (
+          <TeamJourney rituals={rituals} />
+        )
       ) : //  : pollData?.team_members_left_to_respond !== 0 ? (
       //   <HoldTeamJourney pollData={pollData} profileData={profileData} />
       // )

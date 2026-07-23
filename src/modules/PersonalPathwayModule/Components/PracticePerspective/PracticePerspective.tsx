@@ -12,6 +12,7 @@ type PRACTICE_PERSPECTIVE_PROPS = {
   id: string;
   pathwayData: any;
   formattedActivePathways: any;
+  currentMilestone: number;
 };
 
 type ActivePathwayType = {
@@ -29,15 +30,29 @@ function PracticePerspective(props: PRACTICE_PERSPECTIVE_PROPS) {
     id,
     pathwayData,
     formattedActivePathways,
+    currentMilestone,
   } = props;
-  const [step, setStep] = useState<PracticeStep>("milestone1");
+  // const [step, setStep] = useState<PracticeStep>("milestone1");
   const [activePathway, setActivePathway] = useState<ActivePathwayType | null>(
     null,
   );
 
   const searchParams = useSearchParams();
   const pathname = searchParams.get("step");
+  const getInitialStep = (milestone: number): PracticeStep => {
+    switch (milestone) {
+      case 2:
+        return "milestone2";
+      case 3:
+        return "milestone3";
+      default:
+        return "milestone1";
+    }
+  };
 
+  const [step, setStep] = useState<PracticeStep>(
+    getInitialStep(currentMilestone),
+  );
   useEffect(() => {
     const active = pathwayData?.find((p: any) => p.active && p.uuid === id);
     if (active) {

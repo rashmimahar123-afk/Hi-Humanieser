@@ -69,4 +69,11 @@ export type ADD_REFLECTION_REQUEST_TYPES = {
   shared_anonymously: boolean | any;
   reflection: string | any;
   source: string | any;
+  team_ritual_id?: string;
+};
+export type EDIT_REFLECTION_REQUEST_TYPES = {
+  reflection_id?: string;
+  reflection?: string;
+  shared_anonymously: boolean;
+  team_ritual_id: string;
 };

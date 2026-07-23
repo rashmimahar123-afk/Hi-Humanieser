@@ -9,7 +9,6 @@ import useEventEmitter, {
 } from "@/src/components/Hooks/useEventEmitter";
 import { queryClient } from "@/src/lib/ReactQueryConfig";
 import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
-import { useMilestoneDataContext } from "@/src/context/MilestoneDataContextProvider";
 
 const EVENT = "CONFIRM_SHARE_REFLECTION_MODAL";
 
@@ -20,7 +19,6 @@ export const openConfirmShareReflectionModal = (data: string) => {
 function ConfirmShareReflectionModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [id, setId] = useState();
-  const { milestoneData, setMilestoneData } = useMilestoneDataContext();
 
   useEventEmitter(EVENT, (data) => {
     setId(data);

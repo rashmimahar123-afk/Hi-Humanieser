@@ -48,6 +48,7 @@ export type MTJ_TEAM_RITUAL_DATA = {
   title: string;
   focus_area: string;
   short_description: string;
+  activation_message?: string;
 };
 export type GET_MTJ_LIST_RESPONSE = {
   message: string;
