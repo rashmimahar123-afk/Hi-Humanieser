@@ -62,7 +62,6 @@ function ContinuePressureCards(props: IDEA_PATHWAY_CARD_PROPS) {
           partialVisible={true} //  ADD THIS
         >
           {ritualCards.map((card: PATHWAY_CARD, index: number) => {
-            console.log("card.selected", card.title, card.selected);
             return (
               <div
                 key={index}

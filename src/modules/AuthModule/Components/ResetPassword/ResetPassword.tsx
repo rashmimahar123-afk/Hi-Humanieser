@@ -29,8 +29,6 @@ function ResetPassword() {
     useResetPasswordMutation();
 
   const onSubmit = (data: any) => {
-    console.log("Form Submitted", data);
-
     resetPasswordMutation({
       email: data.email,
       token,

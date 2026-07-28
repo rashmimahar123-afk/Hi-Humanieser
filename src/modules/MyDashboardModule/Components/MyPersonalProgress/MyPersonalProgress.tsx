@@ -28,7 +28,6 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
     images.listenImg,
   ];
   const router = useRouter();
-  console.log("progressListprogressListprogressList", progressList);
   return (
     <>
       {/* Heading */}

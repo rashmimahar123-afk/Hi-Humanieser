@@ -55,7 +55,7 @@ function ShowResultPage() {
     pillarData: PillarDataType;
     pillarAvg: Record<string, number>;
   } | null>(null);
-  console.log("resultDataresultDataresultDataresultData", resultData);
+
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [topMessage, setTopMessage] = useState<any>(null);
@@ -202,7 +202,7 @@ function ShowResultPage() {
     return result;
   };
   const { data: quizDetails } = useQuizDetailsQuery();
-  console.log("quizDetailsquizDetailsquizDetails", quizDetails);
+
   const getRangeMessage = (score: number) => {
     if (score >= 1 && score <= 2) {
       return "You’re laying the groundwork. This is the perfect time to focus on a few pathways that will give you quick wins and confidence.";
@@ -290,7 +290,7 @@ function ShowResultPage() {
   const { data: mppList } = useGetListMppQuery();
   const { mutate: deleteMutate } = useDeletePathwayMutation();
   const pathwayData = mppList?.data?.pathways;
-  console.log("pathwayDatapathwayDatapathwayDatapathwayData", pathwayData);
+
   const activePathways = pathwayData?.filter((item) => item.active);
 
   const formattedActivePathways: ActivePathwayType[] = useMemo(() => {
@@ -322,26 +322,6 @@ function ShowResultPage() {
   const currentSelectedCount = selectedPathways.length;
   const totalCount = totalSelectedCount + currentSelectedCount;
 
-  const handleDelete = (uuid: string, index: number) => {
-    deleteMutate(
-      { uuid }, //  payload (adjust if API needs different key)
-      {
-        onSuccess: (res) => {
-          SnackbarHandler.successToast(res?.message);
-
-          // remove from state
-          setPathwayUuids((prev) => {
-            const updated = { ...prev };
-            delete updated[index];
-            return updated;
-          });
-        },
-        onError: (err) => {
-          console.log("Delete API error", err);
-        },
-      },
-    );
-  };
   useEffect(() => {
     if (!mppList?.data?.pathways) return;
 

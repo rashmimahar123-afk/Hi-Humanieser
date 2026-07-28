@@ -26,7 +26,6 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
   const { data: myProfileDaa, isLoading: myProfileLoading } =
     useMyProfileQuery();
   const profileData = myProfileDaa?.data;
-  console.log("resultDataresultData", resultData);
   return (
     <>
       {/* Section Title */}
@@ -175,10 +174,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                       <GaugeChart
                         id="connect-gauge"
                         nrOfLevels={1}
-                        percent={
-                          (resultData?.pillarData?.pillar_03?.top?.score || 0) /
-                          5
-                        }
+                        percent={(resultData?.pillarAvg?.pillar_01 || 0) / 5}
                         hideText={true}
                         arcWidth={0.38} // thicker arc
                         colors={["#D3CBB6"]}
@@ -215,10 +211,11 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                       <GaugeChart
                         id="connect-gauge"
                         nrOfLevels={1}
-                        percent={
-                          (resultData?.pillarData?.pillar_02?.top?.score || 0) /
-                          5
-                        }
+                        // percent={
+                        //   (resultData?.pillarData?.pillar_02?.top?.score || 0) /
+                        //   5
+                        // }
+                        percent={(resultData?.pillarAvg?.pillar_02 || 0) / 5}
                         hideText={true}
                         arcWidth={0.38} // thicker arc
                         colors={["#D3CBB6"]}
@@ -256,10 +253,11 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                       <GaugeChart
                         id="connect-gauge"
                         nrOfLevels={1}
-                        percent={
-                          (resultData?.pillarData?.pillar_03?.top?.score || 0) /
-                          5
-                        }
+                        // percent={
+                        //   (resultData?.pillarData?.pillar_03?.top?.score || 0) /
+                        //   5
+                        // }
+                        percent={(resultData?.pillarAvg?.pillar_03 || 0) / 5}
                         hideText={true}
                         arcWidth={0.38} // thicker arc
                         colors={["#D3CBB6"]}

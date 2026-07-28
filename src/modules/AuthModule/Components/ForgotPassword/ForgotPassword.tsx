@@ -27,7 +27,6 @@ function ForgotPassword({ onBack }: ForgotPasswordFormProps) {
   const forgotPasswordMutation = useForgotPasswordMutation();
 
   const handleForgotPasswordSubmit = handleSubmit((values: any) => {
-    console.log("Forgot Password Email:", values.email);
     forgotPasswordMutation.mutate(
       {
         email: values.email,

@@ -27,7 +27,6 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
         value: item.vote_percentage,
       })) || [];
 
-  console.log("cycleKpicycleKpicycleKpi", cycleKpi);
   return (
     <>
       {/* ================= TITLE ================= */}
