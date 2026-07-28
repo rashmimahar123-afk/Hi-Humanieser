@@ -16,6 +16,9 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import MaxTwoRitualModal, {
   openMaxTwoRitual,
 } from "../MaxTwoRitualModal/MaxTwoRitualModal";
+import DeactivateRitualModal, {
+  openDeactivateRitualModal,
+} from "../DeactivateTeamRitualModal/DeactivateTeamRitualModal";
 
 function ContinuePressure() {
   const [enter, setEnter] = useState(false);
@@ -96,14 +99,23 @@ function ContinuePressure() {
   const handleRitualSelect = (ritual: MY_TEAM_RITUALS_DATA) => {
     const alreadySelected = activeRitualIds.includes(ritual.team_ritual_id);
 
-    // already selected hai toh allow karo
-    if (!alreadySelected && activeRitualIds.length >= 2) {
+    // Agar activate hai to Deactivate modal kholo
+    if (alreadySelected) {
+      openDeactivateRitualModal({
+        ritualId: ritual.team_ritual_id ?? "",
+        focusAreaId: selected ?? "",
+      });
+
+      return;
+    }
+
+    // Max 2 rituals validation
+    if (activeRitualIds.length >= 2) {
       openMaxTwoRitual();
       return;
     }
 
-    setSelectedRitual(ritual.team_ritual_id);
-
+    // Activate modal kholo
     openSelectTeamRitualModal({
       ritualId: ritual.team_ritual_id ?? "",
       focusAreaId: selected ?? "",
@@ -225,6 +237,7 @@ function ContinuePressure() {
         </div>
       </div>
       <SelectTeamRitualModal />
+      <DeactivateRitualModal />
       <MaxTwoRitualModal />
     </>
   );

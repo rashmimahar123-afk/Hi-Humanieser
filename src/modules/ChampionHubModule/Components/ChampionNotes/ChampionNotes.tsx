@@ -21,26 +21,18 @@ import AddChampionNoteModal from "../AddChampionNoteModal/AddChampionNoteModal";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
+import ConfirmShareReflectionModal from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
 
 function ChampionNotes() {
-  const [openCurrent, setOpenCurrent] = useState(false);
-  const [openPrevious, setOpenPrevious] = useState(false);
   const { user } = useAuthValue();
-  const chunkByPattern = (arr: any, pattern = [8, 6]) => {
-    const chunks = [];
-    let i = 0;
-    let p = 0;
-
-    while (i < arr.length) {
-      chunks.push(arr.slice(i, i + pattern[p]));
-      i += pattern[p];
-      p = (p + 1) % pattern.length;
-    }
-
-    return chunks;
-  };
 
   const router = useRouter();
+
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
 
   const { data: mtjKpiData } = useGetKpiQuery(user?.team_id);
   const kpiData = mtjKpiData;
@@ -59,10 +51,6 @@ function ChampionNotes() {
 
   const recommendedFocusAreas =
     recommendedFocusData?.recommended_focus_areas || [];
-
-  const pressurePoint = cycleKpi?.champion_pp;
-
-  // const recommendedFocusAreas = cycleKpi?.recommended_focus_areas || [];
 
   const chosenTeamRituals = cycleKpi?.chosen_team_rituals || [];
   const poll = kpiData?.data?.poll;
@@ -95,7 +83,11 @@ function ChampionNotes() {
 
   return (
     <>
-      <div className=" min-h-screen bg-[#F5F0EB] ">
+      <div
+        className={` min-h-screen bg-[#F5F0EB] page ${
+          enter ? "enterActive" : "enter"
+        }`}
+      >
         {/* TOP LEFT SHAPE */}
         <div className="relative">
           <Image
@@ -320,6 +312,8 @@ Champion Hub"
         </div>
       </div>
       <AddChampionNoteModal />
+      <FillUpFormModal />
+      <ConfirmShareReflectionModal />
       <LogoutModal />
     </>
   );

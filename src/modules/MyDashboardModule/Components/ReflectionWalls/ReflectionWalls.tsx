@@ -213,42 +213,70 @@ function ReflectionWalls() {
   const { data: reflectionApiData } =
     useGetReflectionWallsQuery(effectiveTeamId);
 
+  // const reflections = useMemo(() => {
+  //   //  User Type 1 & 2 → local enrichedProgressList reflections
+  //   if (user?.user_type === 1 || user?.user_type === 2) {
+  //     const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
+
+  //     return extracted
+  //       .sort(
+  //         (a: any, b: any) =>
+  //           new Date(b.created).getTime() - new Date(a.created).getTime(),
+  //       )
+  //       .slice(0, 5)
+  //       .map((item: any, i: number) => ({
+  //         id: i + 1,
+  //         text: item.text,
+  //         rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
+  //         imageKey:
+  //           images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
+  //       }));
+  //   }
+
+  //   //  User Type 3 → API reflections
+  //   if (!reflectionApiData?.data?.reflections) return [];
+
+  //   return reflectionApiData.data.reflections
+  //     .sort(
+  //       (a: any, b: any) =>
+  //         new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  //     )
+  //     .slice(0, 5)
+  //     .map((item: any, i: number) => ({
+  //       id: i + 1,
+  //       text: item.reflection,
+  //       rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
+  //       imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
+  //     }));
+  // }, [reflectionApiData, enrichedProgressList, user]);
+
   const reflections = useMemo(() => {
-    //  User Type 1 & 2 → local enrichedProgressList reflections
-    if (user?.user_type === 1 || user?.user_type === 2) {
-      const extracted = getSharedReflectionsFromEnriched(enrichedProgressList);
+    const localReflections = getSharedReflectionsFromEnriched(
+      enrichedProgressList,
+    ).map((item: any, i: number) => ({
+      id: `local-${i}`,
+      text: item.text,
+      created: item.created,
+    }));
 
-      return extracted
-        .sort(
-          (a: any, b: any) =>
-            new Date(b.created).getTime() - new Date(a.created).getTime(),
-        )
-        .slice(0, 5)
-        .map((item: any, i: number) => ({
-          id: i + 1,
-          text: item.text,
-          rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
-          imageKey:
-            images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
-        }));
-    }
+    const apiReflections =
+      reflectionApiData?.data?.reflections?.map((item: any, i: number) => ({
+        id: item.id ?? `api-${i}`,
+        text: item.reflection,
+        created: item.created_at,
+      })) || [];
 
-    //  User Type 3 → API reflections
-    if (!reflectionApiData?.data?.reflections) return [];
-
-    return reflectionApiData.data.reflections
+    return [...localReflections, ...apiReflections]
       .sort(
-        (a: any, b: any) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        (a, b) => new Date(b.created).getTime() - new Date(a.created).getTime(),
       )
       .slice(0, 5)
-      .map((item: any, i: number) => ({
-        id: i + 1,
-        text: item.reflection,
+      .map((item, i) => ({
+        ...item,
         rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
         imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
       }));
-  }, [reflectionApiData, enrichedProgressList, user]);
+  }, [reflectionApiData, enrichedProgressList]);
 
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
@@ -276,6 +304,7 @@ function ReflectionWalls() {
   }, [reflections]);
   // const isOwnTeam = selectedTeam ? selectedTeam === user?.team_id : true;
   const rows = createPatternRows(finalReflections, [3, 2]);
+
   return (
     <>
       <div

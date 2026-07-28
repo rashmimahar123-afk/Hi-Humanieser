@@ -12,6 +12,7 @@ import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
 import { chunkByPattern } from "@/src/lib/Helpers";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import { useEffect, useState } from "react";
 
 function TeamFocus() {
   const router = useRouter();
@@ -19,6 +20,12 @@ function TeamFocus() {
   const pathname = usePathname(); // "/champion-hub/team-focus"
 
   const from = pathname.split("/")[2];
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   const { data: teamsData } = useGetTeamsQuery();
   const teamName =
     teamsData?.data?.teams?.find((team: any) => team.id === user?.team_id)
@@ -44,7 +51,11 @@ function TeamFocus() {
 
   return (
     <>
-      <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+      <div
+        className={`relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif page ${
+          enter ? "enterActive" : "enter"
+        }`}
+      >
         {/* TOP LEFT SHAPE */}
 
         <div>

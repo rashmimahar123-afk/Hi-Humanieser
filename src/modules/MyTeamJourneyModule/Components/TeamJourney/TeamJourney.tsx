@@ -11,6 +11,8 @@ import { MTJ_TEAM_RITUAL_DATA } from "../../Types/ResponseTypes";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
 import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
+import { useGetMtjMessagesQuery } from "../../Hooks/useGetMtjMessagesQuery";
+import useHhFrameworkMtjQuery from "../../Hooks/useHhFrameworkMtjQuery";
 type TEAM_JOURNEY_PROPS = {
   rituals: Array<MTJ_TEAM_RITUAL_DATA>;
 };
@@ -38,6 +40,24 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
       setActivePathway(null);
     }, 200);
   };
+  const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
+  const { data: frameworkData } = useHhFrameworkMtjQuery();
+
+  const getFocusAreaId = (teamRitualId: string) => {
+    const focusAreas = frameworkData?.data?.focus_areas || [];
+
+    for (const focusArea of focusAreas) {
+      const ritual = focusArea.team_rituals?.find(
+        (item: any) => item.team_ritual_id === teamRitualId,
+      );
+
+      if (ritual) {
+        return focusArea.focus_area_id;
+      }
+    }
+
+    return "";
+  };
 
   return (
     <>
@@ -63,7 +83,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
         />
 
         <SuccessMessage
-          text="Great to see you again — ready to explore?"
+          text={randomMessage || ""}
           fontSize="text-[30px]"
           leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
           rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
@@ -149,11 +169,13 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                     {/* Explore */}
                     <div
                       className="relative cursor-pointer"
-                      onClick={() =>
-                        router.push(
-                          `/conversation?ritualId=${ritual.team_ritual_id}`,
-                        )
-                      }
+                      onClick={() => {
+                        const focusAreaId = getFocusAreaId(
+                          ritual.team_ritual_id,
+                        );
+
+                        router.push(`/conversation?focusArea=${focusAreaId}`);
+                      }}
                     >
                       <Image
                         src={images.leftArrowImg}

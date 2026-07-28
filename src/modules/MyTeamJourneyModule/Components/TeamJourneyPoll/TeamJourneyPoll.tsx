@@ -56,9 +56,8 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
       undefined,
       undefined,
       ritual.team_ritual_id,
-      latestReflection.id,
-
-      latestReflection.reflection,
+      latestReflection?.id,
+      latestReflection?.reflection,
     );
   };
   const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
@@ -267,24 +266,26 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             </div>
 
             {/* Share Checkbox */}
-            <div className="flex items-start gap-10">
-              <div>
-                <p className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">
-                  Share your insights with your team?
-                </p>
-                <p className="text-[14px] italic text-[#0F4F58] font-[Aptos] font-[400] mt-[4px]">
-                  if yes, your reflection will be shared anonymously on
-                  Reflection Walls
-                </p>
+            {ritualReflections.length > 0 && (
+              <div className="flex items-start gap-10">
+                <div>
+                  <p className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">
+                    Share your insights with your team?
+                  </p>
+                  <p className="text-[14px] italic text-[#0F4F58] font-[Aptos] font-[400] mt-[4px]">
+                    if yes, your reflection will be shared anonymously on
+                    Reflection Walls
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  className="mt-1 w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
+                  checked={share}
+                  disabled={isEditing}
+                  onChange={(e) => handleShareChange(e.target.checked)}
+                />
               </div>
-              <input
-                type="checkbox"
-                className="mt-1 w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
-                checked={share}
-                disabled={isEditing}
-                onChange={(e) => handleShareChange(e.target.checked)}
-              />
-            </div>
+            )}
           </div>
         </div>
 

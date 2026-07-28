@@ -22,7 +22,7 @@ function ChampionHub() {
       <div
         className={`relative min-h-screen bg-[#F5F0EB] px-10 py-10 z-10 font-serif page ${
           enter ? "enterActive" : "enter"
-        }`}
+        }`} 
       >
         {/* TOP LEFT SHAPE */}
 

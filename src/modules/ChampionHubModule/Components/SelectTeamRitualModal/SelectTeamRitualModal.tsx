@@ -10,6 +10,8 @@ import useEventEmitter, {
 import { useFocusAndRitualSelectMutation } from "../../Hooks/useFocusAndRitualSelectMutation";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { useActivateRitualMutation } from "../../Hooks/useActivateRitualMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 const EVENT = "SELECT_TEAM_RITUAL_MODAL_EVENT";
 
@@ -24,40 +26,58 @@ function SelectTeamRitualModal() {
   const [reflection, setReflection] = useState("");
   const [selectedRitualId, setSelectedRitualId] = useState<string>("");
   const [focusAreaId, setFocusAreaId] = useState<string>("");
-const {user}=useAuthValue()
+  const { user } = useAuthValue();
+
   useEventEmitter(EVENT, (data) => {
     setSelectedRitualId(data?.ritualId);
     setFocusAreaId(data?.focusAreaId);
     setIsOpen(true);
   });
 
-  const { mutate: submitFocusAndRitualSelection, isPending } =
-    useFocusAndRitualSelectMutation();
+  // const { mutate: submitFocusAndRitualSelection, isPending } =
+  //   useFocusAndRitualSelectMutation();
 
- const { refetch: refetchCycleOverview } =
-  useGetMtjCycleOverviewQuery(user?.team_id);
-     
+  const { mutate: submitFocusAndRitualSelection, isPending } =
+    useActivateRitualMutation();
+
+  const { refetch: refetchCycleOverview } = useGetMtjCycleOverviewQuery(
+    user?.team_id,
+  );
+
+  //   const handleActivateRitual = () => {
+  //     submitFocusAndRitualSelection(
+  //       {
+  //         focus_area: focusAreaId,
+  //         team_ritual_id: selectedRitualId,
+  //               activation_message: reflection,
+
+  //       },
+  //       {
+  //        onSuccess: async () => {
+  //   await refetchCycleOverview();
+  //   setIsOpen(false);
+  // }
+  //       },
+  //     );
+  //   };
+
   const handleActivateRitual = () => {
     submitFocusAndRitualSelection(
       {
         focus_area: focusAreaId,
         team_ritual_id: selectedRitualId,
-              activation_message: reflection,
-
+        activation_message: reflection,
       },
       {
-       onSuccess: async () => {
-  await refetchCycleOverview();
-  setIsOpen(false);
-}
+        onSuccess: async (res) => {
+          SnackbarHandler.successToast(res.message);
+          await refetchCycleOverview();
+          setReflection("");
+          setIsOpen(false);
+        },
       },
     );
   };
-
-  
-  
-
-
 
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">

@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProgressPill from "../ProgressPill/ProgressPill";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import PreviousCycle from "../PreviousCycle/PreviousCycle";
 import NeedMoreTimeModal, {
   openNeedMoreTimeModal,
@@ -23,7 +23,6 @@ import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
 import { chunkByPattern } from "@/src/lib/Helpers";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
-import useGetMtjPollQuery from "../../Hooks/useGetMtjPollQuery";
 import { useClosePollMutation } from "../../Hooks/useClosePollMutation";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
@@ -43,6 +42,12 @@ function PressurePointRecord() {
     setSelectedPreviousPoll(item);
     setOpenPreviousPoll(false);
   };
+
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
 
   const { data: teamsData } = useGetTeamsQuery();
   const teamName =
@@ -67,12 +72,6 @@ function PressurePointRecord() {
         : images.dummyUser,
   }));
   const rows = chunkByPattern(mappedTeamMembers || []);
-
-  // const { data, isLoading, refetch } = useGetMtjPollQuery();
-  // const pollData = data?.data;
-
-  // const totalMembers = pollData?.team_member_count || 0;
-  // const responded = pollData?.team_members_responded || 0;
 
   const memberEmails = allTeamMembers.map((m: any) => m.email).filter(Boolean);
   const handleSendReminder = () => {
@@ -111,10 +110,7 @@ Thanks!`,
 
   const recommendedFocusAreas =
     recommendedFocusData?.recommended_focus_areas || [];
-  console.log(
-    "recommendedFocusAreasrecommendedFocusAreas",
-    recommendedFocusAreas,
-  );
+
   const { data: cycleOverviewData } = useGetMtjCycleOverviewQuery(
     user?.team_id,
   );
@@ -141,7 +137,7 @@ Thanks!`,
 
   const { data: mtjKpiData, refetch } = useGetKpiQuery(user?.team_id);
   const engagementData = mtjKpiData?.data?.engagement;
-  // console.log("pollData?.poll_openpollData?.poll_open", pollData?.poll_open);
+
   const cycleData = mtjKpiData?.data?.cycle;
 
   const kpiPollData = mtjKpiData?.data?.poll;
@@ -149,10 +145,14 @@ Thanks!`,
   const isLessThan70 = participation?.percentage || 0 < 70;
 
   const options = kpiPollData?.results || [];
-  console.log("kpiPollData", kpiPollData);
+
   return (
     <>
-      <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+      <div
+        className={`relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif page ${
+          enter ? "enterActive" : "enter"
+        }`}
+      >
         {/* TOP LEFT SHAPE */}
 
         <div>
