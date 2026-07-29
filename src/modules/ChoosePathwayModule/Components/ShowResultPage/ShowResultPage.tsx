@@ -55,7 +55,7 @@ function ShowResultPage() {
     pillarData: PillarDataType;
     pillarAvg: Record<string, number>;
   } | null>(null);
-
+  console.log("resultDataresultDataresultData", resultData);
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [topMessage, setTopMessage] = useState<any>(null);
@@ -65,7 +65,6 @@ function ShowResultPage() {
   const router = useRouter();
   const [selectedPathways, setSelectedPathways] = useState<number[]>([]);
   const isPathwaySelected = selectedPathways.length > 0;
-
   const { data, isLoading } = useMyQuizResultQuery();
   const getLatestResult = (data: any[]) => {
     if (!data || data.length === 0) return null;

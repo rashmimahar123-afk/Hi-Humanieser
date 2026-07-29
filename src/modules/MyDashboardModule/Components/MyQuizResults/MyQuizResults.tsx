@@ -26,6 +26,9 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
   const { data: myProfileDaa, isLoading: myProfileLoading } =
     useMyProfileQuery();
   const profileData = myProfileDaa?.data;
+
+  console.log("weakStrengthDetailsweakStrengthDetails", weakStrengthDetails);
+
   return (
     <>
       {/* Section Title */}
