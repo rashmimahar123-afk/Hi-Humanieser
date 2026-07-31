@@ -1489,7 +1489,7 @@ function MyDashboard() {
 
             <div className="mx-auto mt-10 md:mt-14" ref={teamRef}>
               <MyTeamProgress
-                teamProgressList={teamProgressList}
+                teamRituals={mtjListData?.data?.team_rituals}
                 ritualPractice={mtjListData?.data?.ritual_practice}
               />
             </div>

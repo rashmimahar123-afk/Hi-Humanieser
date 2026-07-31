@@ -1,6 +1,7 @@
 import Image from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import { useRouter } from "next/navigation";
 
 type CONVERSATION_THIRD_DESC_PROPS = {
   selectedFocusAreaWorks?: {
@@ -10,6 +11,7 @@ type CONVERSATION_THIRD_DESC_PROPS = {
 };
 function ConversationThirdDescription(props: CONVERSATION_THIRD_DESC_PROPS) {
   const { selectedFocusAreaWorks } = props;
+  const router = useRouter();
   return (
     <div className="relative space-y-5 overflow-hidden">
       {/* Background Illustration */}
@@ -40,30 +42,35 @@ function ConversationThirdDescription(props: CONVERSATION_THIRD_DESC_PROPS) {
             Curious about the science? Step into the Research Room
           </p>
         </div>
-        <PolygonButton
-          width="106px"
-          height="107px"
-          bgColor="#86C9C9"
-          radius={14}
-          clipPath={`polygon(
+        <div
+          className="cursor-pointer"
+          onClick={() => router.push("/research-room")}
+        >
+          <PolygonButton
+            width="106px"
+            height="107px"
+            bgColor="#86C9C9"
+            radius={14}
+            clipPath={`polygon(
         0% 30%,
         92% 0%,
         100% 87%,
         3% calc(100% - 15px)
       )`}
-          decorationImg={{
-            src: images.arrowImg,
-            width: 48,
-            height: 48,
-          }}
-          decorationPosition={{
-            className: "-left-[49px] -top-[9px]",
-          }}
-        >
-          <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
-            Research Room
-          </span>
-        </PolygonButton>
+            decorationImg={{
+              src: images.arrowImg,
+              width: 48,
+              height: 48,
+            }}
+            decorationPosition={{
+              className: "-left-[49px] -top-[9px]",
+            }}
+          >
+            <span className="text-[#0F4F58] text-[26px] font-[RocaTwo] font-bold leading-tight text-center">
+              Research Room
+            </span>
+          </PolygonButton>
+        </div>
       </div>
     </div>
   );

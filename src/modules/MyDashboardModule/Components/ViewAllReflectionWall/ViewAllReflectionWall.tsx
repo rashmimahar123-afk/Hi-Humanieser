@@ -169,6 +169,181 @@ function ViewAllReflectionWall() {
 
   const { data: randomMessage } = useGetMppMessagesQuery();
 
+  const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
+    const resolvedSrc = typeof src === "string" ? src : src?.src;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={resolvedSrc}
+        alt={alt || ""}
+        width={width}
+        height={height}
+        className={className}
+        crossOrigin="anonymous"
+      />
+    );
+  };
+
+  // Heart drawing helper — jsPDF has no image/icon support by default,
+  // so we draw the heart using basic shapes (2 circles + 1 triangle)
+  const drawHeart = (
+    pdf: jsPDF,
+    x: number,
+    y: number,
+    size: number,
+    filled: boolean,
+  ) => {
+    const s = size;
+    // Points forming a simple heart silhouette (polygon approximation)
+    const points: [number, number][] = [
+      [x + s * 0.5, y + s * 0.95], // bottom tip
+      [x + s * 0.15, y + s * 0.55],
+      [x, y + s * 0.3],
+      [x + s * 0.05, y + s * 0.05],
+      [x + s * 0.25, y],
+      [x + s * 0.5, y + s * 0.2],
+      [x + s * 0.75, y],
+      [x + s * 0.95, y + s * 0.05],
+      [x + s, y + s * 0.3],
+      [x + s * 0.85, y + s * 0.55],
+      [x + s * 0.5, y + s * 0.95], // back to tip
+    ];
+
+    if (filled) {
+      pdf.setFillColor(239, 68, 68);
+    } else {
+      pdf.setDrawColor(15, 79, 88);
+      pdf.setLineWidth(0.3);
+    }
+
+    // Build path using moveTo-style lines
+    const first = points[0];
+    const rest = points.slice(1).map((p, i) => {
+      const prev = points[i];
+      return [p[0] - prev[0], p[1] - prev[1]];
+    });
+
+    pdf.lines(
+      rest as any,
+      first[0],
+      first[1],
+      [1, 1],
+      filled ? "F" : "S",
+      true,
+    );
+  };
+
+  // Small clock icon — drawn manually since emoji (⏱) breaks in jsPDF's default font
+  const drawClock = (pdf: jsPDF, x: number, y: number, size: number) => {
+    const r = size / 2;
+    const cx = x + r;
+    const cy = y + r;
+
+    pdf.setDrawColor(15, 79, 88); // teal #0F4F58
+    pdf.setLineWidth(0.25);
+    pdf.circle(cx, cy, r, "S");
+
+    // clock hands
+    pdf.line(cx, cy, cx, cy - r * 0.6); // vertical hand
+    pdf.line(cx, cy, cx + r * 0.4, cy); // horizontal hand
+  };
+
+  const handleDownloadPDF = () => {
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 12;
+    const cardWidth = pageWidth - margin * 2;
+    let y = 15;
+
+    const addPageBackground = () => {
+      pdf.setFillColor(245, 240, 235);
+      pdf.rect(0, 0, pageWidth, pageHeight, "F");
+    };
+    addPageBackground();
+
+    pdf.setTextColor(75, 166, 166);
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(22);
+    pdf.text("Reflection Walls", pageWidth / 2, y, { align: "center" });
+    y += 8;
+
+    pdf.setFontSize(10);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(39, 107, 107);
+    const desc = pdf.splitTextToSize(
+      "This wall brings together reflections over time — offering a wider view of what's emerging across the team.",
+      cardWidth,
+    );
+    pdf.text(desc, margin, y);
+    y += desc.length * 5 + 10;
+
+    reflections.forEach((item: any) => {
+      const text = item.reflection || "";
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(11);
+      const lines = pdf.splitTextToSize(text, cardWidth - 12);
+
+      const isLikedByMe = likedIds.has(item.id);
+      const timeText = getTimeAgo(item.created || item.created_at);
+      const likeText = getLikeText(item.like_count, isLikedByMe);
+
+      const cardHeight = lines.length * 6 + 20;
+
+      if (y + cardHeight > pageHeight - 15) {
+        pdf.addPage();
+        addPageBackground();
+        y = 15;
+      }
+
+      // Card background
+      pdf.setFillColor(205, 227, 204);
+      pdf.roundedRect(margin, y, cardWidth, cardHeight, 4, 4, "F");
+
+      // Reflection text
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(11);
+      pdf.setTextColor(15, 79, 88);
+      pdf.text(lines, margin + 6, y + 8);
+
+      // ---- Meta row: clock icon + time + heart + like text ----
+      const metaY = y + cardHeight - 6;
+      const clockSize = 3.2;
+      let cursorX = margin + 6;
+
+      // clock icon
+      drawClock(pdf, cursorX, metaY - clockSize + 0.8, clockSize);
+      cursorX += clockSize + 2;
+
+      // time text
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(9);
+      pdf.setTextColor(15, 79, 88);
+      pdf.text(timeText, cursorX, metaY);
+      cursorX += pdf.getTextWidth(timeText) + 8;
+
+      // heart icon
+      const heartSize = 4;
+      drawHeart(
+        pdf,
+        cursorX,
+        metaY - heartSize + 0.8,
+        heartSize,
+        item.like_count > 0,
+      );
+      cursorX += heartSize + 3;
+
+      // like text
+      if (likeText) {
+        pdf.text(likeText, cursorX, metaY);
+      }
+
+      y += cardHeight + 6;
+    });
+
+    pdf.save("ReflectionWalls.pdf");
+  };
+
   // const enrichedProgressList = enrichProgressWithPractice(
   //   progressList,
   //   practiceList,
@@ -307,7 +482,6 @@ function ViewAllReflectionWall() {
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     );
   }, [user, enrichedProgressList, reflectionApiData]);
-  console.log("reflectionsreflections", reflections);
   const filterRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -364,46 +538,46 @@ function ViewAllReflectionWall() {
     await new Promise((r) => requestAnimationFrame(r));
   };
 
-  const handleDownloadPDF = async () => {
-    try {
-      setIsDownloading(true);
-      if (!pdfRef.current) return;
-      await new Promise((r) => setTimeout(r, 300));
-      await waitForImages(pdfRef.current);
-      await new Promise((r) => setTimeout(r, 300));
-      const dataUrl = await toPng(pdfRef.current, {
-        cacheBust: true,
-        includeQueryParams: true,
-        width: pdfRef.current.scrollWidth,
-        height: pdfRef.current.scrollHeight,
-        pixelRatio: 2,
-        filter: (node) => {
-          if (node.tagName === "NOSCRIPT") return false;
-          return true;
-        },
-      });
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgProps = pdf.getImageProperties(dataUrl);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      let heightLeft = pdfHeight;
-      let position = 0;
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      pdf.addImage(dataUrl, "PNG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pageHeight;
-      while (heightLeft > 0) {
-        position = heightLeft - pdfHeight;
-        pdf.addPage();
-        pdf.addImage(dataUrl, "PNG", 0, position, pdfWidth, pdfHeight);
-        heightLeft -= pageHeight;
-      }
-      pdf.save("ReflectionWalls.pdf");
-    } catch (err) {
-      console.error("PDF Error:", err);
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+  // const handleDownloadPDF = async () => {
+  //   try {
+  //     setIsDownloading(true);
+  //     if (!pdfRef.current) return;
+  //     await new Promise((r) => setTimeout(r, 300));
+  //     await waitForImages(pdfRef.current);
+  //     await new Promise((r) => setTimeout(r, 300));
+  //     const dataUrl = await toPng(pdfRef.current, {
+  //       cacheBust: true,
+  //       includeQueryParams: true,
+  //       width: pdfRef.current.scrollWidth,
+  //       height: pdfRef.current.scrollHeight,
+  //       pixelRatio: 2,
+  //       filter: (node) => {
+  //         if (node.tagName === "NOSCRIPT") return false;
+  //         return true;
+  //       },
+  //     });
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     const imgProps = pdf.getImageProperties(dataUrl);
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  //     let heightLeft = pdfHeight;
+  //     let position = 0;
+  //     const pageHeight = pdf.internal.pageSize.getHeight();
+  //     pdf.addImage(dataUrl, "PNG", 0, position, pdfWidth, pdfHeight);
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft > 0) {
+  //       position = heightLeft - pdfHeight;
+  //       pdf.addPage();
+  //       pdf.addImage(dataUrl, "PNG", 0, position, pdfWidth, pdfHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     pdf.save("ReflectionWalls.pdf");
+  //   } catch (err) {
+  //     console.error("PDF Error:", err);
+  //   } finally {
+  //     setIsDownloading(false);
+  //   }
+  // };
   const handleLike = (reflectionId: string) => {
     setLikedIds((prev) => {
       const newSet = new Set(prev);

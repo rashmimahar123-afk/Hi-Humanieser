@@ -2,6 +2,7 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { FOCUS_AREA_STEP_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
+import { useRouter } from "next/navigation";
 
 type CONVERSATION_FIRST_DESCRIPTION_PROPS = {
   selectedFocusAreaExpect?: {
@@ -14,7 +15,7 @@ function ConversationFirstDescription(
   props: CONVERSATION_FIRST_DESCRIPTION_PROPS,
 ) {
   const { selectedFocusAreaExpect } = props;
-
+  const router = useRouter();
   return (
     <div className="relative space-y-5 overflow-hidden">
       {/* Background Illustration */}
@@ -81,7 +82,10 @@ function ConversationFirstDescription(
             Check Hi Humanser! Moments
           </p>
         </div>
-        <div className="mt-10">
+        <div
+          className="mt-10 cursor-pointer"
+          onClick={() => router.push("/moments")}
+        >
           <PolygonButton
             width="106px"
             height="107px"

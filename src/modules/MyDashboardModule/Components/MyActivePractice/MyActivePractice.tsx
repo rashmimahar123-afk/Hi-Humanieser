@@ -27,6 +27,11 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
       partialVisibilityGutter: 20,
     },
   };
+  console.log("practiceListpracticeList", practiceList);
+  const hasActivePractice = practiceList?.some(
+    (item: any) => item.checked === true,
+  );
+
   return (
     <>
       {/* Heading */}
@@ -40,11 +45,11 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
         </div>
       )}
       <p className="text-[#0F4F58] font-[Roboto] text-[13px] sm:text-[15px] lg:text-[22px] ml-[10px] sm:ml-[20px] lg:ml-[40px] mt-[15px]">
-        {practiceList?.length === 0
+        {practiceList?.length === 0 || !hasActivePractice
           ? " Once you choose micro-actions from your Pathways, this space will help you keep them visible, so you can return to the small habits you’re building over time."
           : " Here are the micro-actions you've chosen to keep practising. They're your everyday habits-in-progress — small moves that build momentum over time."}
       </p>
-      {practiceList?.length === 0 ? (
+      {practiceList?.length === 0 || !hasActivePractice ? (
         <>
           <>
             {/* Cards */}

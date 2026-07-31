@@ -47,7 +47,7 @@
   color: #0f4f58;
   font-size: 25px;
   font-family: Roboto, sans-serif;
-  max-width: 900px;
+  max-width: 1000px;
   line-height: 1.4;
 }
 
@@ -273,11 +273,11 @@
     right: 0;
     bottom: 0;
     padding: 16px;
-    line-height: 1.625;
+    /* line-height: 1.625; */
   }
 
   .tealNoteTextInner {
-    margin-top: 33px;
+    margin-top: 50px;
   }
 }
 

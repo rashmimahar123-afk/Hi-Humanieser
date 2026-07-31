@@ -7,7 +7,7 @@ import ConversationSecondDescription from "../ConversationSecondDescription/Conv
 import ConversationThirdDescription from "../ConversationThirdDescription/ConversationThirdDescription";
 import ConversationForthDescription from "../ConversationForthDescription/ConversationForthDescription";
 import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function Amplifier() {
   const { data } = useHhFrameworkMtjQuery();
@@ -22,7 +22,7 @@ function Amplifier() {
     (item: any) => item.focus_area_id === focusAreaId,
   );
 
-  console.log("selectedFocusArea", selectedFocusArea);
+  const router = useRouter();
   return (
     <div className="bg-[#F5F0EB] min-h-screen ">
       <div className="relative">
@@ -35,7 +35,10 @@ function Amplifier() {
         />
       </div>
       <div className="relative z-10 px-10 py-8">
-        <h1 className="text-[#567F55] text-[46px] font-[700] font-[Aptos] mb-10 mr-[50px]">
+        <h1
+          className="inline-block text-[#567F55] text-[46px] font-[700] font-[Aptos] mb-10 mr-[50px] cursor-pointer"
+          onClick={() => router.push("/home")}
+        >
           Hi Humaniser!™
         </h1>
 

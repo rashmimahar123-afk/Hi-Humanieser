@@ -59,6 +59,21 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
     return "";
   };
 
+  const getFocusArea = (teamRitualId: string) => {
+    const focusAreas = frameworkData?.data?.focus_areas || [];
+
+    for (const focusArea of focusAreas) {
+      const ritual = focusArea.team_rituals?.find(
+        (item: any) => item.team_ritual_id === teamRitualId,
+      );
+
+      if (ritual) {
+        return focusArea;
+      }
+    }
+
+    return null;
+  };
   return (
     <>
       <div
@@ -114,102 +129,106 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
 
             {/* Pathway List */}
             <div className="mt-8 space-y-4">
-              {rituals.map((ritual: any) => (
-                <div key={ritual.team_ritual_id}>
-                  <div className="flex items-center justify-between bg-[#F5C882] rounded-xl p-5">
-                    <div className="bg-[#FBF4EF] rounded-[14px] px-6 py-5 max-w-[736px]">
-                      <p className="text-[25px] text-[#4BA6A6] mb-2 font-[RocaTwo]">
-                        Focus Area: {ritual.focus_area}
-                      </p>
+              {rituals.map((ritual: any) => {
+                const focusArea = getFocusArea(ritual.team_ritual_id);
 
-                      <p className="text-[22px] text-[#737373] font-[Aptos] leading-[1.6]">
-                        {ritual.short_description}
-                      </p>
-                    </div>
+                return (
+                  <div key={ritual.team_ritual_id}>
+                    <div className="flex items-center justify-between bg-[#F5C882] rounded-xl p-5">
+                      <div className="bg-[#FBF4EF] rounded-[14px] px-6 py-5 max-w-[736px]">
+                        <p className="text-[25px] text-[#4BA6A6] mb-2 font-[RocaTwo]">
+                          Focus Area: {ritual.focus_area}
+                        </p>
 
-                    {/* View Details */}
-                    <div className="relative flex flex-col items-center mb-4 cursor-pointer">
-                      <p className="text-[15px] text-[#567F55] text-center">
-                        view details
-                      </p>
+                        <p className="text-[22px] text-[#737373] font-[Aptos] leading-[1.6]">
+                          {focusArea?.description_long}
+                        </p>
+                      </div>
 
+                      {/* View Details */}
+                      <div className="relative flex flex-col items-center mb-4 cursor-pointer">
+                        <p className="text-[15px] text-[#567F55] text-center">
+                          view details
+                        </p>
+
+                        <div
+                          onClick={() =>
+                            setActivePathway((prev) =>
+                              prev === ritual.team_ritual_id
+                                ? null
+                                : ritual.team_ritual_id,
+                            )
+                          }
+                        >
+                          <Image
+                            src={images.pathwayArrow}
+                            alt="arrow"
+                            width={60}
+                            height={40}
+                            className={`mt-2 transition-transform duration-300 ${
+                              activePathway === ritual.team_ritual_id
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                          />
+
+                          {activePathway === ritual.team_ritual_id && (
+                            <Image
+                              src={images.orangeTick}
+                              alt="tick"
+                              width={28}
+                              height={28}
+                              className="absolute top-4 right-3"
+                            />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Explore */}
                       <div
-                        onClick={() =>
-                          setActivePathway((prev) =>
-                            prev === ritual.team_ritual_id
-                              ? null
-                              : ritual.team_ritual_id,
-                          )
-                        }
+                        className="relative cursor-pointer"
+                        onClick={() => {
+                          const focusAreaId = getFocusAreaId(
+                            ritual.team_ritual_id,
+                          );
+
+                          router.push(`/conversation?focusArea=${focusAreaId}`);
+                        }}
                       >
                         <Image
-                          src={images.pathwayArrow}
+                          src={images.leftArrowImg}
                           alt="arrow"
-                          width={60}
-                          height={40}
-                          className={`mt-2 transition-transform duration-300 ${
-                            activePathway === ritual.team_ritual_id
-                              ? "rotate-180"
-                              : ""
-                          }`}
+                          width={45}
+                          height={45}
+                          className="absolute -top-6 -right-6 -rotate-[42deg]"
                         />
 
-                        {activePathway === ritual.team_ritual_id && (
-                          <Image
-                            src={images.orangeTick}
-                            alt="tick"
-                            width={28}
-                            height={28}
-                            className="absolute top-4 right-3"
-                          />
-                        )}
+                        <Image
+                          src={images.teamPoly}
+                          alt="Explore"
+                          width={140}
+                          height={100}
+                        />
+
+                        <span className="absolute inset-0 flex items-center justify-center text-[#F5F0EB] font-[RocaTwo] font-bold text-[20px] text-center">
+                          Explore
+                          <br />
+                          Focus Area
+                        </span>
                       </div>
                     </div>
 
-                    {/* Explore */}
-                    <div
-                      className="relative cursor-pointer"
-                      onClick={() => {
-                        const focusAreaId = getFocusAreaId(
-                          ritual.team_ritual_id,
-                        );
-
-                        router.push(`/conversation?focusArea=${focusAreaId}`);
-                      }}
-                    >
-                      <Image
-                        src={images.leftArrowImg}
-                        alt="arrow"
-                        width={45}
-                        height={45}
-                        className="absolute -top-6 -right-6 -rotate-[42deg]"
-                      />
-
-                      <Image
-                        src={images.teamPoly}
-                        alt="Explore"
-                        width={140}
-                        height={100}
-                      />
-
-                      <span className="absolute inset-0 flex items-center justify-center text-[#F5F0EB] font-[RocaTwo] font-bold text-[20px] text-center">
-                        Explore
-                        <br />
-                        Focus Area
-                      </span>
-                    </div>
+                    {activePathway === ritual.team_ritual_id && (
+                      <div ref={practiceRef}>
+                        <TeamJourneyPoll
+                          ritual={ritual}
+                          ClosePracticePerspective={ClosePracticePerspective}
+                        />
+                      </div>
+                    )}
                   </div>
-
-                  {activePathway === ritual.team_ritual_id && (
-                    <div ref={practiceRef}>
-                      <TeamJourneyPoll
-                        ritual={ritual}
-                        ClosePracticePerspective={ClosePracticePerspective}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
