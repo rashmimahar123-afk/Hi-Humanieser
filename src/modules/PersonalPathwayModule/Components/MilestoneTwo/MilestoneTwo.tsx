@@ -124,7 +124,7 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
             return (
               <div key={item?.micro_action_id}>
                 <MilestoneTwoActionRow
-                  title={`${item?.title}?`}
+                  title={`${item?.title}`}
                   description={item?.description}
                   showSaveReflection={true}
                   isPinned={pinned.includes(`${item?.title}?`)}

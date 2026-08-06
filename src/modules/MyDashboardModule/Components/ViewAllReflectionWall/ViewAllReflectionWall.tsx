@@ -20,20 +20,6 @@ import { useSearchParams } from "next/navigation";
 import { GET_REFLECTIONS_DATA } from "../../Types/ResponseTypes";
 import { queryClient } from "@/src/lib/ReactQueryConfig";
 
-const PdfSafeImage = ({ src, alt, width, height, className }: any) => {
-  return (
-    <Image
-      src={src}
-      alt={alt || ""}
-      width={width}
-      height={height}
-      className={className}
-      priority
-      unoptimized
-    />
-  );
-};
-
 function ViewAllReflectionWall() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [progressList, setProgressList] = useState<any>([]);
@@ -462,26 +448,63 @@ function ViewAllReflectionWall() {
   };
 
   // const reflections = reflectionApiData?.data?.reflections ?? [];
+  // const reflections = useMemo(() => {
+  //   const apiReflections = reflectionApiData?.data?.reflections ?? [];
+
+  //   // User type 1 & 2 → local + API reflections
+  //   if (user?.user_type === 1 || user?.user_type === 2) {
+  //     const localReflections =
+  //       getSharedReflectionsFromEnriched(enrichedProgressList);
+
+  //     return [...localReflections, ...apiReflections].sort(
+  //       (a: any, b: any) =>
+  //         Number(b.created || b.created_at) - Number(a.created || a.created_at),
+  //     );
+  //   }
+
+  //   // User type 3 → only API reflections
+  //   return apiReflections.sort(
+  //     (a: any, b: any) =>
+  //       new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  //   );
+  // }, [user, enrichedProgressList, reflectionApiData]);
+
   const reflections = useMemo(() => {
     const apiReflections = reflectionApiData?.data?.reflections ?? [];
 
-    // User type 1 & 2 → local + API reflections
+    let merged: any[] = [];
+
     if (user?.user_type === 1 || user?.user_type === 2) {
       const localReflections =
         getSharedReflectionsFromEnriched(enrichedProgressList);
 
-      return [...localReflections, ...apiReflections].sort(
-        (a: any, b: any) =>
-          Number(b.created || b.created_at) - Number(a.created || a.created_at),
-      );
+      merged = [...localReflections, ...apiReflections];
+    } else {
+      merged = [...apiReflections];
     }
 
-    // User type 3 → only API reflections
-    return apiReflections.sort(
+    // Sort latest first
+    merged.sort(
       (a: any, b: any) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+        new Date(b.created || b.created_at).getTime() -
+        new Date(a.created || a.created_at).getTime(),
     );
+
+    // Remove duplicates
+    const seen = new Set();
+
+    return merged.filter((item: any) => {
+      const key = item.reflection?.trim().toLowerCase();
+
+      if (seen.has(key)) {
+        return false;
+      }
+
+      seen.add(key);
+      return true;
+    });
   }, [user, enrichedProgressList, reflectionApiData]);
+
   const filterRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

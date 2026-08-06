@@ -146,6 +146,18 @@ Thanks!`,
 
   const options = kpiPollData?.results || [];
 
+  const isFourWeeksCompleted = (() => {
+    const closedAt = cycleOverviewData?.data?.poll?.closed_at;
+
+    if (!closedAt) return false;
+
+    const closedDate = new Date(closedAt);
+    const fourWeeksLater = new Date(closedDate);
+    fourWeeksLater.setDate(fourWeeksLater.getDate() + 28);
+
+    return new Date() >= fourWeeksLater;
+  })();
+
   return (
     <>
       <div
@@ -838,40 +850,43 @@ Thanks!`,
             </div>
 
             {/* ROW 2 */}
-            <div className="flex items-center justify-between">
-              {/* LEFT SECTION */}
-              <div className="flex items-center gap-10">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => openFinishEarlyModal()}
-                >
-                  {/* Polygon */}
-                  <PolygonButton
-                    width="106px"
-                    height="107px"
-                    bgColor="#acd5ab"
-                    radius={14}
-                    clipPath={`polygon(
+            {cycleData?.chosen_team_rituals?.length !== 0 &&
+              isFourWeeksCompleted && (
+                <div className="flex items-center justify-between">
+                  {/* LEFT SECTION */}
+                  <div className="flex items-center gap-10">
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => openFinishEarlyModal()}
+                    >
+                      {/* Polygon */}
+                      <PolygonButton
+                        width="106px"
+                        height="107px"
+                        bgColor="#acd5ab"
+                        radius={14}
+                        clipPath={`polygon(
     15% 11%,
     81% 0%,
     100% 87%,
     3% calc(100% - 15px)
   )`}
-                  >
-                    <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
-                      Finished
-                      <br />
-                      <span className="whitespace-nowrap">early?</span>
-                    </span>
-                  </PolygonButton>
-                </div>
+                      >
+                        <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                          Finished
+                          <br />
+                          <span className="whitespace-nowrap">early?</span>
+                        </span>
+                      </PolygonButton>
+                    </div>
 
-                {/* Middle Text */}
-                <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
-                  Mark these rituals as completed and start a new cycle.
-                </p>
-              </div>
-            </div>
+                    {/* Middle Text */}
+                    <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
+                      Mark these rituals as completed and start a new cycle.
+                    </p>
+                  </div>
+                </div>
+              )}
           </div>
         )}
 

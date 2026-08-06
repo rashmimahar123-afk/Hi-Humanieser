@@ -20,6 +20,7 @@ function ViewAllReflectionCard({
     4: { top: "12px", bottom: "-30px", left: "-3px", right: "-3px" },
   };
   const currentInset = insetStyles[index] || insetStyles[1];
+  console.log("TTTTTT", text);
   return (
     <div
       className={`relative ${rotate} flex-shrink-0 w-full h-full object-contain`}

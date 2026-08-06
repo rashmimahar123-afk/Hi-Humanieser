@@ -30,8 +30,8 @@ function ResetPassword() {
 
   const onSubmit = (data: any) => {
     resetPasswordMutation({
-      email: data.email,
-      token,
+      email: email || data.email,
+      token: token || "",
       new_password: data.newPassword,
     });
   };

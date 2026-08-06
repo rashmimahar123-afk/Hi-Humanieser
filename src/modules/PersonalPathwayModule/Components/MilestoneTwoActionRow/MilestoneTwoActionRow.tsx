@@ -35,7 +35,6 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
     pathwayDetails,
     m2Data,
   } = props;
-
   const microActionKey =
     `micro_action_${microActionNumber}` as keyof MILESTONE_TWO_DATA;
 
