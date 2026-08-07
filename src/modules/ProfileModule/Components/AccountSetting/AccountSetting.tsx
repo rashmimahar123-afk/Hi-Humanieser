@@ -47,7 +47,7 @@ function AccountSetting() {
     setFirstName(profileData?.first_name || "");
     setLastName(profileData?.last_name || "");
     setEmail(profileData?.email || "");
-  }, []);
+  }, [profileData]);
 
   return (
     <>
@@ -106,7 +106,13 @@ function AccountSetting() {
                   Joined {formatJoinedDate(loggedInUserDetails?.created)}
                 </p>
                 <p className="text-[13px] sm:text-[16px] md:text-[19px] text-[#0F4F58]">
-                  Active Member In Hi Humaniser!
+                  Active{" "}
+                  {profileData?.user_type === 3
+                    ? "Partner"
+                    : profileData?.user_type === 2
+                      ? "Champion"
+                      : "Member"}{" "}
+                  In Hi Humaniser!
                 </p>
                 <div className="mt-3 sm:mt-4 md:mt-6 text-[15px] sm:text-[18px] md:text-[22px] text-[#0F4F58] font-[Roboto] leading-6 space-y-1">
                   <p>Company: {profileData?.company_name}</p>
