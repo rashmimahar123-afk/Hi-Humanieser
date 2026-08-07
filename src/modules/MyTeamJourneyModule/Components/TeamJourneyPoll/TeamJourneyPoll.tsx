@@ -18,6 +18,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import ConfirmShareReflectionModal, {
   openConfirmShareReflectionModal,
 } from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
+import useGetMtjListQuery, {
+  GET_MTJ_LIST_QUERY_KEY,
+} from "../../Hooks/useGetMtjListQuery";
+import { MTJ_TEAM_RITUALS_REFLECTIONS_DATA } from "../../Types/ResponseTypes";
 
 type TeamRitual = {
   team_ritual_id: string;
@@ -25,6 +29,7 @@ type TeamRitual = {
   focus_area: string;
   short_description: string;
   activation_message?: string;
+  reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
 };
 
 type PRACTICE_PERSPECTIVE_PROPS = {
@@ -33,7 +38,7 @@ type PRACTICE_PERSPECTIVE_PROPS = {
 };
 
 function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
-  const { ClosePracticePerspective, ritual } = props;
+  const { ritual } = props;
   const { user } = useAuthValue();
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -64,15 +69,19 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   const router = useRouter();
 
   const { data: reflectionData } = useGetReflectionWallsQuery(user?.team_id);
+  // const ritualReflections =
+  //   reflectionData?.data?.reflections
+  //     ?.filter((item: any) => item.team_ritual_id === ritual.team_ritual_id)
+  //     ?.sort(
+  //       (a: any, b: any) =>
+  //         new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  //     ) || [];
 
-  const ritualReflections =
-    reflectionData?.data?.reflections
-      ?.filter((item: any) => item.team_ritual_id === ritual.team_ritual_id)
-      ?.sort(
-        (a: any, b: any) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      ) || [];
-
+  const ritualReflections = ritual.reflections?.my_reflections ?? [];
+  console.log(
+    "ritualReflectionsritualReflectionsritualReflections",
+    ritualReflections,
+  );
   const latestReflection = ritualReflections[0];
 
   const [share, setShare] = useState(
@@ -102,9 +111,14 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
       },
       {
         onSuccess: async () => {
-          await queryClient.invalidateQueries({
-            queryKey: ["getReflectionWallsQueryKey"],
-          });
+          await Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: GET_MTJ_LIST_QUERY_KEY,
+            }),
+            queryClient.invalidateQueries({
+              queryKey: ["getReflectionWallsQueryKey"],
+            }),
+          ]);
 
           // Sirf check karne par modal dikhao
           if (checked) {

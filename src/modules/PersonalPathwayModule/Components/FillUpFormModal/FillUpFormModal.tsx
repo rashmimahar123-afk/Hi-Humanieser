@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { useAddReflectionMutation } from "../../Hooks/useAddReflectionMutation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { useEditReflectionMutation } from "../../Hooks/useEditReflectionMutation";
+import { GET_MTJ_LIST_QUERY_KEY } from "@/src/modules/MyTeamJourneyModule/Hooks/useGetMtjListQuery";
 
 const EVENT = "FILL_UP_FORM_MODAL_EVENT";
 
@@ -136,9 +137,14 @@ function FillUpFormModal() {
             setShare(false);
             setIsOpen(false);
 
-            await queryClient.invalidateQueries({
-              queryKey: ["getReflectionWallsQueryKey"],
-            });
+            await Promise.all([
+              queryClient.invalidateQueries({
+                queryKey: GET_MTJ_LIST_QUERY_KEY,
+              }),
+              queryClient.invalidateQueries({
+                queryKey: ["getReflectionWallsQueryKey"],
+              }),
+            ]);
           },
         });
       } else {
@@ -156,16 +162,21 @@ function FillUpFormModal() {
             setShare(false);
             setIsOpen(false);
 
-            await queryClient.invalidateQueries({
-              queryKey: ["getReflectionWallsQueryKey"],
-            });
+            await Promise.all([
+              queryClient.invalidateQueries({
+                queryKey: GET_MTJ_LIST_QUERY_KEY,
+              }),
+              queryClient.invalidateQueries({
+                queryKey: ["getReflectionWallsQueryKey"],
+              }),
+            ]);
           },
         });
       }
 
       return;
     }
-    // ✅ ===== MILESTONE 3 =====
+    //  ===== MILESTONE 3 =====
     if (actionKey === "milestone3") {
       const payload = {
         uuid: id,

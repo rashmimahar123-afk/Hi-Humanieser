@@ -19,6 +19,7 @@ function StartTeamJourney() {
     useMyProfileQuery();
   const profileData = myProfileDaa?.data;
   const router = useRouter();
+
   return (
     <>
       <div

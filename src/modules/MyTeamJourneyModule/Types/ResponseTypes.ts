@@ -42,13 +42,31 @@ export type FOCUS_AREA_DATA = {
 export type HH_FRAMEWORK_MTJ_RESPONSE_TYPES = {
   focus_areas: Array<FOCUS_AREA_DATA>;
 };
-
+export type MTJ_TEAM_RITUALS_MY_REFLECTIONS = {
+  id: string;
+  user_id: string;
+  reflection: string;
+  created_at: string;
+  shared_anonymously: boolean;
+  team_ritual_id: string;
+  edited: boolean;
+  like_count: number;
+};
+export type MTJ_TEAM_RITUALS_REFLECTIONS_DATA = {
+  my_reflections: Array<MTJ_TEAM_RITUALS_MY_REFLECTIONS>;
+  my_reflection_count: number;
+  completed_by_me: boolean;
+  completed_count: number;
+  member_count: number;
+  completion_percentage: number;
+};
 export type MTJ_TEAM_RITUAL_DATA = {
   team_ritual_id: string;
   title: string;
   focus_area: string;
   short_description: string;
   activation_message?: string;
+  reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
 };
 export type GET_MTJ_LIST_RESPONSE = {
   message: string;
@@ -58,6 +76,9 @@ export type GET_MTJ_LIST_RESPONSE = {
   cycle_stage: string;
   pressure_point: string;
   focus_areas: Array<any>;
+
+  my_reflection_count: number;
+  my_reflections: Array<any>;
   team_rituals: Array<MTJ_TEAM_RITUAL_DATA>;
   ritual_practice: {
     status: string;
