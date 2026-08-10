@@ -861,7 +861,7 @@
 import images from "@/src/assets/images";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   authFetcher,
   decodeJWT,
@@ -874,6 +874,7 @@ import Link from "next/link";
 import { useLoginMutation } from "../../Hooks/useLoginMutation";
 import { setAuthValue } from "../../Hooks/useAuthValue";
 import AuthService from "../../Services/AuthService";
+import { useVerifyEmailMutation } from "../../Hooks/useVerifyEmailMutation";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -996,6 +997,23 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
       },
     );
   });
+
+  const searchParams = useSearchParams();
+
+  const email = searchParams.get("email");
+  const token = searchParams.get("token");
+
+  const { mutate: verifyEmail, isPending: isVerifying } =
+    useVerifyEmailMutation();
+
+  useEffect(() => {
+    if (!email || !token) return;
+
+    verifyEmail({
+      email: decodeURIComponent(email),
+      token: decodeURIComponent(token),
+    });
+  }, [email, token, verifyEmail]);
 
   useEffect(() => {
     const rememberData = AuthService.rememberMe$.getValue();

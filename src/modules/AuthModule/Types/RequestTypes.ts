@@ -20,3 +20,7 @@ export type RESET_PASSWORD_REQUEST_TYPE = {
   token: string;
   new_password: string;
 };
+export type VERIFY_EMAIL_REQUEST_TYPE = {
+  email: string;
+  token: string;
+};
