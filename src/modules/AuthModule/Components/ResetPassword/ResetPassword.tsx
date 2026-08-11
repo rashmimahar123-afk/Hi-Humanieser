@@ -9,11 +9,13 @@ import Link from "next/link";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { useSearchParams } from "next/navigation";
 import { useResetPasswordMutation } from "../../Hooks/useResetPasswordMutation";
+import { getPasswordValidationRules } from "@/src/lib/Helpers";
+import { passwordMessage } from "@/src/lib/ErrorMessages";
 
 function ResetPassword() {
-  const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
+
   const searchParams = useSearchParams();
 
   const email = searchParams.get("email") || "";
@@ -152,28 +154,99 @@ function ResetPassword() {
                   <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
                     Add your new password
                   </label>
-                  <input
-                    type={showNew ? "text" : "password"}
-                    {...register("newPassword", { required: "Required" })}
-                    className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                  />
+                  <div className="relative w-full sm:flex-1">
+                    <input
+                      type={showNew ? "text" : "password"}
+                      {...register(
+                        "newPassword",
+                        getPasswordValidationRules(
+                          passwordMessage.password_required,
+                          passwordMessage.password_message,
+                        ),
+                      )}
+                      className="w-full bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 pr-12 lg:pr-14 text-base lg:text-[22px] outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNew((v) => !v)}
+                      aria-label={showNew ? "Hide password" : "Show password"}
+                      style={{
+                        position: "absolute",
+                        right: "14px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        outline: "none",
+                        cursor: "pointer",
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Image
+                        src={showNew ? images.eyeOpen : images.eyeClose}
+                        alt={showNew ? "Hide password" : "Show password"}
+                        width={24}
+                        height={24}
+                        style={{ opacity: 0.6 }}
+                      />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Repeat Password */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
-                  <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
-                    Repeat your new password
-                  </label>
-                  <input
-                    type={showRepeat ? "text" : "password"}
-                    {...register("repeatPassword", {
-                      required: "Required",
-                      validate: (value) =>
-                        value === watch("newPassword") ||
-                        "Passwords do not match",
-                    })}
-                    className="w-full sm:flex-1 bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 text-base lg:text-[22px] outline-none"
-                  />
+                <div className="flex flex-col gap-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10">
+                    <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                      Repeat your new password
+                    </label>
+                    <div className="relative w-full sm:flex-1">
+                      <input
+                        type={showRepeat ? "text" : "password"}
+                        {...register("repeatPassword", {
+                          required: "Required",
+                          validate: (value) =>
+                            value === watch("newPassword") ||
+                            "Passwords do not match",
+                        })}
+                        className="w-full bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 pr-12 lg:pr-14 text-base lg:text-[22px] outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowRepeat((v) => !v)}
+                        aria-label={
+                          showRepeat ? "Hide password" : "Show password"
+                        }
+                        style={{
+                          position: "absolute",
+                          right: "14px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          outline: "none",
+                          cursor: "pointer",
+                          background: "none",
+                          border: "none",
+                          padding: 0,
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Image
+                          src={showRepeat ? images.eyeOpen : images.eyeClose}
+                          alt={showRepeat ? "Hide password" : "Show password"}
+                          width={24}
+                          height={24}
+                          style={{ opacity: 0.6 }}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  {errors.repeatPassword && (
+                    <p className="sm:ml-[220px] lg:ml-[260px] text-red-500 text-sm lg:text-base font-[Aptos]">
+                      {errors.repeatPassword.message as string}
+                    </p>
+                  )}
                 </div>
               </div>
               {/* Button */}
