@@ -6,7 +6,7 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -41,7 +41,11 @@ function OrganizationSnapshot() {
 
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
+  const [enter, setEnter] = useState(false);
 
+  useEffect(() => {
+    setEnter(true);
+  }, []);
   const data = [
     { name: "Own Your Impact", value: 32 },
     { name: "Stay Curious", value: 21 },
@@ -215,11 +219,14 @@ function OrganizationSnapshot() {
   const isAllZero =
     noDataFocusAreas.length > 0 &&
     noDataFocusAreas.every((item) => item.value === 0);
-  console.log("noDataFocusAreasnoDataFocusAreas", noDataFocusAreas);
-  console.log("isAllZeroisAllZeroisAllZero", isAllZero);
+
   return (
     <>
-      <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+      <div
+        className={`relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif page ${
+          enter ? "enterActive" : "enter"
+        }`}
+      >
         {/* TOP LEFT SHAPE */}
         <UserProfileHeader
           greetingColor="#0f4f58"

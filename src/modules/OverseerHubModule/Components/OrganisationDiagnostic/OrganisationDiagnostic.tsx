@@ -4,7 +4,7 @@ import images from "@/src/assets/images";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProgressPill from "../../../ChampionHubModule/Components/ProgressPill/ProgressPill";
 import { createPatternRows } from "@/src/lib/Helpers";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
@@ -64,9 +64,15 @@ function OrganisationDiagnostic() {
     if (change < 0) return { symbol: "↓", color: "text-red-600" };
     return { symbol: "↔", color: "text-[#E6A85C]" };
   };
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   return (
     <>
-      <div className={styles.page}>
+      <div className={`${styles.page} page ${enter ? "enterActive" : "enter"}`}>
         <Image
           src={images.notificationPolygon}
           alt=""

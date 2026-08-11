@@ -875,6 +875,7 @@ import { useLoginMutation } from "../../Hooks/useLoginMutation";
 import { setAuthValue } from "../../Hooks/useAuthValue";
 import AuthService from "../../Services/AuthService";
 import { useVerifyEmailMutation } from "../../Hooks/useVerifyEmailMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 interface LoginFormProps {
   onForgotPassword: () => void;
@@ -993,6 +994,15 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             });
           }
           router.push("/home");
+        },
+        onError: (error: any) => {
+          console.log("Full error object:", error);
+          console.log("Response data:", error?.response?.data);
+          console.log("Detail message:", error?.response?.data?.detail);
+
+          const message =
+            error?.response?.data?.detail || "Invalid credentials.";
+          SnackbarHandler.errorToast(message);
         },
       },
     );

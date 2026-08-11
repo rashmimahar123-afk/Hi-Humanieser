@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import SnackbarHandler from "@/src/lib/SnackbarHandler";
 import { RESET_PASSWORD_REQUEST_TYPE } from "../Types/RequestTypes";
+import { useRouter } from "next/navigation";
 
 const resetPassword = async (data: RESET_PASSWORD_REQUEST_TYPE) => {
   const response = await axios.post(
@@ -13,10 +14,12 @@ const resetPassword = async (data: RESET_PASSWORD_REQUEST_TYPE) => {
 };
 
 export const useResetPasswordMutation = () => {
+  const router = useRouter();
   return useMutation({
     mutationFn: resetPassword,
 
     onSuccess: (data) => {
+      router.push("/login");
       SnackbarHandler.successToast(
         data?.message || "Reset link sent successfully",
       );

@@ -12,10 +12,6 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 
 function OverseerHub() {
-  const focusOptions = ["Build Trust", "Improve Clarity", "Reduce Friction"];
-  const ritualOptions = ["Weekly Sync", "Retro", "Check-in", "Planning"];
-  const weekOptions = ["1 Week", "2 Weeks", "4 Weeks", "8 Weeks"];
-
   const router = useRouter();
   const { user } = useAuthValue();
 
@@ -24,6 +20,7 @@ function OverseerHub() {
   useEffect(() => {
     setEnter(true);
   }, []);
+
   return (
     <>
       <div

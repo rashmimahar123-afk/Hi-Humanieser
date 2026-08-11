@@ -150,49 +150,56 @@ function ResetPassword() {
               </div>
               <div className="flex flex-col gap-8">
                 {/* New Password */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10 ">
-                  <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
-                    Add your new password
-                  </label>
-                  <div className="relative w-full sm:flex-1">
-                    <input
-                      type={showNew ? "text" : "password"}
-                      {...register(
-                        "newPassword",
-                        getPasswordValidationRules(
-                          passwordMessage.password_required,
-                          passwordMessage.password_message,
-                        ),
-                      )}
-                      className="w-full bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 pr-12 lg:pr-14 text-base lg:text-[22px] outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowNew((v) => !v)}
-                      aria-label={showNew ? "Hide password" : "Show password"}
-                      style={{
-                        position: "absolute",
-                        right: "14px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        outline: "none",
-                        cursor: "pointer",
-                        background: "none",
-                        border: "none",
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Image
-                        src={showNew ? images.eyeOpen : images.eyeClose}
-                        alt={showNew ? "Hide password" : "Show password"}
-                        width={24}
-                        height={24}
-                        style={{ opacity: 0.6 }}
+                <div className="flex flex-col gap-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 lg:gap-10 ">
+                    <label className="w-full sm:w-[180px] lg:w-[220px] text-base lg:text-[24px] text-gray-600 font-[Aptos] leading-tight flex-shrink-0">
+                      Add your new password
+                    </label>
+                    <div className="relative w-full sm:flex-1">
+                      <input
+                        type={showNew ? "text" : "password"}
+                        {...register(
+                          "newPassword",
+                          getPasswordValidationRules(
+                            passwordMessage.password_required,
+                            passwordMessage.password_message,
+                          ),
+                        )}
+                        className="w-full bg-[#f8e1b8] rounded-xl px-4 lg:px-6 py-3 lg:py-4 pr-12 lg:pr-14 text-base lg:text-[22px] outline-none"
                       />
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowNew((v) => !v)}
+                        aria-label={showNew ? "Hide password" : "Show password"}
+                        style={{
+                          position: "absolute",
+                          right: "14px",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          outline: "none",
+                          cursor: "pointer",
+                          background: "none",
+                          border: "none",
+                          padding: 0,
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Image
+                          src={showNew ? images.eyeOpen : images.eyeClose}
+                          alt={showNew ? "Hide password" : "Show password"}
+                          width={24}
+                          height={24}
+                          style={{ opacity: 0.6 }}
+                        />
+                      </button>
+                    </div>
                   </div>
+                  {errors.newPassword && (
+                    <p className="sm:ml-[220px] lg:ml-[260px] text-red-500 text-sm lg:text-base font-[Aptos]">
+                      {errors.newPassword.message as string}
+                    </p>
+                  )}
                 </div>
 
                 {/* Repeat Password */}

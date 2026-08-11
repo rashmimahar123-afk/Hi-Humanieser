@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import PartnerGuide from "../PartnerGuide/PartnerGuide";
 import PartnerToolkit from "../PartnerToolkit/PartnerToolkit";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import { useEffect, useState } from "react";
 
 function ToolsSupport() {
   const { user } = useAuthValue();
@@ -28,9 +29,18 @@ function ToolsSupport() {
   if (type === "partner-toolkit") {
     return <PartnerToolkit />;
   }
+
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   return (
     <>
-      <div className="relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif">
+      <div
+        className={`relative min-h-screen bg-[#F3EEE7] px-10 py-10 z-10 font-serif page ${enter ? "enterActive" : "enter"}`}
+      >
         {/* TOP LEFT SHAPE */}
 
         <UserProfileHeader
