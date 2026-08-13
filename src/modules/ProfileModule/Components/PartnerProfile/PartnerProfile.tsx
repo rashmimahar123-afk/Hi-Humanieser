@@ -11,6 +11,7 @@ import { useEditUserMutation } from "../../Hooks/useEditUserMutation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { openChampionModal } from "../ChampionModal/ChampionModal";
 import { useTogglePartnerRoleMutation } from "../../Hooks/useTogglePartnerRoleMutation";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 type PROFILE_DATA_PROPS = {
   profileData?: MY_PROFILE_RESPONSE;
@@ -18,6 +19,73 @@ type PROFILE_DATA_PROPS = {
   loggedInUserDetails?: ALL_USERS_DATA;
   teamName?: string;
   handleBecomePartner: () => void;
+};
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const ALLOWED_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const COMPRESSION_QUALITY = 0.8; // 80% quality for JPEG
+const MAX_DIMENSIONS = { width: 1000, height: 1000 };
+
+const compressImage = (file: File): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+
+        // Resize if dimensions are too large
+        if (width > MAX_DIMENSIONS.width || height > MAX_DIMENSIONS.height) {
+          const aspectRatio = width / height;
+          if (width > height) {
+            width = MAX_DIMENSIONS.width;
+            height = Math.round(width / aspectRatio);
+          } else {
+            height = MAX_DIMENSIONS.height;
+            width = Math.round(height * aspectRatio);
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          reject(new Error("Failed to get canvas context"));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert to blob with quality compression
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error("Failed to compress image"));
+            }
+          },
+          "image/jpeg",
+          COMPRESSION_QUALITY,
+        );
+      };
+
+      img.onerror = () => {
+        reject(new Error("Failed to load image"));
+      };
+
+      img.src = event.target?.result as string;
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Failed to read file"));
+    };
+
+    reader.readAsDataURL(file);
+  });
 };
 
 function PartnerProfile(props: PROFILE_DATA_PROPS) {
@@ -28,6 +96,7 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { user } = useAuthValue();
+  const [uploadError, setUploadError] = useState<string>("");
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
@@ -49,40 +118,119 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
 
   const { mutate: editUser, isPending } = useEditUserMutation();
 
+  /**
+   * Converts a Blob to base64
+   */
+  const blobToBase64 = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  /**
+   * Validates file type and size
+   */
+  const validateImage = (file: File): { valid: boolean; error?: string } => {
+    // Check file type
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return {
+        valid: false,
+        error: "Please upload a JPEG, PNG, or WebP image",
+      };
+    }
+
+    // Check file size (before compression)
+    if (file.size > MAX_FILE_SIZE) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+
+      SnackbarHandler.errorToast(
+        `File is too large (${sizeMB}MB). Maximum allowed size is 2MB.`,
+      );
+
+      return {
+        valid: false,
+        error: `File is too large (${sizeMB}MB). Maximum is 2MB.`,
+      };
+    }
+
+    return { valid: true };
+  };
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isPending) return;
+    console.log("1. Image input changed");
+    setUploadError(""); // Clear previous errors
+
+    if (isPending) {
+      console.log("2. Mutation already pending");
+      return;
+    }
 
     const file = e.target.files?.[0];
-    if (!file) return;
 
-    const base64 = await convertToBase64(file);
+    if (!file) {
+      console.log("2. No file selected");
+      return;
+    }
 
-    // FIX: show the picture immediately (optimistic preview) so the
-    // "Uploading..." text doesn't just replace the old image with nothing
-    setProfileImage(base64);
+    console.log("3. Selected file:", file.name, file.type, file.size);
 
-    editUser(
-      {
+    // Validate file before processing
+    const validation = validateImage(file);
+    if (!validation.valid) {
+      console.error("Validation error:", validation.error);
+      setUploadError(validation.error || "Invalid file");
+      return;
+    }
+
+    try {
+      console.log("4. Compressing image...");
+      const compressedBlob = await compressImage(file);
+      const compressedSizeMB = (compressedBlob.size / (1024 * 1024)).toFixed(2);
+      console.log(
+        `5. Image compressed: ${file.size} → ${compressedBlob.size} bytes (${compressedSizeMB}MB)`,
+      );
+
+      const base64 = await blobToBase64(compressedBlob);
+      console.log("6. Base64 generated:", base64.substring(0, 100));
+
+      setProfileImage(base64);
+
+      const payload = {
         target_email: profileData?.email || "",
         profile_picture_base64: base64,
-      },
-      {
-        onSuccess: () => {
-          // base64 is already what's stored server-side, so keep it as the
-          // displayed image instead of an ephemeral blob: URL that breaks
-          // on refresh/navigation.
+      };
+
+      console.log("7. Edit user payload size:", {
+        target_email: payload.target_email,
+        profile_picture_base64_length: payload.profile_picture_base64.length,
+      });
+
+      editUser(payload, {
+        onSuccess: (response) => {
+          console.log("8. Edit user API SUCCESS:", response);
           setProfileImage(base64);
+          setUploadError(""); // Clear error on success
         },
-        onError: () => {
-          // FIX: roll back preview if the upload actually fails
+        onError: (error) => {
+          console.error("8. Edit user API ERROR:", error);
+          setUploadError("Failed to upload image. Please try again.");
           setProfileImage(
             profileData?.profile_picture_path || images.dummyUser,
           );
         },
-      },
-    );
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      console.error("Image processing failed:", errorMessage);
+      setUploadError(`Error processing image: ${errorMessage}`);
+    } finally {
+      // Reset input so same image can be selected again
+      e.target.value = "";
+    }
   };
-
   return (
     <section className="relative rounded-[18px] sm:rounded-[24px] bg-[#F8E1B8] px-4 sm:px-8 md:px-14 py-8 sm:py-10 md:py-12 overflow-hidden">
       {/* Right Pattern — FIX: hidden on mobile so it doesn't overlap the name */}
@@ -145,8 +293,13 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
           </p>
 
           <p className="text-[13px] sm:text-[15px] md:text-[16px] text-[#0F4F58]">
-            Active {user?.user_type === 3 ? "Partner" : "Champion"} in Hi
-            Humaniser!
+            Active{" "}
+            {user?.user_type === 3
+              ? "Partner"
+              : user?.user_type === 2
+                ? "Champion"
+                : "Member"}{" "}
+            in Hi Humaniser!
           </p>
           <div className="mt-3 sm:mt-5 text-[16px] sm:text-[19px] md:text-[22px] text-[#0F4F58] font-[Roboto] font-[400] leading-6 space-y-1">
             <p>Company: {profileData?.company_name}</p>
@@ -160,20 +313,22 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
         that pushed it completely off-screen on mobile.
         Now it's full-width on mobile, auto-width + right-aligned on sm+.
       */}
-      <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
-        <button
-          className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]"
-          onClick={() => {
-            if (user?.user_type === 3) {
-              openChampionModal();
-            } else {
-              handleBecomePartner();
-            }
-          }}
-        >
-          {user?.user_type === 3 ? "Become a Champion" : "Switch to Partner"}
-        </button>
-      </div>
+      {typeof window !== "undefined" && user?.user_type !== 1 && (
+        <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
+          <button
+            className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]"
+            onClick={() => {
+              if (user?.user_type === 3) {
+                openChampionModal();
+              } else {
+                handleBecomePartner();
+              }
+            }}
+          >
+            {user?.user_type === 3 ? "Become a Champion" : "Switch to Partner"}
+          </button>
+        </div>
+      )}
 
       {/* <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
         <button className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]">

@@ -2,11 +2,18 @@ import UserProfileHeader from "../../UserProfileHeader/Components/UserProfileHea
 import Image, { StaticImageData } from "next/image";
 import images from "@/src/assets/images";
 import { useEffect, useRef, useState } from "react";
-import useAuthValue, { getAuthValue, setAuthValue } from "../../AuthModule/Hooks/useAuthValue";
+import useAuthValue, {
+  getAuthValue,
+  setAuthValue,
+} from "../../AuthModule/Hooks/useAuthValue";
 import styles from "./Profile.module.css";
-import useMyProfileQuery, { GET_PROFILE_QUERY_KEY } from "../Hooks/useMyProfileQuery";
+import useMyProfileQuery, {
+  GET_PROFILE_QUERY_KEY,
+} from "../Hooks/useMyProfileQuery";
 import PartnerProfile from "./PartnerProfile/PartnerProfile";
-import useOrganisationDetailsQuery, { GET_ORGANISATION_DETAILS_QUERY_KEY } from "../Hooks/useOrganisationDetailsQuery";
+import useOrganisationDetailsQuery, {
+  GET_ORGANISATION_DETAILS_QUERY_KEY,
+} from "../Hooks/useOrganisationDetailsQuery";
 import CompanyStructure from "./CompanyStructure/CompanyStructure";
 import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
 import useGetTeamsQuery from "../Hooks/useGetTeamsQuery";
@@ -31,7 +38,7 @@ function Profile() {
   const { user } = useAuthValue();
   const orgId = user?.org_id;
   const router = useRouter();
-const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   useEffect(() => {
     setEnter(true);
   }, []);
@@ -87,7 +94,6 @@ const queryClient = useQueryClient();
 
   const { data, isLoading } = useMyProfileQuery();
   const profileData = data?.data;
-
   const { data: orgData, isLoading: orgLoading } = useOrganisationDetailsQuery(
     orgId,
     {
@@ -198,120 +204,120 @@ const queryClient = useQueryClient();
   );
   const isEmptyState = !hasMembers;
 
-
-
   const { mutate: togglePartnerRole } = useTogglePartnerRoleMutation();
 
-const handleBecomeChampion = (teamId: string) => {
-  togglePartnerRole(
-    {
-      team_id: teamId,
-    },
-    {
-  onSuccess: async (res: TOGGLE_PARTNER_RESPONSE) => {
-  const authState = localStorage.getItem("authState");
-
-  if (authState) {
-    const parsedAuthState = JSON.parse(authState);
-
-    const updatedAuthState = {
-      ...parsedAuthState,
-      user: {
-        ...parsedAuthState.user,
-        user_type: res.user_type,
+  const handleBecomeChampion = (teamId: string) => {
+    togglePartnerRole(
+      {
+        team_id: teamId,
       },
-    };
+      {
+        onSuccess: async (res: TOGGLE_PARTNER_RESPONSE) => {
+          const authState = localStorage.getItem("authState");
 
-    // localStorage update
-    localStorage.setItem(
-      "authState",
-      JSON.stringify(updatedAuthState),
-    );
-  }
+          if (authState) {
+            const parsedAuthState = JSON.parse(authState);
 
-  // observable update (IMPORTANT)
-  const currentAuth = getAuthValue();
+            const updatedAuthState = {
+              ...parsedAuthState,
+              user: {
+                ...parsedAuthState.user,
+                user_type: res.user_type,
+              },
+            };
 
-  setAuthValue({
-    ...currentAuth,
-    user: {
-      ...currentAuth.user!,
-      user_type: res.user_type,
-    },
-  });
+            // localStorage update
+            localStorage.setItem("authState", JSON.stringify(updatedAuthState));
+          }
 
-  // APIs refetch
-  await queryClient.invalidateQueries({
-    queryKey: GET_PROFILE_QUERY_KEY,
-  });
+          // observable update (IMPORTANT)
+          const currentAuth = getAuthValue();
 
-  await queryClient.invalidateQueries({
-    queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
-  });
-},
-
-      onError: (error) => {
-        console.log(error);
-      },
-    },
-  );
-};
-
-const handleBecomePartner = () => {
-  togglePartnerRole(
-    {
-      team_id: undefined,
-    },
-    {
-      onSuccess: async (res) => {
-        const authState = localStorage.getItem("authState");
-
-        if (authState) {
-          const parsedAuthState = JSON.parse(authState);
-
-          const updatedAuthState = {
-            ...parsedAuthState,
+          setAuthValue({
+            ...currentAuth,
             user: {
-              ...parsedAuthState.user,
+              ...currentAuth.user!,
+              user_type: res.user_type,
+            },
+          });
+
+          // APIs refetch
+          await queryClient.invalidateQueries({
+            queryKey: GET_PROFILE_QUERY_KEY,
+          });
+
+          await queryClient.invalidateQueries({
+            queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
+          });
+        },
+
+        onError: (error) => {
+          console.log(error);
+        },
+      },
+    );
+  };
+
+  const handleBecomePartner = () => {
+    togglePartnerRole(
+      {
+        team_id: undefined,
+      },
+      {
+        onSuccess: async (res) => {
+          const authState = localStorage.getItem("authState");
+
+          if (authState) {
+            const parsedAuthState = JSON.parse(authState);
+
+            const updatedAuthState = {
+              ...parsedAuthState,
+              user: {
+                ...parsedAuthState.user,
+                user_type: res.user_type,
+                team_id: undefined,
+              },
+            };
+
+            localStorage.setItem("authState", JSON.stringify(updatedAuthState));
+          }
+
+          // observable update
+          const currentAuth = getAuthValue();
+
+          setAuthValue({
+            ...currentAuth,
+            user: {
+              ...currentAuth.user!,
               user_type: res.user_type,
               team_id: undefined,
             },
-          };
+          });
 
-          localStorage.setItem(
-            "authState",
-            JSON.stringify(updatedAuthState),
-          );
-        }
+          // refetch queries
+          await queryClient.invalidateQueries({
+            queryKey: GET_PROFILE_QUERY_KEY,
+          });
 
-        // observable update
-        const currentAuth = getAuthValue();
+          await queryClient.invalidateQueries({
+            queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
+          });
+        },
 
-        setAuthValue({
-          ...currentAuth,
-          user: {
-            ...currentAuth.user!,
-            user_type: res.user_type,
-            team_id: undefined,
-          },
-        });
-
-        // refetch queries
-        await queryClient.invalidateQueries({
-          queryKey: GET_PROFILE_QUERY_KEY,
-        });
-
-        await queryClient.invalidateQueries({
-          queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
-        });
+        onError: (error) => {
+          console.log(error);
+        },
       },
+    );
+  };
 
-      onError: (error) => {
-        console.log(error);
-      },
-    },
+  const loggedInTeamChampion = allUsers.find(
+    (userItem) =>
+      userItem.team_id === user?.team_id &&
+      userItem.user_type === 2 &&
+      !userItem.deactivated,
   );
-};
+
   return (
     <>
       <div
@@ -337,29 +343,23 @@ const handleBecomePartner = () => {
             </h2>
           </div>
 
-        
-         
-              <PartnerProfile
-                profileData={profileData}
-                // organizationData={organizationData}
-                teamName={teamName}
-                loggedInUserDetails={loggedInUserDetails}
-                  handleBecomePartner={handleBecomePartner}
-
-              />
-                {user?.user_type === 3 && profileData  ? (
-              <CompanyStructure
-                profileData={profileData}
-                partners={partnersData}
-                champions={championsData}
-                championsWithMembers={championsWithMembers}
-                teamChampion={teamChampion}
-              />
-          
+          <PartnerProfile
+            profileData={profileData}
+            // organizationData={organizationData}
+            teamName={teamName}
+            loggedInUserDetails={loggedInUserDetails}
+            handleBecomePartner={handleBecomePartner}
+          />
+          {user?.user_type === 3 && profileData ? (
+            <CompanyStructure
+              profileData={profileData}
+              partners={partnersData}
+              champions={championsData}
+              championsWithMembers={championsWithMembers}
+              teamChampion={teamChampion}
+            />
           ) : (
             <>
-      
-
               {/* ══ Team Structure ══ */}
               <div className="py-6 sm:py-8 md:py-12 relative z-0">
                 {/*
@@ -395,7 +395,7 @@ const handleBecomePartner = () => {
                     <div className="flex items-center gap-3 sm:gap-5">
                       <div className="h-[52px] w-[52px] sm:h-[62px] sm:w-[62px] md:h-[72px] md:w-[72px] rounded-full overflow-hidden shrink-0">
                         <Image
-                          src={images.maria}
+                          src={images.dummyUser}
                           alt="Champion"
                           width={72}
                           height={72}
@@ -404,10 +404,14 @@ const handleBecomePartner = () => {
                       </div>
                       <div>
                         <p className="text-[14px] sm:text-[16px] md:text-[18px] font-[Roboto] font-semibold text-[#0F4F58]">
-                          Hi Humaniser! Champion
+                          Hi Humaniser Champion
                         </p>
                         <p className="text-[13px] sm:text-[14px] md:text-[15px] text-[#0F4F58]">
-                          {profileData?.first_name} {profileData?.last_name}
+                          {user?.user_type === 2
+                            ? `${profileData?.first_name} ${profileData?.last_name}`
+                            : loggedInTeamChampion
+                              ? `${loggedInTeamChampion.first_name} ${loggedInTeamChampion.last_name}`
+                              : "N/A"}
                         </p>
                       </div>
                     </div>
@@ -490,11 +494,17 @@ const handleBecomePartner = () => {
                         className="w-[100px] sm:w-[130px] md:w-[160px] h-auto"
                       />
                     </div> */}
-                    <div className={isEmptyState ? "mt-[200px]" : ""}>
+                    <div
+                      className={
+                        isEmptyState || user?.user_type === 1
+                          ? "mt-[200px]"
+                          : ""
+                      }
+                    >
                       <CardFooter
                         label=" Edit Members"
                         onClick={() => router.push("/edit-members?type=member")}
-                        disabled={isEmptyState}
+                        disabled={isEmptyState || user?.user_type === 1}
                       />
                     </div>
                   </div>
@@ -505,7 +515,7 @@ const handleBecomePartner = () => {
         </div>
       </div>
       <LogoutModal />
-<ChampionModal onSubmit={handleBecomeChampion} />
+      <ChampionModal onSubmit={handleBecomeChampion} />
     </>
   );
 }

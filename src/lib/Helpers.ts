@@ -89,7 +89,7 @@ export const authFetcher = (config: AxiosRequestConfig) => {
       ...(token && { Authorization: `Bearer ${token}` }),
     },
     withCredentials: true,
-    timeout: 10000,
+    timeout: config.timeout ?? 10000,
   });
 };
 export const secureFetcher = (config: AxiosRequestConfig) => {

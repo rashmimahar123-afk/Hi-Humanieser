@@ -121,6 +121,7 @@ function CompanyStructure({
   const { user } = useAuthValue();
   const partnerRows = chunkByPattern(partners);
   const championRows = chunkByPattern(champions);
+  console.log("championRowschampionRowschampionRows", championRows);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState<any>(null);
@@ -162,7 +163,7 @@ function CompanyStructure({
       <StructureCard>
         <TopPartnerRow profileData={profileData} teamChampion={teamChampion} />
         <h3 className="text-[20px] sm:text-[24px] md:text-[28px] font-[RocaTwo] font-bold text-[#0F4F58] mb-4 sm:mb-6 md:mb-8">
-          Hi Humaniser! Champions
+          Hi Humaniser Champions
         </h3>
         <MemberGrid rows={championRows} />
         <CardFooter
@@ -175,7 +176,7 @@ function CompanyStructure({
       <StructureCard>
         <TopPartnerRow profileData={profileData} teamChampion={teamChampion} />
         <h3 className="text-[20px] sm:text-[24px] md:text-[28px] font-[RocaTwo] font-bold text-[#0F4F58] mb-4 sm:mb-6 md:mb-8">
-          Hi Humaniser! Members
+          Hi Humaniser Members
         </h3>
 
         {/* Team selector row — stacks on mobile, inline on sm+ */}
