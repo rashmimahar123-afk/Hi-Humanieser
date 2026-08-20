@@ -312,7 +312,7 @@ function LandingPage() {
             <div className={`space-y-4 ${styles.description}`}>
               <p className={`text-base text-[#0F4F58] ${styles.descParagraph}`}>
                 A human-centred platform aligning people, teams and performance
-                — together.
+                together.
               </p>
               <p className={`text-base text-[#0F4F58] ${styles.descParagraph}`}>
                 More than a platform, it&apos;s a mindset shift.{" "}
@@ -489,16 +489,24 @@ function LandingPage() {
             >
               here
             </Link>
-            .
           </div>
-          <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] flex flex-wrap mt-8">
-            Still not sure, or just want to talk it through?
-          </div>
-          <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] flex flex-wrap">
-            Drop us a note at
+          {/* <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] flex flex-wrap mt-8">
+            Still not sure, or just want to talk it through? Drop us a note at
             <a
               href="mailto:connect@humanisingourworkplaces.com"
-              className="text-[#0f4f58] hover:underline ml-2 break-all"
+              className="text-[#0f4f58] hover:underline ml-2"
+            >
+              connect@humanisingourworkplaces.com
+            </a>
+          </div> */}
+          <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] mt-8">
+            <span>
+              Still not sure, or just want to talk it through? Drop us a note at
+            </span>
+
+            <a
+              href="mailto:connect@humanisingourworkplaces.com"
+              className={`text-[#4ba6a6] hover:underline ml-2 sm:ml-1`}
             >
               connect@humanisingourworkplaces.com
             </a>

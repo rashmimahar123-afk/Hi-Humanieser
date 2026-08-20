@@ -32,14 +32,12 @@ function PressurePointRecord() {
   const router = useRouter();
   const { user } = useAuthValue();
   const [openPreviousPoll, setOpenPreviousPoll] = useState(false);
-  const [selectedPreviousPoll, setSelectedPreviousPoll] = useState<
-    string | null
-  >(null);
+  const [selectedPreviousPoll, setSelectedPreviousPoll] = useState<any | null>(
+    null,
+  );
 
-  const previousPollOptions = ["Jan 2025", "Feb 2025", "March 2025"];
-
-  const handleSelectPreviousPoll = (item: string) => {
-    setSelectedPreviousPoll(item);
+  const handleSelectPreviousPoll = (cycle: any) => {
+    setSelectedPreviousPoll(cycle);
     setOpenPreviousPoll(false);
   };
 
@@ -135,11 +133,34 @@ Thanks!`,
     return `${weeks} Weeks`;
   };
 
-  const { data: mtjKpiData, refetch } = useGetKpiQuery(user?.team_id);
-  const engagementData = mtjKpiData?.data?.engagement;
+  // Current cycle API
+  const { data: mtjKpiData } = useGetKpiQuery(
+    user?.team_id,
+    60,
+    !selectedPreviousPoll,
+  );
 
-  const cycleData = mtjKpiData?.data?.cycle;
+  // Previous cycle API
+  const { data: previousKpiData } = useGetKpiQuery(
+    undefined,
+    60,
+    !!selectedPreviousPoll,
+  );
+  const currentKpi = mtjKpiData?.data;
 
+  const engagementData = currentKpi?.engagement;
+  const cycleData = currentKpi?.cycle;
+
+  const previousCycles = currentKpi?.previous_cycles || [];
+  const previousKpi = previousKpiData?.data;
+
+  const previousCyclesFromApi = previousKpi?.previous_cycles || [];
+  console.log("previousCyclespreviousCycles", previousCycles);
+  const previousPollOptions = previousCycles.map((cycle: any) => ({
+    id: cycle.id,
+    label: cycle.start_month,
+    cycle,
+  }));
   const kpiPollData = mtjKpiData?.data?.poll;
   const participation = kpiPollData?.participation;
   const isLessThan70 = participation?.percentage || 0 < 70;
@@ -480,7 +501,7 @@ Thanks!`,
                 onClick={() =>
                   closePollMutation(undefined, {
                     onSuccess: async () => {
-                      await refetch();
+                      // await refetch();
 
                       recommendFocusAreas();
                     },
@@ -949,7 +970,8 @@ Champion Notes"
                   color: selectedPreviousPoll ? "#567f55" : "#9CA3AF",
                 }}
               >
-                {selectedPreviousPoll || "[Date: Month - Year]"}
+                {selectedPreviousPoll?.start_month ||
+                  "[Date: Month - Year]"}{" "}
               </span>
 
               <Image
@@ -967,11 +989,11 @@ Champion Notes"
               <div className="absolute z-20 mt-2 w-full bg-white rounded-xl shadow-lg overflow-hidden">
                 {previousPollOptions.map((item) => (
                   <div
-                    key={item}
-                    onClick={() => handleSelectPreviousPoll(item)}
+                    key={item.id}
+                    onClick={() => handleSelectPreviousPoll(item.cycle)}
                     className="px-6 py-3 text-[#0F4F58] cursor-pointer hover:bg-[#F5F0EB]"
                   >
-                    {item}
+                    {item.label}
                   </div>
                 ))}
               </div>
@@ -982,7 +1004,7 @@ Champion Notes"
         {/* ===== EXPANDED RESULT UI ===== */}
         {selectedPreviousPoll && (
           <div className="bg-[#b9cbb7] rounded-2xl p-10 space-y- mt-4">
-            <PreviousCycle />
+            <PreviousCycle cycle={selectedPreviousPoll} />
           </div>
         )}
 

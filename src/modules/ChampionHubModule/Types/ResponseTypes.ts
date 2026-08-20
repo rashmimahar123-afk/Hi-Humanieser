@@ -161,6 +161,39 @@ export type GET_MTJ_KPI_SHARED_REFLECTIONS_DATA = {
   created_at: string;
   like_count: number;
 };
+export type PREVIOUS_CYCLE_DATA = {
+  id: string;
+  status: string;
+  stage: string;
+  period_label: string;
+  start_month: string;
+  end_month: string;
+  started_at: number;
+  started_at_iso: string;
+  completed_at: string;
+  completed_at_ts: number;
+  duration_weeks: number;
+  close_reason: string;
+  champion_pp: string;
+  focus_areas: Array<string>;
+  team_rituals: Array<TEAM_RITUAL_DATA>;
+  engagement: {
+    awareness: {
+      viewer_count: number;
+      total: number;
+      percentage: number;
+    };
+    team_ritual_participation: {
+      contributor_count: number;
+      total: number;
+      percentage: number;
+    };
+    reflection_count: number;
+    sharing: {
+      shared_count: number;
+    };
+  };
+};
 export type GET_MTJ_KPI_RESPONSE = {
   message: string;
   team_id: string;
@@ -210,4 +243,5 @@ export type GET_MTJ_KPI_RESPONSE = {
     };
     shared_reflections: Array<GET_MTJ_KPI_SHARED_REFLECTIONS_DATA>;
   };
+  previous_cycles: Array<PREVIOUS_CYCLE_DATA>;
 };
