@@ -245,3 +245,23 @@ export type GET_MTJ_KPI_RESPONSE = {
   };
   previous_cycles: Array<PREVIOUS_CYCLE_DATA>;
 };
+export type MY_NOTES_DATA = {
+  id: string;
+  note: string;
+  team_id: string;
+  hub: string;
+  shared_anonymously: boolean;
+  created_at: string;
+  updated_at: null;
+  edited: boolean;
+  like_count: number;
+};
+export type GET_MY_NOTES_RESPONSE = {
+  message: string;
+  hub: string;
+  team_id: string;
+  count: number;
+  shared_count: number;
+  private_count: number;
+  notes: Array<MY_NOTES_DATA>;
+};

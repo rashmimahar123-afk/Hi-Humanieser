@@ -1,11 +1,10 @@
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { useEffect, useState } from "react";
 import { openChampionNotes } from "../AddChampionNoteModal/AddChampionNoteModal";
-import { openFillupModal } from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEditReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useEditReflectionMutation";
 import { openConfirmShareReflectionModal } from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
-import SnackbarHandler from "@/src/lib/SnackbarHandler";
+import { useEditMyNotesMutation } from "../../Hooks/useEditMyNotesMutation";
 
 type Props = {
   reflection?: {
@@ -17,7 +16,6 @@ type Props = {
 };
 
 function MyNotes({ reflection }: Props) {
-  // const [checked, setChecked] = useState(false);
   const { user } = useAuthValue();
   const [checked, setChecked] = useState(
     reflection?.shared_anonymously ?? false,
@@ -29,25 +27,24 @@ function MyNotes({ reflection }: Props) {
 
   const queryClient = useQueryClient();
 
-  const { mutate: editReflectionMutate, isPending } =
-    useEditReflectionMutation();
+  const { mutate: editMyNotesMutate, isPending: isEditingMyNote } =
+    useEditMyNotesMutation();
 
   const handleShareChange = (value: boolean) => {
     if (!reflection) return;
 
     setChecked(value);
 
-    editReflectionMutate(
+    editMyNotesMutate(
       {
-        reflection_id: reflection.id,
-        reflection: reflection.reflection,
+        note_id: reflection.id,
+        note: reflection.reflection,
         shared_anonymously: value,
-        team_ritual_id: "",
       },
       {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            queryKey: ["getReflectionWallsQueryKey"],
+            queryKey: ["getMyNotesQueryKey"],
           });
 
           if (value) {
@@ -99,26 +96,24 @@ function MyNotes({ reflection }: Props) {
             }
             className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
           >
-            Add note or reflection
+            Add note
           </button>
         ) : (
           <button
             className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
-            onClick={() =>
-              openFillupModal(
-                "",
-                "",
+            onClick={() => {
+              console.log("SENDING NOTE:", reflection);
+              openChampionNotes(
+                "edit_champion_note",
+                reflection.id,
                 undefined,
                 undefined,
                 user?.team_id,
-                undefined,
-                reflection?.id,
-                reflection?.reflection,
-                reflection?.shared_anonymously,
-              )
-            }
+                reflection,
+              );
+            }}
           >
-            Edit note or reflection
+            Edit note
           </button>
         )}
       </div>
@@ -131,7 +126,7 @@ function MyNotes({ reflection }: Props) {
         <input
           type="checkbox"
           checked={checked}
-          disabled={isPending}
+          disabled={isEditingMyNote}
           onChange={(e) => handleShareChange(e.target.checked)}
           className="w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
         />

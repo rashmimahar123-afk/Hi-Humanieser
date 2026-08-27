@@ -1,12 +1,7 @@
 "use client";
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import ChampionNotes from "../ChampionNotes/ChampionNotes";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
-import {
-  GET_MTJ_KPI_CHOSEN_TEAM_RITUAL_DATA,
-  GET_MTJ_KPI_POLL_RESULTS_DATA,
-} from "../../Types/ResponseTypes";
 
 type CHAMPION_NOTES_SECOND_SECTION = {
   cycleKpi: any;
@@ -16,7 +11,6 @@ type CHAMPION_NOTES_SECOND_SECTION = {
 
 function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
   const { cycleKpi, poll, recommendedFocusAreas } = props;
-
   const COLORS = ["#63C0C5", "#49A6BC", "#3A88AE", "#5977A3", "#6C6498"];
 
   const chartData =

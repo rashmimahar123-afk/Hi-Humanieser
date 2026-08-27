@@ -11,3 +11,12 @@ export type ACTIVATE_RITUAL_REQUEST_TYPES = {
 export type DEACTIVATE_RITUAL_REQUEST_TYPES = {
   team_ritual_id: string;
 };
+export type ADD_MY_NOTES_REQUEST_TYPES = {
+  note: string;
+  shared_anonymously: boolean;
+};
+export type EDIT_MY_NOTES_REQUEST_TYPES = {
+  note_id: string;
+  note: string;
+  shared_anonymously: boolean;
+};

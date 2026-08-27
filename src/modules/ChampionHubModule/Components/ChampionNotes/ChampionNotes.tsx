@@ -20,8 +20,9 @@ import FillUpFormModal from "@/src/modules/PersonalPathwayModule/Components/Fill
 import AddChampionNoteModal from "../AddChampionNoteModal/AddChampionNoteModal";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
-import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
 import ConfirmShareReflectionModal from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
+import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
+import useMyNotesQuery from "../../Hooks/useMyNotesQuery";
 
 function ChampionNotes() {
   const { user } = useAuthValue();
@@ -74,12 +75,9 @@ function ChampionNotes() {
     return `${weeks} Weeks`;
   };
 
-  const { data } = useGetReflectionWallsQuery(user?.team_id);
+  const { data: myNotesData, isLoading: isMyNotesLoading } = useMyNotesQuery();
 
-  const reflections =
-    data?.data?.reflections
-      ?.filter((item) => item.source === "mtj")
-      ?.slice(0, 2) ?? [];
+  const myNotes = myNotesData?.data?.notes || [];
 
   return (
     <>
@@ -204,14 +202,43 @@ function ChampionNotes() {
 
             {/* ================= TWO CARDS ================= */}
             <div className="grid grid-cols-2 gap-14 mt-6">
-              {reflections.length > 0 ? (
-                reflections.map((item) => (
-                  <MyNotes key={item.id} reflection={item} />
-                ))
-              ) : (
+              {myNotes.length === 0 ? (
                 <>
                   <MyNotes />
                   <MyNotes />
+                </>
+              ) : myNotes.length === 1 ? (
+                <>
+                  <MyNotes
+                    reflection={{
+                      id: myNotes[0].id,
+                      reflection: myNotes[0].note,
+                      created_at: myNotes[0].created_at,
+                      shared_anonymously: myNotes[0].shared_anonymously,
+                    }}
+                  />
+
+                  <MyNotes />
+                </>
+              ) : (
+                <>
+                  <MyNotes
+                    reflection={{
+                      id: myNotes[0].id,
+                      reflection: myNotes[0].note,
+                      created_at: myNotes[0].created_at,
+                      shared_anonymously: myNotes[0].shared_anonymously,
+                    }}
+                  />
+
+                  <MyNotes
+                    reflection={{
+                      id: myNotes[1].id,
+                      reflection: myNotes[1].note,
+                      created_at: myNotes[1].created_at,
+                      shared_anonymously: myNotes[1].shared_anonymously,
+                    }}
+                  />
                 </>
               )}
             </div>

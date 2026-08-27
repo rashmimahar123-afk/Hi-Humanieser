@@ -24,3 +24,10 @@ export type VERIFY_EMAIL_REQUEST_TYPE = {
   email: string;
   token: string;
 };
+export type USER_ONBOARDING_REQUEST_TYPES = {
+  email: string;
+  verification_token: string;
+  new_password: string;
+  gender?: string;
+  birth_year?: number;
+};

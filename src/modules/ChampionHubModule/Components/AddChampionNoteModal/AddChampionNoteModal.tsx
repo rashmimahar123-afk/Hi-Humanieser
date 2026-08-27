@@ -10,10 +10,19 @@ import useEventEmitter, {
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
-import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import { useUpdateMppMilestoneMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useUpdateMppMilestoneMutation";
 import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
+import { useAddMyNotesMutation } from "../../Hooks/useAddMyNotesMutation";
+import { GET_MY_NOTES_QUERY_KEY } from "../../Hooks/useMyNotesQuery";
+import { useEditMyNotesMutation } from "../../Hooks/useEditMyNotesMutation";
+import { MY_NOTES_DATA } from "../../Types/ResponseTypes";
 
+type NOTE_DATA = {
+  id: string;
+  reflection: string;
+  created_at: string;
+  shared_anonymously: boolean;
+};
 const EVENT = "ADD_CHAMPION_NOTE_MODAL_EVENT";
 
 export const openChampionNotes = (
@@ -22,6 +31,7 @@ export const openChampionNotes = (
   selectedPulse?: number,
   pinToDash?: string[],
   selectedTeam?: string,
+  note?: NOTE_DATA,
 ) => {
   emitEvent(EVENT, {
     microActionType,
@@ -29,6 +39,7 @@ export const openChampionNotes = (
     selectedPulse,
     pinToDash,
     selectedTeam,
+    note,
   });
 };
 
@@ -40,6 +51,8 @@ function AddChampionNoteModal() {
   const [pulseCheck, setPulseCheck] = useState<number>();
   const [id, setId] = useState("");
   const [selectedTeamId, setSelectedTeamId] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [noteId, setNoteId] = useState("");
 
   const charCount = reflection.length;
   const pathname = usePathname();
@@ -47,147 +60,118 @@ function AddChampionNoteModal() {
     useAddReflectionMutation();
   const [pinToDash, setPinToDash] = useState<string[]>([]);
 
+  // useEventEmitter(
+  //   EVENT,
+  //   ({ microActionType, uuid, selectedPulse, pinToDash, selectedTeam }) => {
+  //     setTimeout(() => {
+  //       setActionKey(microActionType);
+  //       setId(uuid);
+  //       setPulseCheck(selectedPulse);
+  //       setPinToDash(pinToDash || []);
+  //       setReflection("");
+  //       setShare(false);
+  //       setSelectedTeamId(selectedTeam || "");
+  //       setIsOpen(true);
+  //     }, 0);
+  //   },
+  // );
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useUpdateMppMilestoneMutation();
+  const { user } = useAuthValue();
+
+  const { mutate: addMyNotesMutate, isPending: isAddingMyNote } =
+    useAddMyNotesMutation();
+
+  const { mutate: editMyNotesMutate, isPending: isEditingMyNote } =
+    useEditMyNotesMutation();
+
+  const handleSave = async () => {
+    if (pathname === "/champion-hub/champion-notes") {
+      // ================================
+      // EDIT MY NOTE
+      // ================================
+      if (isEditMode) {
+        const payload = {
+          note_id: noteId,
+          note: reflection.trim(),
+          shared_anonymously: share,
+        };
+
+        editMyNotesMutate(payload, {
+          onSuccess: async () => {
+            setReflection("");
+            setShare(false);
+            setIsEditMode(false);
+            setNoteId("");
+            setIsOpen(false);
+
+            await queryClient.invalidateQueries({
+              queryKey: GET_MY_NOTES_QUERY_KEY,
+            });
+          },
+        });
+
+        return;
+      }
+
+      // ================================
+      // ADD MY NOTE
+      // ================================
+      const payload = {
+        shared_anonymously: share,
+        note: reflection.trim(),
+      };
+
+      addMyNotesMutate(payload, {
+        onSuccess: async () => {
+          setReflection("");
+          setShare(false);
+          setIsOpen(false);
+
+          await queryClient.invalidateQueries({
+            queryKey: GET_MY_NOTES_QUERY_KEY,
+          });
+        },
+      });
+
+      return;
+    }
+  };
+
   useEventEmitter(
     EVENT,
-    ({ microActionType, uuid, selectedPulse, selectedTeam }) => {
+    ({
+      microActionType,
+      uuid,
+      selectedPulse,
+      pinToDash,
+      selectedTeam,
+      note,
+    }) => {
       setTimeout(() => {
         setActionKey(microActionType);
         setId(uuid);
         setPulseCheck(selectedPulse);
         setPinToDash(pinToDash || []);
-        setReflection("");
-        setShare(false);
-        setSelectedTeamId(selectedTeam);
+        setSelectedTeamId(selectedTeam || "");
+
+        if (microActionType === "edit_champion_note") {
+          setIsEditMode(true);
+          setNoteId(uuid);
+
+          setReflection(note?.reflection || "");
+          setShare(note?.shared_anonymously ?? false);
+        } else {
+          setIsEditMode(false);
+          setNoteId("");
+          setReflection("");
+          setShare(false);
+        }
+
         setIsOpen(true);
       }, 0);
     },
   );
-  const queryClient = useQueryClient();
-  const { mutate, isPending } = useUpdateMppMilestoneMutation();
-  const { user } = useAuthValue();
-
-  const handleSave = async () => {
-    const newReflection = { reflection, share };
-    if (pathname === "/reflection-walls") {
-      const payload = {
-        team_id: selectedTeamId ? selectedTeamId : user?.team_id, // replace if available
-        shared_anonymously: share,
-        reflection: reflection,
-        source: "reflection_wall",
-      };
-
-      addReflectionMutate(payload, {
-        onSuccess: async () => {
-          setReflection("");
-          setShare(false);
-          setIsOpen(false);
-          await queryClient.invalidateQueries({
-            queryKey: ["getReflectionWallsQueryKey"],
-          });
-        },
-      });
-      return;
-    }
-
-    if (
-      pathname === "/start-team-journey" ||
-      pathname === "/champion-hub/champion-notes"
-    ) {
-      const payload = {
-        team_id: selectedTeamId ? selectedTeamId : user?.team_id, // replace if available
-        shared_anonymously: share,
-        reflection: reflection,
-        source: "mtj",
-      };
-
-      addReflectionMutate(payload, {
-        onSuccess: async () => {
-          setReflection("");
-          setShare(false);
-          setIsOpen(false);
-          await queryClient.invalidateQueries({
-            queryKey: ["getReflectionWallsQueryKey"],
-          });
-        },
-      });
-      return;
-    }
-    // ✅ ===== MILESTONE 3 =====
-    if (actionKey === "milestone3") {
-      const payload = {
-        uuid: id,
-        milestone_key: "m3",
-        data: {
-          kind: "m3",
-          reflection: newReflection,
-          pulse_check: pulseCheck,
-          pin_to_dash: pinToDash,
-        },
-      };
-
-      mutate(payload, {
-        onSuccess: async () => {
-          setReflection("");
-          setShare(false);
-          setIsOpen(false);
-
-          await queryClient.refetchQueries({
-            queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
-            type: "active",
-          });
-        },
-      });
-
-      return; //  IMPORTANT (stop m2 execution)
-    }
-    // STEP 1: Always get fresh data
-    await queryClient.refetchQueries({
-      queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
-      type: "active",
-    });
-
-    const freshData = queryClient.getQueryData<any>(
-      GET_PERSONAL_PATHWAY_QUERY_KEY,
-    );
-
-    const pathways = freshData?.data?.pathways || [];
-    const currentPathway = pathways.find((p: any) => p.uuid === id);
-
-    const firstKey = Object.keys(currentPathway || {}).find(
-      (k) => !["uuid", "created", "active"].includes(k),
-    );
-
-    if (!firstKey) {
-      console.error("No valid key found in pathway");
-      return;
-    }
-    const existingM2 = currentPathway[firstKey]?.m2 || {};
-    const { micro_actions, ...cleanM2 } = existingM2 || {};
-
-    // STEP 2: Merge properly
-    const finalPayload = {
-      uuid: id,
-      milestone_key: "m2",
-      data: {
-        kind: "m2",
-        ...cleanM2, //  ALL previous micro_actions preserved
-        [actionKey]: [...(existingM2[actionKey] || []), newReflection],
-      },
-    };
-
-    mutate(finalPayload, {
-      onSuccess: async () => {
-        setReflection("");
-        setShare(false);
-        setIsOpen(false);
-
-        // optional but recommended
-        await queryClient.refetchQueries({
-          queryKey: GET_PERSONAL_PATHWAY_QUERY_KEY,
-        });
-      },
-    });
-  };
   return (
     <Dialog
       open={isOpen}
@@ -220,7 +204,9 @@ function AddChampionNoteModal() {
 
           {/* Title */}
           <DialogTitle className="text-[26px] font-bold text-[#567F55] text-center">
-            Take a moment to add note or reflection
+            {isEditMode
+              ? "Take a moment to edit note"
+              : "Take a moment to add note "}
           </DialogTitle>
 
           {/* ===== Textarea ===== */}
@@ -280,21 +266,32 @@ function AddChampionNoteModal() {
           {/* ===== Save Button ===== */}
           <button
             onClick={handleSave}
-            disabled={isPending || reflection.trim().length === 0}
+            disabled={
+              isPending ||
+              isAdding ||
+              isAddingMyNote ||
+              reflection.trim().length === 0
+            }
             className="
-              mt-4
-              w-full
-              rounded-xl
-              bg-[#0F4F58]
-              py-3
-              text-white
-              text-[15px]
-              font-medium
-              hover:opacity-90
-              transition
-            "
+    mt-4
+    w-full
+    rounded-xl
+    bg-[#0F4F58]
+    py-3
+    text-white
+    text-[15px]
+    font-medium
+    hover:opacity-90
+    transition
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
           >
-            {isPending ? "Saving..." : "Save Notes"}
+            {isPending || isAdding || isAddingMyNote || isEditingMyNote
+              ? "Saving..."
+              : isEditMode
+                ? "Edit Note"
+                : "Save Notes"}
           </button>
         </DialogPanel>
       </div>

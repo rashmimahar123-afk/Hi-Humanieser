@@ -140,6 +140,7 @@
 }
 
 .fieldInput:focus { border-color: #9bb89a; }
+.fieldInputError  { border-color: #ef4444 !important; }
 
 /* ── Why we ask section — original: mt-[80px] ── */
 .whySection {
@@ -229,7 +230,39 @@
 .polygonBtnText span { font-size: 22px; line-height: 1; }
 .polygonBtnText span + span { margin-top: 4px; }
 
+/* Original: relative w-[900px] (password wrapper) */
+.passwordWrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
 
+.passwordWrapper .fieldInput {
+  padding-right: 56px;
+  width: 100%;
+}
+
+/* Original: absolute right-5 top-1/2 -translate-y-1/2 */
+.eyeBtn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 13px;
+  margin-top: 4px;
+  margin-left: 215px;
+  line-height: 1.3;
+}
 /* ════════════════════════════════════════
    TABLET LARGE  960px – 1199px
 ════════════════════════════════════════ */
@@ -252,6 +285,10 @@
   .whyText         { font-size: clamp(14px, 1.6vw, 19px); }
   .formFooter      { margin-top: clamp(28px, 3vw, 48px); }
   .privacyRow      { font-size: clamp(13px, 1.5vw, 18px); }
+    .passwordWrapper { flex: 1; width: 100%; }
+      .errorText       { margin-left: clamp(148px, 16vw, 212px); }
+
+
 }
 
 /* ════════════════════════════════════════
@@ -277,6 +314,10 @@
   .dropdownWrapper { margin-top: 20px; }
   .formFooter      { margin-top: clamp(24px, 3vw, 40px); flex-direction: row; align-items: flex-end; }
   .privacyRow      { font-size: clamp(12px, 1.8vw, 16px); }
+    .passwordWrapper { flex: 1; width: 100%; }
+      .errorText       { margin-left: clamp(124px, 18vw, 188px); }
+
+
 }
 
 /* ════════════════════════════════════════
@@ -303,6 +344,10 @@
   .formFooter      { flex-direction: column; align-items: flex-start; gap: 20px; margin-top: 24px; }
   .polygonWrapper  { align-self: flex-end; }
   .privacyRow      { font-size: 13px; }
+  .passwordWrapper { flex: unset; width: 100%; box-sizing: border-box; }
+  .passwordWrapper .fieldInput { width: 100%; }
+    .errorText       { margin-left: 4px; }
+
 }
 
 @media (max-width: 400px) {
