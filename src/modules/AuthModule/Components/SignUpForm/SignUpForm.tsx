@@ -6,12 +6,14 @@ import images from "@/src/assets/images";
 import styles from "./SignUpForm.module.css";
 import CustomDropdown from "@/src/components/CustomDropdown/CustomDropdown";
 import SignUpModal, { openSignupModal } from "../SignUpModal/SignUpModal";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getPasswordValidationRules } from "@/src/lib/Helpers";
 import { passwordMessage } from "@/src/lib/ErrorMessages";
 import { useUserOnboardingMutation } from "../../Hooks/useUserOnboardingMutation";
 import { USER_ONBOARDING_REQUEST_TYPES } from "../../Types/RequestTypes";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +39,7 @@ function SignUpForm() {
   });
 
   const { mutate: userOnboarding, isPending } = useUserOnboardingMutation();
-
+  const router = useRouter();
   useEffect(() => {
     const firstName = searchParams.get("firstname") || "";
     const lastName = searchParams.get("lastname") || "";
@@ -71,8 +73,13 @@ function SignUpForm() {
     };
 
     userOnboarding(payload, {
-      onSuccess: () => {
-        openSignupModal();
+      onSuccess: (res) => {
+        // openSignupModal();
+        SnackbarHandler.successToast(res.message);
+        router.push("/login");
+      },
+      onError: (err) => {
+        SnackbarHandler.errorToast(err.message);
       },
     });
   };
@@ -277,7 +284,13 @@ function SignUpForm() {
                   />
                   <p>
                     Your data stays yours. Learn more in our{" "}
-                    <span className={styles.privacyLink}>Privacy Policy</span>
+                    <Link
+                      href="/privacy-policy"
+                      target="_blank"
+                      style={{ textDecoration: "underline", color: "inherit" }}
+                    >
+                      Privacy Policy
+                    </Link>
                   </p>
                 </div>
 
