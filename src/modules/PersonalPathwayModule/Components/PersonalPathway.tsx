@@ -247,9 +247,16 @@ function PersonalPathway() {
                         </div>
                         <div
                           className="cursor-pointer relative"
+                          // onClick={() =>
+                          //   router.push(
+                          //     `/pathway-card?pillar=${details?.pillar_number}&principle=${item?.pathwayNumber}`,
+                          //   )
+                          // }
                           onClick={() =>
-                            router.push(
+                            window.open(
                               `/pathway-card?pillar=${details?.pillar_number}&principle=${item?.pathwayNumber}`,
+                              "_blank",
+                              "noopener,noreferrer",
                             )
                           }
                         >

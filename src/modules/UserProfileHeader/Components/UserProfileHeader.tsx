@@ -69,7 +69,11 @@ function UserProfileHeader(props: USER_PROFILE_HEADER_PROPS) {
         {!hideUserProfile && (
           <div
             className="flex items-start gap-2 cursor-pointer flex-shrink-0"
-            onClick={() => setOpenDropdown(!openDropdown)}
+            // onClick={() => setOpenDropdown(!openDropdown)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenDropdown((prev) => !prev);
+            }}
           >
             <div
               className="text-right font-semibold mt-[28px]"

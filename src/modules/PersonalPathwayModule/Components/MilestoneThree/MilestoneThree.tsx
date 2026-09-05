@@ -457,7 +457,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                   }}
                 >
                   <PolygonButton
-                    width="90px"
+                    width="110px"
                     height="68px"
                     bgColor="#4ba6a6"
                     radius={14}

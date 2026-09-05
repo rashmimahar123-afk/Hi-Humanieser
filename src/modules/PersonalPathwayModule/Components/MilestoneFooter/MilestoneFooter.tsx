@@ -7,10 +7,17 @@ type MILESTONE_FOOTER_PROPS = {
   nextLabel?: string;
   helperText?: any;
   nextRoute?: string;
+  openInNewTab?: boolean;
 };
 
 function MilestoneFooter(props: MILESTONE_FOOTER_PROPS) {
-  const { onNext, nextLabel, helperText, nextRoute } = props;
+  const {
+    onNext,
+    nextLabel,
+    helperText,
+    nextRoute,
+    openInNewTab = false,
+  } = props;
   const router = useRouter();
 
   const handleClick = () => {
@@ -20,7 +27,11 @@ function MilestoneFooter(props: MILESTONE_FOOTER_PROPS) {
     }
 
     if (nextRoute) {
-      router.push(nextRoute);
+      if (openInNewTab) {
+        window.open(nextRoute, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(nextRoute);
+      }
     }
   };
 

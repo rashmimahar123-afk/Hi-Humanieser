@@ -152,6 +152,7 @@ function MilestoneTwo(props: MILESTONE_TWO_PROPS) {
       <MilestoneFooter
         nextRoute={`/pathway-card?pillar=${pillarNumber}&principle=${pathwayDetails?.principle_number}`}
         nextLabel="Conversation Starters"
+        openInNewTab={true}
         helperText={`Want to go deeper?\nExplore 'Conversation Starters Pack' with few prompts to bring into team meetings, 1:1 and coffee chats.`}
       />
 

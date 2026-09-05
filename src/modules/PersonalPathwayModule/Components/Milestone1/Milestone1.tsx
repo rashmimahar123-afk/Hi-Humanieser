@@ -192,6 +192,7 @@ function Milestone1(props: MILESTONE_ONE_PROPS) {
       <MilestoneFooter
         nextLabel="Amplifier Behaviours"
         nextRoute={`/pathway-card?pillar=${pillarNumber}&principle=${pathwayDetails?.principle_number}`}
+        openInNewTab={true}
         helperText={
           <>
             <strong>Lead or influence others?</strong> Explore Amplifier
