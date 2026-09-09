@@ -1236,32 +1236,89 @@ function MyDashboard() {
     return [...new Set(selected)];
   };
 
+  // useEffect(() => {
+  //   if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+  //     const selectedKeys = getSelectedMicroActions(
+  //       getListMppData.data.pathways,
+  //     );
+  //     const list: any[] = [];
+  //     chooseMyselfData.data.forEach((item: any) => {
+  //       item?.pillars?.forEach((pillar: any) => {
+  //         pillar?.principles?.forEach((principle: any) => {
+  //           principle?.micro_actions?.forEach((action: any, index: number) => {
+  //             const key = `ma${index + 1}`;
+  //             list.push({
+  //               id: key,
+  //               title: action.title,
+  //               description: action.description,
+  //               pathway: principle.pathway_title,
+  //               checked: selectedKeys.includes(key),
+  //             });
+  //           });
+  //         });
+  //       });
+  //     });
+  //     setPracticeList(list);
+  //   }
+  // }, [getListMppData, chooseMyselfData]);
+
   useEffect(() => {
     if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
-      const selectedKeys = getSelectedMicroActions(
-        getListMppData.data.pathways,
-      );
       const list: any[] = [];
-      chooseMyselfData.data.forEach((item: any) => {
-        item?.pillars?.forEach((pillar: any) => {
-          pillar?.principles?.forEach((principle: any) => {
-            principle?.micro_actions?.forEach((action: any, index: number) => {
-              const key = `ma${index + 1}`;
-              list.push({
-                id: key,
-                title: action.title,
-                description: action.description,
-                pathway: principle.pathway_title,
-                checked: selectedKeys.includes(key),
-              });
+
+      // Step 1: getListMppData के pathways को iterate करो
+      getListMppData.data.pathways.forEach((pathway: any) => {
+        const dynamicKey = Object.keys(pathway).find(
+          (key) =>
+            ![
+              "created",
+              "uuid",
+              "active",
+              "completed",
+              "pathway_id",
+              "id",
+            ].includes(key),
+        );
+
+        if (!dynamicKey) return;
+
+        // Step 2: pathway number और pin_to_dash array निकालो
+        const pathwayNumber = parseInt(dynamicKey);
+        const m3Data = pathway[dynamicKey]?.m3;
+        const pinToDashIds = m3Data?.pin_to_dash || [];
+
+        // Step 3: chooseMyselfData में corresponding principle खोजो
+        chooseMyselfData.data.forEach((item: any) => {
+          item?.pillars?.forEach((pillar: any) => {
+            pillar?.principles?.forEach((principle: any) => {
+              // Check if this principle matches the pathway number
+              if (principle.pathway_number === pathwayNumber) {
+                const pathwayName = principle.pathway_title;
+
+                // Step 4: Micro-actions को filter करो (सिर्फ pinned वाले)
+                principle?.micro_actions?.forEach((action: any) => {
+                  const maId = `ma${action.micro_action_number}`;
+
+                  // ✅ केवल वही add करो जो pin_to_dash में हैं
+                  if (pinToDashIds.includes(maId)) {
+                    list.push({
+                      id: maId,
+                      title: action.title,
+                      description: action.description,
+                      pathway: pathwayName,
+                      checked: true,
+                    });
+                  }
+                });
+              }
             });
           });
         });
       });
+
       setPracticeList(list);
     }
   }, [getListMppData, chooseMyselfData]);
-
   const activePracticeListForPdf = practiceList.filter((item) => item.checked);
   const enrichedProgressList = enrichProgressWithPractice(
     progressList,
@@ -1272,6 +1329,7 @@ function MyDashboard() {
   const { data: mtjListData } = useGetMtjListQuery();
 
   const rituals = mtjListData?.data?.team_rituals || [];
+
   return (
     <>
       <div
@@ -1628,6 +1686,7 @@ Journey"
               activePracticeListForPdf={activePracticeListForPdf}
               enrichedProgressList={enrichedProgressList}
               randomMessage={randomMessage}
+              teamRituals={rituals}
             />
           </div>
         </div>

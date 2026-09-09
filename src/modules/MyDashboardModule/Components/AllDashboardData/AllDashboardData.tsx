@@ -23,6 +23,8 @@ import { enrichProgressWithPractice } from "@/src/lib/Helpers";
 import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
+import useGetMtjListQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useGetMtjListQuery";
+import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
 
 type Principle = {
   key: string;
@@ -44,7 +46,8 @@ function AllDashboardData() {
     pillarAvg: Record<string, number>;
   } | null>(null);
   const [progressList, setProgressList] = useState<any>([]);
-  const currentYear = new Date().getFullYear().toString();
+  const [currentYear, setCurrentYear] = useState("");
+
   const [selected, setSelected] = useState(currentYear);
   const [isDownloading, setIsDownloading] = useState(false);
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
@@ -54,7 +57,13 @@ function AllDashboardData() {
   const [enter] = useState(true);
   const router = useRouter();
   const { data, isLoading } = useMyQuizResultQuery();
-  const reflections = Array.from({ length: 3 });
+  const { data: mtjListData } = useGetMtjListQuery();
+  const { data: frameworkMtjData } = useHhFrameworkMtjQuery();
+  const teamRituals = mtjListData?.data?.team_rituals || [];
+  const teamFocusAreas = frameworkMtjData?.data?.focus_areas || [];
+  const activeFocusArea = teamFocusAreas.find(
+    (focusArea) => focusArea.title === teamRituals[0]?.focus_area,
+  );
   const sortFn = (a: any, b: any, asc = false) => {
     // 1. Score comparison
     if (a.score !== b.score) {
@@ -203,19 +212,8 @@ function AllDashboardData() {
     }
   }, [resultData, quizDetails]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-  };
-  // const formattedDate = formatDate(data?.data?.quiz?.created_at ?? "");
+  const { data: getListMppData } = usePersonalPathwayQuery();
   const { data: chooseMyselfData } = useChooseMyselfQuery();
-
-  const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
 
   // ------------------------------->Latest Quiz<-----------------------
   const getLatestQuizByYear = (quizList: any[], selectedYear: string) => {
@@ -338,6 +336,56 @@ function AllDashboardData() {
       setProgressList(latest20);
     }
   }, [getListMppData, chooseMyselfData]);
+  useEffect(() => {
+    if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+      const list: any[] = [];
+
+      getListMppData.data.pathways.forEach((pathway: any) => {
+        const dynamicKey = Object.keys(pathway).find(
+          (key) =>
+            ![
+              "created",
+              "uuid",
+              "active",
+              "completed",
+              "pathway_id",
+              "id",
+            ].includes(key),
+        );
+
+        if (!dynamicKey) return;
+
+        const pathwayNumber = parseInt(dynamicKey);
+        const m3Data = pathway[dynamicKey]?.m3;
+        const pinToDashIds = m3Data?.pin_to_dash || [];
+
+        chooseMyselfData.data.forEach((item: any) => {
+          item?.pillars?.forEach((pillar: any) => {
+            pillar?.principles?.forEach((principle: any) => {
+              if (principle.pathway_number === pathwayNumber) {
+                const pathwayName = principle.pathway_title;
+
+                principle?.micro_actions?.forEach((action: any) => {
+                  const maId = `ma${action.micro_action_number}`;
+
+                  list.push({
+                    id: maId,
+                    title: action.title,
+                    description: action.description,
+                    pathway: pathwayName,
+                    checked: pinToDashIds.includes(maId),
+                  });
+                });
+              }
+            });
+          });
+        });
+      });
+
+      setPracticeList(list);
+    }
+  }, [getListMppData, chooseMyselfData]);
+
   // Extract pindash from get list mpp and microaction details from choose myself and merge them to create a new list for practice perspective pathway progress
   const getSelectedMicroActions = (pathways: any[]) => {
     if (!Array.isArray(pathways)) return [];
@@ -369,35 +417,35 @@ function AllDashboardData() {
     return [...new Set(selected)];
   };
 
-  useEffect(() => {
-    if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
-      const selectedKeys = getSelectedMicroActions(
-        getListMppData.data.pathways,
-      );
+  // useEffect(() => {
+  //   if (getListMppData?.data?.pathways && chooseMyselfData?.data) {
+  //     const selectedKeys = getSelectedMicroActions(
+  //       getListMppData.data.pathways,
+  //     );
 
-      const list: any[] = [];
+  //     const list: any[] = [];
 
-      chooseMyselfData.data.forEach((item: any) => {
-        item?.pillars?.forEach((pillar: any) => {
-          pillar?.principles?.forEach((principle: any) => {
-            principle?.micro_actions?.forEach((action: any, index: number) => {
-              const key = `ma${index + 1}`;
+  //     chooseMyselfData.data.forEach((item: any) => {
+  //       item?.pillars?.forEach((pillar: any) => {
+  //         pillar?.principles?.forEach((principle: any) => {
+  //           principle?.micro_actions?.forEach((action: any, index: number) => {
+  //             const key = `ma${index + 1}`;
 
-              list.push({
-                id: key,
-                title: action.title,
-                description: action.description,
-                pathway: principle.pathway_title,
-                checked: selectedKeys.includes(key), //  MAIN
-              });
-            });
-          });
-        });
-      });
+  //             list.push({
+  //               id: key,
+  //               title: action.title,
+  //               description: action.description,
+  //               pathway: principle.pathway_title,
+  //               checked: selectedKeys.includes(key), //  MAIN
+  //             });
+  //           });
+  //         });
+  //       });
+  //     });
 
-      setPracticeList(list);
-    }
-  }, [getListMppData, chooseMyselfData]);
+  //     setPracticeList(list);
+  //   }
+  // }, [getListMppData, chooseMyselfData]);
 
   //Active practice list for dashboard pdf
   const activePracticeList = practiceList.filter((item) => item.checked);
@@ -408,10 +456,20 @@ function AllDashboardData() {
   );
 
   const { data: randomMessage } = useGetMppMessagesQuery();
-  const currentMonthYear = new Date().toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
+  const [currentMonthYear, setCurrentMonthYear] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+
+    setCurrentYear(now.getFullYear().toString());
+
+    setCurrentMonthYear(
+      now.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      }),
+    );
+  }, []);
   return (
     <div className="min-h-screen bg-[#F5F0EB] font-sans">
       <div className="relative">
@@ -449,10 +507,12 @@ function AllDashboardData() {
               <label className="w-32 text-[#567F55] text-[20px] font-[400] font-[Roboto]">
                 Name
               </label>
+
               <input
                 type="text"
-                value={profileData?.first_name}
+                value={profileData?.first_name ?? ""}
                 placeholder="pre-filled if possible"
+                readOnly
                 className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none text-[#737373]"
               />
             </div>
@@ -462,10 +522,12 @@ function AllDashboardData() {
               <label className="w-32 text-[#567F55] text-[20px] font-[400] font-[Roboto]">
                 Time Period
               </label>
+
               <input
                 type="text"
                 value={currentMonthYear}
                 placeholder="pre-filled if possible"
+                readOnly
                 className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none text-[#737373]"
               />
             </div>
@@ -1035,32 +1097,44 @@ function AllDashboardData() {
           </p>
 
           <div className="relative bg-white rounded-[28px] p-10">
-            {/* Focus area */}
-            <div>
-              <div className="flex items-start gap-8">
-                {/* Left */}
-                <div className="min-w-[220px]">
-                  <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px]">
-                    Focus Area:
-                  </p>
-                  <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px] leading-tight">
-                    Improving Clarity
-                  </p>
-                </div>
+            {teamRituals.length === 0 ? (
+              <p className="text-[#0F4F58] font-[Roboto] text-[19px]">
+                This space will grow as your team begins to practise together.
+              </p>
+            ) : (
+              <>
+                {/* Focus area */}
+                {teamRituals[0]?.focus_area && (
+                  <div>
+                    <div className="flex items-start gap-8">
+                      {/* Left */}
+                      <div className="min-w-[220px]">
+                        <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px]">
+                          Focus Area:
+                        </p>
+                        <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px] leading-tight">
+                          {teamRituals[0].focus_area}
+                        </p>
+                      </div>
 
-                {/* Right */}
-                <p className="text-[#567F55] text-[21px] font-[Aptos] leading-relaxed max-w-3xl">
-                  Making expectations, priorities, and communication clear so
-                  everyone knows where they stand and what they’re working
-                  toward
-                </p>
-              </div>
-            </div>
+                      {/* Right */}
+                      {(activeFocusArea?.description_short ||
+                        activeFocusArea?.description_long) && (
+                        <p className="text-[#567F55] text-[21px] font-[Aptos] leading-relaxed max-w-3xl">
+                          {activeFocusArea?.description_short ||
+                            activeFocusArea?.description_long}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-            {/* Repeating reflection blocks */}
-            {reflections.map((_item, index) => (
-              <ReflectionBlock key={`_item${index}`} />
-            ))}
+                {/* Repeating reflection blocks */}
+                {teamRituals.map((ritual) => (
+                  <ReflectionBlock key={ritual.team_ritual_id} ritual={ritual} />
+                ))}
+              </>
+            )}
           </div>
         </div>
 

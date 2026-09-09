@@ -18,6 +18,7 @@ import {
   PRACTICE_LIST_ITEM,
 } from "../../Types/ResponseTypes";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
+import { MTJ_TEAM_RITUAL_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
 
 type Principle = {
   key: string;
@@ -40,6 +41,7 @@ type DASHBOARD_PDF_PROPS = {
   activePracticeListForPdf: Array<PRACTICE_LIST_ITEM>;
   enrichedProgressList: Array<ENRICH_PROGRESS_LIST>;
   randomMessage?: string;
+  teamRituals?: Array<MTJ_TEAM_RITUAL_DATA>;
 };
 function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
   const {
@@ -49,9 +51,9 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
     activePracticeListForPdf,
     enrichedProgressList = [],
     randomMessage,
+    teamRituals = [],
   } = props;
 
-  const reflections = Array.from({ length: 3 });
   const { data: myProfileDaa, isLoading: myProfileLoading } =
     useMyProfileQuery();
   const profileData = myProfileDaa?.data;
@@ -609,32 +611,35 @@ function DashboardPdf(props: DASHBOARD_PDF_PROPS) {
           </p>
 
           <div className="relative bg-white rounded-[28px] p-10">
-            {/* Focus area */}
-            <div>
-              <div className="flex items-start gap-8">
-                {/* Left */}
-                <div className="min-w-[220px]">
-                  <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px]">
-                    Focus Area:
-                  </p>
-                  <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px] leading-tight">
-                    Improving Clarity
-                  </p>
-                </div>
+            {teamRituals.length === 0 ? (
+              <p className="text-[#0F4F58] font-[Roboto] text-[19px]">
+                This space will grow as your team begins to practise together.
+              </p>
+            ) : (
+              <>
+                {/* Focus area */}
+                {teamRituals[0]?.focus_area && (
+                  <div>
+                    <div className="flex items-start gap-8">
+                      {/* Left */}
+                      <div className="min-w-[220px]">
+                        <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px]">
+                          Focus Area:
+                        </p>
+                        <p className="text-[#0F4F58] font-bold font-[RocaTwo] text-[26px] leading-tight">
+                          {teamRituals[0].focus_area}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                {/* Right */}
-                <p className="text-[#567F55] text-[21px] font-[Aptos] leading-relaxed max-w-3xl">
-                  Making expectations, priorities, and communication clear so
-                  everyone knows where they stand and what they’re working
-                  toward
-                </p>
-              </div>
-            </div>
-
-            {/* Repeating reflection blocks */}
-            {reflections.map((_, index) => (
-              <ReflectionBlock key={index} />
-            ))}
+                {/* Repeating reflection blocks */}
+                {teamRituals.map((ritual) => (
+                  <ReflectionBlock key={ritual.team_ritual_id} ritual={ritual} />
+                ))}
+              </>
+            )}
           </div>
         </div>
 

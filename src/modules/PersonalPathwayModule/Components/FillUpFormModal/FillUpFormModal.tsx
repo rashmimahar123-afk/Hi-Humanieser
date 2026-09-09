@@ -70,6 +70,7 @@ function FillUpFormModal() {
       teamRitualId,
       reflectionId,
       reflectionText,
+      sharedAnonymously,
     }) => {
       setTimeout(() => {
         setActionKey(microActionType);
@@ -82,7 +83,7 @@ function FillUpFormModal() {
         setReflectionId(reflectionId || "");
         setIsEdit(!!reflectionId);
 
-        setShare(false);
+        setShare(sharedAnonymously ?? false);
         setIsOpen(true);
       }, 0);
     },

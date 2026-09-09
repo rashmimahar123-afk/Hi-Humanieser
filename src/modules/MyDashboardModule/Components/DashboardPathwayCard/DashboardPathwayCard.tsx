@@ -1,15 +1,19 @@
-import { useState } from "react";
+import React from "react";
 
 type DASHBOARD_PATHWAY_CARD_PROPS = {
   title: string;
-  description: string;
+  description: string | null | undefined;
   reflections?: Array<any>;
 };
+
 function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
   const { title, description, reflections } = props;
 
   const safeReflections = reflections || [];
-  function renderBoldQuotes(text: string) {
+
+  function renderBoldQuotes(text: string | null | undefined) {
+    if (!text) return null;
+
     const parts = text.split(/(“[^”]+”)/g);
 
     return parts.map((part, index) => {
@@ -20,6 +24,7 @@ function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
           </strong>
         );
       }
+
       return <span key={index}>{part}</span>;
     });
   }
@@ -39,8 +44,8 @@ function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
 
       {/* Right Practice Box */}
       <div className="grid grid-cols-2 gap-6">
-        {[0, 1].map((_item: any, idx: any) => {
-          const data = safeReflections[idx]; // 👈 key line
+        {[0, 1].map((_item, idx) => {
+          const data = safeReflections[idx];
 
           return (
             <div
@@ -87,4 +92,5 @@ function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
     </div>
   );
 }
+
 export default DashboardPathwayCard;

@@ -32,6 +32,10 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
     (item: any) => item.checked === true,
   );
 
+  const activePracticeList = practiceList?.filter(
+    (item: any) => item.checked === true,
+  );
+
   return (
     <>
       {/* Heading */}
@@ -62,55 +66,91 @@ function MyActivePractice(props: MY_ACTIVE_PRACTICE_PROPS) {
             </div>
           </>
         </>
-      ) : (
-        <>
-          {/* Carousel */}
-          <div className="mt-8 lg:mt-12">
-            <Carousel
-              responsive={responsive}
-              infinite={true}
-              autoPlay={true}
-              autoPlaySpeed={3000}
-              keyBoardControl={true}
-              arrows={true}
-              containerClass="carousel-container"
-              itemClass="px-2 sm:px-3"
-              partialVisible={true}
-              renderDotsOutside={false}
-            >
-              {practiceList.map((item: any, index: number) => (
-                <div key={`item${index}`}>
-                  <div className="bg-[#F5C882] rounded-2xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 flex flex-col justify-between min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]">
-                    <div>
-                      <h3 className="text-[17px] sm:text-[19px] lg:text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 lg:mt-5 text-[#0F4F58] text-[13px] sm:text-[14px] lg:text-[18px] font-[Aptos]">
-                        {item.description}
-                      </p>
-                    </div>
-                    <div className="mt-6 lg:mt-8">
-                      <div className="flex justify-end text-[#0F4F58] text-[12px] sm:text-[14px] lg:text-[17px] px-4 py-2 rounded-full font-[RocaTwo]">
-                        <span
-                          className="text-[12px] sm:text-[13px] lg:text-[16px] text-[#0F4F58]"
-                          style={{ fontFamily: "Aptos" }}
-                        >
-                          Remove from Practice List{" "}
-                        </span>
-                        <input
-                          type="checkbox"
-                          checked={item.checked}
-                          readOnly
-                          className="ml-3 lg:ml-4 w-5 h-5 lg:w-6 lg:h-6 text-[#0F4F58] bg-gray-100 border-gray-300 rounded focus:ring-[#86C9C9] focus:ring-2 cursor-pointer"
-                        />
-                      </div>
+      ) : activePracticeList.length > 2 ? (
+        <div className="mt-8 lg:mt-12">
+          <Carousel
+            responsive={responsive}
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={3000}
+            keyBoardControl={true}
+            arrows={true}
+            containerClass="carousel-container"
+            itemClass="px-2 sm:px-3"
+            partialVisible={true}
+            renderDotsOutside={false}
+          >
+            {activePracticeList.map((item: any, index: number) => (
+              <div key={`item${index}`}>
+                <div className="bg-[#F5C882] rounded-2xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 flex flex-col justify-between min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]">
+                  <div>
+                    <h3 className="text-[17px] sm:text-[19px] lg:text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-3 lg:mt-5 text-[#0F4F58] text-[13px] sm:text-[14px] lg:text-[18px] font-[Aptos]">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 lg:mt-8">
+                    <div className="flex justify-end text-[#0F4F58] text-[12px] sm:text-[14px] lg:text-[17px] px-4 py-2 rounded-full font-[RocaTwo]">
+                      <span
+                        className="text-[12px] sm:text-[13px] lg:text-[16px] text-[#0F4F58]"
+                        style={{ fontFamily: "Aptos" }}
+                      >
+                        Remove from Practice List
+                      </span>
+
+                      <input
+                        type="checkbox"
+                        checked={item.checked}
+                        readOnly
+                        className="ml-3 lg:ml-4 w-5 h-5 lg:w-6 lg:h-6 text-[#0F4F58] bg-gray-100 border-gray-300 rounded focus:ring-[#86C9C9] focus:ring-2 cursor-pointer"
+                      />
                     </div>
                   </div>
                 </div>
-              ))}
-            </Carousel>
-          </div>
-        </>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      ) : (
+        <div className="mt-8 lg:mt-12 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {activePracticeList.map((item: any, index: number) => (
+            <div key={`item${index}`}>
+              <div className="bg-[#F5C882] rounded-2xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 flex flex-col justify-between min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]">
+                <div>
+                  <h3 className="text-[17px] sm:text-[19px] lg:text-[26px] text-[#0F4F58] font-[RocaTwo] font-bold">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-3 lg:mt-5 text-[#0F4F58] text-[13px] sm:text-[14px] lg:text-[18px] font-[Aptos]">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="mt-6 lg:mt-8">
+                  <div className="flex justify-end text-[#0F4F58] px-4 py-2 rounded-full">
+                    <span
+                      className="text-[12px] sm:text-[13px] lg:text-[16px]"
+                      style={{ fontFamily: "Aptos" }}
+                    >
+                      Remove from Practice List
+                    </span>
+
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      readOnly
+                      className="ml-3 lg:ml-4 w-5 h-5 lg:w-6 lg:h-6 cursor-pointer"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </>
   );

@@ -63,6 +63,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
       ritual.team_ritual_id,
       latestReflection?.id,
       latestReflection?.reflection,
+      latestReflection?.shared_anonymously,
     );
   };
   const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
@@ -271,6 +272,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
                       ritual.team_ritual_id,
                       latestReflection.id,
                       latestReflection.reflection,
+                      latestReflection.shared_anonymously,
                     )
                   }
                 >
