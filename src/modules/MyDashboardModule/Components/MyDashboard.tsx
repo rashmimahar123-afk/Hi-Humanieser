@@ -837,12 +837,13 @@ import jsPDF from "jspdf";
 import DashboardPdf from "./DashboardPdf/DashboardPdf";
 import usePersonalPathwayQuery from "../../PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import useChooseMyselfQuery from "../../ChoosePathwayModule/Hooks/useChooseMyselfQuery";
-import { enrichProgressWithPractice } from "@/src/lib/Helpers";
 import { useGetMppMessagesQuery } from "../../WelcomeModule/Hooks/useGetMppMessagesQuery";
 import useAuthValue from "../../AuthModule/Hooks/useAuthValue";
 import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
 import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
 import useGetMtjListQuery from "../../MyTeamJourneyModule/Hooks/useGetMtjListQuery";
+import useDashboardRecordData from "../Hooks/useDashboardRecordData";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 type Principle = {
   key: string;
@@ -877,6 +878,8 @@ function MyDashboard() {
   const { data, isLoading } = useMyQuizResultQuery();
   const pdfRef = useRef<HTMLDivElement>(null);
   const [enter, setEnter] = useState(false);
+
+  const { isLoading: isPdfDataLoading } = useDashboardRecordData();
 
   const { data: findUserData } = useFindUserQuery(user?.sub, {
     enabled: user?.user_type === 2,
@@ -934,6 +937,7 @@ function MyDashboard() {
         pdf.save("MyDashboard.pdf");
       } catch (err) {
         console.error(err);
+        SnackbarHandler.errorToast("Could not generate PDF. Please try again.");
       } finally {
         setShowPdf(false);
         setIsDownloading(false);
@@ -944,6 +948,10 @@ function MyDashboard() {
   }, [showPdf]);
 
   const handleDownloadPDF = () => {
+    if (isPdfDataLoading) {
+      SnackbarHandler.normalToast("Your dashboard data is still loading.");
+      return;
+    }
     setIsDownloading(true);
     setShowPdf(true);
   };
@@ -1319,16 +1327,9 @@ function MyDashboard() {
       setPracticeList(list);
     }
   }, [getListMppData, chooseMyselfData]);
-  const activePracticeListForPdf = practiceList.filter((item) => item.checked);
-  const enrichedProgressList = enrichProgressWithPractice(
-    progressList,
-    practiceList,
-  );
   const { data: randomMessage } = useGetMppMessagesQuery();
 
   const { data: mtjListData } = useGetMtjListQuery();
-
-  const rituals = mtjListData?.data?.team_rituals || [];
 
   return (
     <>
@@ -1515,7 +1516,7 @@ function MyDashboard() {
               <button
                 className="flex flex-col items-center gap-2"
                 onClick={handleDownloadPDF}
-                disabled={isDownloading}
+                disabled={isDownloading || isPdfDataLoading}
               >
                 <Image src={images.downloadImg} alt="download" />
                 <span className="text-xs sm:text-sm text-[#3E5F5F]">
@@ -1561,7 +1562,7 @@ function MyDashboard() {
               <button
                 className="flex flex-col items-center gap-2"
                 onClick={handleDownloadPDF}
-                disabled={isDownloading}
+                disabled={isDownloading || isPdfDataLoading}
               >
                 <Image src={images.downloadImg} alt="download" />
                 <span className="text-xs sm:text-sm text-[#3E5F5F]">
@@ -1679,15 +1680,7 @@ Journey"
           }}
         >
           <div ref={pdfRef}>
-            <DashboardPdf
-              resultData={resultData}
-              topStrengthDetails={topStrengthDetails}
-              weakStrengthDetails={weakStrengthDetails}
-              activePracticeListForPdf={activePracticeListForPdf}
-              enrichedProgressList={enrichedProgressList}
-              randomMessage={randomMessage}
-              teamRituals={rituals}
-            />
+            <DashboardPdf />
           </div>
         </div>
       )}
