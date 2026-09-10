@@ -79,6 +79,9 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   //     ) || [];
 
   const ritualReflections = ritual.reflections?.my_reflections ?? [];
+  const triedCount = ritual.reflections?.completed_count ?? 0;
+  const totalTeammates = ritual.reflections?.member_count ?? 0;
+  const completionPercentage = ritual.reflections?.completion_percentage ?? 0;
   console.log(
     "ritualReflectionsritualReflectionsritualReflections",
     ritualReflections,
@@ -403,12 +406,15 @@ your dashboard is beaming"
           <div className="w-[420px] relative">
             {/* Progress Bar */}
             <div className="relative w-full h-[64px] rounded-full bg-[#C2E2E2] overflow-hidden">
-              <div className="absolute left-0 top-0 h-full w-[58%] bg-[#4BA6A6] rounded-full" />
+              <div
+                className="absolute left-0 top-0 h-full bg-[#4BA6A6] rounded-full"
+                style={{ width: `${completionPercentage}%` }}
+              />
             </div>
 
             {/* Progress Text */}
             <p className="text-[18px] mt-3 text-center text-[#000000] font-bold font-[Aptos]">
-              7 of 12 teammates have tried this ritual so far.
+              {`${triedCount} of ${totalTeammates} teammates have tried this ritual so far.`}
             </p>
             <Image
               src={images.microArrow}

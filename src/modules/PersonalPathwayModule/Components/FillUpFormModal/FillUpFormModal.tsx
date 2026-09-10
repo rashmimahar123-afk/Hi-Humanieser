@@ -29,6 +29,7 @@ export const openFillupModal = (
 
   reflectionText?: string,
   sharedAnonymously?: boolean,
+  editingIndex?: number,
 ) => {
   emitEvent(EVENT, {
     microActionType,
@@ -41,6 +42,7 @@ export const openFillupModal = (
 
     reflectionText,
     sharedAnonymously,
+    editingIndex,
   });
 };
 
@@ -60,6 +62,7 @@ function FillUpFormModal() {
   const [pinToDash, setPinToDash] = useState<string[]>([]);
   const [reflectionId, setReflectionId] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   useEventEmitter(
     EVENT,
     ({
@@ -71,6 +74,7 @@ function FillUpFormModal() {
       reflectionId,
       reflectionText,
       sharedAnonymously,
+      editingIndex,
     }) => {
       setTimeout(() => {
         setActionKey(microActionType);
@@ -81,7 +85,15 @@ function FillUpFormModal() {
 
         setReflection(reflectionText || "");
         setReflectionId(reflectionId || "");
-        setIsEdit(!!reflectionId);
+        setEditingIndex(
+          editingIndex === undefined || editingIndex === null
+            ? null
+            : editingIndex,
+        );
+        setIsEdit(
+          !!reflectionId ||
+            (editingIndex !== undefined && editingIndex !== null),
+        );
 
         setShare(sharedAnonymously ?? false);
         setIsOpen(true);
@@ -229,14 +241,22 @@ function FillUpFormModal() {
     const existingM2 = currentPathway[firstKey]?.m2 || {};
     const { micro_actions, ...cleanM2 } = existingM2 || {};
 
-    // STEP 2: Merge properly
+    // STEP 2: Merge properly (replace in place when editing, append when adding)
+    const existingActionReflections = existingM2[actionKey] || [];
+    const updatedActionReflections =
+      isEdit && editingIndex !== null
+        ? existingActionReflections.map((r: any, index: number) =>
+            index === editingIndex ? newReflection : r,
+          )
+        : [...existingActionReflections, newReflection];
+
     const finalPayload = {
       uuid: id,
       milestone_key: "m2",
       data: {
         kind: "m2",
         ...cleanM2, //  ALL previous micro_actions preserved
-        [actionKey]: [...(existingM2[actionKey] || []), newReflection],
+        [actionKey]: updatedActionReflections,
       },
     };
 
@@ -245,6 +265,8 @@ function FillUpFormModal() {
         setReflection("");
         setShare(false);
         setIsOpen(false);
+        setIsEdit(false);
+        setEditingIndex(null);
 
         // optional but recommended
         await queryClient.refetchQueries({

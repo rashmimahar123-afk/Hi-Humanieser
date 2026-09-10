@@ -109,6 +109,23 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
     openFillupModal(`micro_action_${microActionNumber}`, id);
   };
 
+  const handleEditReflectionClick = () => {
+    if (!latestReflection) return;
+
+    openFillupModal(
+      microActionKey,
+      id,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      latestReflection.reflection,
+      latestReflection.share,
+      microActionReflections.length - 1,
+    );
+  };
+
   return (
     <div className="grid grid-cols-[450px_450px] gap-10">
       {/* MICRO-ACTION */}
@@ -178,7 +195,20 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
           )}
         </div>
         {/* Save Button */}
-        <div className="flex justify-end mb-4 mt-4">
+        <div className="flex justify-end mb-4 mt-4 gap-3">
+          {latestReflection && (
+            <div>
+              <button
+                disabled={!isPracticeEnabled}
+                onClick={handleEditReflectionClick}
+                className={`px-6 py-2 rounded-full text-[14px] font-[RocaTwo] font-bold cursor-pointer
+          ${isPracticeEnabled ? "bg-[#F8E1B8] text-[#0F4F58]" : "bg-gray-200 text-gray-400 cursor-not-allowed"}
+        `}
+              >
+                edit reflection
+              </button>
+            </div>
+          )}
           {microActionReflections.length === 0 ? (
             <div>
               <button
@@ -194,7 +224,7 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
               </button>
             </div>
           ) : microActionReflections.length < 2 ? (
-            <div className="ml-4">
+            <div>
               <button
                 disabled={!isPracticeEnabled}
                 onClick={() => handleAddReflectionClick()}

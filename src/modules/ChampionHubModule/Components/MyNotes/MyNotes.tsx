@@ -75,9 +75,9 @@ function MyNotes({ reflection }: Props) {
               />
             ))}
 
-            <div className="absolute top-[59px] left-1/2 -translate-x-1/2 text-[#567F55] text-[20px]">
+            {/* <div className="absolute top-[59px] left-1/2 -translate-x-1/2 text-[#567F55] text-[20px]">
               500 words
-            </div>
+            </div> */}
           </>
         )}
       </div>
