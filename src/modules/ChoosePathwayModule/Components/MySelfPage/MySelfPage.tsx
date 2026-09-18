@@ -24,6 +24,7 @@ import ShowMaxTwoMppModal, {
 import useGetListMppQuery from "../../Hooks/useGetListMppQuery";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 type ActivePathwayType = {
   pathwayNumber: string;
@@ -255,7 +256,7 @@ function MySelfPage() {
                           description: principleItem?.definition,
                           learnMoreColor: "#7EC9C6",
                           onLearnMore: () =>
-                            router.push(
+                            openInNewTab(
                               `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
                             ),
                           selected: finalSelectedPathways.includes(

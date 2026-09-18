@@ -49,7 +49,7 @@ function Amplifier() {
           </h2>
 
           {/* Description Card */}
-          <div className="bg-white rounded-[14px] px-8 py-6 shadow-[0_8px_24px_rgba(0,0,0,0.06)] max-w-[1000px]">
+          <div className="bg-white rounded-[14px] px-4 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.06)] max-w-[1222px]">
             <p className="text-[#567F55] text-[21px] font-bold font-[Roboto]">
               {selectedFocusArea?.description_long}
             </p>

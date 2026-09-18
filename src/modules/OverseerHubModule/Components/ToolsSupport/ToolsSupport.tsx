@@ -22,6 +22,12 @@ function ToolsSupport() {
 
   const type = searchParams.get("type");
 
+  const [enter, setEnter] = useState(false);
+
+  useEffect(() => {
+    setEnter(true);
+  }, []);
+
   if (type === "partner-guide") {
     return <PartnerGuide />;
   }
@@ -29,12 +35,6 @@ function ToolsSupport() {
   if (type === "partner-toolkit") {
     return <PartnerToolkit />;
   }
-
-  const [enter, setEnter] = useState(false);
-
-  useEffect(() => {
-    setEnter(true);
-  }, []);
 
   return (
     <>

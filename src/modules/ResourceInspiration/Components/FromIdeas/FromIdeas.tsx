@@ -13,6 +13,7 @@ import Link from "next/link";
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
 import { CHOOSE_MYSELF_PILLAR_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 function FromIdeas() {
   const [enter, setEnter] = useState(false);
@@ -40,14 +41,14 @@ function FromIdeas() {
           description:
             "Transform your messages into clear direction that people can actually act on.",
           learnMoreColor: "#4ba6a6",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
         {
           title: "Be Real, Not Right",
           description:
             "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
           learnMoreColor: "#4ba6a6",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
       ],
     },
@@ -60,14 +61,14 @@ function FromIdeas() {
           description:
             "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
           learnMoreColor: "#f5c882",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
         {
           title: "Be Real, Not Right",
           description:
             "Transform your messages into clear direction that people can actually act on.",
           learnMoreColor: "#f5c882",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
       ],
     },
@@ -80,14 +81,14 @@ function FromIdeas() {
           description:
             "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
           learnMoreColor: "#acd5ab",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
         {
           title: "Wellbeing is Performance Infrastructure",
           description:
             "Learn how energy, recovery, and care directly strengthen performance.",
           learnMoreColor: "#acd5ab",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
       ],
     },
@@ -100,14 +101,14 @@ function FromIdeas() {
           description:
             "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
           learnMoreColor: "#f7c3be",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
         {
           title: "Wellbeing is Performance Infrastructure",
           description:
             "Learn how energy, recovery, and care directly strengthen performance.",
           learnMoreColor: "#f7c3be",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
       ],
     },
@@ -120,14 +121,14 @@ function FromIdeas() {
           description:
             "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
           learnMoreColor: "#4ba6a6",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
         {
           title: "Wellbeing is Performance Infrastructure",
           description:
             "Learn how energy, recovery, and care directly strengthen performance.",
           learnMoreColor: "#4ba6a6",
-          onLearnMore: () => router.push(`/conversation`),
+          onLearnMore: () => openInNewTab(`/conversation`),
         },
       ],
     },
@@ -242,7 +243,7 @@ function FromIdeas() {
                             ? "#8BBE8A"
                             : "#F5C882",
                       onLearnMore: () =>
-                        router.push(
+                        openInNewTab(
                           `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
                         ),
                     }))}

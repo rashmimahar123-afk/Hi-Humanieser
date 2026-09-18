@@ -26,6 +26,7 @@ import DeletePathwayModal, {
 import useEventEmitter from "@/src/components/Hooks/useEventEmitter";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 type Principle = {
   key: string;
@@ -55,7 +56,6 @@ function ShowResultPage() {
     pillarData: PillarDataType;
     pillarAvg: Record<string, number>;
   } | null>(null);
-  console.log("resultDataresultDataresultData", resultData);
   const [topStrengthDetails, setTopStrengthDetails] = useState<any[]>([]);
   const [weakStrengthDetails, setWeakStrengthDetails] = useState<any[]>([]);
   const [topMessage, setTopMessage] = useState<any>(null);
@@ -710,7 +710,7 @@ function ShowResultPage() {
                           description={item.description}
                           selected={selectedPathways.includes(index)}
                           onLearnMore={() =>
-                            router.push(
+                            openInNewTab(
                               `/pathway-card?pillar=${item?.pillar_number}&principle=${item?.principle_number}`,
                             )
                           }

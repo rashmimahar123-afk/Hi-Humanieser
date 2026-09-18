@@ -13,6 +13,7 @@ import { openShowMaxTwoMpp } from "@/src/modules/ChoosePathwayModule/Components/
 import { useCreateMppMutation } from "@/src/modules/ChoosePathwayModule/Hooks/useCreateMppMutation";
 import { useGetPathwaySelectMssgQuery } from "@/src/modules/WelcomeModule/Hooks/useGetPathwaySelectMssgQuery";
 import { openActivePathwayModal } from "@/src/modules/ChoosePathwayModule/Components/ActivePathwayModal/ActivePathwayModal";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 type ActivePathwayType = {
   pathwayNumber: string;
@@ -215,7 +216,7 @@ function FocusAreaRituals(){
                           description: principleItem?.definition,
                           learnMoreColor: "#7EC9C6",
                           onLearnMore: () =>
-                            router.push(
+                            openInNewTab(
                               `/pathway-card?pillar=${item?.pillar_number}&principle=${principleItem?.principle_number}`,
                             ),
                           selected: finalSelectedPathways.includes(

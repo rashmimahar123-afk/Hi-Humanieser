@@ -3,7 +3,11 @@ import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import { enrichProgressWithPractice, getTimeAgo } from "@/src/lib/Helpers";
+import {
+  enrichProgressWithPractice,
+  getTimeAgo,
+  sortReflectionsByCreatedDesc,
+} from "@/src/lib/Helpers";
 import { useEffect, useMemo, useRef, useState } from "react";
 import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
@@ -483,12 +487,8 @@ function ViewAllReflectionWall() {
       merged = [...apiReflections];
     }
 
-    // Sort latest first
-    merged.sort(
-      (a: any, b: any) =>
-        new Date(b.created || b.created_at).getTime() -
-        new Date(a.created || a.created_at).getTime(),
-    );
+    // Sort by actual creation timestamp, newest first (missing/invalid dates sink to the end)
+    merged = sortReflectionsByCreatedDesc(merged);
 
     // Remove duplicates
     const seen = new Set();

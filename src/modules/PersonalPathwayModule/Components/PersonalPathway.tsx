@@ -158,7 +158,7 @@ function PersonalPathway() {
             </p>
 
             <p className="mt-2 text-[#0F4F58] text-[14px] sm:text-[17px] lg:text-[20px] font-[Roboto] font-[400] ml-0 sm:ml-[24px]">
-              Every Pathway leads you through 3 milestones — learn it, choose
+              Every Pathway leads you through 3 milestones. Learn it, choose
               your micro-actions, and start weaving the habit into your
               everyday.
             </p>

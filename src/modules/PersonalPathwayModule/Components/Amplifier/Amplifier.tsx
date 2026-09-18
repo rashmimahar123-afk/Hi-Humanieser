@@ -78,7 +78,7 @@ function Amplifier() {
 
           {/* Definition Card */}
           {selectedPrincipleData?.definition && (
-            <div className="bg-white rounded-[14px] px-4 sm:px-6 lg:px-8 py-4 lg:py-6 shadow-[0_8px_24px_rgba(0,0,0,0.06)] max-w-[1000px]">
+            <div className="bg-white rounded-[14px] px-4 sm:px-6  py-4  shadow-[0_8px_24px_rgba(0,0,0,0.06)] max-w-[1222px]">
               <p className="text-[#567F55] text-[15px] sm:text-[18px] lg:text-[21px] font-bold font-[Roboto] text-center">
                 {selectedPrincipleData.definition}
               </p>

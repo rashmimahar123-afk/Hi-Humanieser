@@ -51,7 +51,11 @@ function StartPracticePerspective(props: START_PRACTICE_PERSPECTIVE_PROPS) {
             >
               ✓
             </span>
-            <span className="font-[400] font-[Roboto] text-[18px]">
+            <span
+              className={`${
+                pathname === "2" ? "font-[700]" : "font-[400]"
+              } font-[Roboto] text-[18px]`}
+            >
               Practice & Embed – Test small actions in real situations.
             </span>
           </li>
@@ -64,7 +68,11 @@ function StartPracticePerspective(props: START_PRACTICE_PERSPECTIVE_PROPS) {
             >
               ✓
             </span>
-            <span className="font-[400] font-[Roboto] text-[18px]">
+            <span
+              className={`${
+                pathname === "3" ? "font-[700]" : "font-[400]"
+              } font-[Roboto] text-[18px]`}
+            >
               Lock In & Move Forward – Capture what works so it sticks.
             </span>
           </li>

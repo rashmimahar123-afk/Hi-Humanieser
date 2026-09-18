@@ -3,7 +3,6 @@ import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
-import { useRouter } from "next/navigation";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import AddMemberModal, {
   openAddMemberModal,
@@ -21,9 +20,9 @@ import SuccessAddTeamModal, {
 } from "../SuccessAddTeamModal/SuccessAddTeamModal";
 import { useEditTeamMutation } from "../../Hooks/useEditTeamMutation";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 function OrganisationSetting() {
-  const router = useRouter();
   const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
   const [teamAction, setTeamAction] = useState("create");
@@ -322,7 +321,7 @@ function OrganisationSetting() {
                 <button
                   className="bg-[#ffffff] px-4 sm:px-6 h-[41px] rounded-[12px]
                     text-[14px] sm:text-[16px] lg:text-[17px] text-[#567F55] font-[Roboto] whitespace-nowrap"
-                  onClick={() => router.push("/plans")}
+                  onClick={() => openInNewTab("/plans")}
                 >
                   Learn More
                 </button>

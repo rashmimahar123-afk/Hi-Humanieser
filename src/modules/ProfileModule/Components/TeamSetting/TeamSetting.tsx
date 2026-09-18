@@ -9,11 +9,14 @@ import AddMemberModal, {
   openAddMemberModal,
 } from "../AddMemberModal/AddMemberModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
-import useGetTeamsQuery from "../../Hooks/useGetTeamsQuery";
+import useGetTeamsQuery, {
+  GET_TEAMS_QUERY_KEY,
+} from "../../Hooks/useGetTeamsQuery";
 import { useEditTeamMutation } from "../../Hooks/useEditTeamMutation";
 import { useCreateUserMutation } from "../../Hooks/useCreateUserMutation";
 import useGetAllListUsersQuery from "../../Hooks/useGetAllListUsersQuery";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
+import { useQueryClient } from "@tanstack/react-query";
 
 function TeamSetting() {
   const [firstName, setFirstName] = useState("");
@@ -22,6 +25,7 @@ function TeamSetting() {
   const [selectedTeamId, setSelectedTeamId] = useState("");
   const router = useRouter();
   const { user } = useAuthValue();
+  const queryClient = useQueryClient();
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
   const hasTeams = teams.length > 0;
@@ -30,7 +34,11 @@ function TeamSetting() {
   const isAddMemberDisabled =
     !firstName.trim() || !lastName.trim() || !isValidEmail || !selectedTeamId;
 
-  const myTeam = teams.find((team) => team.id === user?.team_id);
+  const championTeam =
+    teams.find((team) => team.champion_id === user?.user_id) ||
+    teams.find((team) => team.id === user?.team_id);
+
+  const myTeam = championTeam;
 
   const [isEditingTeam, setIsEditingTeam] = useState(false);
   const [isEditingMembers, setIsEditingMembers] = useState(false);
@@ -45,11 +53,10 @@ function TeamSetting() {
     }
   }, [myTeam]);
   const { mutate: editTeamMutation, isPending } = useEditTeamMutation();
-  const myEditTeam = teams.find((team) => team.id === user?.team_id);
+  const myEditTeam = championTeam;
 
-  const championTeams = teams.filter((team) => team.id === user?.team_id);
+  const championTeams = championTeam ? [championTeam] : [];
   const { mutate: createUser } = useCreateUserMutation();
-
   const handleAddMember = () => {
     let payload: any = {
       email_address: email,
@@ -69,6 +76,7 @@ function TeamSetting() {
           setFirstName("");
           setLastName("");
           setEmail("");
+          queryClient.invalidateQueries({ queryKey: GET_TEAMS_QUERY_KEY });
         },
       },
     );

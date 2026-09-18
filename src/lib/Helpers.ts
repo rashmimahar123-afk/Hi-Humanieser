@@ -555,6 +555,20 @@ Individually they seem manageable, but together they weigh the system down.`,
   },
 };
 
+export const dedupeById = <T extends Record<string, any>>(
+  list: T[],
+  key: string = "id",
+): T[] => {
+  const seen = new Set();
+  return list.filter((item) => {
+    const value = item?.[key];
+    if (value === undefined || value === null) return true;
+    if (seen.has(value)) return false;
+    seen.add(value);
+    return true;
+  });
+};
+
 export const chunkByPattern = (arr: any, pattern = [8, 6]) => {
   const chunks = [];
   let i = 0;
@@ -567,23 +581,52 @@ export const chunkByPattern = (arr: any, pattern = [8, 6]) => {
   return chunks;
 };
 
+// Shared by getTimeAgo and reflection sorting so both read timestamps the same way.
+export const parseReflectionTimestamp = (createdAt: string | number) => {
+  if (createdAt === undefined || createdAt === null || createdAt === "") {
+    return NaN;
+  }
+
+  // local reflections -> unix timestamp number (seconds)
+  if (typeof createdAt === "number") {
+    return createdAt * 1000;
+  }
+
+  // API reflections -> ISO string, with or without an explicit timezone offset
+  // (e.g. "...850000+00:00" vs "...747000"). Trim fractional seconds down to
+  // milliseconds and only assume UTC when no offset is already present.
+  const trimmedFraction = createdAt.replace(/(\.\d{3})\d+/, "$1");
+  const hasTimezone = /(Z|[+-]\d{2}:?\d{2})$/.test(trimmedFraction);
+  const finalDate = hasTimezone ? trimmedFraction : `${trimmedFraction}Z`;
+
+  return new Date(finalDate).getTime();
+};
+
+// Newest-created first; items with a missing/invalid timestamp sink to the end.
+export const sortReflectionsByCreatedDesc = <
+  T extends { created?: string | number; created_at?: string | number },
+>(
+  reflections: T[],
+) => {
+  return [...reflections].sort((a, b) => {
+    const timeA = parseReflectionTimestamp(a.created ?? a.created_at ?? "");
+    const timeB = parseReflectionTimestamp(b.created ?? b.created_at ?? "");
+
+    const safeA = Number.isNaN(timeA) ? -Infinity : timeA;
+    const safeB = Number.isNaN(timeB) ? -Infinity : timeB;
+
+    return safeB - safeA;
+  });
+};
+
 export const getTimeAgo = (createdAt: string | number) => {
   if (!createdAt) return "";
 
   const now = Date.now();
 
-  let createdTime = 0;
+  const createdTime = parseReflectionTimestamp(createdAt);
 
-  // local reflections -> unix timestamp number
-  if (typeof createdAt === "number") {
-    createdTime = createdAt * 1000;
-  } else {
-    // API reflections -> ISO string
-    const normalizedDate = createdAt.replace(/\.\d+$/, "");
-    const finalDate = normalizedDate + "Z";
-
-    createdTime = new Date(finalDate).getTime();
-  }
+  if (Number.isNaN(createdTime)) return "";
 
   const diffMs = now - createdTime;
 
@@ -651,6 +694,10 @@ export const getSharedReflectionsFromEnriched = (data: any[]) => {
   });
 
   return result;
+};
+
+export const openInNewTab = (path: string) => {
+  window.open(path, "_blank", "noopener,noreferrer");
 };
 
 export const downloadPdf = (filePath: string, fileName?: string) => {

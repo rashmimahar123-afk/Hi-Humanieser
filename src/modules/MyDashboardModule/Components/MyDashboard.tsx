@@ -844,6 +844,7 @@ import useFindUserQuery from "../../TeamSettingModule/Hooks/useFindUserQuery";
 import useGetMtjListQuery from "../../MyTeamJourneyModule/Hooks/useGetMtjListQuery";
 import useDashboardRecordData from "../Hooks/useDashboardRecordData";
 import SnackbarHandler from "@/src/lib/SnackbarHandler";
+import { dedupeById } from "@/src/lib/Helpers";
 
 type Principle = {
   key: string;
@@ -1324,7 +1325,7 @@ function MyDashboard() {
         });
       });
 
-      setPracticeList(list);
+      setPracticeList(dedupeById(list, "id"));
     }
   }, [getListMppData, chooseMyselfData]);
   const { data: randomMessage } = useGetMppMessagesQuery();

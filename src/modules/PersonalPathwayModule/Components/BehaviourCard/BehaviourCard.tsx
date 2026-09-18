@@ -36,7 +36,7 @@ function BehaviourCard({
 
       {/* Text Overlay */}
       <div className="absolute inset-0 flex items-center justify-center px-6 text-center pointer-events-none">
-        <p className="text-white text-[16px] font-[700] leading-snug font-[Roboto]">
+        <p className="text-white text-[15px] font-[700] leading-snug font-[Roboto]">
           {text}
         </p>
       </div>

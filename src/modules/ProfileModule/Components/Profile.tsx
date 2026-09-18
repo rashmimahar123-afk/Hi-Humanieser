@@ -16,7 +16,9 @@ import useOrganisationDetailsQuery, {
 } from "../Hooks/useOrganisationDetailsQuery";
 import CompanyStructure from "./CompanyStructure/CompanyStructure";
 import LogoutModal from "../../WelcomeModule/Components/LogoutModal/LogoutModal";
-import useGetTeamsQuery from "../Hooks/useGetTeamsQuery";
+import useGetTeamsQuery, {
+  GET_TEAMS_QUERY_KEY,
+} from "../Hooks/useGetTeamsQuery";
 import { useEditUserMutation } from "../Hooks/useEditUserMutation";
 import useGetAllListUsersQuery from "../Hooks/useGetAllListUsersQuery";
 import ChampionModal from "./ChampionModal/ChampionModal";
@@ -249,6 +251,10 @@ function Profile() {
           await queryClient.invalidateQueries({
             queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
           });
+
+          await queryClient.invalidateQueries({
+            queryKey: GET_TEAMS_QUERY_KEY,
+          });
         },
 
         onError: (error) => {
@@ -301,6 +307,10 @@ function Profile() {
 
           await queryClient.invalidateQueries({
             queryKey: GET_ORGANISATION_DETAILS_QUERY_KEY,
+          });
+
+          await queryClient.invalidateQueries({
+            queryKey: GET_TEAMS_QUERY_KEY,
           });
         },
 

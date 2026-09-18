@@ -5,6 +5,7 @@ import QuizPathwayCards from "../QuizPathwayCards/QuizPathwayCards";
 import { useRouter } from "next/navigation";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
 import GaugeChart from "react-gauge-chart";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 type MY_QUIZ_RESULT_PROPS = {
   topStrengthDetails: any;
@@ -309,7 +310,7 @@ function MyQuizResults(props: MY_QUIZ_RESULT_PROPS) {
                       description={item.description}
                       bgColor={"#F5C882"}
                       onLearnMore={() =>
-                        router.push(
+                        openInNewTab(
                           `/pathway-card?pillar=${item?.pillar_number}&principle=${item?.principle_number}`,
                         )
                       }

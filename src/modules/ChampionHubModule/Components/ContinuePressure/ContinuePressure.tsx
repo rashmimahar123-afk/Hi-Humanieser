@@ -19,6 +19,7 @@ import MaxTwoRitualModal, {
 import DeactivateRitualModal, {
   openDeactivateRitualModal,
 } from "../DeactivateTeamRitualModal/DeactivateTeamRitualModal";
+import { openInNewTab } from "@/src/lib/Helpers";
 
 function ContinuePressure() {
   const [enter, setEnter] = useState(false);
@@ -90,7 +91,7 @@ function ContinuePressure() {
 
       selected: activeRitualIds.includes(ritual.team_ritual_id),
       onLearnMore: () =>
-        router.push(
+        openInNewTab(
           `/conversation?focusArea=${selectedFocusArea?.focus_area_id}`,
         ),
       onSelect: () => handleRitualSelect(ritual),
