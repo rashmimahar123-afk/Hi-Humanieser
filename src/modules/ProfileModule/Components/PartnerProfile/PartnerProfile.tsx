@@ -19,6 +19,7 @@ type PROFILE_DATA_PROPS = {
   loggedInUserDetails?: ALL_USERS_DATA;
   teamName?: string;
   handleBecomePartner: () => void;
+  handleBecomeChampion: (teamId: string) => void;
 };
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -89,8 +90,13 @@ const compressImage = (file: File): Promise<Blob> => {
 };
 
 function PartnerProfile(props: PROFILE_DATA_PROPS) {
-  const { profileData, loggedInUserDetails, teamName, handleBecomePartner } =
-    props;
+  const {
+    profileData,
+    loggedInUserDetails,
+    teamName,
+    handleBecomePartner,
+    handleBecomeChampion,
+  } = props;
   const [profileImage, setProfileImage] = useState<string | StaticImageData>(
     profileData?.profile_picture_path || images.dummyUser,
   );
@@ -100,7 +106,7 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
-
+  console.log("profileDataprofileDataprofileData", profileData);
   useEffect(() => {
     if (profileData?.profile_picture_path) {
       setProfileImage(profileData.profile_picture_path);
@@ -313,22 +319,35 @@ function PartnerProfile(props: PROFILE_DATA_PROPS) {
         that pushed it completely off-screen on mobile.
         Now it's full-width on mobile, auto-width + right-aligned on sm+.
       */}
-      {typeof window !== "undefined" && user?.user_type !== 1 && (
+      {typeof window !== "undefined" && user?.user_type === 3 && (
         <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
           <button
             className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]"
             onClick={() => {
-              if (user?.user_type === 3) {
+              if (!profileData?.team_id) {
                 openChampionModal();
               } else {
-                handleBecomePartner();
+                handleBecomeChampion(profileData.team_id);
               }
             }}
           >
-            {user?.user_type === 3 ? "Become a Champion" : "Switch to Partner"}
+            {!profileData?.team_id ? "Become a Champion" : "Switch to Champion"}
           </button>
         </div>
       )}
+
+      {typeof window !== "undefined" &&
+        user?.user_type === 2 &&
+        user?.was_partner && (
+          <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
+            <button
+              className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]"
+              onClick={handleBecomePartner}
+            >
+              Become a Partner
+            </button>
+          </div>
+        )}
 
       {/* <div className="mt-5 sm:mt-6 flex justify-start sm:justify-end">
         <button className="w-full sm:w-auto md:mr-[350px] bg-[#86c9c9] px-6 py-3 rounded-full text-[#0F4F58] font-medium text-[14px] sm:text-[15px] md:text-[16px]">

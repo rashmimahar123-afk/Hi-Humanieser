@@ -14,6 +14,10 @@ import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useCho
 import { CHOOSE_MYSELF_PILLAR_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { openInNewTab } from "@/src/lib/Helpers";
+import useHhFrameworkMtjQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useHhFrameworkMtjQuery";
+import { FOCUS_AREA_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
+
+const FOCUS_AREA_COLORS = ["#4ba6a6", "#f5c882", "#acd5ab", "#f7c3be"];
 
 function FromIdeas() {
   const [enter, setEnter] = useState(false);
@@ -31,108 +35,28 @@ function FromIdeas() {
 
   const { user } = useAuthValue();
 
-  const focusAreaCards = [
-    {
-      sectionTitle: "The Mindset We Bring",
-      bgColor: "#4ba6a6",
-      cards: [
-        {
-          title: "Own Your Impact",
-          description:
-            "Transform your messages into clear direction that people can actually act on.",
-          learnMoreColor: "#4ba6a6",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-        {
-          title: "Be Real, Not Right",
-          description:
-            "Use honesty to build trust, unlock collaboration, and strengthen performance — even when certainty is missing.",
-          learnMoreColor: "#4ba6a6",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-      ],
+  const { data: frameworkData } = useHhFrameworkMtjQuery();
+  const focusAreasList = frameworkData?.data?.focus_areas ?? [];
+
+  const focusAreaCards = focusAreasList.map(
+    (focusArea: FOCUS_AREA_DATA, index: number) => {
+      const bgColor = FOCUS_AREA_COLORS[index % FOCUS_AREA_COLORS.length];
+
+      return {
+        sectionTitle: focusArea?.title,
+        bgColor,
+        cards: focusArea?.team_rituals?.map((ritual) => ({
+          title: ritual?.title,
+          description: ritual?.short_description,
+          learnMoreColor: bgColor,
+          onLearnMore: () =>
+            openInNewTab(
+              `/conversation?focusArea=${focusArea?.focus_area_id}`,
+            ),
+        })),
+      };
     },
-    {
-      sectionTitle: "The Way We Connect",
-      bgColor: "#f5c882",
-      cards: [
-        {
-          title: "Make it Safe",
-          description:
-            "Create everyday safety as the root of high performance, so people speak up, share ideas, and contribute fully.",
-          learnMoreColor: "#f5c882",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-        {
-          title: "Be Real, Not Right",
-          description:
-            "Transform your messages into clear direction that people can actually act on.",
-          learnMoreColor: "#f5c882",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-      ],
-    },
-    {
-      sectionTitle: "The Culture We Shape",
-      bgColor: "#acd5ab",
-      cards: [
-        {
-          title: "Culture by Design",
-          description:
-            "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-          learnMoreColor: "#acd5ab",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-        {
-          title: "Wellbeing is Performance Infrastructure",
-          description:
-            "Learn how energy, recovery, and care directly strengthen performance.",
-          learnMoreColor: "#acd5ab",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-      ],
-    },
-    {
-      sectionTitle: "The Culture We Shape",
-      bgColor: "#f7c3be",
-      cards: [
-        {
-          title: "Culture by Design",
-          description:
-            "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-          learnMoreColor: "#f7c3be",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-        {
-          title: "Wellbeing is Performance Infrastructure",
-          description:
-            "Learn how energy, recovery, and care directly strengthen performance.",
-          learnMoreColor: "#f7c3be",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-      ],
-    },
-    {
-      sectionTitle: "The Culture We Shape",
-      bgColor: "#4ba6a6",
-      cards: [
-        {
-          title: "Culture by Design",
-          description:
-            "Move from inherited habits to intentional culture that supports clarity, accountability, and performance.",
-          learnMoreColor: "#4ba6a6",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-        {
-          title: "Wellbeing is Performance Infrastructure",
-          description:
-            "Learn how energy, recovery, and care directly strengthen performance.",
-          learnMoreColor: "#4ba6a6",
-          onLearnMore: () => openInNewTab(`/conversation`),
-        },
-      ],
-    },
-  ];
+  );
 
   return (
     <div

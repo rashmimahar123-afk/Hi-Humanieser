@@ -225,6 +225,7 @@ function Profile() {
               user: {
                 ...parsedAuthState.user,
                 user_type: res.user_type,
+                was_partner: true,
               },
             };
 
@@ -240,6 +241,7 @@ function Profile() {
             user: {
               ...currentAuth.user!,
               user_type: res.user_type,
+              was_partner: true,
             },
           });
 
@@ -359,6 +361,7 @@ function Profile() {
             teamName={teamName}
             loggedInUserDetails={loggedInUserDetails}
             handleBecomePartner={handleBecomePartner}
+            handleBecomeChampion={handleBecomeChampion}
           />
           {user?.user_type === 3 && profileData ? (
             <CompanyStructure

@@ -98,7 +98,7 @@ function ChampionHub() {
         <div className="relative z-10 mt-20 grid grid-cols-2 gap-x-20 gap-y-14  mx-auto max-w-[1000px]">
           {/* TEAM FOCUS */}
           <div
-            className="relative bg-[#CFE8E6] rounded-xl p-4 cursor-pointer"
+            className="relative bg-[#CFE8E6] rounded-xl p-4 cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-3 hover:shadow-xl"
             onClick={() => router.push(`/champion-hub/team-focus`)}
           >
             {/* Heading */}
@@ -127,7 +127,7 @@ function ChampionHub() {
           {/* CHAMPION NOTES */}
 
           <div
-            className="relative bg-[#CDE3CC] rounded-xl p-6 cursor-pointer"
+            className="relative bg-[#CDE3CC] rounded-xl p-6 cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-3 hover:shadow-xl"
             onClick={() => router.push(`/champion-hub/champion-notes`)}
           >
             {/* Heading */}
@@ -154,7 +154,7 @@ function ChampionHub() {
 
           {/* TEAM INSIGHTS */}
           <div
-            className="relative bg-[#F8E1B8] rounded-xl p-4 ml-16 cursor-pointer"
+            className="relative bg-[#F8E1B8] rounded-xl p-4 ml-16 cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-3 hover:shadow-xl"
             onClick={() => router.push("/champion-hub/team-insight")}
           >
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">
@@ -179,7 +179,7 @@ function ChampionHub() {
 
           {/* CHAMPION RESOURCES */}
           <div
-            className="relative bg-[#FBE1DE] rounded-xl p-4 mr-16 cursor-pointer"
+            className="relative bg-[#FBE1DE] rounded-xl p-4 mr-16 cursor-pointer transition-transform duration-300 ease-in-out hover:-translate-y-3 hover:shadow-xl"
             onClick={() => router.push("/champion-hub/champion-resources")}
           >
             <h3 className="relative z-20 text-[#0F4F58] font-[RocaTwo] text-center text-[24px] font-bold ">

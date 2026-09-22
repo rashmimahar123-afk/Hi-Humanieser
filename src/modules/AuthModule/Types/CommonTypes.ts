@@ -10,6 +10,7 @@ export type USER_INFO_TYPE = {
   user_type: number;
   team_id?: string;
   user_id?: string;
+  was_partner?: boolean;
 };
 export type AUTH_STATE = {
   user: USER_INFO_TYPE | undefined;

@@ -3,6 +3,7 @@
 import Loader from "@/src/components/Loader/Loader";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useGetMtjPollQuery from "@/src/modules/ChampionHubModule/Hooks/useGetMtjPollQuery";
+import ChampionHoldTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/ChampionHoldTeamJourney/ChampionHoldTeamJourney";
 import ChampionTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/ChampionTeamJourney/ChampionTeamJourney";
 import HoldTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/HoldTeamJourney/HoldTeamJourney";
 import MyTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/MyTeamJourney/MyTeamJourney";
@@ -47,7 +48,14 @@ function StartTeamJourneyPage() {
         <PartnerTeamJourney />
       ) : user?.user_type === 2 ? (
         rituals.length === 0 ? (
-          <ChampionTeamJourney />
+          pollData?.cycle_started && pollData?.poll_open ? (
+            <ChampionHoldTeamJourney
+              pollData={pollData}
+              profileData={profileData}
+            />
+          ) : (
+            <ChampionTeamJourney />
+          )
         ) : (
           <TeamJourney rituals={rituals} />
         )
