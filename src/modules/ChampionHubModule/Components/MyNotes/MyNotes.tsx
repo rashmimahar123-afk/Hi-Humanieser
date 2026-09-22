@@ -13,9 +13,11 @@ type Props = {
     created_at: string;
     shared_anonymously: boolean;
   };
+  readOnly?: boolean;
+  emptyText?: string;
 };
 
-function MyNotes({ reflection }: Props) {
+function MyNotes({ reflection, readOnly = false, emptyText }: Props) {
   const { user } = useAuthValue();
   const [checked, setChecked] = useState(
     reflection?.shared_anonymously ?? false,
@@ -66,6 +68,10 @@ function MyNotes({ reflection }: Props) {
               {reflection.reflection}
             </p>
           </div>
+        ) : readOnly ? (
+          <p className="text-[#567F55] text-[20px]">
+            {emptyText || "No note recorded for this cycle"}
+          </p>
         ) : (
           <>
             {[...Array(8)].map((_, i) => (
@@ -82,59 +88,64 @@ function MyNotes({ reflection }: Props) {
         )}
       </div>
 
-      <div className="flex flex-col items-end gap-4 mt-10">
-        {!reflection ? (
-          <button
-            onClick={() =>
-              openChampionNotes(
-                "champion_notes",
-                "",
-                undefined,
-                undefined,
-                user?.team_id,
-              )
-            }
-            className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
-          >
-            Add note
-          </button>
-        ) : (
-          <button
-            className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
-            onClick={() => {
-              console.log("SENDING NOTE:", reflection);
-              openChampionNotes(
-                "edit_champion_note",
-                reflection.id,
-                undefined,
-                undefined,
-                user?.team_id,
-                reflection,
-              );
-            }}
-          >
-            Edit note
-          </button>
-        )}
-      </div>
+      {!readOnly && (
+        <>
+          <div className="flex flex-col items-end gap-4 mt-10">
+            {!reflection ? (
+              <button
+                onClick={() =>
+                  openChampionNotes(
+                    "champion_notes",
+                    "",
+                    undefined,
+                    undefined,
+                    user?.team_id,
+                  )
+                }
+                className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
+              >
+                Add note
+              </button>
+            ) : (
+              <button
+                className="px-6 py-1 rounded-full bg-[#E8B86F] text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold"
+                onClick={() => {
+                  console.log("SENDING NOTE:", reflection);
+                  openChampionNotes(
+                    "edit_champion_note",
+                    reflection.id,
+                    undefined,
+                    undefined,
+                    user?.team_id,
+                    reflection,
+                  );
+                }}
+              >
+                Edit note
+              </button>
+            )}
+          </div>
 
-      <div className="flex justify-between items-center mt-10">
-        <p className="text-[20px] text-[#0F4F58] font-[Aptos]">
-          Share your insights with your team?
-        </p>
+          <div className="flex justify-between items-center mt-10">
+            <p className="text-[20px] text-[#0F4F58] font-[Aptos]">
+              Share your insights with your team?
+            </p>
 
-        <input
-          type="checkbox"
-          checked={checked}
-          disabled={isEditingMyNote}
-          onChange={(e) => handleShareChange(e.target.checked)}
-          className="w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
-        />
-      </div>
+            <input
+              type="checkbox"
+              checked={checked}
+              disabled={isEditingMyNote}
+              onChange={(e) => handleShareChange(e.target.checked)}
+              className="w-5 h-5 rounded border-[#0F4F58] cursor-pointer"
+            />
+          </div>
 
-      <p className="text-[16px] italic text-[#0F4F58] opacity-80 mt-1 font-[Aptos]">
-        if yes, your reflection will be shared anonymously on Reflection Walls
-      </p>
+          <p className="text-[16px] italic text-[#0F4F58] opacity-80 mt-1 font-[Aptos]">
+            if yes, your reflection will be shared anonymously on Reflection
+            Walls
+          </p>
+        </>
+      )}
     </div>
   );
 }

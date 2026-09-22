@@ -27,13 +27,21 @@ function PreviousCycle(props: PREVIOUS_CYCLE_PROPS) {
       })
     : "--";
 
-  const completedDate = cycle?.completed_at
-    ? new Date(cycle.completed_at).toLocaleDateString("en-US", {
+  const completedDate = cycle?.completed_at_ts
+    ? new Date(cycle.completed_at_ts * 1000).toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
         year: "numeric",
       })
-    : "--";
+    : cycle?.completed_at
+      ? new Date(cycle.completed_at).toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })
+      : "--";
+
+  const myNotes = cycle?.my_notes?.items || [];
   return (
     <>
       {/* ================= MAIN WRAPPER ================= */}
@@ -54,43 +62,61 @@ function PreviousCycle(props: PREVIOUS_CYCLE_PROPS) {
             Pressure Point
           </div>
           <div className="col-span-2">
-            <div className="w-[420px] h-[64px] bg-[#E9E9E9] rounded-full px-8 flex items-center text-[#567F55] text-[22px]">
+            <div className="w-full h-[64px] bg-[#E9E9E9] rounded-full px-8 flex items-center text-[#567F55] text-[22px]">
               {cycle?.champion_pp || "--"}
             </div>
           </div>
           <div className="text-[#0F4F58] text-[30px] font-[RocaTwo] font-bold">
             Focus Area
           </div>
-          {focusAreas.map((focusArea: string, index: number) => (
-            <div key={`${focusArea}-${index}`}>
-              <div className="w-[420px] min-h-[64px] bg-[#E9E9E9] rounded-full px-8 py-3 flex items-center text-[#567F55] text-[22px]">
-                {focusArea}
+          <div className="col-span-2 flex flex-wrap gap-4">
+            {focusAreas.length > 0 ? (
+              focusAreas.map((focusArea: string, index: number) => (
+                <div
+                  key={`${focusArea}-${index}`}
+                  className="min-w-[200px] flex-1 min-h-[64px] bg-[#E9E9E9] rounded-full px-8 py-3 flex items-center text-[#567F55] text-[22px]"
+                >
+                  {focusArea}
+                </div>
+              ))
+            ) : (
+              <div className="w-full min-h-[64px] bg-[#E9E9E9] rounded-full px-8 py-3 flex items-center text-[#567F55] text-[22px]">
+                --
               </div>
-            </div>
-          ))}
+            )}
+          </div>
           <div className="text-[#0F4F58] text-[30px] font-[RocaTwo] font-bold">
             Team Ritual
           </div>
-          {teamRituals.map((ritual: any) => (
-            <div key={ritual.team_ritual_id}>
-              <div className="w-[420px] min-h-[64px] bg-[#E9E9E9] rounded-full px-8 py-3 flex items-center text-[#567F55] text-[22px]">
-                {ritual.title}
+          <div className="col-span-2 flex flex-wrap gap-4">
+            {teamRituals.length > 0 ? (
+              teamRituals.map((ritual: any) => (
+                <div
+                  key={ritual.team_ritual_id}
+                  className="min-w-[200px] flex-1 min-h-[64px] bg-[#E9E9E9] rounded-full px-8 py-3 flex items-center text-[#567F55] text-[22px]"
+                >
+                  {ritual.title}
+                </div>
+              ))
+            ) : (
+              <div className="w-full min-h-[64px] bg-[#E9E9E9] rounded-full px-8 py-3 flex items-center text-[#567F55] text-[22px]">
+                --
               </div>
-            </div>
-          ))}
+            )}
+          </div>
           <div className="text-[#0F4F58] text-[30px] font-[RocaTwo] font-bold">
             Started on
           </div>
           <div className="col-span-2">
-            <div className="w-[420px] h-[64px] bg-[#E9E9E9] rounded-full px-8 flex items-center text-[#567F55] text-[22px]">
+            <div className="w-full h-[64px] bg-[#E9E9E9] rounded-full px-8 flex items-center text-[#567F55] text-[22px]">
               {startedDate}
             </div>
           </div>
           <div className="text-[#0F4F58] text-[30px] font-[RocaTwo] font-bold">
-            Finish
+            Finished on
           </div>
           <div className="col-span-2">
-            <div className="w-[420px] bg-[#E9E9E9] rounded-2xl px-8 py-5 text-[#567F55] text-[22px] leading-[32px]">
+            <div className="w-full min-h-[64px] bg-[#E9E9E9] rounded-full px-8 flex items-center text-[#567F55] text-[22px]">
               {completedDate}
             </div>
           </div>
@@ -328,10 +354,24 @@ function PreviousCycle(props: PREVIOUS_CYCLE_PROPS) {
           My Notes
         </h2>
 
-        {/* ================= TWO CARDS ================= */}
+        {/* ================= NOTES FROM THIS CYCLE ================= */}
         <div className="grid grid-cols-2 gap-14 mt-4">
-          <MyNotes />
-          <MyNotes />
+          {myNotes.length > 0 ? (
+            myNotes.map((note) => (
+              <MyNotes
+                key={note.id}
+                readOnly
+                reflection={{
+                  id: note.id,
+                  reflection: note.note,
+                  created_at: note.created_at,
+                  shared_anonymously: note.shared_anonymously,
+                }}
+              />
+            ))
+          ) : (
+            <MyNotes readOnly emptyText="No notes recorded for this cycle" />
+          )}
         </div>
       </div>
     </>

@@ -14,6 +14,12 @@ import { useActivateRitualMutation } from "../../Hooks/useActivateRitualMutation
 import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 const EVENT = "SELECT_TEAM_RITUAL_MODAL_EVENT";
+const MAX_WORDS = 500;
+
+const countWords = (text: string) => {
+  const trimmed = text.trim();
+  return trimmed === "" ? 0 : trimmed.split(/\s+/).length;
+};
 
 export const openSelectTeamRitualModal = (data: {
   ritualId: string;
@@ -27,6 +33,16 @@ function SelectTeamRitualModal() {
   const [selectedRitualId, setSelectedRitualId] = useState<string>("");
   const [focusAreaId, setFocusAreaId] = useState<string>("");
   const { user } = useAuthValue();
+
+  const wordCount = countWords(reflection);
+
+  const handleReflectionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    const value = e.target.value;
+    if (countWords(value) > MAX_WORDS) return;
+    setReflection(value);
+  };
 
   useEventEmitter(EVENT, (data) => {
     setSelectedRitualId(data?.ritualId);
@@ -119,7 +135,7 @@ function SelectTeamRitualModal() {
 
           <textarea
             value={reflection}
-            onChange={(e) => setReflection(e.target.value)}
+            onChange={handleReflectionChange}
             placeholder="Write your reflection here…"
             className="
               w-full
@@ -137,10 +153,9 @@ function SelectTeamRitualModal() {
               focus:ring-[#A7D3CB]
             "
           />
-
-          {/* Resend */}
-
-          {/* Resend */}
+          <p className="text-[12px] text-right text-[#567F55]">
+            {wordCount}/{MAX_WORDS} words
+          </p>
 
           <div className="flex justify-center items-center gap-3 pt-2">
             {/* Resend Button */}

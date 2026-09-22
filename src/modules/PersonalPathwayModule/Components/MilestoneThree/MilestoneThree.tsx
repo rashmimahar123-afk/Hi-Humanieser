@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import images from "@/src/assets/images";
-import { useRouter } from "next/navigation";
 import ArrowSquare from "@/src/components/ArrowSquare/ArrowSquare";
 import styles from "./MilestoneThree.module.css";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
@@ -26,6 +25,9 @@ import ConfirmShareReflectionModal, {
   openConfirmShareReflectionModal,
 } from "../ConfirmShareReflectionModal/ConfirmShareReflectionModal";
 import { GET_PERSONAL_PATHWAY_QUERY_KEY } from "../../Hooks/usePersonalPathwayQuery";
+import CompletePathwayModal, {
+  openCompletePathwayModal,
+} from "../CompletePathwayModal/CompletePathwayModal";
 
 type MILESTONE_THREE_PROPS = {
   ClosePracticePerspective: () => void;
@@ -45,13 +47,9 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     m3Data,
     m1Pulse,
   } = props;
-  const router = useRouter();
-
-  const [showSuccess, setShowSuccess] = useState(false);
   const [selectedPulse, setSelectedPulse] = useState<number | null>(null);
   const [pulseMessage, setPulseMessage] = useState<string>("");
   const [showPulseError, setShowPulseError] = useState(false);
-  const [completionMessage, setCompletionMessage] = useState<string>("");
   const [showCompleteError, setShowCompleteError] = useState(false);
   const [selectedMicroActions, setSelectedMicroActions] = useState<string[]>(
     [],
@@ -78,10 +76,9 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
         onSuccess: async () => {
           try {
             const res = await getRandomMessage();
-            setCompletionMessage(res?.data || "");
-            setShowSuccess(true);
+            openCompletePathwayModal(res?.data || "");
           } catch (err) {
-            setShowSuccess(true);
+            openCompletePathwayModal("");
           }
         },
       },
@@ -636,59 +633,17 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
         </p>
       )}
 
-      {showSuccess && (
-        <>
-          <SuccessMessage
-            text={completionMessage}
-            fontSize="text-[16px] sm:text-[18px] lg:text-[21px]"
-            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            fontColor="#0f4f58"
-            bottom="-1px"
-            rightImgBottom="-1px"
-            rotate="-35deg"
-          />
-
-          <div className="mt-[40px] flex flex-col sm:flex-row justify-between gap-4">
-            <button
-              onClick={() => router.push("/choose-pathway")}
-              className="bg-[#F5F0EB] px-4 sm:px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[14px] sm:text-[16px] flex items-center gap-3 sm:gap-4 font-[Aptos] cursor-pointer"
-            >
-              Start a New Pathway
-              <Image
-                src={images.milestoneArrow}
-                alt="arrow"
-                width={51}
-                height={51}
-                className="w-[36px] sm:w-[51px] h-auto"
-              />
-            </button>
-
-            <button
-              onClick={() => {
-                queryClient.invalidateQueries({
-                  queryKey: ["getPersonalPathwyQueryKey"],
-                });
-                ClosePracticePerspective();
-              }}
-              className="bg-[#F5F0EB] px-4 sm:px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[14px] sm:text-[16px] flex items-center gap-3 sm:gap-4 font-[Aptos] cursor-pointer"
-            >
-              Return to My Personal Pathway
-              <Image
-                src={images.milestoneArrow}
-                alt="arrow"
-                width={51}
-                height={51}
-                className="w-[36px] sm:w-[51px] h-auto"
-              />
-            </button>
-          </div>
-        </>
-      )}
-
       <FillUpFormModal />
       <ConfirmShareReflectionModal />
       <RemoveShareReflectionModal />
+      <CompletePathwayModal
+        onReturnToPathway={() => {
+          queryClient.invalidateQueries({
+            queryKey: ["getPersonalPathwyQueryKey"],
+          });
+          ClosePracticePerspective();
+        }}
+      />
     </div>
   );
 }

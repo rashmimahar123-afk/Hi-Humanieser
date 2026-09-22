@@ -161,6 +161,14 @@ export type GET_MTJ_KPI_SHARED_REFLECTIONS_DATA = {
   created_at: string;
   like_count: number;
 };
+export type TEAM_SHARED_NOTE_DATA = {
+  id: string;
+  note: string;
+  hub: string;
+  created_at: string;
+  edited: boolean;
+  like_count: number;
+};
 export type PREVIOUS_CYCLE_DATA = {
   id: string;
   status: string;
@@ -192,6 +200,19 @@ export type PREVIOUS_CYCLE_DATA = {
     sharing: {
       shared_count: number;
     };
+  };
+  my_notes?: {
+    hub: string;
+    total: number;
+    shared_count: number;
+    private_count: number;
+    returned: number;
+    items: Array<MY_NOTES_DATA>;
+  };
+  team_shared_notes?: {
+    total: number;
+    returned: number;
+    items: Array<TEAM_SHARED_NOTE_DATA>;
   };
 };
 export type GET_MTJ_KPI_RESPONSE = {
