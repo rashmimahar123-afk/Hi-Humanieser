@@ -84,8 +84,8 @@ export default function StartHere() {
                  text-[11px] sm:text-[14px] md:text-[18px]"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                We're so glad you're here — part of a growing community
-                rethinking how work feels and performs.
+                This is your space to explore small ways of working that can
+                make everyday work clearer, more human and easier to navigate.
               </p>
             </div>
 
@@ -100,15 +100,15 @@ export default function StartHere() {
                text-[11px] sm:text-[14px] md:text-[18px]"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                Hi Humaniser! is built on a simple belief:
+                Hi Humaniser! is built around a simple idea:{" "}
               </h3>
               <p
                 className="text-[#567F55] leading-relaxed
                text-[10px] sm:text-[12px] md:text-[15px]"
               >
-                Work feels better — and delivers better — when we centre people,
-                liberty and connection. This is your space to bring that to
-                life, step by step.
+                The way we work is shaped by the small things we do every day.
+                Hi Humaniser! gives you practical ways to bring them into
+                everyday work, on your own and with your team.
               </p>
             </div>
           </div>
@@ -173,9 +173,8 @@ export default function StartHere() {
                        text-[14px] sm:text-[18px] md:text-[22px] lg:text-[30px]"
             style={{ fontFamily: "RocaTwo-Bl" }}
           >
-            Here, you'll explore new ways of working through pathways, team
-            rituals and reflections. These first steps will help you feel ready,
-            supported and set up to begin.
+            Start here for a quick orientation. We’ll show you what’s inside,
+            how the different parts work together, and where you can begin.
           </p>
         </section>
 
@@ -204,6 +203,33 @@ export default function StartHere() {
             rightImgBottom="45px"
             maxWidth="800px"
           />
+        </div>
+
+        {/* READY TO EXPLORE */}
+        <div className="relative z-10 text-left px-4 sm:px-8 lg:px-[76px] pt-8 sm:pt-12 pb-10 sm:pb-14">
+          <p
+            className="font-bold text-[#0F4F58] text-[16px] sm:text-[20px]"
+            style={{ fontFamily: "RocaTwo-Bold" }}
+          >
+            You're ready to explore Hi Humaniser!
+          </p>
+          <p className="mt-1 text-[#0F4F58] text-[13px] sm:text-[16px]">
+            You can come back to Start Here whenever you need a reminder.
+          </p>
+
+          <button
+            onClick={() => router.push("/home")}
+            className="mt-6 bg-[#B9D8C2] px-5 sm:px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[14px] sm:text-[16px] inline-flex items-center justify-center gap-3 sm:gap-4 cursor-pointer"
+          >
+            Go to Home
+            <Image
+              src={images.milestoneArrow}
+              alt="arrow"
+              width={40}
+              height={40}
+              className="w-[28px] sm:w-[36px] h-auto"
+            />
+          </button>
         </div>
       </main>
       <LogoutModal />

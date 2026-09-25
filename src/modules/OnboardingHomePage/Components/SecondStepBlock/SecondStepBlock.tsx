@@ -16,9 +16,9 @@ function SecondStepBlock() {
       <h2 className={styles.title}>Step 2 - Choose Your Starting Point</h2>
 
       <p className={styles.subtitle}>
-        Pick a Personal Pathway to practice and add your voice to your Team
-        Journey. Your leader will choose a ritual based on your team’s input, so
-        both journeys move forward together.
+        Ready to begin? Choose a Personal Pathway to practise, or head to My
+        Team Journey to see what your team is working on and where your input is
+        needed.
       </p>
 
       <div className={styles.cardRow}>

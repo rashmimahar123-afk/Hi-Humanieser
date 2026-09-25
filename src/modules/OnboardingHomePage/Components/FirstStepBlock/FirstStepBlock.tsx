@@ -13,8 +13,9 @@ function FirstStepBlock() {
       <h2 className={styles.title}>Step 1 - Find Your Way Around</h2>
 
       <p className={styles.subtitle}>
-        Explore the five spaces in Hi Humaniser! Each one has a role in helping
-        you grow and connect.
+        Take a quick look around the five main spaces in Hi Humaniser! Each one
+        plays a different part in your experience, from personal practice and
+        team rituals to reflections, progress and resources.
       </p>
 
       {/* Single grid for all 5 cards */}
@@ -60,7 +61,7 @@ function FirstStepBlock() {
             <h3>My Team Journey</h3>
             <p>
               Add your voice through quick polls, then join team rituals chosen
-              by your champion. These shared practices run for a period of time,
+              by your champion. These shared practices run for period of time,
               helping your team build trust, clarity, and stronger performance
               together.
             </p>
@@ -107,10 +108,10 @@ function FirstStepBlock() {
           <div className={styles.cardContent}>
             <h3>Reflection Walls</h3>
             <p>
-              A shared space to capture your team's reflections. Pin your
+              A shared space to capture your team’s reflections. Pin your
               thoughts anonymously, see what others notice, and give a quick
-              "like" when something resonates. Over time, these walls grow into
-              a living record of your team's journey.
+              “like” when something resonates. Over time, these walls grow into
+              a living record of your team’s journey.
             </p>
           </div>
         </div>
@@ -131,8 +132,8 @@ function FirstStepBlock() {
           <div className={styles.cardContent}>
             <h3>Resources & Inspiration</h3>
             <p>
-              Here's where everything comes together: the principles, pathways,
-              and tools that bring Hi Humaniser! to life. You'll find curated
+              Here’s where everything comes together: the principles, pathways,
+              and tools that bring Hi Humaniser! to life. You’ll find curated
               insights and practical guidance designed to help you pause,
               reflect, and reconnect with what matters.
             </p>
@@ -175,7 +176,7 @@ function FirstStepBlock() {
           </div>
           <p className={styles.mobileFooterText}>
             Every Pathway and Team Ritual in Hi Humaniser! is grounded in
-            behavioural science — and you'll find short, clear explanations
+            behavioural science — and you’ll find short, clear explanations
             behind each one so you always know why it works.
           </p>
         </div>

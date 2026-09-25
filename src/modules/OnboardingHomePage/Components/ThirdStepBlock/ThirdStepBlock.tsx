@@ -9,9 +9,9 @@ function ThirdStepBlock() {
       <h2 className={styles.title}>Step 3 - Get Stuck In</h2>
 
       <p className={styles.subtitle}>
-        This is where the real change begins. Try out your micro-actions, join
-        your team ritual, and add your reflections along the way. The more you
-        practise, the more Hi Humaniser! becomes part of everyday work.
+        Hi Humaniser! works through practice. Try the micro-actions, use your
+        team ritual and add reflections along the way. Come back to notice
+        what’s shifting and build on what you learn.
       </p>
     </section>
   );

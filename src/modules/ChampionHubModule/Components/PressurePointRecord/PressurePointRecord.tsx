@@ -554,7 +554,7 @@ Thanks!`,
           </div>
         )}
 
-        {kpiPollData?.status === "closed" && activeRitualIds.length < 2 && (
+        {kpiPollData?.status === "closed" && activeRitualIds.length < 1 && (
           <>
             <div className="mt-[100px]">
               <h1 className="text-[#0F4F58] text-[32px] font-bold mb-2 font-[RocaTwo]">
@@ -670,7 +670,7 @@ Thanks!`,
           </>
         )}
 
-        {activeRitualIds?.length === 2 && (
+        {activeRitualIds?.length >= 1 && (
           <div className="mt-10 relative">
             <div className="absolute left-0 top-0 z-0 pointer-events-none">
               <Image
@@ -702,7 +702,7 @@ Thanks!`,
                 </p>
               </div>
               {/* Two Column Layout */}
-              <div className="grid grid-cols-2 gap-12  mt-8">
+              <div className="grid grid-cols-2 gap-12 mt-8">
                 {/* CARD */}
                 {teamRituals.map((ritual: any) => (
                   <div
@@ -813,6 +813,26 @@ Thanks!`,
                     </div>
                   </div>
                 ))}
+
+                {teamRituals.length === 1 && (
+                  <div className="bg-[#f8e1b8] rounded-[20px] p-10 flex flex-col items-center justify-center text-center gap-8">
+                    <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto] font-medium">
+                      You can still choose one more team ritual for this team
+                      cycle.
+                    </p>
+                    <CommonButtons
+                      label="Choose your team Ritual"
+                      bgColor="#cde3cc"
+                      onClick={() =>
+                        router.push(
+                          `/continue-pressure?focusArea=${encodeURIComponent(
+                            teamRituals[0]?.focus_area,
+                          )}`,
+                        )
+                      }
+                    />
+                  </div>
+                )}
               </div>
               <div className="relative mt-10">
                 <SuccessMessage
