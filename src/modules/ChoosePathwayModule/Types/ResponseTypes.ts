@@ -240,7 +240,7 @@ export type CHOOSE_MYSELF_PILLAR_TYPE = {
 };
 export type CHOOSE_MYSELF_RESPONSE_TYPES = [
   {
-    pulse_check_config: {
+    pulse_check_config?: {
       scale: Array<PULSE_CHECK_SCALE_TYPE>;
       comparison_feedback: PULSE_CHECK_COMP_FEEDBACK_TYPE;
     };
@@ -251,6 +251,32 @@ export type CHOOSE_MYSELF_RESPONSE_TYPES = [
     pillars: CHOOSE_MYSELF_PILLAR_TYPE[];
   },
 ];
+
+// Raw shape actually returned by GET /get-json/hh_framework_mpp.json:
+// an array of single-key wrapper objects, each keyed "pillar_0N", whose
+// principles are likewise keyed "principle_0N" instead of being an array.
+export type MPP_RAW_PRINCIPLE_TYPE = {
+  principle_name: string;
+  principle_description: {
+    definition: string;
+    short_description: string;
+  };
+  why_this_works: WHY_THIS_BEHAVIOUR_TYPE;
+  core_behaviours: { definition: string } & Record<string, string>;
+  amplifier_behaviours: { definition: string } & Record<string, string>;
+  pulse_check: { question: string };
+  common_traps: { definition: string } & Record<string, string>;
+  micro_actions: Record<string, { title: string; description: string }>;
+  reflection_prompt: { prompt: string };
+  conversation_starters: { definition: string } & Record<string, string>;
+};
+
+export type MPP_RAW_PILLAR_TYPE = {
+  pillar_name: string;
+  pillar_description: string;
+} & Record<string, MPP_RAW_PRINCIPLE_TYPE | string>;
+
+export type MPP_RAW_PILLAR_WRAPPER = Record<string, MPP_RAW_PILLAR_TYPE>;
 
 export type GET_LIST_MPP_RESPONSE_TYPES = {
   email: string;

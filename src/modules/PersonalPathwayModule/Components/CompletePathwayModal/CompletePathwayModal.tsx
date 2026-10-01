@@ -48,6 +48,16 @@ function CompletePathwayModal(props: CompletePathwayModalProps) {
             rotate="-35deg"
           />
 
+          <h3 className="mt-[32px] text-[#0F4F58] text-[20px] sm:text-[24px] font-[RocaTwo-Bold] font-bold">
+            Your journey continues
+          </h3>
+
+          <p className="mt-3 text-[#567F55] text-[14px] sm:text-[16px] font-[Aptos] font-[400]">
+            Your milestones and reflections are now saved in My Dashboard,
+            where you can revisit them, edit your reflections and keep
+            practicing what you&apos;ve learned.
+          </p>
+
           <div className="mt-[40px] flex flex-col sm:flex-row justify-center gap-4">
             <button
               onClick={() => {
@@ -56,7 +66,7 @@ function CompletePathwayModal(props: CompletePathwayModalProps) {
               }}
               className="bg-[#F5F0EB] px-4 sm:px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[14px] sm:text-[16px] flex items-center justify-center gap-3 sm:gap-4 font-[Aptos] cursor-pointer"
             >
-              Return to My Personal Pathway
+              Explore My Personal Pathway
               <Image
                 src={images.milestoneArrow}
                 alt="arrow"
@@ -69,11 +79,11 @@ function CompletePathwayModal(props: CompletePathwayModalProps) {
             <button
               onClick={() => {
                 setIsOpen(false);
-                router.push("/home");
+                router.push("/my-dashboard");
               }}
               className="bg-[#F5F0EB] px-4 sm:px-6 py-3 rounded-xl text-[#0F4F58] font-[400] text-[14px] sm:text-[16px] flex items-center justify-center gap-3 sm:gap-4 font-[Aptos] cursor-pointer"
             >
-              Go to Homepage
+              View my Journey
               <Image
                 src={images.milestoneArrow}
                 alt="arrow"

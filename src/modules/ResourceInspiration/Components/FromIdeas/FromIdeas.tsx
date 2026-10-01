@@ -102,7 +102,7 @@ function FromIdeas() {
               <div className={styles.highlightTextWrap}>
                 <p className={styles.highlightText}>
                   Pathways and Team Rituals help turn human-centred principles
-                  into everyday behaviours — through small actions, shared
+                  into everyday behaviours, through small actions, shared
                   moments and consistent practice.
                 </p>
               </div>
@@ -159,7 +159,9 @@ function FromIdeas() {
                       }
                       cards={item?.principles?.map((principleItem) => ({
                         title: principleItem?.principle_name,
-                        description: principleItem?.definition,
+                        description:
+                          principleItem?.principle_description ||
+                          principleItem?.definition,
                         learnMoreColor:
                           item?.pillar_number === 1
                             ? "#4ba6a6"
@@ -191,9 +193,9 @@ function FromIdeas() {
                   everyday work.
                 </p>
                 <p className={styles.sectionBodyText}>
-                  Rituals sit within Focus Areas — themes your team chooses to
-                  develop — each linked back to the Hi Humaniser! pillars and
-                  principles.
+                  Rituals sit within Focus Areas (themes your team chooses to
+                  develop) and each is linked back to the Hi Humaniser! pillars
+                  and principles.
                 </p>
               </div>
             </div>
@@ -255,7 +257,7 @@ function FromIdeas() {
                       href="/moments"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-bold mr-1 underline"
+                      className="font-bold mr-1 underline text-[25px]"
                     >
                       HH! Moments
                     </Link>{" "}
@@ -296,7 +298,7 @@ function FromIdeas() {
                   relying on memory.
                 </p>
                 <p>
-                  The story of your contribution is already there — grounded in
+                  The story of your contribution is already there, grounded in
                   real moments, not last-minute summaries.
                 </p>
               </div>
@@ -329,10 +331,9 @@ function FromIdeas() {
                   onClick={() => router.push("/my-dashboard")}
                 />
                 <CommonButtons
-                  label="Explore
-Reflection Walls"
+                  label="Return to Homepage"
                   bgColor="#4BA6A6"
-                  onClick={() => router.push("/reflection-walls")}
+                  onClick={() => router.push("/home")}
                 />
               </div>
             </div>

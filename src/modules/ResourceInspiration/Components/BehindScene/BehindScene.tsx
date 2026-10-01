@@ -38,13 +38,20 @@ function BehindScene() {
   const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
 
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/behindScenePdf/behindSceneWorkplace.pdf";
+    link.download = "Humanising our Workplaces Framework.pdf";
+    link.click();
+  };
+
   useEffect(() => {
     setEnter(true);
   }, []);
 
   const renderPrinciplesColumn = (
     data: { num: string; title: string }[],
-    isFirst = false
+    isFirst = false,
   ) => (
     <div
       className={`${styles.principlesCol} ${
@@ -95,21 +102,20 @@ function BehindScene() {
           </h1>
 
           <p className={styles.heroParagraph}>
-            Hi Humaniser! is built around one simple truth: work feels better —
-            and delivers better — when we centre people, clarity, and
-            connection.
+            Hi Humaniser! is built around one simple truth: work feels better
+            and delivers better when we centre people, clarity, and connection.
           </p>
 
           <p className={styles.heroParagraph}>
             Every part of Hi Humaniser! works like a living system. The Pillars
             define what we stand for. The Principles turn those ideas into ways
-            of working. And the Pathways and Team Rituals bring it all to life —
+            of working. And the Pathways and Team Rituals bring it all to life,
             through small, consistent actions that shape how people think,
             connect, and perform.
           </p>
 
           <p className={`${styles.heroParagraph} ${styles.heroParagraphLast}`}>
-            It&apos;s a framework designed to make human habits visible — and
+            It&apos;s a framework designed to make human habits visible and
             performance sustainable.
           </p>
         </div>
@@ -127,7 +133,7 @@ function BehindScene() {
 
             <p className={styles.bodyText}>
               Together, they hold 12 guiding principles that show what
-              human-centred performance looks like in action — from owning our
+              human-centred performance looks like in action, from owning our
               impact to making work sustainable.
             </p>
           </div>
@@ -138,11 +144,11 @@ function BehindScene() {
               <Image
                 src={images.screenPolygon}
                 alt="shape"
-                className="w-full h-auto"
+                className={styles.highlightImg}
               />
               <p className={styles.highlightText}>
                 These pillars and principles give every team a shared language
-                for how we think, communicate, and build trust — turning good
+                for how we think, communicate, and build trust, turning good
                 intentions into everyday habits that make work feel better and
                 deliver stronger results.
               </p>
@@ -231,7 +237,15 @@ function BehindScene() {
               pillars and principles that shape how we think, connect and
               perform together.
             </div>
-            <div>
+            <div
+              onClick={handleDownload}
+              role="button"
+              tabIndex={0}
+              className={styles.downloadBtn}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") handleDownload();
+              }}
+            >
               <Image src={images.downloadImg} alt="download" />
             </div>
           </div>
@@ -255,7 +269,9 @@ function BehindScene() {
               <ul className={styles.bulletList}>
                 <li>within teams</li>
                 <li>across teams</li>
-                <li>and even alongside teams who aren&apos;t using the platform</li>
+                <li>
+                  and even alongside teams who aren&apos;t using the platform
+                </li>
               </ul>
             </div>
 
@@ -279,9 +295,7 @@ Team Rituals"
         </div>
 
         <div className={styles.sectionBlock}>
-          <h2 className={styles.sectionHeading}>
-            An Evidence-Led Framework
-          </h2>
+          <h2 className={styles.sectionHeading}>An Evidence-Led Framework</h2>
           <div className={styles.sectionIndent}>
             <p
               className={`${styles.sectionBodyText} ${styles.sectionBodyTextSpaced}`}
@@ -291,8 +305,8 @@ Team Rituals"
 
             <div className={styles.bulletBlock}>
               <p className="mb-2">
-                Every element of the framework — from guiding principles and
-                behaviours to practical tools and shared practices — has been
+                Every element of the framework, from guiding principles and
+                behaviours to practical tools and shared practices, has been
                 shaped through four complementary lenses:
               </p>
               <ul className={styles.bulletList}>
@@ -309,7 +323,7 @@ Team Rituals"
               className={`${styles.sectionBodyText} ${styles.sectionBodyTextBottom}`}
             >
               Together, these lenses form the intellectual backbone of Hi
-              Humaniser! — ensuring the framework is robust enough to support
+              Humaniser! ensuring the framework is robust enough to support
               meaningful, human-centred performance in complex, real-world
               systems.
             </p>
@@ -364,6 +378,13 @@ Research Room"
                 </div>
               </PolygonButton>
             </div>
+          </div>
+          <div className={styles.homeBtn}>
+            <CommonButtons
+              label="Return to Home"
+              bgColor="#4BA6A6"
+              onClick={() => router.push("/home")}
+            />
           </div>
         </div>
       </div>

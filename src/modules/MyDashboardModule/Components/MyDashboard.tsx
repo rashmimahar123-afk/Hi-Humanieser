@@ -1546,13 +1546,14 @@ function MyDashboard() {
             <div className="mx-auto mt-10 md:mt-14" ref={practiceRef}>
               <MyActivePractice practiceList={practiceList} />
             </div>
-
-            <div className="mx-auto mt-10 md:mt-14" ref={teamRef}>
-              <MyTeamProgress
-                teamRituals={mtjListData?.data?.team_rituals}
-                ritualPractice={mtjListData?.data?.ritual_practice}
-              />
-            </div>
+            {user?.user_type !== 3 && (
+              <div className="mx-auto mt-10 md:mt-14" ref={teamRef}>
+                <MyTeamProgress
+                  teamRituals={mtjListData?.data?.team_rituals}
+                  ritualPractice={mtjListData?.data?.ritual_practice}
+                />
+              </div>
+            )}
           </div>
 
           {/* Bottom Action Row */}

@@ -187,7 +187,7 @@ function HumanieserMoments() {
         <div className="flex justify-end mt-10 max-lg:justify-center">
           {/* Bottom Buttons */}
           <div className="flex flex-col gap-4 items-center max-sm:w-full">
-            <CommonButtons
+            {/* <CommonButtons
               label={
                 user?.user_type === 3
                   ? `Return to Partner Hub`
@@ -199,7 +199,7 @@ function HumanieserMoments() {
                   user?.user_type === 3 ? "/overseer-hub" : "/champion-hub",
                 )
               }
-            />
+            /> */}
 
             <CommonButtons
               label="Go to Homepage"

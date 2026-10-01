@@ -1,9 +1,9 @@
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import SnackbarHandler from "@/src/lib/SnackbarHandler";
-import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { useDeleteUserMutation } from "@/src/modules/ProfileModule/Hooks/useDeleteUserMutation";
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
+import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
 import { Fragment, useState } from "react";
 
 type DELETE_SECTION_PROPS_TYPE = {
@@ -15,8 +15,10 @@ function DeleteSection(props: DELETE_SECTION_PROPS_TYPE) {
   const [emailInput, setEmailInput] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const { user } = useAuthValue();
+  const [teamName, setTeamName] = useState("");
   const { data: allUsersData, isLoading } = useGetAllListUsersQuery();
+  const { data: teamsResponse } = useGetTeamsQuery();
+  const teamsData = teamsResponse?.data?.teams || [];
   const handleSearch = () => {
     const trimmed = emailInput.trim();
     if (!trimmed) return;
@@ -24,8 +26,12 @@ function DeleteSection(props: DELETE_SECTION_PROPS_TYPE) {
     if (!allUsersData?.data?.users) return;
 
     // Step 1: filter by user_type
-    const filteredUsers = allUsersData.data.users.filter(
-      (u) => u.user_type === user?.user_type,
+    const filteredUsers = allUsersData.data.users.filter((u) =>
+      type === "partner"
+        ? u.user_type === 3
+        : type === "champion"
+          ? u.user_type === 2
+          : u.user_type === 1,
     );
 
     // Step 2: match email
@@ -36,10 +42,21 @@ function DeleteSection(props: DELETE_SECTION_PROPS_TYPE) {
     if (foundUser) {
       setFirstName(foundUser.first_name || "");
       setLastName(foundUser.last_name || "");
+      const matchedTeam = teamsData.find(
+        (team: any) => team.id === foundUser.team_id,
+      );
+      setTeamName(matchedTeam?.team_name || "");
     } else {
       setFirstName("");
       setLastName("");
-      SnackbarHandler.errorToast("No user found");
+      setTeamName("");
+      SnackbarHandler.errorToast(
+        type === "partner"
+          ? "No partner found"
+          : type === "champion"
+            ? "No Champion Found"
+            : "No Member Found",
+      );
     }
   };
 
@@ -63,6 +80,7 @@ function DeleteSection(props: DELETE_SECTION_PROPS_TYPE) {
           setEmailInput("");
           setFirstName("");
           setLastName("");
+          setTeamName("");
         },
         onError: (err: any) => {
           SnackbarHandler.errorToast(
@@ -143,6 +161,7 @@ function DeleteSection(props: DELETE_SECTION_PROPS_TYPE) {
             <input
               readOnly
               type="text"
+              value={teamName}
               placeholder="add pre stablished profile details"
               className="bg-[#ffffff] italic px-6 h-[56px] w-[700px] rounded-[16px]"
             />

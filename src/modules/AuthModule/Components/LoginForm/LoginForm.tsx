@@ -1178,22 +1178,35 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
         position: "relative",
       }}
     >
-      {/* ── Corner decorative image ── */}
-      <Image
-        src={images.loginRectangle}
-        alt="login-rectangle"
-        width={630}
-        height={630}
+      {/* ── Corner decorative image ──
+          Clipped to a fixed height on md / 1024-band so the shape stays
+          confined to the header area instead of stretching down over the
+          Remember Me / Forgot Password row. */}
+      <div
         style={{
           position: "absolute",
           top: 0,
           right: 0,
           zIndex: 0,
           width: cornerW,
-          height: "auto",
+          height: isLg1024 || isMd ? 320 : "auto",
+          overflow: isLg1024 || isMd ? "hidden" : "visible",
           pointerEvents: "none",
         }}
-      />
+      >
+        <Image
+          src={images.loginRectangle}
+          alt="login-rectangle"
+          width={630}
+          height={630}
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+            pointerEvents: "none",
+          }}
+        />
+      </div>
 
       {/* ════════ HEADER ════════ */}
       <header
@@ -1493,7 +1506,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                 width: inputW,
                 boxSizing: "border-box",
                 position: "relative",
-                zIndex: isLg1024 ? 10 : 2,
+                zIndex: isLg1024 || isMd ? 10 : 2,
               }}
             >
               <label
@@ -1543,14 +1556,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                   fontSize: rfFontSize,
                   textDecoration: "none",
                   position: "relative",
-                  zIndex: isLg1024 ? 10 : undefined,
-                  ...(isLg1024
-                    ? {
-                        backgroundColor: "rgba(232, 228, 223, 0.92)",
-                        padding: "2px 8px",
-                        borderRadius: 4,
-                      }
-                    : {}),
+                  zIndex: isLg1024 || isMd ? 10 : undefined,
                 }}
                 onMouseEnter={(e) =>
                   ((e.currentTarget as HTMLElement).style.textDecoration =

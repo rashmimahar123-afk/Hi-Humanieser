@@ -29,16 +29,18 @@ function TeamSetting() {
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
   const hasTeams = teams.length > 0;
-  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const isAddMemberDisabled =
-    !firstName.trim() || !lastName.trim() || !isValidEmail || !selectedTeamId;
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const championTeam =
     teams.find((team) => team.champion_id === user?.user_id) ||
     teams.find((team) => team.id === user?.team_id);
 
   const myTeam = championTeam;
+
+  const effectiveTeamId = selectedTeamId || myTeam?.id || teams[0]?.id || "";
+
+  const isAddMemberDisabled =
+    !firstName.trim() || !lastName.trim() || !isValidEmail || !effectiveTeamId;
 
   const [isEditingTeam, setIsEditingTeam] = useState(false);
   const [isEditingMembers, setIsEditingMembers] = useState(false);
@@ -59,10 +61,10 @@ function TeamSetting() {
   const { mutate: createUser } = useCreateUserMutation();
   const handleAddMember = () => {
     let payload: any = {
-      email_address: email,
-      first_name: firstName,
-      last_name: lastName,
-      team_id: selectedTeamId || myTeam?.id,
+      email_address: email.trim(),
+      first_name: firstName.trim(),
+      last_name: lastName.trim(),
+      team_id: effectiveTeamId,
     };
 
     createUser(
@@ -82,11 +84,12 @@ function TeamSetting() {
     );
   };
 
+  const defaultTeamId = championTeam?.id || teams[0]?.id;
   useEffect(() => {
-    if (championTeams.length > 0) {
-      setSelectedTeamId(championTeams[0].id);
+    if (defaultTeamId) {
+      setSelectedTeamId(defaultTeamId);
     }
-  }, [championTeams]);
+  }, [defaultTeamId]);
 
   return (
     <>
@@ -319,13 +322,13 @@ function TeamSetting() {
 
                   <div className="relative flex-1 max-w-[720px]">
                     <select
-                      value={selectedTeamId}
+                      value={effectiveTeamId}
                       onChange={(e) => setSelectedTeamId(e.target.value)}
                       className="appearance-none w-full h-[48px] bg-[#ffffff]
   rounded-[12px] px-6 pr-12 text-[#4E6E5D] outline-none"
                     >
-                      {championTeams.length > 0 ? (
-                        championTeams.map((team) => (
+                      {teams.length > 0 ? (
+                        (championTeams.length > 0 ? championTeams : teams).map((team) => (
                           <option key={team.id} value={team.id}>
                             {team.team_name}
                           </option>

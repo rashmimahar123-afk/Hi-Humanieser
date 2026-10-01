@@ -11,6 +11,7 @@ type COMMON_BUTTON_PROPS = {
   disabled?: boolean;
   textColor?: string;
   textClassName?: string;
+  disableHoverEffect?: boolean;
 };
 
 function CommonButtons({
@@ -21,6 +22,7 @@ function CommonButtons({
   disabled = false,
   textColor,
   textClassName = "text-[15px] sm:text-[18px]",
+  disableHoverEffect = false,
 }: COMMON_BUTTON_PROPS) {
   const pathname = usePathname();
   const [showTooltip, setShowTooltip] = useState(false);
@@ -62,7 +64,9 @@ function CommonButtons({
           ${
             disabled
               ? "opacity-60 cursor-not-allowed"
-              : "hover:opacity-90 cursor-pointer"
+              : disableHoverEffect
+                ? "cursor-pointer"
+                : "hover:opacity-90 cursor-pointer"
           }
         `}
         style={{

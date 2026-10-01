@@ -3,6 +3,7 @@ import UserProfileHeader from "../../UserProfileHeader/Components/UserProfileHea
 import Image from "next/image";
 import images from "@/src/assets/images";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./ResourceInspiration.module.css";
@@ -271,6 +272,15 @@ function ResourceInspiration() {
             rotate="-35deg"
             fontColor="#0F4F58"
             maxWidth="600px"
+          />
+        </div>
+
+        <div className="flex justify-end mt-8 lg:mt-10">
+          <CommonButtons
+            label="Return to Home"
+            bgColor="#F8E1B8"
+            onClick={() => router.push("/home")}
+            disableHoverEffect
           />
         </div>
       </div>

@@ -169,6 +169,10 @@ function PersonalPathway() {
                 const progressData = getPathwayProgress(item.data);
                 const currentMilestone =
                   progressData.steps >= 3 ? 3 : progressData.steps + 1;
+                const pathwayActionLabel =
+                  progressData.percentage > 0
+                    ? "continue pathway"
+                    : "start pathway";
                 return (
                   <div key={item.uuid}>
                     {/* ── DESKTOP (1024px+): original full single-row layout ── */}
@@ -198,7 +202,7 @@ function PersonalPathway() {
                       <div className="flex items-center gap-16">
                         <div className="flex flex-col items-center min-w-[90px]">
                           <button className="text-[15px] text-[#567F55] whitespace-nowrap">
-                            view details
+                            {pathwayActionLabel}
                           </button>
                           <div
                             className="relative cursor-pointer mt-2"
@@ -314,7 +318,7 @@ function PersonalPathway() {
                         {/* View Details + Arrow */}
                         <div className="flex flex-col items-center">
                           <button className="text-[13px] text-[#567F55] whitespace-nowrap">
-                            view details
+                            {pathwayActionLabel}
                           </button>
                           <div
                             className="relative cursor-pointer mt-1"
@@ -429,7 +433,7 @@ function PersonalPathway() {
                       <div className="flex items-center justify-between">
                         <div className="flex flex-col items-center w-[80px]">
                           <span className="text-[10px] text-[#567F55] whitespace-nowrap">
-                            view details
+                            {pathwayActionLabel}
                           </span>
                           <div
                             className="relative cursor-pointer mt-1"

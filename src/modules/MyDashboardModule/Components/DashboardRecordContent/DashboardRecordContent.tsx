@@ -618,6 +618,7 @@ function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
           )}
         </div>
 
+
         {/* My Team Progress */}
         <div>
           <div className="relative">

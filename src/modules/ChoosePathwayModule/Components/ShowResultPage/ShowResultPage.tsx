@@ -6,6 +6,7 @@ import styles from "./ShowResultPage.module.css";
 import { useRouter } from "next/navigation";
 import ResultPathwayCard from "./ResultPatwayCard/ResultPathwayCard";
 import CommonButtons from "@/src/components/CommonButtons/CommonButtons";
+import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import GaugeChart from "react-gauge-chart";
 import useMyQuizResultQuery from "../../Hooks/useMyQuizResultQuery";
 import { useCreateMppMutation } from "../../Hooks/useCreateMppMutation";
@@ -773,6 +774,33 @@ function ShowResultPage() {
 
                 {/* SKY SHAPE CARD */}
               </div>
+
+              {/* Choose Own Pathway CTA */}
+              <div className="flex items-center gap-[24px] mt-[100px] ml-[43px]">
+                <p
+                  className="text-[#0F4F58] text-[20px] leading-relaxed w-[300px]"
+                  style={{ fontFamily: "Aptos" }}
+                >
+                  Not sure if these align with you? No problem, choose your
+                  own pathways that fits your better.
+                </p>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => router.push("/choose-myself")}
+                >
+                  <PolygonButton
+                    width="153px"
+                    height="106px"
+                    bgColor="#F7C3BE"
+                    radius={14}
+                    clipPath="polygon(0% 0%, 100% 18px,100% calc(100% - 14px),0% 100%)"
+                  >
+                    <span className="text-[#0F4F58] text-[18px] font-[RocaTwo] font-bold leading-[21px]">
+                      Choose my Own Pathway
+                    </span>
+                  </PolygonButton>
+                </div>
+              </div>
               {/* CTA BUTTONS */}
             </div>
           </div>
@@ -786,10 +814,10 @@ function ShowResultPage() {
               />
 
               <CommonButtons
-                label="Go to Dashboard"
+                label="Return to Homepage"
                 bgColor={isPathwaySelected ? "#ACD5AB" : "#E5E5E5"}
                 disabled={totalCount < 1}
-                onClick={() => router.push("/my-dashboard")}
+                onClick={() => router.push("/home")}
               />
             </div>
           </div>

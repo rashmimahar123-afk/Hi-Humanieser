@@ -85,7 +85,7 @@ function ContinuePressure() {
     selectedFocusArea?.team_rituals?.map((ritual: MY_TEAM_RITUALS_DATA) => ({
       ritual_id: ritual.team_ritual_id,
       title: ritual.title,
-      description: ritual.long_description,
+      description: ritual.short_description,
       impact: ritual.operational_impact,
       learnMoreColor: "#cde3cc",
 
