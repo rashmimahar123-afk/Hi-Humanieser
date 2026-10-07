@@ -10,6 +10,7 @@ import { useGetHomeMessageQuery } from "../../Hooks/useGetHomeMessageQuery";
 import usePersonalPathwayQuery from "@/src/modules/PersonalPathwayModule/Hooks/usePersonalPathwayQuery";
 import Loader from "@/src/components/Loader/Loader";
 import LogoutModal from "../LogoutModal/LogoutModal";
+import useNewTeamRitualBadge from "@/src/modules/MyTeamJourneyModule/Hooks/useNewTeamRitualBadge";
 
 type DASHBOARD_BOX = {
   id: number;
@@ -23,6 +24,7 @@ type DASHBOARD_BOX = {
 function Home() {
   const [enter, setEnter] = useState(false);
   const { user } = useAuthValue();
+  const { hasNewRitual } = useNewTeamRitualBadge();
 
   useEffect(() => {
     setEnter(true);
@@ -49,7 +51,7 @@ function Home() {
       description: "See what your team is focusing on and join the ritual.",
       bgColor: "#FEF3F2",
       imageSrc: images.startPoly,
-      // badge: "new ritual",
+      badge: hasNewRitual ? "new team poll" : undefined,
     },
     {
       id: 4,
@@ -175,6 +177,27 @@ function Home() {
                       </span>
                     </div>
                   </div>
+                  {box.badge && (
+                    <div className="absolute bottom-3 right-4 md:bottom-10 md:right-6 flex items-center gap-1 rotate-[-19deg] pointer-events-none">
+                      <span
+                        style={{
+                          fontFamily: "RocaTwo-Bold",
+                          fontSize: "clamp(11px, 1.6vw, 16px)",
+                          color: "#0F4F58",
+                          fontWeight: 700,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {box.badge}
+                      </span>
+                      <Image
+                        src={images.leftArrowImg}
+                        alt=""
+                        width={26}
+                        height={26}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 

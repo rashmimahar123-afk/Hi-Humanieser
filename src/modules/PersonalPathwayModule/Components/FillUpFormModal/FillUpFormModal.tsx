@@ -133,7 +133,9 @@ function FillUpFormModal() {
 
     if (
       pathname === "/start-team-journey" ||
-      pathname === "/champion-hub/champion-notes"
+      pathname === "/champion-hub/champion-notes" ||
+      // /view-all edits both kinds — only team-ritual reflections carry a ritual id
+      (pathname === "/view-all" && !!teamRitualId)
     ) {
       if (isEdit) {
         const payload = {
@@ -252,7 +254,7 @@ function FillUpFormModal() {
     const updatedActionReflections =
       isEdit && editingIndex !== null
         ? existingActionReflections.map((r: any, index: number) =>
-            index === editingIndex ? newReflection : r,
+            index === editingIndex ? { ...r, ...newReflection } : r,
           )
         : [...existingActionReflections, newReflection];
 

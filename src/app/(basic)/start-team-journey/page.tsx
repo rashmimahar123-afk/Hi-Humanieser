@@ -12,7 +12,8 @@ import StartTeamJourney from "@/src/modules/MyTeamJourneyModule/Components/Start
 import TeamJourney from "@/src/modules/MyTeamJourneyModule/Components/TeamJourney/TeamJourney";
 import useGetMtjListQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useGetMtjListQuery";
 import useMyProfileQuery from "@/src/modules/ProfileModule/Hooks/useMyProfileQuery";
-import { Suspense } from "react";
+import useNewTeamRitualBadge from "@/src/modules/MyTeamJourneyModule/Hooks/useNewTeamRitualBadge";
+import { Suspense, useEffect } from "react";
 
 function StartTeamJourneyPage() {
   const { user } = useAuthValue();
@@ -33,6 +34,12 @@ function StartTeamJourneyPage() {
   const { data: mtjListData } = useGetMtjListQuery();
 
   const rituals = mtjListData?.data?.team_rituals || [];
+
+  // Opening My Team Journey clears the "new team poll" badge on Home
+  const { hasNewRitual, markSeen } = useNewTeamRitualBadge();
+  useEffect(() => {
+    if (hasNewRitual) markSeen();
+  }, [hasNewRitual, markSeen]);
 
   if (isLoading) {
     return (

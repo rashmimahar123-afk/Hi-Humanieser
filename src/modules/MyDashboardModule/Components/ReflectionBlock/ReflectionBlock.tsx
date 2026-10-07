@@ -2,10 +2,11 @@ import { MTJ_TEAM_RITUAL_DATA } from "@/src/modules/MyTeamJourneyModule/Types/Re
 
 type REFLECTION_BLOCK_PROPS = {
   ritual: MTJ_TEAM_RITUAL_DATA;
+  onEdit?: () => void;
 };
 
 function ReflectionBlock(props: REFLECTION_BLOCK_PROPS) {
-  const { ritual } = props;
+  const { ritual, onEdit } = props;
   const myReflections = ritual.reflections?.my_reflections || [];
 
   const latestReflection = myReflections[0];
@@ -56,6 +57,18 @@ function ReflectionBlock(props: REFLECTION_BLOCK_PROPS) {
                 className="border-b border-dotted border-[#000000] py-2"
               />
             ))
+          )}
+
+          {onEdit && latestReflection && (
+            <div className="flex justify-end mt-4">
+              <button
+                type="button"
+                onClick={onEdit}
+                className="px-5 py-1 rounded-full bg-[#F8E1B8] text-[#0F4F58] text-[14px] font-[RocaTwo] font-bold cursor-pointer"
+              >
+                Edit
+              </button>
+            </div>
           )}
 
           {latestReflection?.shared_anonymously && (

@@ -4,10 +4,11 @@ type DASHBOARD_PATHWAY_CARD_PROPS = {
   title: string;
   description: string | null | undefined;
   reflections?: Array<any>;
+  onEdit?: (index: number) => void;
 };
 
 function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
-  const { title, description, reflections } = props;
+  const { title, description, reflections, onEdit } = props;
 
   const safeReflections = reflections || [];
 
@@ -74,6 +75,18 @@ function DashboardPathwayCard(props: DASHBOARD_PATHWAY_CARD_PROPS) {
                       className="border-b border-dotted border-[#000000]"
                     />
                   ))}
+                </div>
+              )}
+
+              {onEdit && data?.reflection && (
+                <div className="flex justify-end mt-[12px]">
+                  <button
+                    type="button"
+                    onClick={() => onEdit(idx)}
+                    className="px-4 py-1 rounded-full bg-[#F8E1B8] text-[#0F4F58] text-[13px] font-[RocaTwo] font-bold cursor-pointer"
+                  >
+                    Edit
+                  </button>
                 </div>
               )}
 

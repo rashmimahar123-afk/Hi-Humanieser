@@ -20,7 +20,7 @@ export default function RootLayout({
             <RouteThemeProvider />
           </Suspense>
           {children}
-          <ToastContainer limit={1} autoClose={1000} />
+          <ToastContainer limit={1} autoClose={3000} />
         </QueryClientProvider>
       </body>
     </html>

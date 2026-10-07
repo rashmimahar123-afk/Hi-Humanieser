@@ -8,6 +8,7 @@ import {
   createPatternRows,
   enrichProgressWithPractice,
   getSharedReflectionsFromEnriched,
+  sortReflectionsByCreatedDesc,
 } from "@/src/lib/Helpers";
 import ViewAllReflectionCard from "../ViewAllReflectionCard/ViewAllReflectionCard";
 import { useGetMppMessagesQuery } from "@/src/modules/WelcomeModule/Hooks/useGetMppMessagesQuery";
@@ -130,8 +131,10 @@ function ReflectionWalls() {
         (a: any, b: any) =>
           new Date(b.created).getTime() - new Date(a.created).getTime(),
       );
-      const latestFive = sortedList.slice(0, 5);
-      setProgressList(latestFive);
+      // Scan window for m2/m3 reflections — keep in sync with
+      // ViewAllReflectionWall (20). The 5-card display cap is applied later.
+      const latest20 = sortedList.slice(0, 20);
+      setProgressList(latest20);
 
       const selectedKeys = getSelectedMicroActions(
         getListMppData.data.pathways,
@@ -297,22 +300,29 @@ function ReflectionWalls() {
   //     }));
   // }, [enrichedProgressList]);
   const reflections = useMemo(() => {
-    if (!reflectionApiData?.data?.reflections) return [];
+    const apiReflections = reflectionApiData?.data?.reflections ?? [];
 
-    const unique = Array.from(
-      new Map(
-        reflectionApiData.data.reflections
-          .sort(
-            (a: any, b: any) =>
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime(),
-          )
-          .map((item: any) => [
-            `${item.source}-${item.reflection.trim().toLowerCase()}`,
-            item,
-          ]),
-      ).values(),
-    );
+    // m2/m3 reflections live in the pathway doc, not /reflections — merge the
+    // logged-in user's shared ones in, same as ViewAllReflectionWall.
+    let localReflections: any[] = [];
+    if (user?.user_type === 1 || user?.user_type === 2) {
+      localReflections = getSharedReflectionsFromEnriched(
+        enrichedProgressList,
+      ).map((item: any, i: number) => ({
+        id: `local-${i}`,
+        reflection: item.text,
+        created: item.created,
+      }));
+    }
+
+    // De-duplicate by text; API entries come first so they win over local copies.
+    const byText = new Map<string | undefined, any>();
+    [...apiReflections, ...localReflections].forEach((item: any) => {
+      const key = item.reflection?.trim().toLowerCase();
+      if (!byText.has(key)) byText.set(key, item);
+    });
+
+    const unique = sortReflectionsByCreatedDesc([...byText.values()]);
 
     return unique.slice(0, 5).map((item: any, i: number) => ({
       id: item.id,
@@ -320,7 +330,7 @@ function ReflectionWalls() {
       rotate: i % 2 === 0 ? "-rotate-2" : "rotate-1",
       imageKey: images[`reflectionWall${(i % 5) + 1}` as keyof typeof images],
     }));
-  }, [reflectionApiData]);
+  }, [user, enrichedProgressList, reflectionApiData]);
   const { data: teamsData } = useGetTeamsQuery();
   const teams = teamsData?.data?.teams || [];
 
@@ -531,38 +541,34 @@ font-[Roboto]
 
               {/* Buttons */}
               <div className="flex justify-end gap-4 sm:gap-6 lg:gap-8 mr-4 sm:mr-8 lg:mr-12 mt-6 sm:mt-8 pb-2">
-                {user?.user_type !== 3 && (
-                  <>
-                    {/* Add Reflection */}
-                    <div
-                      className="relative w-[64px] h-[70px] sm:w-[72px] sm:h-[78px] lg:w-[80px] lg:h-[85px] cursor-pointer"
-                      onClick={() => {
-                        openFillupModal(
-                          "reflection_wall", // microActionType (anything meaningful)
-                          "", // uuid (not needed here)
-                          undefined,
-                          undefined,
-                          selectedTeam, //  correct place
-                        );
-                      }}
-                    >
-                      <PolygonButton
-                        width="100%"
-                        height="100%"
-                        bgColor="#F7C3BE"
-                        clipPath={`polygon(0% 18px, 100% 0%, 100% 100%, 0% calc(100% - 14px))`}
-                        radius={14}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none">
-                        <span className="text-[#0F4F58] text-[12px] sm:text-[15px] lg:text-[18px] font-[RocaTwo] font-bold leading-[18px] sm:leading-[22px] lg:leading-[26px]">
-                          Add
-                          <br />
-                          Reflection
-                        </span>
-                      </div>
-                    </div>
-                  </>
-                )}
+                {/* Add Reflection */}
+                <div
+                  className="relative w-[64px] h-[70px] sm:w-[72px] sm:h-[78px] lg:w-[80px] lg:h-[85px] cursor-pointer"
+                  onClick={() => {
+                    openFillupModal(
+                      "reflection_wall", // microActionType (anything meaningful)
+                      "", // uuid (not needed here)
+                      undefined,
+                      undefined,
+                      effectiveTeamId, //  partner → selected team, others → own team
+                    );
+                  }}
+                >
+                  <PolygonButton
+                    width="100%"
+                    height="100%"
+                    bgColor="#F7C3BE"
+                    clipPath={`polygon(0% 18px, 100% 0%, 100% 100%, 0% calc(100% - 14px))`}
+                    radius={14}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center text-center pointer-events-none">
+                    <span className="text-[#0F4F58] text-[12px] sm:text-[15px] lg:text-[18px] font-[RocaTwo] font-bold leading-[18px] sm:leading-[22px] lg:leading-[26px]">
+                      Add
+                      <br />
+                      Reflection
+                    </span>
+                  </div>
+                </div>
 
                 {/* View Full Wall */}
                 <div

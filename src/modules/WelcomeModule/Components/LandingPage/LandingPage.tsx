@@ -328,12 +328,12 @@ function LandingPage() {
               </div>
             </Link>
 
-            <h1 className={`text-[#0F4F58] font-bold ${styles.mainHeading}`}>
+            <h1 className={`text-[#0F4F58] font-bold leading-[1.1] ${styles.mainHeading}`}>
               Hi Humaniser!
               <span className={`align-super ${styles.headSpan}`}>™</span>
             </h1>
 
-            <div className={`space-y-4 ${styles.description}`}>
+            <div className={`space-y-4 !mt-2 ${styles.description}`}>
               {t.heroParagraphs.map((paragraph, index) => (
                 <p
                   key={index}
@@ -344,7 +344,7 @@ function LandingPage() {
                     <>
                       {paragraph.text && " "}
                       <span
-                        className={`text-base font-bold text-[#0F4F58] ${styles.descParagraph}`}
+                        className={`text-base font-bold text-[#0F4F58] whitespace-pre-line ${styles.descParagraph}`}
                       >
                         {paragraph.bold}
                       </span>
@@ -374,7 +374,7 @@ function LandingPage() {
                   className={styles.goBtnArrow}
                 />
                 <div
-                  className={`bg-white rounded-[20px] px-4 py-2 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center ${styles.goBtnText}`}
+                  className={`bg-white rounded-[24px] px-6 py-3 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center ${styles.goBtnText}`}
                   onClick={() => router.push("/login")}
                 >
                   <span
@@ -396,7 +396,7 @@ function LandingPage() {
             className={styles.goBtnArrowMobile}
           />
           <div
-            className={`bg-white rounded-[20px] px-4 py-2 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center ${styles.goBtnText}`}
+            className={`bg-white rounded-[24px] px-6 py-3 cursor-pointer hover:shadow-md transition-shadow flex items-center justify-center ${styles.goBtnText}`}
             onClick={() => router.push("/login")}
           >
             <span

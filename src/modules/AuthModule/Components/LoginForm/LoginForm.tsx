@@ -1035,7 +1035,9 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
     }
   }, []);
   /* ── Corner image ── */
-  const cornerW = isLg1024 ? 460 : isLg ? 630 : isMd ? 460 : isSm ? 280 : 150;
+  /* md (tablet portrait) kept small so the orange shape ends above the form —
+     it's the same colour as "Forgot Password" and was hiding it */
+  const cornerW = isLg1024 ? 460 : isLg ? 630 : isMd ? 320 : isSm ? 280 : 150;
 
   /* ── Header ── */
   const hPadX = isLg ? 32 : isMd ? 28 : isSm ? 20 : 16;
@@ -1189,8 +1191,8 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
           right: 0,
           zIndex: 0,
           width: cornerW,
-          height: isLg1024 || isMd ? 320 : "auto",
-          overflow: isLg1024 || isMd ? "hidden" : "visible",
+          height: isLg1024 ? 320 : "auto",
+          overflow: isLg1024 ? "hidden" : "visible",
           pointerEvents: "none",
         }}
       >
@@ -1259,7 +1261,11 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
             </div>
           </Link>
           {/* "Hi Humaniser!" heading */}
-          <div style={hiStyle}>
+          <Link
+            href="/"
+            aria-label="Go to landing page"
+            style={{ ...hiStyle, textDecoration: "none", cursor: "pointer" }}
+          >
             <h1
               style={{
                 fontFamily: "RocaTwo-Bold, serif",
@@ -1285,7 +1291,7 @@ function LoginForm({ onForgotPassword }: LoginFormProps) {
                 ™
               </span>
             </h1>
-          </div>
+          </Link>
         </div>
       </header>
 

@@ -42,16 +42,19 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
   en: {
     logoTagline: "Human Habits. Clear Decision. Reliable Execution.",
     heroParagraphs: [
-      { text: "A human-centred platform aligning people, teams and performance together." },
+      { text: "", bold: "Build the human skills that make work work better." },
       {
-        text: "More than a platform, it's a mindset shift.",
-        bold: "Because performance doesn't grow despite people, it grows because of them.",
+        text: "Hi Humaniser helps people develop practical workplace behaviours, then gives teams a structured way to practise them together.",
       },
       {
-        text: "Explore your pathway, connect with your team, and shape a culture where humans thrive and results follow.",
+        text: "Explore your pathway. Practise small actions. Build better ways of working together.",
+      },
+      {
+        text: "",
+        bold: "Because performance doesn’t grow despite people.\nIt grows because of them.",
       },
     ],
-    letsGo: "Let's go",
+    letsGo: "Let’s Go",
     infoBoxText:
       "Curious? Explore how to join or bring Hi Humaniser!™ to your organisation. Visit",
     infoBoxLinkText: "HumanisingOurWorkplaces.com",

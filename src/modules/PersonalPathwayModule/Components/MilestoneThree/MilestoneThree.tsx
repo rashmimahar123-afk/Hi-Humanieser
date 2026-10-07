@@ -18,6 +18,7 @@ import { useGetCompPathwayQuery } from "@/src/modules/WelcomeModule/Hooks/useGet
 import { useQueryClient } from "@tanstack/react-query";
 import { MILESTONE_THREE_DATA } from "../../Types/ResponseTypes";
 import { useUpdateMppMilestoneMutation } from "../../Hooks/useUpdateMppMilestoneMutation";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import RemoveShareReflectionModal, {
   openRemoveShareModal,
 } from "../RemoveShareReflectionModal/RemoveShareReflectionModal";
@@ -105,6 +106,9 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     setIsPulseInitialized(true);
   }, [isPulseInitialized, m3Data?.pulse_check, m1Pulse, pulseConfig]);
   const { mutate: updateM3 } = useUpdateMppMilestoneMutation();
+  const { user } = useAuthValue();
+  // Partners can't share M3 reflections to the Reflection Wall
+  const canShareReflection = user?.user_type !== 3;
 
   const handleCheckboxChange = (index: number) => {
     const key = `ma${index + 1}`;
@@ -467,7 +471,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                   </PolygonButton>
                 </div>
               </div>
-            ) : (
+            ) : canShareReflection ? (
               <div className="mt-6">
                 <div className="flex justify-between">
                   <div className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">
@@ -487,7 +491,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                   Reflection Walls
                 </p>
               </div>
-            )}
+            ) : null}
             {showPulseError && !selectedPulse && (
               <p className="text-red-500 text-[12px] sm:text-[14px] text-right">
                 First select the pulse check then move forward

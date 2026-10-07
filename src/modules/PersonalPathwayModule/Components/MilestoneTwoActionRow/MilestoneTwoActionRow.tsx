@@ -9,6 +9,7 @@ import { openConfirmShareReflectionModal } from "../ConfirmShareReflectionModal/
 import { queryClient } from "@/src/lib/ReactQueryConfig";
 import { openRemoveShareModal } from "../RemoveShareReflectionModal/RemoveShareReflectionModal";
 import styles from "./MilestoneTwoActionRow.module.css";
+import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 
 type MILESTONE_TWO_ACTION_ROW_PROPS = {
   title: string;
@@ -41,6 +42,9 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
   const microActionReflections = m2Data?.[microActionKey] ?? [];
 
   const { mutate: updateMilestone } = useUpdateMppMilestoneMutation();
+  const { user } = useAuthValue();
+  // Partners can't share M2 reflections to the Reflection Wall
+  const canShareReflection = user?.user_type !== 3;
 
   const latestReflection =
     microActionReflections.length > 0
@@ -238,7 +242,7 @@ function MilestoneTwoActionRow(props: MILESTONE_TWO_ACTION_ROW_PROPS) {
           ) : null}
         </div>
         {/* Share Checkbox */}
-        {microActionReflections.length > 0 && (
+        {canShareReflection && microActionReflections.length > 0 && (
           <>
             <div className="flex justify-between">
               <div className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">

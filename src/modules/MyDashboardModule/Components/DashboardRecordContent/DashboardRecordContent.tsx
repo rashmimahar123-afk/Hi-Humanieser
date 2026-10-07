@@ -10,6 +10,7 @@ import GaugeChart from "react-gauge-chart";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { FOCUS_AREA_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
 import { MTJ_TEAM_RITUAL_DATA } from "@/src/modules/MyTeamJourneyModule/Types/ResponseTypes";
+import { openFillupModal } from "@/src/modules/PersonalPathwayModule/Components/FillUpFormModal/FillUpFormModal";
 import {
   ENRICH_PROGRESS_LIST,
   PRACTICE_LIST_ITEM,
@@ -29,6 +30,8 @@ type DASHBOARD_RECORD_CONTENT_PROPS = {
   onHeaderClick?: () => void;
   onRetakeQuiz?: () => void;
   onLearnMore?: (title: string) => void;
+  // Shows Edit buttons on reflections (on /view-all, not in the PDF export)
+  editable?: boolean;
 };
 
 function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
@@ -46,6 +49,7 @@ function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
     onHeaderClick,
     onRetakeQuiz,
     onLearnMore,
+    editable = false,
   } = props;
 
   return (
@@ -454,28 +458,23 @@ function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
               );
 
               const data = item[titleKey as string];
-              const microActions = [
-                ...(data?.m2?.micro_action_1 || []),
-                ...(data?.m2?.micro_action_2 || []),
-              ];
-              const groupedMicroActions = Object.values(
-                microActions.reduce((acc: any, curr: any) => {
-                  if (!acc[curr.title]) {
-                    acc[curr.title] = {
-                      title: curr.title,
-                      description: curr.description,
-                      reflections: [],
-                    };
-                  }
-
-                  acc[curr.title].reflections.push({
-                    reflection: curr.reflection,
-                    share: curr.share,
-                  });
-
-                  return acc;
-                }, {}),
-              );
+              // Grouped by m2 key (not title) so each reflection keeps the
+              // micro_action_N + index that update-mpp-milestone needs to edit it
+              const groupedMicroActions = ["micro_action_1", "micro_action_2"]
+                .map((maKey) => {
+                  const entries: any[] = data?.m2?.[maKey] || [];
+                  if (entries.length === 0) return null;
+                  return {
+                    maKey,
+                    title: entries[0]?.title,
+                    description: entries[0]?.description,
+                    reflections: entries.map((entry: any) => ({
+                      reflection: entry.reflection,
+                      share: entry.share,
+                    })),
+                  };
+                })
+                .filter(Boolean);
               return (
                 <div key={`item${index}`} className="mb-10">
                   {/* Header */}
@@ -525,6 +524,27 @@ function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
                           title={ma.title}
                           description={ma.description}
                           reflections={ma.reflections}
+                          onEdit={
+                            editable
+                              ? (reflectionIndex) => {
+                                  const target =
+                                    ma.reflections[reflectionIndex];
+                                  if (!target) return;
+                                  openFillupModal(
+                                    ma.maKey,
+                                    item.uuid,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    target.reflection,
+                                    target.share,
+                                    reflectionIndex,
+                                  );
+                                }
+                              : undefined
+                          }
                         />
                       ))}
                     </div>
@@ -691,7 +711,30 @@ function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
 
                 {/* Repeating reflection blocks */}
                 {teamRituals.map((ritual) => (
-                  <ReflectionBlock key={ritual.team_ritual_id} ritual={ritual} />
+                  <ReflectionBlock
+                    key={ritual.team_ritual_id}
+                    ritual={ritual}
+                    onEdit={
+                      editable
+                        ? () => {
+                            const latest =
+                              ritual.reflections?.my_reflections?.[0];
+                            if (!latest) return;
+                            openFillupModal(
+                              "",
+                              "",
+                              undefined,
+                              undefined,
+                              undefined,
+                              ritual.team_ritual_id,
+                              latest.id,
+                              latest.reflection,
+                              latest.shared_anonymously,
+                            );
+                          }
+                        : undefined
+                    }
+                  />
                 ))}
               </>
             )}
