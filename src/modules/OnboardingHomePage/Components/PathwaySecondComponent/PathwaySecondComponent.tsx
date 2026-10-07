@@ -2,6 +2,12 @@ import React from "react";
 import Image from "next/image";
 import images from "@/src/assets/images";
 
+const scrollToSection = (id: string) => {
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 function PathwaySecondComponent() {
   return (
     <>
@@ -17,7 +23,10 @@ function PathwaySecondComponent() {
 
         {/* LEFT TEXT */}
         <div
-          className="absolute z-10 text-[#9E9E9E] text-center"
+          role="button"
+          tabIndex={0}
+          onClick={() => scrollToSection("find-your-way-around")}
+          className="absolute z-10 text-[#9E9E9E] text-center cursor-pointer"
           style={{
             fontFamily: "Roboto",
             left: "clamp(12%, 15%, 18%)",
@@ -32,7 +41,10 @@ function PathwaySecondComponent() {
 
         {/* CENTER TEXT — active */}
         <div
-          className="absolute z-10 text-[#0F4F58] text-center"
+          role="button"
+          tabIndex={0}
+          onClick={() => scrollToSection("choose-starting-point")}
+          className="absolute z-10 text-[#0F4F58] text-center cursor-pointer"
           style={{
             fontFamily: "Roboto",
             left: "50%",
@@ -79,7 +91,10 @@ function PathwaySecondComponent() {
 
         {/* RIGHT TEXT */}
         <div
-          className="absolute z-10 text-[#9E9E9E] text-center"
+          role="button"
+          tabIndex={0}
+          onClick={() => scrollToSection("get-stuck-in")}
+          className="absolute z-10 text-[#9E9E9E] text-center cursor-pointer"
           style={{
             fontFamily: "Roboto",
             right: "clamp(15%, 18%, 23%)",
@@ -96,7 +111,12 @@ function PathwaySecondComponent() {
 
       {/* ── Mobile step indicator ── */}
       <div className="sm:hidden flex items-center justify-center gap-3 mt-8 px-4">
-        <div className="flex flex-col items-center">
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => scrollToSection("find-your-way-around")}
+          className="flex flex-col items-center cursor-pointer"
+        >
           <div className="w-9 h-9 rounded-full bg-[#9E9E9E] text-white flex items-center justify-center font-bold text-sm">
             1
           </div>
@@ -107,7 +127,12 @@ function PathwaySecondComponent() {
           </span>
         </div>
         <div className="flex-1 h-[2px] bg-[#9E9E9E] rounded" />
-        <div className="flex flex-col items-center">
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => scrollToSection("choose-starting-point")}
+          className="flex flex-col items-center cursor-pointer"
+        >
           <div className="w-9 h-9 rounded-full bg-[#0F4F58] text-white flex items-center justify-center font-bold text-sm">
             2
           </div>
@@ -118,7 +143,12 @@ function PathwaySecondComponent() {
           </span>
         </div>
         <div className="flex-1 h-[2px] bg-[#9E9E9E] rounded" />
-        <div className="flex flex-col items-center">
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => scrollToSection("get-stuck-in")}
+          className="flex flex-col items-center cursor-pointer"
+        >
           <div className="w-9 h-9 rounded-full bg-[#9E9E9E] text-white flex items-center justify-center font-bold text-sm">
             3
           </div>

@@ -28,7 +28,11 @@ function ViewAllReflectionWall() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [progressList, setProgressList] = useState<any>([]);
   const [practiceList, setPracticeList] = useState<any[]>([]);
-  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
+  // Local overrides for my own like state, keyed by reflection id.
+  // Falls back to the server's liked_by_me flag when there is no override.
+  const [likeOverrides, setLikeOverrides] = useState<Record<string, boolean>>(
+    {},
+  );
   const { data: getListMppData, isError, refetch } = usePersonalPathwayQuery();
   const { data: chooseMyselfData } = useChooseMyselfQuery();
   const { mutate: toggleLikeMutate, isPending } = useToggleReflectionMutation();
@@ -274,9 +278,9 @@ function ViewAllReflectionWall() {
       pdf.setFontSize(11);
       const lines = pdf.splitTextToSize(text, cardWidth - 12);
 
-      const isLikedByMe = likedIds.has(item.id);
+      const likedByMe = isLikedByMe(item);
       const timeText = getTimeAgo(item.created || item.created_at);
-      const likeText = getLikeText(item.like_count, isLikedByMe);
+      const likeText = getLikeText(item.like_count, likedByMe);
 
       const cardHeight = lines.length * 6 + 20;
 
@@ -319,7 +323,7 @@ function ViewAllReflectionWall() {
         cursorX,
         metaY - heartSize + 0.8,
         heartSize,
-        item.like_count > 0,
+        likedByMe,
       );
       cursorX += heartSize + 3;
 
@@ -476,33 +480,23 @@ function ViewAllReflectionWall() {
   const reflections = useMemo(() => {
     const apiReflections = reflectionApiData?.data?.reflections ?? [];
 
-    let merged: any[] = [];
+    let localReflections: any[] = [];
 
     if (user?.user_type === 1 || user?.user_type === 2) {
-      const localReflections =
-        getSharedReflectionsFromEnriched(enrichedProgressList);
-
-      merged = [...localReflections, ...apiReflections];
-    } else {
-      merged = [...apiReflections];
+      localReflections = getSharedReflectionsFromEnriched(enrichedProgressList);
     }
 
-    // Sort by actual creation timestamp, newest first (missing/invalid dates sink to the end)
-    merged = sortReflectionsByCreatedDesc(merged);
+    // De-duplicate by text. API entries come first so they win over local
+    // pathway copies, which carry no like data (like_count / liked_by_me).
+    const byText = new Map<string | undefined, any>();
 
-    // Remove duplicates
-    const seen = new Set();
-
-    return merged.filter((item: any) => {
+    [...apiReflections, ...localReflections].forEach((item: any) => {
       const key = item.reflection?.trim().toLowerCase();
-
-      if (seen.has(key)) {
-        return false;
-      }
-
-      seen.add(key);
-      return true;
+      if (!byText.has(key)) byText.set(key, item);
     });
+
+    // Sort by actual creation timestamp, newest first (missing/invalid dates sink to the end)
+    return sortReflectionsByCreatedDesc([...byText.values()]);
   }, [user, enrichedProgressList, reflectionApiData]);
 
   const filterRef = useRef<HTMLDivElement | null>(null);
@@ -601,44 +595,42 @@ function ViewAllReflectionWall() {
   //     setIsDownloading(false);
   //   }
   // };
-  const handleLike = (reflectionId: string) => {
-    setLikedIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(reflectionId)) {
-        newSet.delete(reflectionId);
-      } else {
-        newSet.add(reflectionId);
-      }
-      return newSet;
-    });
+  const isLikedByMe = (item: GET_REFLECTIONS_DATA) =>
+    item.id in likeOverrides
+      ? likeOverrides[item.id]
+      : item.liked_by_me === true;
+
+  const handleLike = (item: GET_REFLECTIONS_DATA) => {
+    const wasLiked = isLikedByMe(item);
+    setLikeOverrides((prev) => ({ ...prev, [item.id]: !wasLiked }));
 
     toggleLikeMutate(
-      { reflection_id: reflectionId },
+      { reflection_id: item.id },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({
             queryKey: ["getReflectionWallsQueryKey"],
           });
         },
+        onError: () => {
+          // API fail ho to heart wapas previous state me
+          setLikeOverrides((prev) => ({ ...prev, [item.id]: wasLiked }));
+        },
       },
     );
   };
 
-  const getLikeText = (likeCount: number, isLikedByMe: boolean) => {
+  const getLikeText = (likeCount: number, likedByMe: boolean) => {
     if (likeCount <= 0) return "";
 
-    // sirf tumne like kiya hai
-    if (likeCount === 1) {
-      return "you felt this";
+    const others = likedByMe ? likeCount - 1 : likeCount;
+
+    if (likedByMe) {
+      if (others === 0) return "you felt this";
+      return `you and ${others} other${others > 1 ? "s" : ""} felt this`;
     }
 
-    // tum + others
-    if (isLikedByMe) {
-      return `you and ${likeCount - 1} other${likeCount - 1 > 1 ? "s" : ""} felt this`;
-    }
-
-    // sirf others
-    return `${likeCount} other${likeCount > 1 ? "s" : ""} felt this`;
+    return `${others} other${others > 1 ? "s" : ""} felt this`;
   };
   return (
     <>
@@ -767,7 +759,7 @@ function ViewAllReflectionWall() {
                 </div>
               ) : (
                 reflections.map((item: GET_REFLECTIONS_DATA, index) => {
-                  const isLikedByMe = likedIds.has(item.id);
+                  const likedByMe = isLikedByMe(item);
 
                   const effectiveLikeCount = item.like_count;
                   return (
@@ -787,31 +779,25 @@ function ViewAllReflectionWall() {
                         <div className="flex items-center sm:ml-[29px] gap-2">
                           <motion.div
                             whileTap={{ scale: 0.8 }}
-                            onClick={() => handleLike(item.id)}
+                            onClick={() => handleLike(item)}
                             className="cursor-pointer"
                           >
                             <motion.div
                               animate={{
-                                scale: item.like_count > 0 ? [1, 1.4, 1] : 1,
+                                scale: likedByMe ? [1, 1.4, 1] : 1,
                               }}
                               transition={{ duration: 0.3 }}
                             >
                               <Heart
                                 size={18}
-                                fill={
-                                  item.like_count > 0
-                                    ? "#ef4444"
-                                    : "transparent"
-                                }
-                                color={
-                                  item.like_count > 0 ? "#ef4444" : "#0F4F58"
-                                }
+                                fill={likedByMe ? "#ef4444" : "transparent"}
+                                color={likedByMe ? "#ef4444" : "#0F4F58"}
                               />
                             </motion.div>
                           </motion.div>
 
                           <span>
-                            {getLikeText(effectiveLikeCount, isLikedByMe)}
+                            {getLikeText(effectiveLikeCount, likedByMe)}
                           </span>
                         </div>
                       </div>

@@ -114,25 +114,25 @@ export default function StartHere() {
           </div>
 
           {/* ── Desktop (lg+ = 1024px+): original absolute layout ── */}
-          <div className="hidden lg:block relative min-h-[500px] px-0">
-            <div className="relative z-20 ml-[76px] max-w-[1131px]">
+          <div className="hidden lg:block relative min-h-[460px] px-0">
+            <div className="relative z-20 ml-[76px] max-w-[820px] pt-6">
               <h1
-                className="text-[48px] font-bold text-[#0F4F58]"
+                className="text-[44px] font-bold text-[#0F4F58] leading-tight"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                Welcome To Hi Humaniser!
+                Welcome to Hi Humaniser!
               </h1>
               <p
-                className="mt-1 text-[31px] text-[#567F55] font-bold "
+                className="mt-3 text-[22px] text-[#567F55] font-bold leading-snug whitespace-nowrap"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                We're so glad you're here — part of a growing community
-                rethinking how work feels and performs.
+                This is your space to explore small ways of working that can
+                make everyday work clearer, more human and easier to navigate.
               </p>
             </div>
 
             {/* Blue polygon background wrapper - desktop */}
-            <div className="absolute top-[180px] right-0 z-0">
+            <div className="absolute top-[40px] right-0 z-0">
               <Image
                 src={images.skyRec}
                 alt="polygon"
@@ -143,31 +143,34 @@ export default function StartHere() {
             </div>
 
             {/* Belief card - desktop */}
-            <div className="absolute top-[250px] right-24 z-30 max-w-[466px]">
+            <div className="absolute top-[160px] right-[160px] z-30 w-[400px] text-center">
               <h3
-                className="text-[24px] font-bold text-[#0F4F58] mb-4"
+                className="text-[24px] font-bold text-[#0F4F58] mb-4 whitespace-nowrap"
                 style={{ fontFamily: "RocaTwo-Bold" }}
               >
-                Hi Humaniser! is built on a simple belief:
+                Hi Humaniser! is built around a simple idea:
               </h3>
-              <p className="text-[21px] -ml-9 text-[#567F55] leading-relaxed">
-                Work feels better — and delivers better — when we centre people,
-                liberty and connection. This is your space to bring that to
-                life, step by step.
+              <p
+                className="text-[18px] text-[#567F55] leading-relaxed"
+                style={{ textAlign: "left" }}
+              >
+                The way we work is shaped by the small things we do every day.
+                Hi Humaniser! gives you practical ways to bring them into
+                everyday work, on your own and with your team.
               </p>
               <Image
                 src={images.homeArrow}
                 alt="arrow"
-                width={90}
-                height={90}
-                className="absolute -right-14 top-4"
+                width={100}
+                height={100}
+                className="absolute -right-[110px] top-1/2 -translate-y-1/2"
               />
             </div>
           </div>
         </section>
 
         {/* INTRO TEXT */}
-        <section className="relative z-10 text-center px-4 sm:px-8 mt-8 sm:mt-12 lg:mt-28">
+        <section className="relative z-10 text-center px-4 sm:px-8 mt-8 sm:mt-12 lg:mt-15">
           <p
             className="font-bold text-[#567F55]  mx-auto
                        text-[14px] sm:text-[18px] md:text-[22px] lg:text-[30px]"
@@ -180,13 +183,19 @@ export default function StartHere() {
 
         {/* PATHWAYS */}
         <PathwayComponent />
-        <FirstStepBlock />
+        <div id="find-your-way-around">
+          <FirstStepBlock />
+        </div>
 
         <PathwaySecondComponent />
-        <SecondStepBlock />
+        <div id="choose-starting-point">
+          <SecondStepBlock />
+        </div>
 
         <PathwayThirdComponent />
-        <ThirdStepBlock />
+        <div id="get-stuck-in">
+          <ThirdStepBlock />
+        </div>
 
         {/* FOOTER BANNER */}
         <div className={`relative flex justify-center ${styles.footerFrame}`}>

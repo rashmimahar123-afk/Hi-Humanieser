@@ -253,7 +253,9 @@ function MySelfPage() {
                         }
                         cards={item?.principles?.map((principleItem) => ({
                           title: principleItem?.principle_name,
-                          description: principleItem?.definition,
+                          description:
+                            principleItem?.principle_description ||
+                            principleItem?.definition,
                           learnMoreColor: "#7EC9C6",
                           onLearnMore: () =>
                             openInNewTab(

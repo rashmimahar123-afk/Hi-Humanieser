@@ -24,9 +24,9 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
       { label: "Profile", path: "/profile" },
       { label: "My Account Settings", path: "/account-setting" },
       { label: "My Pathways", path: "/my-pathways" },
-      { label: "Notifications", path: "/notification" },
+      // { label: "Notifications", path: "/notification" },
       { label: "Help & Feedback", path: "/help-feedback" },
-      { label: "Spread The Ripple", path: "/spread-ripple" },
+      // { label: "Spread The Ripple", path: "/spread-ripple" },
     ],
     2: [
       { label: "Profile", path: "/profile" },
@@ -34,8 +34,8 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
       { label: "My Team Settings", path: "/team-setting" },
       { label: "My Pathways", path: "/my-pathways" },
       { label: "Champion Hub", path: "/champion-hub" },
-      { label: "Notifications", path: "/notification" },
-      { label: "Spread The Ripple", path: "/spread-ripple" },
+      // { label: "Notifications", path: "/notification" },
+      // { label: "Spread The Ripple", path: "/spread-ripple" },
     ],
     3: [
       { label: "Profile", path: "/profile" },
@@ -44,8 +44,8 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
       { label: "My Pathways", path: "/my-pathways" },
       // { label: "Champion Hub", path: "/champion-hub" },
       { label: "Partner Hub", path: "/overseer-hub" },
-      { label: "Notifications", path: "/notification" },
-      { label: "Spread The Ripple", path: "/spread-ripple" },
+      // { label: "Notifications", path: "/notification" },
+      // { label: "Spread The Ripple", path: "/spread-ripple" },
     ],
   };
   if (!userInfo?.user_type) return null;

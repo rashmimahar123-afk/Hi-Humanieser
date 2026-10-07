@@ -40,6 +40,7 @@ export type GET_REFLECTIONS_DATA = {
   reflection: string;
   created_at: string;
   like_count: number;
+  liked_by_me?: boolean;
   shared_anonymously: boolean;
   source: string;
 };

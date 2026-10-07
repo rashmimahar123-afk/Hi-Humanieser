@@ -1,4 +1,3 @@
-import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import images from "@/src/assets/images";
@@ -18,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import ConfirmShareReflectionModal, {
   openConfirmShareReflectionModal,
 } from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
+import TeamRitualSavedModal from "../TeamRitualSavedModal/TeamRitualSavedModal";
 import useGetMtjListQuery, {
   GET_MTJ_LIST_QUERY_KEY,
 } from "../../Hooks/useGetMtjListQuery";
@@ -40,7 +40,6 @@ type PRACTICE_PERSPECTIVE_PROPS = {
 function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   const { ritual } = props;
   const { user } = useAuthValue();
-  const [showSuccess, setShowSuccess] = useState(false);
 
   const [animateText, setAnimateText] = useState(false);
 
@@ -344,46 +343,6 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
             </PolygonButton>
           </div> */}
         </div>
-        <div className="mt-[35px]">
-          <SuccessMessage
-            text="Congratulations! Another team ritual in the bag —
-your dashboard is beaming"
-            // text={randomMessage || ""}
-
-            fontSize="text-[23px]"
-            leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
-            rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
-            fontColor="#0F4F58"
-            left="400px"
-            top="63%"
-            rightImgRight="388px"
-            rightImgTop="62.8%"
-            rotate="-35deg"
-            maxWidth="500px"
-          />
-        </div>
-
-        {/* Footer Message */}
-        {showSuccess && (
-          <SuccessMessage
-            text="Congratulations! Another team ritual in the bag —
-your dashboard is beaming"
-            // text={randomMessage || ""}
-
-            fontSize="text-[21px]"
-            maxWidth="max-w-[445px]"
-            leftImg={{
-              src: images.pathwayArrowLeft,
-              width: 40,
-              height: 40,
-            }}
-            rightImg={{
-              src: images.pathwayArrowRight,
-              width: 40,
-              height: 40,
-            }}
-          />
-        )}
       </div>
       {/* Bottom note */}
       <div className="mt-12 px-10">
@@ -489,6 +448,7 @@ your dashboard is beaming"
       </div>
       <FillUpFormModal />
       <ConfirmShareReflectionModal />
+      <TeamRitualSavedModal />
     </div>
   );
 }

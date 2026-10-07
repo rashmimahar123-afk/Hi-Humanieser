@@ -43,11 +43,10 @@ function MyTeamJourney() {
 
   const { mutate: submitPoll, isPending } = useSubmitPollResponseMutation();
 
+  const canSubmitVoice = selectedOptions.length === 2 && !isPending;
+
   const handleSubmitVoice = () => {
-    if (selectedOptions.length === 0) {
-      SnackbarHandler.errorToast("Please select at least one option");
-      return;
-    }
+    if (!canSubmitVoice) return;
 
     submitPoll(
       { options: selectedOptions },
@@ -207,8 +206,13 @@ function MyTeamJourney() {
 
             {/* Add my voice button */}
             <div
-              className="absolute bottom-4 right-4 sm:right-12 cursor-pointer"
-              onClick={!isPending ? handleSubmitVoice : undefined}
+              className={`absolute bottom-4 right-4 sm:right-12 ${
+                canSubmitVoice
+                  ? "cursor-pointer"
+                  : "cursor-not-allowed opacity-50 grayscale"
+              }`}
+              aria-disabled={!canSubmitVoice}
+              onClick={handleSubmitVoice}
             >
               <div className="relative">
                 <Image

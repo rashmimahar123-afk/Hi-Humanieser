@@ -258,14 +258,38 @@ import images from "@/src/assets/images";
 import styles from "./LandingPage.module.css";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
 import FAQAccordion from "../FaqAccordian/FaqAccordian";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
+import {
+  landingContent,
+  landingLanguageOptions,
+  type LandingLanguage,
+} from "./landingTranslations";
 
 function LandingPage() {
   const router = useRouter();
+  const [language, setLanguage] = useState<LandingLanguage>("en");
+  const t = landingContent[language];
+
   return (
     <div className="min-h-screen bg-[#f5f5f0] px-4 py-8">
       <div className="w-full max-w-7xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <select
+            aria-label="Language"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as LandingLanguage)}
+            className="rounded-[10px] border border-[#0F4F58] bg-white px-3 py-1 text-[#0F4F58] font-[Roboto] text-sm cursor-pointer focus:outline-none"
+          >
+            {landingLanguageOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 lg:items-start">
           {/* Left Section */}
           <div className="space-y-8">
@@ -299,7 +323,7 @@ function LandingPage() {
                     fontSize: "clamp(12px, 3.5vw, 16px)",
                   }}
                 >
-                  Human Habits. Clear Decision. Reliable Execution.
+                  {t.logoTagline}
                 </div>
               </div>
             </Link>
@@ -310,23 +334,24 @@ function LandingPage() {
             </h1>
 
             <div className={`space-y-4 ${styles.description}`}>
-              <p className={`text-base text-[#0F4F58] ${styles.descParagraph}`}>
-                A human-centred platform aligning people, teams and performance
-                together.
-              </p>
-              <p className={`text-base text-[#0F4F58] ${styles.descParagraph}`}>
-                More than a platform, it&apos;s a mindset shift.{" "}
-                <span
-                  className={`text-base font-bold text-[#0F4F58] ${styles.descParagraph}`}
+              {t.heroParagraphs.map((paragraph, index) => (
+                <p
+                  key={index}
+                  className={`text-base text-[#0F4F58] ${styles.descParagraph}`}
                 >
-                  Because performance doesn&apos;t grow despite people, it grows
-                  because of them.
-                </span>
-              </p>
-              <p className={`text-base text-[#0F4F58] ${styles.descParagraph}`}>
-                Explore your pathway, connect with your team, and shape a
-                culture where humans thrive and results follow.
-              </p>
+                  {paragraph.text}
+                  {paragraph.bold && (
+                    <>
+                      {paragraph.text && " "}
+                      <span
+                        className={`text-base font-bold text-[#0F4F58] ${styles.descParagraph}`}
+                      >
+                        {paragraph.bold}
+                      </span>
+                    </>
+                  )}
+                </p>
+              ))}
             </div>
           </div>
 
@@ -355,7 +380,7 @@ function LandingPage() {
                   <span
                     className={`text-black whitespace-nowrap font-bold ${styles.goBtnSpan}`}
                   >
-                    Let&apos;s go
+                    {t.letsGo}
                   </span>
                 </div>
               </div>
@@ -377,7 +402,7 @@ function LandingPage() {
             <span
               className={`text-black whitespace-nowrap font-bold ${styles.goBtnSpan}`}
             >
-              Let&apos;s go
+              {t.letsGo}
             </span>
           </div>
         </div>
@@ -391,22 +416,22 @@ function LandingPage() {
         }}
       >
         <p className={styles.infoBoxText}>
-          Curious? Explore how to join or bring Hi Humaniser!™ to your
-          organisation. Visit{" "}
+          {t.infoBoxText}{" "}
           <Link
             href="https://humanisingourworkplaces.com"
             target="_blank"
             className="underline hover:text-[#0F4F58] transition-colors"
           >
-            HumanisingOurWorkplaces.com
+            {t.infoBoxLinkText}
           </Link>{" "}
-          or check the{" "}
+          {t.infoBoxMiddle}{" "}
           <button
             onClick={() => router.push("/faq")}
             className="underline hover:text-[#0F4F58] transition-colors"
           >
-            FAQs
+            {t.infoBoxFaqText}
           </button>
+          {t.infoBoxEnd && ` ${t.infoBoxEnd}`}
         </p>
       </div>
 
@@ -414,19 +439,23 @@ function LandingPage() {
         <div className="w-full flex justify-end text-center">
           <div className="flex flex-col items-end w-full">
             <div className="text-[#0F4F58] text-[clamp(24px,6vw,38px)] font-[RocaTwo]">
-              Frequently Asked Questions
+              {t.faqHeading}
             </div>
             <div
               className={`text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex-wrap items-end  ${styles.faqText}`}
             >
-              Find answers to common questions below, read the full FAQs{" "}
-              <Link
-                href="/faq"
-                className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
-              >
-                here
-              </Link>{" "}
-              or pop us an email at
+              {t.faqIntroBefore}{" "}
+              {t.faqIntroLink && (
+                <>
+                  <Link
+                    href="/faq"
+                    className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
+                  >
+                    {t.faqIntroLink}
+                  </Link>{" "}
+                </>
+              )}
+              {t.faqIntroAfter && `${t.faqIntroAfter} `}
             </div>
             <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] text-center">
               <a
@@ -441,72 +470,31 @@ function LandingPage() {
 
         <div className="mt-12 w-full max-w-[1000px] mx-auto">
           <div className="flex flex-col justify-center gap-4">
-            <FAQAccordion
-              title="What is Hi Humaniser!™?"
-              paragraph={`Hi Humaniser!™ is a digital human-skills platform that helps people and teams build better ways of working.\n\nIt turns everyday behaviours — how we communicate, listen, build trust, make decisions and work together — into practical actions people can use in real work.\n\nIndividuals practise small actions. Teams practise shared rituals. Over time, those behaviours become part of how the team works.`}
-            />
-            <FAQAccordion
-              title="Who is Hi Humaniser!™ for?"
-              paragraph={`Hi Humaniser!™ is for organisations where performance depends on people working well together.\n\nIt is designed for individuals, teams and leaders who want to improve how they communicate, collaborate, build trust and make decisions.\n\nIf your work depends on people working well together, Hi Humaniser!™ is for you.`}
-            />
-            <FAQAccordion
-              title="Is this just another platform or initiative I don’t have time for?"
-              paragraph={`Fair question. Hi Humaniser!™ is designed to fit into the work people are already doing.\n\nIt does not require long training sessions or extra meetings. The actions are small, practical and designed to be used in real conversations, meetings and decisions.\n\nThe aim is to help teams build better habits without adding more noise to the working day.\n\nIf it feels like one more thing, it is not doing its job.`}
-            />
-            <FAQAccordion
-              title="What problem is Hi Humaniser!™ trying to solve?"
-              paragraph={`Hi Humaniser!™ helps tackle the everyday friction that gets in the way of good work.\n\nThat can look like unclear communication, slow decisions, low trust, team disconnection or people working hard without enough alignment.\n\nHi Humaniser!™ helps teams build the habits that make work clearer, more connected and easier to move forward.`}
-            />
-            <FAQAccordion
-              title="How does Hi Humaniser!™ work?"
-              paragraph={`Hi Humaniser!™ starts with you, then brings that practice into the team.\n\nThrough Personal Pathways, people explore everyday behaviours, choose small actions to try and reflect on what they notice.\n\nTeams then practise together through shared rituals and HH Moments, bringing those behaviours into real meetings, conversations and everyday work.\n\nFor organisations with several teams, wider views help show what is gaining momentum and where a little more support might help.`}
-            />
-            <FAQAccordion
-              title="Are my reflections and activity private?"
-              paragraph={`Yes. We want people to feel comfortable reflecting honestly, so personal reflections stay private unless you choose to share them.\n\nIf you do share a reflection, it is anonymous. Wider organisational views show patterns and trends, not individual responses.\n\nYour personal development record is yours too, so you decide what you want to bring into reviews or development conversations.`}
-            />
-            <FAQAccordion
-              title="How much time does it take each week?"
-              paragraph={`Very little. That is part of the design.\n\nHi Humaniser!™ fits into the meetings, conversations and decisions already happening, so there is no need to block out hours for it.\n\nMost actions take only a few minutes. A different question. A small shift in a meeting. A moment to reflect on what helped or got in the way.\n\nOver time, those small changes can build better habits without adding more to the working day.`}
-            />
-            <FAQAccordion
-              title="How does Hi Humaniser!™ track progress and impact?"
-              paragraph={`Hi Humaniser!™ brings together survey insights, platform activity and what teams are experiencing in everyday work.\n\nOrganisations can use short surveys at different points to track changes in areas such as clarity, alignment, safety, ownership and workload.\n\nThe platform also shows how people and teams are engaging with pathways, micro-actions and team rituals. Anonymous shared reflections add a valuable pulse check on what people are noticing along the way.\n\nTogether, this helps organisations see what is gaining traction, where teams may need more support and whether better ways of working are starting to take hold.`}
-            />
-            <FAQAccordion
-              title="Is onboarding difficult or time-consuming?"
-              paragraph={`No. Onboarding is designed to be simple and straightforward.\n\nWe help you set up your organisation and teams, invite people into the platform and give everyone a clear introduction to how Hi Humaniser!™ works.\n\nThere is no lengthy implementation process or training programme to complete before people can get started. Once they are in, they can begin exploring their Personal Pathways and teams can start practising together through their first Team Journey.`}
-            />
-            <FAQAccordion
-              title="Does the whole organisation need to take part?"
-              paragraph={`No. One team can have the full Hi Humaniser!™ experience without the whole organisation taking part.\n\nHi Humaniser!™ is also designed to work across several teams, creating opportunities to share learning, practise together and spot wider patterns across the organisation.\n\nAnd the impact does not stop with the teams using the platform. The behaviours people practise can travel into other projects, client relationships and everyday interactions, influencing how people work together even when others are not using Hi Humaniser!™ themselves.`}
-            />
+            {t.faqs.map((faq) => (
+              <FAQAccordion
+                key={faq.title}
+                title={faq.title}
+                paragraph={faq.paragraph}
+              />
+            ))}
           </div>
         </div>
 
         <div className="mt-16">
           <div className="text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex flex-wrap items-center">
-            Want to go deeper? Explore the full FAQs{" "}
-            <Link
-              href="/faq"
-              className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
-            >
-              here
-            </Link>
+            {t.deeperBefore}
+            {t.deeperLink && (
+              <Link
+                href="/faq"
+                className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
+              >
+                {t.deeperLink}
+              </Link>
+            )}
+            {t.deeperAfter}
           </div>
-          {/* <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] flex flex-wrap mt-8">
-            Still not sure, or just want to talk it through? Drop us a note at
-            <a
-              href="mailto:connect@humanisingourworkplaces.com"
-              className="text-[#0f4f58] hover:underline ml-2"
-            >
-              connect@humanisingourworkplaces.com
-            </a>
-          </div> */}
           <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] mt-8">
-            <span>
-              Still not sure, or just want to talk it through? Drop us a note at
-            </span>
+            <span>{t.stillNotSure}</span>
 
             <a
               href="mailto:connect@humanisingourworkplaces.com"
@@ -519,7 +507,7 @@ function LandingPage() {
 
         <div className="mt-20 relative">
           <SuccessMessage
-            text="Small shifts. Real work. Better outcomes."
+            text={t.quote}
             fontSize="text-[clamp(14px,4vw,22px)]"
             leftImg={{ src: images.arrowImg, width: 40, height: 40 }}
             rightImg={{ src: images.leftArrowImg, width: 60, height: 60 }}
@@ -542,11 +530,9 @@ function LandingPage() {
                 className={`absolute bottom-4 left-0 right-0 px-4 md:px-6 text-[#0F4F58] font-[Roboto] text-center md:text-left ${styles.footerText}`}
               >
                 <p className="text-[clamp(10px,3vw,15px)]">
-                  © 2026 Humanising Our Workplaces Ltd. All rights reserved.
+                  {t.footerCopyright}
                 </p>
-                <p className="text-[clamp(10px,3vw,15px)]">
-                  Hi Humaniser!™ is a product of Humanising Our Workplaces Ltd.
-                </p>
+                <p className="text-[clamp(10px,3vw,15px)]">{t.footerProduct}</p>
               </div>
             </div>
           </div>

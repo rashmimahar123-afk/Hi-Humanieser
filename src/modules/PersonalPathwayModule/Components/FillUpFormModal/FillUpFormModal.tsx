@@ -15,6 +15,7 @@ import { useAddReflectionMutation } from "../../Hooks/useAddReflectionMutation";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import { useEditReflectionMutation } from "../../Hooks/useEditReflectionMutation";
 import { GET_MTJ_LIST_QUERY_KEY } from "@/src/modules/MyTeamJourneyModule/Hooks/useGetMtjListQuery";
+import { openTeamRitualSavedModal } from "@/src/modules/MyTeamJourneyModule/Components/TeamRitualSavedModal/TeamRitualSavedModal";
 
 const EVENT = "FILL_UP_FORM_MODAL_EVENT";
 
@@ -158,6 +159,7 @@ function FillUpFormModal() {
                 queryKey: ["getReflectionWallsQueryKey"],
               }),
             ]);
+
           },
         });
       } else {
@@ -183,6 +185,10 @@ function FillUpFormModal() {
                 queryKey: ["getReflectionWallsQueryKey"],
               }),
             ]);
+
+            if (pathname === "/start-team-journey") {
+              openTeamRitualSavedModal();
+            }
           },
         });
       }

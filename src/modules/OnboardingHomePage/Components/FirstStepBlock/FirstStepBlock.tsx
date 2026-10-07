@@ -23,7 +23,7 @@ function FirstStepBlock() {
         {/* Card 1 */}
         <div
           className={`${styles.card} ${styles.blue}`}
-          onClick={() => router.push("/personal-pathway")}
+          // onClick={() => router.push("/personal-pathway")}
         >
           <div className={styles.imageWrapper}>
             <Image
@@ -47,7 +47,7 @@ function FirstStepBlock() {
         {/* Card 2 */}
         <div
           className={`${styles.card} ${styles.green}`}
-          onClick={() => router.push("/team-journey")}
+          // onClick={() => router.push("/team-journey")}
         >
           <div className={styles.imageWrapper}>
             <Image
@@ -71,7 +71,7 @@ function FirstStepBlock() {
         {/* Card 3 */}
         <div
           className={`${styles.card} ${styles.pink}`}
-          onClick={() => router.push("/my-dashboard")}
+          // onClick={() => router.push("/my-dashboard")}
         >
           <div className={styles.imageWrapper}>
             <Image
@@ -95,7 +95,7 @@ function FirstStepBlock() {
         {/* Card 4 - Reflection Walls */}
         <div
           className={`${styles.card} ${styles.pink}`}
-          onClick={() => router.push("/reflection-walls")}
+          // onClick={() => router.push("/reflection-walls")}
         >
           <div className={styles.imageWrapper}>
             <Image
@@ -119,7 +119,7 @@ function FirstStepBlock() {
         {/* Card 5 - Resources & Inspiration */}
         <div
           className={`${styles.card} ${styles.blue}`}
-          onClick={() => router.push("/resource-inspiration")}
+          // onClick={() => router.push("/resource-inspiration")}
         >
           <div className={styles.imageWrapper}>
             <Image
