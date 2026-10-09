@@ -24,7 +24,7 @@ type DASHBOARD_BOX = {
 function Home() {
   const [enter, setEnter] = useState(false);
   const { user } = useAuthValue();
-  const { hasNewRitual } = useNewTeamRitualBadge();
+  const { hasNewRitual, hasNewPoll } = useNewTeamRitualBadge();
 
   useEffect(() => {
     setEnter(true);
@@ -51,7 +51,11 @@ function Home() {
       description: "See what your team is focusing on and join the ritual.",
       bgColor: "#FEF3F2",
       imageSrc: images.startPoly,
-      badge: hasNewRitual ? "new team poll" : undefined,
+      badge: hasNewPoll
+        ? "new team\npoll"
+        : hasNewRitual
+          ? "new team\nritual"
+          : undefined,
     },
     {
       id: 4,
@@ -178,14 +182,16 @@ function Home() {
                     </div>
                   </div>
                   {box.badge && (
-                    <div className="absolute bottom-3 right-4 md:bottom-10 md:right-6 flex items-center gap-1 rotate-[-19deg] pointer-events-none">
+                    <div className="absolute bottom-2 right-2 md:bottom-4 md:right-3 flex items-center gap-1 rotate-[-19deg] pointer-events-none">
                       <span
                         style={{
                           fontFamily: "RocaTwo-Bold",
                           fontSize: "clamp(11px, 1.6vw, 16px)",
                           color: "#0F4F58",
                           fontWeight: 700,
-                          lineHeight: 1,
+                          lineHeight: 1.1,
+                          whiteSpace: "pre-line",
+                          textAlign: "center",
                         }}
                       >
                         {box.badge}

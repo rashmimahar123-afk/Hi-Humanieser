@@ -9,6 +9,7 @@ import useEventEmitter, {
 } from "@/src/components/Hooks/useEventEmitter";
 import { useRouter } from "next/navigation";
 import { useLogoutMutation } from "../../Hooks/useLogoutMutation";
+import { clearLocalStorageKeepingSeenBadges } from "@/src/modules/MyTeamJourneyModule/Hooks/useNewTeamRitualBadge";
 
 const EVENT = "LOGOUT_MODAL_EVENT";
 
@@ -30,7 +31,7 @@ function LogoutModal() {
     try {
       await mutateAsync(); //  correct
 
-      localStorage.clear();
+      clearLocalStorageKeepingSeenBadges();
       sessionStorage.clear();
 
       router.replace("/login"); //  better than push

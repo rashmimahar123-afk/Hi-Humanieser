@@ -1,6 +1,9 @@
 export type LandingLanguage = "en" | "es";
 
-export const landingLanguageOptions: { value: LandingLanguage; label: string }[] = [
+export const landingLanguageOptions: {
+  value: LandingLanguage;
+  label: string;
+}[] = [
   { value: "en", label: "English" },
   { value: "es", label: "Español" },
 ];
@@ -62,7 +65,8 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
     infoBoxFaqText: "FAQs",
     infoBoxEnd: "",
     faqHeading: "Frequently Asked Questions",
-    faqIntroBefore: "Find answers to common questions below, read the full FAQs",
+    faqIntroBefore:
+      "Find answers to common questions below, read the full FAQs",
     faqIntroLink: "here",
     faqIntroAfter: "or pop us an email at",
     faqs: [
@@ -75,7 +79,8 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
         paragraph: `Hi Humaniser!™ is for organisations where performance depends on people working well together.\n\nIt is designed for individuals, teams and leaders who want to improve how they communicate, collaborate, build trust and make decisions.\n\nIf your work depends on people working well together, Hi Humaniser!™ is for you.`,
       },
       {
-        title: "Is this just another platform or initiative I don’t have time for?",
+        title:
+          "Is this just another platform or initiative I don’t have time for?",
         paragraph: `Fair question. Hi Humaniser!™ is designed to fit into the work people are already doing.\n\nIt does not require long training sessions or extra meetings. The actions are small, practical and designed to be used in real conversations, meetings and decisions.\n\nThe aim is to help teams build better habits without adding more noise to the working day.\n\nIf it feels like one more thing, it is not doing its job.`,
       },
       {
@@ -110,10 +115,13 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
     deeperBefore: "Want to go deeper? Explore the full FAQs",
     deeperLink: "here",
     deeperAfter: ".",
-    stillNotSure: "Still not sure, or just want to talk it through? Drop us a note at",
+    stillNotSure:
+      "Still not sure, or just want to talk it through? Drop us a note at",
     quote: "Small shifts. Real work. Better outcomes.",
-    footerCopyright: "© 2026 Humanising Our Workplaces Ltd. All rights reserved.",
-    footerProduct: "Hi Humaniser!™ is a product of Humanising Our Workplaces Ltd.",
+    footerCopyright:
+      "© 2026 Humanising Our Workplaces Ltd. All rights reserved.",
+    footerProduct:
+      "Hi Humaniser!™ is a product of Humanising Our Workplaces Ltd.",
   },
   es: {
     logoTagline: "Mejores Hábitos. Mejores Formas de Trabajar.",
@@ -125,16 +133,20 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
       {
         text: "Explora nuevas ideas. Practica pequeñas acciones. Construye mejores formas de trabajar juntos.",
       },
-      { text: "", bold: "Porque los resultados no mejoran al margen de las personas. Mejoran gracias a ellas." },
+      {
+        text: "",
+        bold: "Porque los resultados no mejoran al margen de las personas. Mejoran gracias a ellas.",
+      },
     ],
     letsGo: "¡Vamos!",
     infoBoxText: "¿Tienes curiosidad? Descubre cómo funciona Hi Humaniser™ en",
     infoBoxLinkText: "HumanisingOurWorkplaces.com",
     infoBoxMiddle: "o consulta las",
     infoBoxFaqText: "preguntas frecuentes",
-    infoBoxEnd: "más abajo.",
+    infoBoxEnd: " abajo.",
     faqHeading: "Preguntas Frecuentes",
-    faqIntroBefore: "Encuentra respuestas a las preguntas más comunes o escríbenos a",
+    faqIntroBefore:
+      "Encuentra respuestas a las preguntas más comunes o escríbenos a",
     faqs: [
       {
         title: "¿Qué es Hi Humaniser!™?",
@@ -169,7 +181,8 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
         paragraph: `Hi Humaniser!™ combina información de encuestas, actividad dentro de la plataforma y lo que los equipos están experimentando en su trabajo cotidiano.\n\nLas organizaciones pueden utilizar encuestas breves en distintos momentos para observar cambios en áreas como claridad, alineación, seguridad psicológica, responsabilidad y carga de trabajo.\n\nLa plataforma también muestra cómo participan las personas y los equipos en los recorridos, las microacciones y los rituales de equipo. Las reflexiones compartidas de forma anónima aportan además una visión valiosa de lo que las personas van observando durante el proceso.\n\nEn conjunto, esta información permite ver qué está ganando fuerza, dónde puede hacer falta más apoyo y si las nuevas prácticas empiezan a consolidarse.`,
       },
       {
-        title: "¿Es complicado o lleva mucho tiempo empezar a usar Hi Humaniser!™?",
+        title:
+          "¿Es complicado o lleva mucho tiempo empezar a usar Hi Humaniser!™?",
         paragraph: `No. La puesta en marcha está diseñada para ser sencilla y clara.\n\nTe ayudamos a configurar la organización y los equipos, invitar a las personas a la plataforma y dar a todos una introducción clara sobre cómo funciona Hi Humaniser!™.\n\nNo hay un largo proceso de implementación ni un programa de formación que completar antes de empezar. Una vez dentro, cada persona puede comenzar a explorar sus Recorridos Personales y los equipos pueden empezar a practicar juntos a través de su primer Recorrido de Equipo.`,
       },
       {
@@ -180,7 +193,9 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
     deeperBefore: "¿Quieres profundizar un poco más o simplemente hablarlo?",
     stillNotSure: "Escríbenos a",
     quote: "Pequeños cambios. Práctica diaria. Mejores resultados.",
-    footerCopyright: "© 2026 Humanising Our Workplaces Ltd. All rights reserved.",
-    footerProduct: "Hi Humaniser!™ is a product of Humanising Our Workplaces Ltd.",
+    footerCopyright:
+      "© 2026 Humanising Our Workplaces Ltd. All rights reserved.",
+    footerProduct:
+      "Hi Humaniser!™ is a product of Humanising Our Workplaces Ltd.",
   },
 };

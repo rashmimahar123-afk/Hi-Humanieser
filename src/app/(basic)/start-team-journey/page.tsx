@@ -32,14 +32,14 @@ function StartTeamJourneyPage() {
     ) ?? false;
 
   const { data: mtjListData } = useGetMtjListQuery();
-
+  console.log("mtjListDatamtjListData", mtjListData);
   const rituals = mtjListData?.data?.team_rituals || [];
 
-  // Opening My Team Journey clears the "new team poll" badge on Home
-  const { hasNewRitual, markSeen } = useNewTeamRitualBadge();
+  // Opening My Team Journey clears the "new team ritual" / "new team poll" badge on Home
+  const { hasNewRitual, hasNewPoll, markSeen } = useNewTeamRitualBadge();
   useEffect(() => {
-    if (hasNewRitual) markSeen();
-  }, [hasNewRitual, markSeen]);
+    if (hasNewRitual || hasNewPoll) markSeen();
+  }, [hasNewRitual, hasNewPoll, markSeen]);
 
   if (isLoading) {
     return (

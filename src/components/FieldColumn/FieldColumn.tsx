@@ -11,7 +11,7 @@ function FieldColumn({ label, value, values }: FieldColumnProps) {
         {label}
       </h4>
 
-      {values ? (
+      {values && values.length > 0 ? (
         <div className="flex gap-8">
           {values.map((item, index) => (
             <div

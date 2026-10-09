@@ -190,7 +190,7 @@ function MyPersonalProgress(props: MY_PERSONAL_PROGRESS_PROPS) {
                 >
                   <div className="h-full flex items-center justify-center text-center">
                     <span className="text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[18px] font-[RocaTwo] font-bold leading-[24px] lg:leading-[28px] text-center whitespace-normal">
-                      Edit My Pathway Reflections
+                      Edit My Reflections
                     </span>
                   </div>
                 </PolygonButton>

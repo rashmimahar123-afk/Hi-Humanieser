@@ -276,18 +276,32 @@ function LandingPage() {
     <div className="min-h-screen bg-[#f5f5f0] px-4 py-8">
       <div className="w-full max-w-7xl mx-auto">
         <div className="flex justify-end mb-4">
-          <select
-            aria-label="Language"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value as LandingLanguage)}
-            className="rounded-[10px] border border-[#0F4F58] bg-white px-3 py-1 text-[#0F4F58] font-[Roboto] text-sm cursor-pointer focus:outline-none"
-          >
-            {landingLanguageOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              aria-label="Language"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as LandingLanguage)}
+              className="appearance-none rounded-[10px] border border-[#0F4F58] bg-white min-w-[180px] pl-4 pr-12 py-2 text-[#4ba6a6] font-[Roboto] text-base font-bold cursor-pointer focus:outline-none"
+            >
+              {landingLanguageOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#4ba6a6]"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 7.5l5 5 5-5" />
+            </svg>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 lg:items-start">

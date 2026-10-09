@@ -21,6 +21,13 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
         value: item.vote_percentage,
       })) || [];
 
+  const hasPollData = chartData.length > 0;
+  // Equal coloured slices as a placeholder when nobody has voted yet
+  const emptyChartData = COLORS.map((_, index) => ({
+    name: `empty-${index}`,
+    value: 1,
+  }));
+
   return (
     <>
       {/* ================= TITLE ================= */}
@@ -36,49 +43,76 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
             Team Poll Results
           </h3>
 
-          <div className="w-[650px] h-[450px] mt-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  outerRadius={170}
-                  label={({ x, y, name, value, textAnchor }: any) => {
-                    const words = name.split(" ");
+          {!hasPollData ? (
+            <div className="w-[650px] h-[450px] mt-2 flex flex-col items-center justify-center gap-4">
+              {/* Placeholder pie that sweeps in once while nobody has voted */}
+              <div className="w-[360px] h-[360px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={emptyChartData}
+                      dataKey="value"
+                      nameKey="name"
+                      outerRadius={170}
+                      isAnimationActive
+                      animationDuration={1500}
+                    >
+                      {emptyChartData.map((_, index) => (
+                        <Cell key={index} fill={COLORS[index]} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <span className="text-[20px] text-[#0F4F58] font-[RocaTwo] font-bold">
+                No Team Poll result found
+              </span>
+            </div>
+          ) : (
+            <div className="w-[650px] h-[450px] mt-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={170}
+                    label={({ x, y, name, value, textAnchor }: any) => {
+                      const words = name.split(" ");
 
-                    return (
-                      <text
-                        x={x}
-                        y={y}
-                        textAnchor={textAnchor}
-                        fill="#0F4F58"
-                        fontSize={16}
-                      >
-                        <tspan x={x} dy="0">
-                          {words
-                            .slice(0, Math.ceil(words.length / 2))
-                            .join(" ")}
-                        </tspan>
+                      return (
+                        <text
+                          x={x}
+                          y={y}
+                          textAnchor={textAnchor}
+                          fill="#0F4F58"
+                          fontSize={16}
+                        >
+                          <tspan x={x} dy="0">
+                            {words
+                              .slice(0, Math.ceil(words.length / 2))
+                              .join(" ")}
+                          </tspan>
 
-                        <tspan x={x} dy="18">
-                          {words.slice(Math.ceil(words.length / 2)).join(" ")}
-                        </tspan>
+                          <tspan x={x} dy="18">
+                            {words.slice(Math.ceil(words.length / 2)).join(" ")}
+                          </tspan>
 
-                        <tspan x={x} dy="18">
-                          {value}%
-                        </tspan>
-                      </text>
-                    );
-                  }}
-                >
-                  {chartData.map((_: any, index: any) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                          <tspan x={x} dy="18">
+                            {value}%
+                          </tspan>
+                        </text>
+                      );
+                    }}
+                  >
+                    {chartData.map((_: any, index: any) => (
+                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
 
           <p className="text-center text-[20px] text-[#0F4F58] font-[RocaTwo] font-bold mt-4">
             What the team indicates would most support progress right now
@@ -160,14 +194,20 @@ function ChampionNotesSecondSection(props: CHAMPION_NOTES_SECOND_SECTION) {
             </h3>
 
             <div className="flex flex-col gap-4 mt-3">
-              {cycleKpi?.chosen_team_rituals?.map((ritual: any) => (
-                <div
-                  key={ritual.team_ritual_id}
-                  className="bg-white rounded-full h-[64px] px-8 flex items-center text-[#567F55]"
-                >
-                  {ritual.title}
+              {cycleKpi?.chosen_team_rituals?.length ? (
+                cycleKpi.chosen_team_rituals.map((ritual: any) => (
+                  <div
+                    key={ritual.team_ritual_id}
+                    className="bg-white rounded-full h-[64px] px-8 flex items-center text-[#567F55]"
+                  >
+                    {ritual.title}
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white rounded-full h-[64px] px-8 flex items-center text-[#567F55]">
+                  --
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>

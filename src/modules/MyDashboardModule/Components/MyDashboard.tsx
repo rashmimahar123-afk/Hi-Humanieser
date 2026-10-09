@@ -1558,7 +1558,7 @@ function MyDashboard() {
 
           {/* Bottom Action Row */}
           {/* Bottom Action Row */}
-          <div className="flex flex-col sm:flex-row justify-between mt-[40px] md:mt-[50px] gap-6 sm:gap-0 items-center sm:items-start">
+          <div className="flex flex-col sm:grid sm:grid-cols-[1fr_auto_1fr] mt-[40px] md:mt-[50px] gap-6 items-center sm:items-start">
             {/* Download PDF */}
             <div className="flex justify-center sm:justify-start">
               <button
@@ -1574,7 +1574,7 @@ function MyDashboard() {
             </div>
 
             {/* See all Ritual Reflections Button */}
-            <div className="flex justify-center sm:justify-end">
+            {/* <div className="flex justify-center sm:justify-end">
               <div
                 className="cursor-pointer"
                 onClick={() => router.push("/reflection-walls")}
@@ -1597,6 +1597,59 @@ function MyDashboard() {
                   <div className="h-full flex items-center justify-center text-center">
                     <span className="text-[#0F4F58] text-[15px] sm:text-[17px] md:text-[20px] lg:text-[22px] font-[RocaTwo] font-bold leading-[24px] md:leading-[28px] lg:leading-[32px]">
                       See all Ritual Reflections
+                    </span>
+                  </div>
+                </PolygonButton>
+              </div>
+            </div> */}
+
+            {/* Micro-Actions & Pathway Reflections Buttons */}
+            <div className="grid grid-cols-2 gap-6 lg:gap-10 w-auto sm:justify-self-center">
+              <div
+                className="cursor-pointer"
+                onClick={() => router.push("/view-all")}
+              >
+                <PolygonButton
+                  height="129px"
+                  bgColor="#F6E3BF"
+                  clipPath={`polygon(0% 29px, 100% 7%, 87% 89%, 20% calc(100% - 13px))`}
+                  decorationImg={{
+                    src: images.arrowImg,
+                    width: 48,
+                    height: 48,
+                  }}
+                  decorationPosition={{ className: "-left-[44px] -top-[12px]" }}
+                >
+                  <div className="h-full flex items-center justify-center text-center">
+                    <span className="text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[18px] font-[RocaTwo] font-bold leading-[24px] lg:leading-[28px]">
+                      See all my Team Rituals I've tried
+                    </span>
+                  </div>
+                </PolygonButton>
+              </div>
+              <div
+                className="cursor-pointer"
+                onClick={() => router.push("/view-all?edit=true")}
+              >
+                <PolygonButton
+                  height="129px"
+                  bgColor="#acd5ab"
+                  radius={14}
+                  topTilt={18}
+                  slantSide="right"
+                  clipPath={`polygon(17% 17px, 77% 11%, 100% 81%, 0% calc(100% - 15px))`}
+                  decorationImg={{
+                    src: images.rightArrow,
+                    width: 48,
+                    height: 48,
+                  }}
+                  decorationPosition={{
+                    className: "-right-[27px] -top-[20px]",
+                  }}
+                >
+                  <div className="h-full flex items-center justify-center text-center">
+                    <span className="text-[#0F4F58] text-[14px] sm:text-[16px] lg:text-[18px] font-[RocaTwo] font-bold leading-[24px] lg:leading-[28px] text-center whitespace-normal">
+                      Edit My Reflections
                     </span>
                   </div>
                 </PolygonButton>
@@ -1646,6 +1699,18 @@ function MyDashboard() {
             {/* Navigation Buttons */}
             <div className="flex flex-col items-center gap-[10px] md:gap-[14px]">
               <CommonButtons
+                label="Return To Homepage"
+                bgColor="#F5F0EB"
+                textClassName="text-[13px] sm:text-[15px] lg:text-[18px]"
+                onClick={() => router.push("/home")}
+              />
+              <CommonButtons
+                label="See All My Team Reflections"
+                bgColor="#F5F0EB"
+                textClassName="text-[13px] sm:text-[15px] lg:text-[18px]"
+                onClick={() => router.push("/reflection-walls")}
+              />
+              {/* <CommonButtons
                 label="Change my Pathway"
                 bgColor="#F5F0EB"
                 textClassName="text-[13px] sm:text-[15px] lg:text-[18px]"
@@ -1664,7 +1729,7 @@ Journey"
                 bgColor="#F5F0EB"
                 textClassName="text-[13px] sm:text-[15px] lg:text-[18px]"
                 onClick={() => router.push("/team-journey")}
-              />
+              /> */}
             </div>
           </div>
         </div>

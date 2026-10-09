@@ -709,3 +709,76 @@ export const downloadPdf = (filePath: string, fileName?: string) => {
   link.click();
   document.body.removeChild(link);
 };
+
+// A team cycle runs for 6 weeks; "Need a bit more time?" adds 2 more (8 total).
+const CYCLE_WEEKS = 6;
+const CYCLE_EXTENSION_WEEKS = 2;
+const FINISH_EARLY_FROM_WEEK = 4;
+const EXTEND_FROM_WEEK = 6;
+const DAY_MS = 1000 * 60 * 60 * 24;
+const WEEK_MS = DAY_MS * 7;
+
+type CYCLE_TIMING = { status?: string; extended?: boolean } | null;
+
+const isCycleFinished = (cycle?: CYCLE_TIMING) =>
+  ["completed", "closed", "finished"].includes(
+    cycle?.status?.toLowerCase() ?? "",
+  );
+
+// timestamps may come as seconds or milliseconds
+const toMs = (timestamp: number) =>
+  timestamp < 1e12 ? timestamp * 1000 : timestamp;
+
+const getCycleEndMs = (startMs: number, cycle?: CYCLE_TIMING) =>
+  startMs +
+  (CYCLE_WEEKS + (cycle?.extended ? CYCLE_EXTENSION_WEEKS : 0)) * WEEK_MS;
+
+export const getCycleRemainingDays = (
+  cycleStartedAt?: number | null,
+  cycle?: CYCLE_TIMING,
+) => {
+  const formatDays = (days: number) => `${days} ${days === 1 ? "Day" : "Days"}`;
+
+  if (!cycleStartedAt) return "--";
+  if (isCycleFinished(cycle)) return formatDays(0);
+
+  const end = getCycleEndMs(toMs(cycleStartedAt), cycle);
+  const days = Math.max(0, Math.ceil((end - Date.now()) / DAY_MS));
+
+  return formatDays(days);
+};
+
+// "Finished early?" unlocks at the start of Week 4, "Need a bit more time?"
+// at the start of Week 6. Both are shown (disabled) before that. On the last
+// day of the cycle (Week 6, or Week 8 if extended) it is finished automatically.
+export const getCycleActionWindow = (
+  startedAt?: number | null,
+  cycle?: CYCLE_TIMING,
+) => {
+  if (!startedAt || isCycleFinished(cycle)) {
+    return {
+      showCycleActions: false,
+      canFinishEarly: false,
+      canExtend: false,
+      finishEarlyFromWeek: FINISH_EARLY_FROM_WEEK,
+      extendFromWeek: EXTEND_FROM_WEEK,
+      shouldAutoFinish: false,
+    };
+  }
+
+  const startMs = toMs(startedAt);
+  const now = Date.now();
+  const lastDayStart = getCycleEndMs(startMs, cycle) - DAY_MS;
+  const isRunning = now < lastDayStart;
+  const weekStart = (week: number) => startMs + (week - 1) * WEEK_MS;
+
+  return {
+    showCycleActions: isRunning,
+    canFinishEarly: isRunning && now >= weekStart(FINISH_EARLY_FROM_WEEK),
+    canExtend:
+      isRunning && !cycle?.extended && now >= weekStart(EXTEND_FROM_WEEK),
+    finishEarlyFromWeek: FINISH_EARLY_FROM_WEEK,
+    extendFromWeek: EXTEND_FROM_WEEK,
+    shouldAutoFinish: !isRunning,
+  };
+};

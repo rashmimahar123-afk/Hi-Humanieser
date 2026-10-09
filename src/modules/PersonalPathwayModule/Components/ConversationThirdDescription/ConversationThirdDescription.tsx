@@ -14,11 +14,12 @@ function ConversationThirdDescription(props: CONVERSATION_THIRD_DESC_PROPS) {
   const router = useRouter();
   return (
     <div className="relative space-y-5 overflow-hidden">
-      {/* Background Illustration */}
+      {/* Background Illustration — the PNG has a solid beige fill baked in,
+          so blend it with darken to let the card colour show through */}
       <Image
         src={images.labImg}
         alt=""
-        className="absolute left-4 bottom-0 z-0 pointer-events-none"
+        className="absolute left-0 bottom-0 z-0 w-[180px] sm:w-[240px] lg:w-[280px] h-auto opacity-70 mix-blend-darken pointer-events-none select-none"
       />
 
       {/* MAIN CONTENT */}

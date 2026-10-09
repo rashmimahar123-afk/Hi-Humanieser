@@ -23,6 +23,7 @@ import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/Logo
 import ConfirmShareReflectionModal from "@/src/modules/PersonalPathwayModule/Components/ConfirmShareReflectionModal/ConfirmShareReflectionModal";
 import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Hooks/useAddReflectionMutation";
 import useMyNotesQuery from "../../Hooks/useMyNotesQuery";
+import { getCycleRemainingDays } from "@/src/lib/Helpers";
 
 function ChampionNotes() {
   const { user } = useAuthValue();
@@ -63,17 +64,6 @@ function ChampionNotes() {
   const cycle = cycleOverviewData?.data?.cycle;
   const teamRituals = cycle?.team_rituals || [];
 
-  const getRemainingWeeks = (endAt?: number | null) => {
-    if (!endAt) return "--";
-
-    const now = Date.now();
-    const end = new Date(endAt * 1000).getTime();
-
-    const diff = end - now;
-    const weeks = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24 * 7)));
-
-    return `${weeks} Weeks`;
-  };
 
   const { data: myNotesData, isLoading: isMyNotesLoading } = useMyNotesQuery();
 
@@ -97,7 +87,7 @@ function ChampionNotes() {
           />
         </div>
 
-        <div className="px-8 py-6">
+        <div className="relative z-20 px-8 py-6">
           <UserProfileHeader
             greetingColor="#0f4f58"
             nameColor="#0F4F58"
@@ -161,7 +151,10 @@ function ChampionNotes() {
 
                 <FieldColumn
                   label="Time Remaining"
-                  value={getRemainingWeeks(cycle?.end_at)}
+                  value={getCycleRemainingDays(
+                    cycle?.started_at ?? cycleOverviewData?.data?.poll?.opened_at,
+                    cycle,
+                  )}
                 />
               </div>
             </div>

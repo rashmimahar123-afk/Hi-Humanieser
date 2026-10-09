@@ -20,7 +20,6 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
   const { rituals } = props;
   const router = useRouter();
   const [activePathway, setActivePathway] = useState<string | null>(null);
-
   const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
 
@@ -73,6 +72,12 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
     }
 
     return null;
+  };
+
+  const getFrameworkRitual = (teamRitualId: string) => {
+    return getFocusArea(teamRitualId)?.team_rituals?.find(
+      (item: any) => item.team_ritual_id === teamRitualId,
+    );
   };
   return (
     <>
@@ -152,6 +157,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                         </p>
 
                         <div
+                          className="relative mt-2"
                           onClick={() =>
                             setActivePathway((prev) =>
                               prev === ritual.team_ritual_id
@@ -165,7 +171,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                             alt="arrow"
                             width={60}
                             height={40}
-                            className={`mt-2 transition-transform duration-300 ${
+                            className={`transition-transform duration-300 ${
                               activePathway === ritual.team_ritual_id
                                 ? "rotate-180"
                                 : ""
@@ -178,7 +184,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                               alt="tick"
                               width={28}
                               height={28}
-                              className="absolute top-4 right-3"
+                              className="absolute top-2 right-2 z-10"
                             />
                           )}
                         </div>
@@ -221,7 +227,12 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                     {activePathway === ritual.team_ritual_id && (
                       <div ref={practiceRef}>
                         <TeamJourneyPoll
-                          ritual={ritual}
+                          ritual={{
+                            ...ritual,
+                            long_description:
+                              getFrameworkRitual(ritual.team_ritual_id)
+                                ?.long_description || ritual.long_description,
+                          }}
                           ClosePracticePerspective={ClosePracticePerspective}
                         />
                       </div>

@@ -8,7 +8,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProgressPill from "../ProgressPill/ProgressPill";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import PreviousCycle from "../PreviousCycle/PreviousCycle";
 import NeedMoreTimeModal, {
   openNeedMoreTimeModal,
@@ -17,16 +18,32 @@ import YesExtendTimeModal from "../YesExtendTimeModal/YesExtendTimeModal";
 import FinishEarlyModal, {
   openFinishEarlyModal,
 } from "../FinishEarlyModal/FinishEarlyModal";
-import YesCompleteRitualModal from "../YesCompleteRitualModal/YesCompleteRitualModal";
+import YesCompleteRitualModal, {
+  openCompleteRitualModal,
+} from "../YesCompleteRitualModal/YesCompleteRitualModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useGetTeamsQuery from "@/src/modules/ProfileModule/Hooks/useGetTeamsQuery";
 import useGetAllListUsersQuery from "@/src/modules/ProfileModule/Hooks/useGetAllListUsersQuery";
-import { chunkByPattern } from "@/src/lib/Helpers";
+import {
+  chunkByPattern,
+  getCycleActionWindow,
+  getCycleRemainingDays,
+} from "@/src/lib/Helpers";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import { useClosePollMutation } from "../../Hooks/useClosePollMutation";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 import useGetKpiQuery from "../../Hooks/useGetKpiQuery";
+import { useFinishCycleMutation } from "../../Hooks/useFinishCycleMutation";
+
+// Shown on hover over a cycle button while it is still locked
+function CycleActionLockedTooltip({ week }: { week: number }) {
+  return (
+    <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-[#B42318] px-3 py-2 text-[14px] font-[Roboto] text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+      This will be enabled in Week {week} of the cycle.
+    </span>
+  );
+}
 
 function PressurePointRecord() {
   const router = useRouter();
@@ -121,18 +138,6 @@ Thanks!`,
   const teamRituals = cycleOverviewData?.data?.cycle?.team_rituals || [];
   const cycle = cycleOverviewData?.data?.cycle;
 
-  const getRemainingWeeks = (endAt?: number | null) => {
-    if (!endAt) return "--";
-
-    const now = Date.now();
-    const end = new Date(endAt * 1000).getTime();
-
-    const diff = end - now;
-    const weeks = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24 * 7)));
-
-    return `${weeks} Weeks`;
-  };
-
   // Current cycle API
   const { data: mtjKpiData } = useGetKpiQuery(
     user?.team_id,
@@ -167,17 +172,35 @@ Thanks!`,
 
   const options = kpiPollData?.results || [];
 
-  const isFourWeeksCompleted = (() => {
-    const closedAt = cycleOverviewData?.data?.poll?.closed_at;
+  const hasActiveRituals = teamRituals.length > 0;
+  const cycleStartedAt =
+    cycle?.started_at ?? cycleOverviewData?.data?.poll?.opened_at;
+  const {
+    showCycleActions,
+    canFinishEarly,
+    canExtend,
+    finishEarlyFromWeek,
+    extendFromWeek,
+    shouldAutoFinish,
+  } = getCycleActionWindow(cycleStartedAt, cycle);
 
-    if (!closedAt) return false;
+  // Last day of the cycle: finish it automatically (once per page visit)
+  const queryClient = useQueryClient();
+  const { mutate: finishCycle } = useFinishCycleMutation();
+  const autoFinishTriggered = useRef(false);
 
-    const closedDate = new Date(closedAt);
-    const fourWeeksLater = new Date(closedDate);
-    fourWeeksLater.setDate(fourWeeksLater.getDate() + 28);
+  useEffect(() => {
+    if (!hasActiveRituals || !shouldAutoFinish || autoFinishTriggered.current)
+      return;
+    autoFinishTriggered.current = true;
 
-    return new Date() >= fourWeeksLater;
-  })();
+    finishCycle(undefined, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries();
+        openCompleteRitualModal();
+      },
+    });
+  }, [hasActiveRituals, shouldAutoFinish, finishCycle, queryClient]);
 
   return (
     <>
@@ -691,14 +714,15 @@ Thanks!`,
               {/* Description Text */}
               <div className="mt-5">
                 <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto] font-medium">
-                  This is your team’s current improvement cycle. Track what’s
-                  live, how participation is evolving, and where attention may
-                  be needed.
+                  Follow your team's progress, see how participation is
+                  evolving, and keep your shared practices moving.
                 </p>
 
-                <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto]">
-                  Sustained performance doesn’t come from pressure — it comes
-                  from steady rhythm.
+                <p className="text-[22px] leading-[34px] text-[#0F4F58] font-[Roboto] mt-4">
+                  Each cycle runs for 6 weeks, giving your team time to
+                  practice, reflect and build better ways of working. From Week
+                  4, you can finish early if your team is ready, or extend for
+                  another 2 weeks if you need more time.
                 </p>
               </div>
               {/* Two Column Layout */}
@@ -737,7 +761,7 @@ Thanks!`,
                           Time remaining <br /> in this cycle
                         </span>
                         <div className="bg-[#EDEBE7] rounded-full px-6 py-2 text-[#567F55] text-[18px] font-[Roboto]">
-                          {getRemainingWeeks(cycle?.end_at)}
+                          {getCycleRemainingDays(cycleStartedAt, cycle)}
                         </div>
                       </div>
                     </div>
@@ -776,22 +800,7 @@ Thanks!`,
                             Participation:{" "}
                             {engagementData?.team_ritual_participation
                               ?.percentage ?? 0}
-                            % have contributed at least one team reflection
-                          </span>
-                        </li>
-
-                        <li className="flex items-start gap-4">
-                          <Image
-                            src={images.engagementImg}
-                            alt="arrow"
-                            width={22}
-                            height={22}
-                            className="mt-1"
-                          />
-                          <span>
-                            Momentum:{" "}
-                            {engagementData?.momentum?.percentage ?? 0}% have
-                            contributed more than once
+                            % have added at least one reflection
                           </span>
                         </li>
 
@@ -857,17 +866,75 @@ Thanks!`,
             </div>
           </div>
         )}
-        {cycleData?.chosen_team_rituals?.length !== 0 && (
+        {hasActiveRituals && showCycleActions && (
           <div className="ml-20">
-            <div className="flex items-center justify-between  mt-10">
+            {!cycle?.extended && (
+              <div className="flex items-center justify-between  mt-10">
+                {/* LEFT SECTION */}
+                <div className="flex items-center gap-10 ">
+                  <div
+                    className={`group relative ${
+                      canExtend
+                        ? "cursor-pointer"
+                        : "cursor-not-allowed opacity-50"
+                    }`}
+                    onClick={canExtend ? openNeedMoreTimeModal : undefined}
+                    aria-disabled={!canExtend}
+                  >
+                    {!canExtend && (
+                      <CycleActionLockedTooltip week={extendFromWeek} />
+                    )}
+                    {/* Polygon */}
+                    <PolygonButton
+                      width="106px"
+                      height="107px"
+                      bgColor="#86c9c9"
+                      radius={14}
+                      clipPath={`polygon(
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
+                    >
+                      <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                        Need a bit <br />
+                        <span className="whitespace-nowrap">more time? </span>
+                      </span>
+                    </PolygonButton>
+                  </div>
+
+                  {/* Middle Text */}
+                  <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
+                    Extend this cycle for up to 2 more weeks.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* ROW 2 */}
+            <div className="flex items-center justify-between">
               {/* LEFT SECTION */}
-              <div className="flex items-center gap-10 ">
-                <div className="cursor-pointer" onClick={openNeedMoreTimeModal}>
+              <div className="flex items-center gap-10">
+                <div
+                  className={`group relative ${
+                    canFinishEarly
+                      ? "cursor-pointer"
+                      : "cursor-not-allowed opacity-50"
+                  }`}
+                  onClick={
+                    canFinishEarly ? () => openFinishEarlyModal() : undefined
+                  }
+                  aria-disabled={!canFinishEarly}
+                >
+                  {!canFinishEarly && (
+                    <CycleActionLockedTooltip week={finishEarlyFromWeek} />
+                  )}
                   {/* Polygon */}
                   <PolygonButton
                     width="106px"
                     height="107px"
-                    bgColor="#86c9c9"
+                    bgColor="#acd5ab"
                     radius={14}
                     clipPath={`polygon(
     15% 11%,
@@ -877,57 +944,19 @@ Thanks!`,
   )`}
                   >
                     <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
-                      Need a bit <br />
-                      <span className="whitespace-nowrap">more time? </span>
+                      Finished
+                      <br />
+                      <span className="whitespace-nowrap">early?</span>
                     </span>
                   </PolygonButton>
                 </div>
 
                 {/* Middle Text */}
                 <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
-                  Extend this cycle for up to 2 more weeks.
+                  Mark these rituals as completed and start a new cycle.
                 </p>
               </div>
             </div>
-
-            {/* ROW 2 */}
-            {cycleData?.chosen_team_rituals?.length !== 0 &&
-              isFourWeeksCompleted && (
-                <div className="flex items-center justify-between">
-                  {/* LEFT SECTION */}
-                  <div className="flex items-center gap-10">
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => openFinishEarlyModal()}
-                    >
-                      {/* Polygon */}
-                      <PolygonButton
-                        width="106px"
-                        height="107px"
-                        bgColor="#acd5ab"
-                        radius={14}
-                        clipPath={`polygon(
-    15% 11%,
-    81% 0%,
-    100% 87%,
-    3% calc(100% - 15px)
-  )`}
-                      >
-                        <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
-                          Finished
-                          <br />
-                          <span className="whitespace-nowrap">early?</span>
-                        </span>
-                      </PolygonButton>
-                    </div>
-
-                    {/* Middle Text */}
-                    <p className="text-[#0F4F58] text-[22px] font-[Roboto]">
-                      Mark these rituals as completed and start a new cycle.
-                    </p>
-                  </div>
-                </div>
-              )}
           </div>
         )}
 

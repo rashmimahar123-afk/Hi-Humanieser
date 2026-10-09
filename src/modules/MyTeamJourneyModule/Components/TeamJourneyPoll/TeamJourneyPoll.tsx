@@ -28,6 +28,7 @@ type TeamRitual = {
   title: string;
   focus_area: string;
   short_description: string;
+  long_description: string;
   activation_message?: string;
   reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
 };
@@ -81,10 +82,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   const triedCount = ritual.reflections?.completed_count ?? 0;
   const totalTeammates = ritual.reflections?.member_count ?? 0;
   const completionPercentage = ritual.reflections?.completion_percentage ?? 0;
-  console.log(
-    "ritualReflectionsritualReflectionsritualReflections",
-    ritualReflections,
-  );
+
   const latestReflection = ritualReflections[0];
 
   const [share, setShare] = useState(
@@ -182,7 +180,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
               </h4>
 
               <p className="text-[18px] font-[Aptos] font-[400] text-[#244E52] mb-4">
-                {ritual.short_description}
+                {ritual.long_description}
               </p>
 
               <p className="text-[18px] font-[Aptos] font-[400] text-[#244E52] mb-2">

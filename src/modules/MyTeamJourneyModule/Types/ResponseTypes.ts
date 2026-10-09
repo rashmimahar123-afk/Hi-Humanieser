@@ -65,6 +65,7 @@ export type MTJ_TEAM_RITUAL_DATA = {
   title: string;
   focus_area: string;
   short_description: string;
+  long_description: string;
   activation_message?: string;
   reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
 };
