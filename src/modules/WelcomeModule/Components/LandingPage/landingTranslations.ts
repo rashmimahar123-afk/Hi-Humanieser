@@ -66,9 +66,7 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
     infoBoxEnd: "",
     faqHeading: "Frequently Asked Questions",
     faqIntroBefore:
-      "Find answers to common questions below, read the full FAQs",
-    faqIntroLink: "here",
-    faqIntroAfter: "or pop us an email at",
+      "Find answers to common questions below or pop us an email at",
     faqs: [
       {
         title: "What is Hi Humaniser!™?",

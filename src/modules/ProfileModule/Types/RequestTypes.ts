@@ -29,4 +29,15 @@ export type Edit_TEAM_REQUEST = {
 };
 export type TOGGLE_ROLE_PAYLOAD = {
   team_id?: string;
+};export type HELP_FEEDBACK_REQUEST_TYPE =
+  | "question"
+  | "technical issue"
+  | "suggestion"
+  | "feedback";
+export type HELP_FEEDBACK_REQUEST = {
+  email: string;
+  firstname: string;
+  lastname: string;
+  type_of_request: HELP_FEEDBACK_REQUEST_TYPE;
+  message: string;
 };

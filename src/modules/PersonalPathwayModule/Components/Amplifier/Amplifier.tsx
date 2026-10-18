@@ -89,7 +89,9 @@ function Amplifier() {
         {/* Accordions */}
         <div className="max-w-[1100px] mx-auto mt-8 lg:mt-14 space-y-4 lg:space-y-6">
           <AmplifierAccordian title="Why This Works">
-            <AmplifierFirstDescription />
+            <AmplifierFirstDescription
+              whyThisWorks={selectedPrincipleData?.why_this_works}
+            />
           </AmplifierAccordian>
 
           <AmplifierAccordian title="Core Behaviours">

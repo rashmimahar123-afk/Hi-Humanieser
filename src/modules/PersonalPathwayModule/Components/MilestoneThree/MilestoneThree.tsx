@@ -5,15 +5,15 @@ import images from "@/src/assets/images";
 import ArrowSquare from "@/src/components/ArrowSquare/ArrowSquare";
 import styles from "./MilestoneThree.module.css";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StartPracticePerspective from "../StartPracticePerspective/StartPracticePerspective";
 import { openFillupModal } from "../FillUpFormModal/FillUpFormModal";
 import FillUpFormModal from "../FillUpFormModal/FillUpFormModal";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { PILLAR_PRINCIPLE_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 import { useCompletePathwayMutation } from "../../Hooks/useCompletePathwayMutation";
-import { getPulseMessage } from "@/src/lib/Helpers";
-import useChooseMyselfQuery from "@/src/modules/ChoosePathwayModule/Hooks/useChooseMyselfQuery";
+import { findPulseCheckConfig, getPulseMessage } from "@/src/lib/Helpers";
+import usePulseCheckConfig from "../../Hooks/usePulseCheckConfigQuery";
 import { useGetCompPathwayQuery } from "@/src/modules/WelcomeModule/Hooks/useGetCompPathwayQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { MILESTONE_THREE_DATA } from "../../Types/ResponseTypes";
@@ -49,7 +49,6 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     m1Pulse,
   } = props;
   const [selectedPulse, setSelectedPulse] = useState<number | null>(null);
-  const [pulseMessage, setPulseMessage] = useState<string>("");
   const [showPulseError, setShowPulseError] = useState(false);
   const [showCompleteError, setShowCompleteError] = useState(false);
   const [selectedMicroActions, setSelectedMicroActions] = useState<string[]>(
@@ -61,7 +60,6 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     setIsPulseInitialized(true);
 
     setSelectedPulse(value);
-    setPulseMessage(getPulseMessage(value, m1Pulse, pulseConfig));
   };
   const reflectionText = m3Data?.reflection?.reflection || "";
   const isReflectionFilled = !!reflectionText?.trim();
@@ -86,25 +84,43 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
     );
   };
 
-  const { data: chooseMyselfData } = useChooseMyselfQuery();
-  const pulseConfig =
-    chooseMyselfData?.data?.[0]?.pulse_check_config?.comparison_feedback;
+  const globalPulseConfig = usePulseCheckConfig();
+  // Prefer feedback defined on this principle's own pulse_check, then the
+  // framework-level pulse_check_config.
+  const pulseConfig = (
+    findPulseCheckConfig(pathwayDetails?.pulse_check) ?? globalPulseConfig
+  )?.comparison_feedback;
 
+  // Derived (not set on click) so the message still appears when the pulse
+  // is picked before the feedback config has loaded.
+  const pulseMessage = useMemo(
+    () =>
+      selectedPulse ? getPulseMessage(selectedPulse, m1Pulse, pulseConfig) : "",
+    [selectedPulse, m1Pulse, pulseConfig],
+  );
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development" || !selectedPulse) return;
+    console.log("[PulseCheck] M3 debug", {
+      m3Pulse: selectedPulse,
+      m1Pulse,
+      pulseConfig,
+      pulseMessage,
+    });
+  }, [selectedPulse, m1Pulse, pulseConfig, pulseMessage]);
   const { data: pathwayMessage, refetch: getRandomMessage } =
     useGetCompPathwayQuery();
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (isPulseInitialized || !m3Data?.pulse_check || !pulseConfig) {
+    if (isPulseInitialized || !m3Data?.pulse_check) {
       return;
     }
 
     setSelectedPulse(m3Data.pulse_check);
-    setPulseMessage(getPulseMessage(m3Data.pulse_check, m1Pulse, pulseConfig));
-
     setIsPulseInitialized(true);
-  }, [isPulseInitialized, m3Data?.pulse_check, m1Pulse, pulseConfig]);
+  }, [isPulseInitialized, m3Data?.pulse_check]);
   const { mutate: updateM3 } = useUpdateMppMilestoneMutation();
   const { user } = useAuthValue();
   // Partners can't share M3 reflections to the Reflection Wall
@@ -227,7 +243,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
           </p>
 
           <p className="mt-3 max-w-full lg:max-w-[420px] text-[#567F55] text-[16px] sm:text-[20px] lg:text-[23px] font-[Roboto] font-[400] ml-0 sm:ml-[82px]">
-            How ready do you feel to approach challenges from different angles?
+            {pathwayDetails?.pulse_check_question}
           </p>
         </div>
 
@@ -349,29 +365,28 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
       {/* Reflection Section */}
       <div className="flex flex-col lg:flex-row justify-between items-start mt-[40px] sm:mt-[60px] gap-8 lg:gap-0">
         {/* Left Text */}
-        <div className="max-w-full lg:max-w-[520px]">
+        <div className="max-w-full lg:flex-1 lg:max-w-[520px] lg:pr-10">
           <p className="text-[#567F55] text-[18px] sm:text-[20px] lg:text-[22px] font-bold font-[Roboto] tracking-wide">
             REFLECTION PROMPT
           </p>
 
           <p className="mt-3 text-[#567F55] text-[16px] sm:text-[20px] lg:text-[23px] leading-[1.6] font-[Roboto] font-[400] ml-0 sm:ml-[20px]">
-            What did you notice about how safety (or lack of it) shows up in
-            your day-to-day work?
+            {pathwayDetails?.reflection_prompt?.prompt}
           </p>
         </div>
 
         {/* Right Paper Image */}
-        <div className="relative w-full lg:w-[360px] max-w-[400px]">
+        <div className="relative w-full lg:w-[520px] max-w-[520px] lg:shrink-0">
           <Image
             src={images.promptImg}
             alt="reflection prompt"
-            width={560}
-            height={420}
-            className="w-full object-contain"
+            width={383}
+            height={335}
+            className="w-full h-full object-fill"
           />
 
           {/* Overlay Content */}
-          <div className="absolute inset-0 px-6 sm:px-8 py-8 sm:py-10 flex flex-col">
+          <div className="absolute inset-0 px-6 sm:px-8 pt-12 sm:pt-16 pb-16 sm:pb-24 flex flex-col">
             <Image
               src={images.calImg}
               alt="arrow"
@@ -384,7 +399,13 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
             </p>
 
             {/* Dotted Lines */}
-            <div className="space-y-3 mt-8">
+            <div
+              className={
+                reflectionText
+                  ? `mt-6 mx-4 sm:mx-6 min-h-0 overflow-y-auto pr-1 ${styles.reflectionScroll}`
+                  : "space-y-3 mt-10 mx-4 sm:mx-6"
+              }
+            >
               {reflectionText ? (
                 <div className={styles.reflectionWrapper}>
                   <p className={styles.reflectionText}>{reflectionText}</p>
@@ -439,7 +460,7 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
               </div>
             </div> */}
             {!reflectionText ? (
-              <div className="flex justify-end mt-[7px]">
+              <div className="flex justify-end mt-8 mx-4 sm:mx-6">
                 <div
                   className={
                     selectedPulse
@@ -471,8 +492,16 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                   </PolygonButton>
                 </div>
               </div>
-            ) : canShareReflection ? (
-              <div className="mt-6">
+            ) : null}
+            {showPulseError && !selectedPulse && (
+              <p className="text-red-500 text-[12px] sm:text-[14px] text-right">
+                First select the pulse check then move forward
+              </p>
+            )}
+            {/* Share toggle stays inside the paper; the reflection above
+                scrolls (min-h-0) so long text can't push it out */}
+            {reflectionText && canShareReflection && (
+              <div className="shrink-0 mt-4 mx-4 sm:mx-6">
                 <div className="flex justify-between">
                   <div className="text-[17px] text-[#0F4F58] font-[Aptos] font-[400]">
                     Share your insights with your team?
@@ -491,11 +520,6 @@ function MilestoneThree(props: MILESTONE_THREE_PROPS) {
                   Reflection Walls
                 </p>
               </div>
-            ) : null}
-            {showPulseError && !selectedPulse && (
-              <p className="text-red-500 text-[12px] sm:text-[14px] text-right">
-                First select the pulse check then move forward
-              </p>
             )}
           </div>
         </div>

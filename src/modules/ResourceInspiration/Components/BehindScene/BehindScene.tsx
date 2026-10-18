@@ -289,7 +289,7 @@ function BehindScene() {
               label="Explore Pathways &
 Team Rituals"
               bgColor="#4BA6A6"
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/from-ideas")}
             />
           </div>
         </div>

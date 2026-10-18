@@ -136,6 +136,9 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
             <div className="mt-8 space-y-4">
               {rituals.map((ritual: any) => {
                 const focusArea = getFocusArea(ritual.team_ritual_id);
+                const frameworkRitual = getFrameworkRitual(
+                  ritual.team_ritual_id,
+                );
 
                 return (
                   <div key={ritual.team_ritual_id}>
@@ -230,8 +233,9 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                           ritual={{
                             ...ritual,
                             long_description:
-                              getFrameworkRitual(ritual.team_ritual_id)
-                                ?.long_description || ritual.long_description,
+                              frameworkRitual?.long_description ||
+                              ritual.long_description,
+                            common_traps: frameworkRitual?.common_traps ?? [],
                           }}
                           ClosePracticePerspective={ClosePracticePerspective}
                         />

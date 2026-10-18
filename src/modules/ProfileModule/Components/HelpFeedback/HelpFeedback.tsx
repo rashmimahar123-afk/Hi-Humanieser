@@ -12,12 +12,54 @@ import SendFeedbackModal, {
   openSendFeedbackModal,
 } from "../SendFeedbackModal/SendFeedbackModal";
 import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
+import useMyProfileQuery from "../../Hooks/useMyProfileQuery";
+import { useHelpFeedbackMutation } from "../../Hooks/useHelpFeedbackMutation";
+import { HELP_FEEDBACK_REQUEST_TYPE } from "../../Types/RequestTypes";
+import SnackbarHandler from "@/src/lib/SnackbarHandler";
 
 function HelpFeedback() {
   const router = useRouter();
   const [message, setMessage] = useState("");
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState<HELP_FEEDBACK_REQUEST_TYPE | "">(
+    "",
+  );
   const { user } = useAuthValue();
+  const { data: profileResponse } = useMyProfileQuery();
+  const profileData = profileResponse?.data;
+  const fullName =
+    `${profileData?.first_name ?? ""} ${profileData?.last_name ?? ""}`.trim();
+
+  const { mutate: sendHelpFeedback, isPending: isSending } =
+    useHelpFeedbackMutation();
+
+  const handleSend = () => {
+    if (isSending) return;
+    if (!selected) {
+      SnackbarHandler.errorToast("Please select a type of request");
+      return;
+    }
+    if (!message.trim()) {
+      SnackbarHandler.errorToast("Please enter a message");
+      return;
+    }
+
+    sendHelpFeedback(
+      {
+        email: profileData?.email || user?.sub || "",
+        firstname: profileData?.first_name || "",
+        lastname: profileData?.last_name || "",
+        type_of_request: selected,
+        message: message.trim(),
+      },
+      {
+        onSuccess: () => {
+          setSelected("");
+          setMessage("");
+          openSendFeedbackModal();
+        },
+      },
+    );
+  };
   return (
     <>
       <div className="relative min-h-screen bg-[#F7F2EA] px-12 pt-10 pb-20">
@@ -63,6 +105,8 @@ function HelpFeedback() {
               <input
                 type="text"
                 placeholder="auto-filled"
+                value={fullName}
+                readOnly
                 className="flex-1 h-[56px] bg-[#ffffff] rounded-[14px] px-6 text-[#0F4F58] outline-none"
               />
             </div>
@@ -104,7 +148,9 @@ function HelpFeedback() {
 
                 <select
                   value={selected}
-                  onChange={(e) => setSelected(e.target.value)}
+                  onChange={(e) =>
+                    setSelected(e.target.value as HELP_FEEDBACK_REQUEST_TYPE)
+                  }
                   className="w-[770px] bg-[#ffffff]  text-[18px] px-6 h-[56px] rounded-[16px] outline-none font-[Roboto] appearance-none"
                   style={{
                     color: selected ? "#0F4F58" : "#000000",
@@ -113,10 +159,10 @@ function HelpFeedback() {
                   <option value="" disabled hidden>
                     Select request type
                   </option>
-                  <option value="male">Question</option>
-                  <option value="female">Technical Issue</option>
-                  <option value="non-binary">Suggestion</option>
-                  <option value="prefer-not-say">Feedback</option>
+                  <option value="question">Question</option>
+                  <option value="technical issue">Technical Issue</option>
+                  <option value="suggestion">Suggestion</option>
+                  <option value="feedback">Feedback</option>
                 </select>
 
                 <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-[#0F4F58]">
@@ -139,7 +185,12 @@ function HelpFeedback() {
             </div>
 
             <div className="flex justify-end ">
-              <div className="cursor-pointer" onClick={openSendFeedbackModal}>
+              <div
+                className={
+                  isSending ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                }
+                onClick={handleSend}
+              >
                 <PolygonButton
                   width="106px"
                   height="75px"

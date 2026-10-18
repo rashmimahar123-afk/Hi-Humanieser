@@ -30,6 +30,7 @@ type TeamRitual = {
   short_description: string;
   long_description: string;
   activation_message?: string;
+  common_traps?: Array<string>;
   reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
 };
 
@@ -84,6 +85,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
   const completionPercentage = ritual.reflections?.completion_percentage ?? 0;
 
   const latestReflection = ritualReflections[0];
+  const commonTraps = ritual.common_traps ?? [];
 
   const [share, setShare] = useState(
     latestReflection?.shared_anonymously ?? false,
@@ -308,21 +310,19 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
         {/* Common Traps */}
         <div className="grid grid-cols-[100%_18%] gap-8 mt-8 items-end relative">
           {/* Common Traps */}
-          <div className="bg-[#F5F0EB] rounded-[18px] p-6">
-            <h5 className="text-[#4BA6A6] font-[RocaTwo] text-[21px] mb-2">
-              Common Traps
-            </h5>
+          {commonTraps.length > 0 && (
+            <div className="bg-[#F5F0EB] rounded-[18px] p-6">
+              <h5 className="text-[#4BA6A6] font-[RocaTwo] text-[21px] mb-2">
+                Common Traps
+              </h5>
 
-            <ul className="list-disc pl-5 text-[18px] text-[#0F4F58]">
-              <li>
-                Treating this as oversimplification instead of clarity aid
-              </li>
-              <li>
-                Using it to cut people off rather than help the message land
-              </li>
-              <li>Asking for one-line answers before thinking is ready</li>
-            </ul>
-          </div>
+              <ul className="list-disc pl-5 text-[18px] text-[#0F4F58]">
+                {commonTraps.map((trap: string, trapIndex: number) => (
+                  <li key={trapIndex}>{trap}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Add another reflection */}
           {/* <div className="flex justify-center items-center absolute right-0 top-[12px]">

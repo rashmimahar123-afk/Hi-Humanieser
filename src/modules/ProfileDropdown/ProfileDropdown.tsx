@@ -35,6 +35,7 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
       { label: "My Pathways", path: "/my-pathways" },
       { label: "Champion Hub", path: "/champion-hub" },
       // { label: "Notifications", path: "/notification" },
+      { label: "Help & Feedback", path: "/help-feedback" },
       // { label: "Spread The Ripple", path: "/spread-ripple" },
     ],
     3: [
@@ -45,6 +46,7 @@ function ProfileDropdown({ userInfo }: PROFILE_DROPDOWN_PROPS) {
       // { label: "Champion Hub", path: "/champion-hub" },
       { label: "Partner Hub", path: "/overseer-hub" },
       // { label: "Notifications", path: "/notification" },
+      { label: "Help & Feedback", path: "/help-feedback" },
       // { label: "Spread The Ripple", path: "/spread-ripple" },
     ],
   };

@@ -2,7 +2,7 @@ import { useSearchParams } from "next/navigation";
 import StartQuizSecondPage from "../StartQuizSecondPage/StartQuizSecondPage";
 import StartQuizFirstPage from "../StartQuizFirstPage/StartQuizFirstPage";
 import styles from "./StartQuizPage.module.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import StartQuizThirdPage from "../StartQuizThirdPage/StartQuizThirdPage";
 import useGetQuestionsQuery from "../../Hooks/useGetQuestionsQuery";
 
@@ -14,6 +14,15 @@ function StartQuizPage(props: START_QUIZ_PAGE_PROPS) {
   const { profileData } = props;
   const searchParams = useSearchParams();
   const step = searchParams.get("step"); // "2"
+
+  // Steps are the same route with a different ?step, so Next doesn't
+  // reliably reset scroll; without this the next page can open at the
+  // bottom (where "Continue Quiz" was clicked).
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [step]);
 
   const questionsRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);

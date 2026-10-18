@@ -18,6 +18,7 @@ function DashboardPdf() {
   return (
     <DashboardRecordContent
       firstName={profileData?.first_name}
+      fullName={`${profileData?.first_name ?? ""} ${profileData?.last_name ?? ""}`.trim()}
       currentMonthYear={currentMonthYear}
       resultData={resultData}
       topStrengthDetails={topStrengthDetails}

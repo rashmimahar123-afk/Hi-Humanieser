@@ -370,32 +370,88 @@ export const renderBoldQuotesText = (text: string): string[] => {
   const parts = text.split(/(“[^”]+”)/g);
   return parts; // array of strings, JSX return nahi karta
 };
+// Shown when the API doesn't provide pulse check feedback, so the M3 pulse
+// check always gives the user a message.
+export const DEFAULT_PULSE_FEEDBACK = {
+  better: [
+    "Look at that shift, you're meeting challenges with more confidence than when you started.",
+    "Your pulse has moved up since Milestone 1. The practice is paying off.",
+  ],
+  same: [
+    "Not every shift shows up right away, growth can be quiet.",
+    "Steady is still progress. Keep showing up and the shift will follow.",
+  ],
+  worse: [
+    "Not every shift shows up right away, growth can be quiet.",
+    "Some stretches feel harder than others. Noticing that is part of the growth.",
+  ],
+  neutral: ["Not every shift shows up right away, growth can be quiet."],
+};
+
+// A bucket may be an array, a keyed object ({ feedback_01: "..." }, like
+// the rest of hh_framework_mpp.json) or a single string.
+const toMessageList = (bucket: any): Array<any> =>
+  Array.isArray(bucket)
+    ? bucket
+    : bucket && typeof bucket === "object"
+      ? Object.values(bucket)
+      : bucket
+        ? [bucket]
+        : [];
+
 export const getPulseMessage = (
   m3Value: number,
-  m1Value: number | undefined,
+  m1Value: number | string | undefined,
   pulseConfig:
     | {
-        better: string[];
-        same: string[];
-        worse: string[];
+        better: any;
+        same: any;
+        worse: any;
       }
     | undefined,
 ) => {
-  if (!pulseConfig || !m1Value) return "";
+  const m3 = Number(m3Value);
+  const m1 = Number(m1Value);
+  if (!m3) return "";
 
-  let messages: string[] = [];
+  let messages: Array<any>;
 
-  if (m3Value > m1Value) {
-    messages = pulseConfig.better;
-  } else if (m3Value === m1Value) {
-    messages = pulseConfig.same;
+  if (!m1) {
+    // No M1 pulse to compare against
+    messages = DEFAULT_PULSE_FEEDBACK.neutral;
   } else {
-    messages = pulseConfig.worse;
+    // Compare the M3 emoji against the M1 emoji to pick the feedback bucket
+    const key: "better" | "same" | "worse" =
+      m3 > m1 ? "better" : m3 === m1 ? "same" : "worse";
+    const apiMessages = toMessageList(pulseConfig?.[key]);
+    messages = apiMessages.length ? apiMessages : DEFAULT_PULSE_FEEDBACK[key];
   }
 
-  if (!messages.length) return "";
+  const picked = messages[Math.floor(Math.random() * messages.length)];
+  // Entries may be plain strings or objects like { message } / { text }
+  if (typeof picked === "string") return picked;
+  return picked?.message ?? picked?.text ?? "";
+};
 
-  return messages[Math.floor(Math.random() * messages.length)];
+// Locates `pulse_check_config` in a framework JSON regardless of shape:
+// top-level object, an entry of a top-level array, or nested a few levels
+// down (e.g. inside a wrapper object).
+export const findPulseCheckConfig = (raw: unknown, depth = 0): any => {
+  if (!raw || typeof raw !== "object" || depth > 3) return null;
+
+  const node = raw as Record<string, any>;
+  if (node.pulse_check_config) return node.pulse_check_config;
+  if (node.comparison_feedback) return node;
+  // Bare { better, same, worse } block without the wrapper keys
+  if (node.better && node.same && node.worse) {
+    return { comparison_feedback: node };
+  }
+
+  for (const value of Object.values(node)) {
+    const found = findPulseCheckConfig(value, depth + 1);
+    if (found) return found;
+  }
+  return null;
 };
 
 // helpers.ts

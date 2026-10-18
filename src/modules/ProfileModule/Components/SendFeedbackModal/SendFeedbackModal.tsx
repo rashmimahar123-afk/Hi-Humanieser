@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import images from "@/src/assets/images";
 import useEventEmitter, {
   emitEvent,
@@ -16,6 +17,7 @@ export const openSendFeedbackModal = () => {
 
 function SendFeedbackModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   useEventEmitter(EVENT, () => {
     setIsOpen(true);
@@ -70,7 +72,13 @@ function SendFeedbackModal() {
           {/* Resend */}
           <div className="flex justify-center items-center gap-3 pt-2">
             {/* Resend Button */}
-            <button className="relative flex items-center justify-center ml-[30px]">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                router.push("/home");
+              }}
+              className="relative flex items-center justify-center ml-[30px]"
+            >
               {/* Polygon */}
               <Image
                 src={images.signupPolygon}

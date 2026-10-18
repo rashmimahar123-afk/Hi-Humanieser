@@ -271,6 +271,8 @@ function LandingPage() {
   const router = useRouter();
   const [language, setLanguage] = useState<LandingLanguage>("en");
   const t = landingContent[language];
+  // English landing shows only the FAQ intro line, not the heading or questions
+  const showFaqList = language !== "en";
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] px-4 py-8">
@@ -452,9 +454,11 @@ function LandingPage() {
       <div className="mt-10 max-w-7xl mx-auto px-4">
         <div className="w-full flex justify-end text-center">
           <div className="flex flex-col items-end w-full">
-            <div className="text-[#0F4F58] text-[clamp(24px,6vw,38px)] font-[RocaTwo]">
-              {t.faqHeading}
-            </div>
+            {showFaqList && (
+              <div className="text-[#0F4F58] text-[clamp(24px,6vw,38px)] font-[RocaTwo]">
+                {t.faqHeading}
+              </div>
+            )}
             <div
               className={`text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex-wrap items-end  ${styles.faqText}`}
             >
@@ -482,31 +486,35 @@ function LandingPage() {
           </div>
         </div>
 
-        <div className="mt-12 w-full max-w-[1000px] mx-auto">
-          <div className="flex flex-col justify-center gap-4">
-            {t.faqs.map((faq) => (
-              <FAQAccordion
-                key={faq.title}
-                title={faq.title}
-                paragraph={faq.paragraph}
-              />
-            ))}
+        {showFaqList && (
+          <div className="mt-12 w-full max-w-[1000px] mx-auto">
+            <div className="flex flex-col justify-center gap-4">
+              {t.faqs.map((faq) => (
+                <FAQAccordion
+                  key={faq.title}
+                  title={faq.title}
+                  paragraph={faq.paragraph}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="mt-16">
-          <div className="text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex flex-wrap items-center">
-            {t.deeperBefore}
-            {t.deeperLink && (
-              <Link
-                href="/faq"
-                className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
-              >
-                {t.deeperLink}
-              </Link>
-            )}
-            {t.deeperAfter}
-          </div>
+          {showFaqList && (
+            <div className="text-[#0f4f58] text-[clamp(14px,4vw,20px)] font-[Roboto] flex flex-wrap items-center">
+              {t.deeperBefore}
+              {t.deeperLink && (
+                <Link
+                  href="/faq"
+                  className="ml-2 mr-2 text-[#4ba6a6] transition-colors"
+                >
+                  {t.deeperLink}
+                </Link>
+              )}
+              {t.deeperAfter}
+            </div>
+          )}
           <div className="font-[Roboto] text-[clamp(14px,4vw,20px)] text-[#0f4f58] mt-8">
             <span>{t.stillNotSure}</span>
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import images from "@/src/assets/images";
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import { useEffect, useState } from "react";
@@ -259,9 +260,12 @@ function AccountSetting() {
               />
               <span className="text-[12px] sm:text-[16px] md:text-[20px] text-[#567F55] font-[400] leading-[100%]">
                 Your data stays yours. Learn more in our{" "}
-                <a href="#" className="text-[#567F55] underline">
+                <Link
+                  href="/privacy-policy"
+                  className="text-[#567F55] underline"
+                >
                   Privacy Policy
-                </a>
+                </Link>
               </span>
             </div>
           </section>

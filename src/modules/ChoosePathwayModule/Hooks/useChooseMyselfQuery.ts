@@ -3,7 +3,11 @@ import {
   CHOOSE_MYSELF_RESPONSE_TYPES,
   MPP_RAW_PILLAR_WRAPPER,
 } from "../Types/ResponseTypes";
-import { authFetcher, fetcher } from "@/src/lib/Helpers";
+import {
+  authFetcher,
+  fetcher,
+  findPulseCheckConfig,
+} from "@/src/lib/Helpers";
 import { useQuery } from "@tanstack/react-query";
 import { normalizeMppFramework } from "../Helpers/normalizeMppFramework";
 
@@ -18,10 +22,13 @@ const chooseMyself = async (): Promise<
   });
 
   const pillars = normalizeMppFramework(response.data);
+  // The normalizer keeps only pillar_* entries, so pull the pulse check
+  // config (used for the M3 comparison message) out of the raw response.
+  const pulse_check_config = findPulseCheckConfig(response.data) ?? undefined;
 
   return {
     ...response,
-    data: [{}, { framework_name: "", pillars }],
+    data: [{ pulse_check_config }, { framework_name: "", pillars }],
   };
 };
 

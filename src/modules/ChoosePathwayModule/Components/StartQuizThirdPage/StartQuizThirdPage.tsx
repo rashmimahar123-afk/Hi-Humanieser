@@ -145,7 +145,10 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
         {/* Overlay content */}
         <div className=" px-8 py-6 flex justify-between">
           {/* Left */}
-          <div>
+          <div
+            className="cursor-pointer"
+            onClick={() => router.push("/home")}
+          >
             <div
               className="text-[#567F55]"
               style={{ fontFamily: "Aptos", fontSize: "22px" }}
@@ -204,7 +207,7 @@ function StartQuizThirdPage(props: START_QUIZ_THIRD_PROPS_TYPES) {
             </div>
             {/* Footer */}
             <div
-              className={`flex justify-end relative mt-[61px] mr-[31px] ${
+              className={`flex justify-end relative mt-[90px] mr-[31px] ${
                 !isAllAnswered ? "opacity-50 pointer-events-none" : ""
               }`}
             >

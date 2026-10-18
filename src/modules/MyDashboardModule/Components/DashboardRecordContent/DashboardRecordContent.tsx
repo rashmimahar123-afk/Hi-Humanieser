@@ -18,6 +18,7 @@ import {
 
 type DASHBOARD_RECORD_CONTENT_PROPS = {
   firstName?: string;
+  fullName?: string;
   currentMonthYear: string;
   resultData: any;
   topStrengthDetails: any[];
@@ -37,6 +38,7 @@ type DASHBOARD_RECORD_CONTENT_PROPS = {
 function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
   const {
     firstName = "",
+    fullName = "",
     currentMonthYear,
     resultData,
     topStrengthDetails = [],
@@ -92,7 +94,7 @@ function DashboardRecordContent(props: DASHBOARD_RECORD_CONTENT_PROPS) {
 
               <input
                 type="text"
-                value={firstName}
+                value={fullName}
                 placeholder="pre-filled if possible"
                 readOnly
                 className="w-full h-[44px] rounded-full px-6 text-[16px] bg-white shadow-sm outline-none text-[#737373]"

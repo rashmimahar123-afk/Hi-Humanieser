@@ -3,9 +3,30 @@ import Image from "next/image";
 import images from "@/src/assets/images";
 import PolygonButton from "@/src/components/PolygonButton/PolygonButton";
 import { useRouter } from "next/navigation";
+import { WHY_THIS_BEHAVIOUR_TYPE } from "@/src/modules/ChoosePathwayModule/Types/ResponseTypes";
 
-function AmplifierFirstDescription() {
+type WHY_THIS_WORKS_PROPS_TYPE = {
+  whyThisWorks?: WHY_THIS_BEHAVIOUR_TYPE;
+};
+
+// Domain text comes as "The Brain (Neuroscience): body..." - split into heading + body
+const splitDomain = (text: string) => {
+  const index = text.indexOf(": ");
+  if (index === -1) return { heading: "", body: text };
+  return {
+    heading: text.slice(0, index + 1),
+    body: text.slice(index + 2),
+  };
+};
+
+function AmplifierFirstDescription(props: WHY_THIS_WORKS_PROPS_TYPE) {
+  const { whyThisWorks } = props;
   const router = useRouter();
+
+  const domains = Object.entries(whyThisWorks ?? {})
+    .filter(([key, value]) => key.startsWith("domain_") && !!value)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => ({ key, ...splitDomain(value) }));
 
   return (
     <div className="relative space-y-5 overflow-hidden">
@@ -18,81 +39,31 @@ function AmplifierFirstDescription() {
 
       {/* Main Content */}
       <div className="relative z-10 space-y-4 lg:space-y-5 font-[Roboto] text-[14px] sm:text-[17px] lg:text-[20px]">
-        <p>
-          Because lasting performance doesn't come from pushing harder – it
-          comes from designing work that people can keep doing, day after day,
-          without depletion.
-        </p>
+        {whyThisWorks?.definition && <p>{whyThisWorks.definition}</p>}
 
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1 text-[16px] sm:text-[19px] lg:text-[22px]">
-            The Brain (Neuroscience):
-          </p>
-          <p>
-            Our brains are wired to conserve energy and stabilise patterns. When
-            work is full of constant change, friction and decisions, cognitive
-            energy drains quickly (thank you Friston; Baumeister). Repeated
-            behaviours, on the other hand, become automatic over time — which is
-            why small, consistent habits are far more sustainable than bursts of
-            effort (this gem from Graybiel).
-          </p>
-        </div>
-
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1">
-            The Person (Psychology):
-          </p>
-          <p>
-            People struggle with long-term goals when progress feels distant or
-            unclear. Sustainable change works when effort is reinforced through
-            short feedback loops and visible wins (Hall & Fong). Just as
-            importantly, knowing when to stop, adapt or let go protects
-            motivation and prevents quiet exhaustion (a brilliant reminder from
-            Wrosch). Letting go is part of sustainability.
-          </p>
-        </div>
-
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1">
-            The Workplace (Organisational Behaviour):
-          </p>
-          <p>
-            In real life, work sticks through the small things people do every
-            day. When expectations are clear, routines make sense, and knowledge
-            is shared instead of trapped in a few heads, work becomes easier to
-            sustain (thank you Feldman & Pentland). When everything feels like a
-            constant change or a new push, energy drains and people quietly
-            disengage. Sustainable workplaces don't rely on heroics — they rely
-            on simple, repeatable ways of working that people can trust (a nudge
-            we needed from Teece; Walsh & Ungson).
-          </p>
-        </div>
-
-        <div>
-          <p className="font-[700] text-[#0F4A4E] mb-1">
-            The Wider System (Social & Cultural Science):
-          </p>
-          <p>
-            What lasts is what people collectively care for. When teams share a
-            common rhythm, agree the "rules of the game", and feel some
-            ownership over how work happens, the system holds (Shove; Ostrom).
-            Short-term pressure might create speed, but it rarely creates
-            stability. Sustainable work grows when decisions consider tomorrow
-            as much as today — and when people feel they are part of something
-            built to last (thank you Barton & Wiseman).
-          </p>
-        </div>
+        {domains.map((domain, index) => (
+          <div key={domain.key}>
+            {domain.heading && (
+              <p
+                className={`font-[700] text-[#0F4A4E] mb-1 ${
+                  index === 0 ? "text-[16px] sm:text-[19px] lg:text-[22px]" : ""
+                }`}
+              >
+                {domain.heading}
+              </p>
+            )}
+            <p>{domain.body}</p>
+          </div>
+        ))}
 
         {/* Quote */}
-        <div className="flex justify-end">
-          <p className="text-[#4BA6A6] text-[14px] sm:text-[17px] lg:text-[20px] max-w-full sm:max-w-[500px]">
-            When work is designed to repeat, reinforce and renew itself —
-            through rhythms, habits, shared ownership and sensible pacing —
-            performance stops relying on effort and starts relying on structure.
-            Sustainability becomes the quiet strength that allows good work to
-            continue without burning people out
-          </p>
-        </div>
+        {whyThisWorks?.summary && (
+          <div className="flex justify-end">
+            <p className="text-[#4BA6A6] text-[14px] sm:text-[17px] lg:text-[20px] max-w-full sm:max-w-[500px]">
+              {whyThisWorks.summary}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Footer Button Row */}

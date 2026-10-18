@@ -47,15 +47,31 @@
 
 /* notebook-style dotted lines */
 .reflectionText {
-  font-size: 15px;
+  font-size: 14px;
   color: #0F4F58;
-  line-height: 28px;
+  line-height: 26px;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 
   background-image: repeating-linear-gradient(
     to bottom,
     transparent,
-    transparent 26px,
-    #000000 27px
+    transparent 25px,
+    #000000 26px
   );
+}
+
+/* long reflections scroll inside the paper instead of spilling out */
+.reflectionScroll {
+  scrollbar-width: thin;
+  scrollbar-color: #4ba6a6 transparent;
+}
+
+.reflectionScroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.reflectionScroll::-webkit-scrollbar-thumb {
+  background: #4ba6a6;
+  border-radius: 4px;
 }
