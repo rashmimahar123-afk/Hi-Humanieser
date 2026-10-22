@@ -30,11 +30,13 @@ import {
   getCycleRemainingDays,
 } from "@/src/lib/Helpers";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
-import { useClosePollMutation } from "../../Hooks/useClosePollMutation";
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 import useGetKpiQuery from "../../Hooks/useGetKpiQuery";
 import { useFinishCycleMutation } from "../../Hooks/useFinishCycleMutation";
+import ClosePollEarlyModal, {
+  openClosePollEarlyModal,
+} from "../ClosePollEarlyModal/ClosePollEarlyModal";
 
 // Shown on hover over a cycle button while it is still locked
 function CycleActionLockedTooltip({ week }: { week: number }) {
@@ -110,8 +112,6 @@ Thanks!`,
     window.location.href = mailtoLink;
   };
 
-  const { mutate: closePollMutation, isPending: isClosingPoll } =
-    useClosePollMutation();
 
   const {
     mutate: recommendFocusAreas,
@@ -168,13 +168,19 @@ Thanks!`,
   }));
   const kpiPollData = mtjKpiData?.data?.poll;
   const participation = kpiPollData?.participation;
-  // Suggested focus areas unlock once poll participation reaches this %
-  const FOCUS_THRESHOLD_PERCENT = 50;
-  const isBelowThreshold =
-    (participation?.percentage ?? 0) < FOCUS_THRESHOLD_PERCENT;
-  const showSuggestedFocus =
-    kpiPollData?.status === "closed" ||
-    (kpiPollData?.status === "open" && !isBelowThreshold);
+  // Backend closes the poll automatically at this %
+  const POLL_AUTO_CLOSE_PERCENT = 70;
+  // From this % the champion may close the poll early
+  const CLOSE_EARLY_THRESHOLD_PERCENT = 50;
+  const isPollOpen = kpiPollData?.status === "open";
+  // Work from raw counts so exactly 50% isn't lost to backend rounding
+  const participationPercent = participation?.total
+    ? ((participation.responded ?? 0) / participation.total) * 100
+    : Number(participation?.percentage ?? 0);
+  const canClosePollEarly =
+    isPollOpen && participationPercent >= CLOSE_EARLY_THRESHOLD_PERCENT;
+  // Rituals can only be picked on a closed poll, so focus areas wait for it
+  const showSuggestedFocus = kpiPollData?.status === "closed";
 
   const options = kpiPollData?.results || [];
 
@@ -410,7 +416,7 @@ Thanks!`,
               height={270}
             />
           </div>
-          {isBelowThreshold && (
+          {isPollOpen && (
             <div className="absolute right-[180px] top-[60px] opacity-80">
               <Image
                 src={images.signupTimer}
@@ -429,11 +435,11 @@ Thanks!`,
             </h1>
 
             <p className="text-[#0F4F58] text-[20px] mb-6 leading-relaxed font-[Roboto] ml-8 max-w-[900px]">
-              {isBelowThreshold && kpiPollData?.status === "open"
+              {isPollOpen
                 ? "Your team is currently answering the Focus Poll. These early results are still taking shape — you’ll get a clearer picture as more people respond."
                 : "  Your team has shared where focused improvement would help them most right now. These results don’t replace the pressure you’re managing — they help translate it into a clear, shared focus the team can work on together."}
             </p>
-            {isBelowThreshold && kpiPollData?.status === "open" && (
+            {isPollOpen && (
               <p className="text-[#0F4F58] text-[20px] leading-relaxed mb-6 font-[Roboto] ml-8 font-bold">
                 So far: {participation?.responded || 0} of{" "}
                 {participation?.total || 0} members have responded ({" "}
@@ -442,7 +448,7 @@ Thanks!`,
             )}
           </div>
 
-          {isBelowThreshold && kpiPollData?.status === "open" && (
+          {isPollOpen && (
             <div className="mt-10 flex justify-end items-center gap-4">
               <Image
                 src={images.email}
@@ -516,57 +522,18 @@ Thanks!`,
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-6">
+          <div className="mt-4">
             <p className="text-[#0F4F58] text-[20px] font-bold font-[RocaTwo]">
               Participation: {participation?.responded || 0} of{" "}
               {participation?.total || 0} members have responded ({" "}
               {participation?.percentage || 0}%)
             </p>
 
-            {/* Close Poll disabled for now - poll is closed manually
-            {!isBelowThreshold && kpiPollData?.status === "open" && (
-              <div
-                className={`shrink-0 ${
-                  isClosingPoll
-                    ? "cursor-not-allowed opacity-50"
-                    : "cursor-pointer"
-                }`}
-                onClick={
-                  isClosingPoll
-                    ? undefined
-                    : () =>
-                        closePollMutation(undefined, {
-                          onSuccess: () => {
-                            router.push("/home");
-                          },
-                        })
-                }
-                aria-disabled={isClosingPoll}
-              >
-                <PolygonButton
-                  width="106px"
-                  height="107px"
-                  bgColor="#acd5ab"
-                  radius={14}
-                  clipPath={`polygon(
-    15% 11%,
-    81% 0%,
-    100% 87%,
-    3% calc(100% - 15px)
-  )`}
-                >
-                  <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
-                    {isClosingPoll ? "Closing..." : "Close Poll"}
-                  </span>
-                </PolygonButton>
-              </div>
-            )}
-            */}
           </div>
 
           {/* Bottom Participation */}
         </div>
-        {isBelowThreshold && kpiPollData?.status === "open" && (
+        {isPollOpen && (
           <div className="relative bg-[#F3EEE7] p-12 mt-10 rounded-xl overflow-hidden">
             {/* LEFT CONTENT */}
             <div>
@@ -580,7 +547,7 @@ Thanks!`,
 
               <p className="text-[#0F4F58] text-[20px] mt-4 font-[Roboto] leading-relaxed">
                 Suggested focus areas will appear once participation reaches{" "}
-                {FOCUS_THRESHOLD_PERCENT}%
+                {POLL_AUTO_CLOSE_PERCENT}%
                 or after the poll has been open for a few days.
               </p>
             </div>
@@ -601,6 +568,35 @@ Thanks!`,
                 height={110}
               />
             </div>
+          </div>
+        )}
+
+        {canClosePollEarly && activeRitualIds.length < 1 && (
+          <div className="flex items-center gap-10 mt-10 ml-12">
+            <div className="cursor-pointer" onClick={openClosePollEarlyModal}>
+              <PolygonButton
+                width="106px"
+                height="107px"
+                bgColor="#86c9c9"
+                radius={14}
+                clipPath={`polygon(
+    15% 11%,
+    81% 0%,
+    100% 87%,
+    3% calc(100% - 15px)
+  )`}
+              >
+                <span className="text-[#0F4F58] text-[20px] font-[RocaTwo] font-bold leading-tight text-center">
+                  Close poll <br />
+                  <span className="whitespace-nowrap">early?</span>
+                </span>
+              </PolygonButton>
+            </div>
+
+            <p className="text-[#0F4F58] text-[22px] font-[Roboto] max-w-[600px]">
+              Close the team poll early to move ahead with selecting your Focus
+              Area and Team Rituals.
+            </p>
           </div>
         )}
 
@@ -1109,6 +1105,7 @@ Champion Hub"
       <YesExtendTimeModal />
       <FinishEarlyModal />
       <YesCompleteRitualModal />
+      <ClosePollEarlyModal onPollClosed={() => recommendFocusAreas()} />
       <LogoutModal />
     </>
   );

@@ -61,16 +61,22 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
     infoBoxText:
       "Curious? Explore how to join or bring Hi Humaniser!™ to your organisation. Visit",
     infoBoxLinkText: "HumanisingOurWorkplaces.com",
-    infoBoxMiddle: "or check the",
-    infoBoxFaqText: "FAQs",
+    // infoBoxMiddle: "or check the",
+    // infoBoxFaqText: "FAQs",
+    infoBoxMiddle: "",
+    infoBoxFaqText: "",
     infoBoxEnd: "",
     faqHeading: "Frequently Asked Questions",
-    faqIntroBefore:
-      "Find answers to common questions below or pop us an email at",
+    // faqIntroBefore:
+    //   "Find answers to common questions below, read the full FAQs",
+    faqIntroBefore: "Find answers to common questions below",
+    // faqIntroLink: "here",
+    faqIntroLink: "",
+    faqIntroAfter: "or pop us an email at",
     faqs: [
       {
         title: "What is Hi Humaniser!™?",
-        paragraph: `Hi Humaniser!™ is a digital human-skills platform that helps people and teams build better ways of working.\n\nIt turns everyday behaviours — how we communicate, listen, build trust, make decisions and work together — into practical actions people can use in real work.\n\nIndividuals practise small actions. Teams practise shared rituals. Over time, those behaviours become part of how the team works.`,
+        paragraph: `Hi Humaniser!™ is a digital human-skills platform that helps people and teams build better ways of working.\n\nIt turns everyday behaviours, how we communicate, listen, build trust, make decisions and work together, into practical actions people can use in real work.\n\nIndividuals practise small actions. Teams practise shared rituals. Over time, those behaviours become part of how the team works.`,
       },
       {
         title: "Who is Hi Humaniser!™ for?",
@@ -79,7 +85,7 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
       {
         title:
           "Is this just another platform or initiative I don’t have time for?",
-        paragraph: `Fair question. Hi Humaniser!™ is designed to fit into the work people are already doing.\n\nIt does not require long training sessions or extra meetings. The actions are small, practical and designed to be used in real conversations, meetings and decisions.\n\nThe aim is to help teams build better habits without adding more noise to the working day.\n\nIf it feels like one more thing, it is not doing its job.`,
+        paragraph: `Fair question! Hi Humaniser!™ is designed to fit into the work people are already doing.\n\nIt does not require long training sessions or extra meetings. The actions are small, practical and designed to be used in real conversations, meetings and decisions.\n\nThe aim is to help teams build better habits without adding more noise to the working day.\n\nIf it feels like one more thing, it is not doing its job.`,
       },
       {
         title: "What problem is Hi Humaniser!™ trying to solve?",
@@ -110,9 +116,10 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
         paragraph: `No. One team can have the full Hi Humaniser!™ experience without the whole organisation taking part.\n\nHi Humaniser!™ is also designed to work across several teams, creating opportunities to share learning, practise together and spot wider patterns across the organisation.\n\nAnd the impact does not stop with the teams using the platform. The behaviours people practise can travel into other projects, client relationships and everyday interactions, influencing how people work together even when others are not using Hi Humaniser!™ themselves.`,
       },
     ],
-    deeperBefore: "Want to go deeper? Explore the full FAQs",
-    deeperLink: "here",
-    deeperAfter: ".",
+    // deeperBefore: "Want to go deeper? Explore the full FAQs",
+    // deeperLink: "here",
+    // deeperAfter: ".",
+    deeperBefore: "",
     stillNotSure:
       "Still not sure, or just want to talk it through? Drop us a note at",
     quote: "Small shifts. Real work. Better outcomes.",
@@ -139,9 +146,12 @@ export const landingContent: Record<LandingLanguage, LandingContent> = {
     letsGo: "¡Vamos!",
     infoBoxText: "¿Tienes curiosidad? Descubre cómo funciona Hi Humaniser™ en",
     infoBoxLinkText: "HumanisingOurWorkplaces.com",
-    infoBoxMiddle: "o consulta las",
-    infoBoxFaqText: "preguntas frecuentes",
-    infoBoxEnd: " abajo.",
+    // infoBoxMiddle: "o consulta las",
+    // infoBoxFaqText: "preguntas frecuentes",
+    // infoBoxEnd: " abajo.",
+    infoBoxMiddle: "",
+    infoBoxFaqText: "",
+    infoBoxEnd: "",
     faqHeading: "Preguntas Frecuentes",
     faqIntroBefore:
       "Encuentra respuestas a las preguntas más comunes o escríbenos a",

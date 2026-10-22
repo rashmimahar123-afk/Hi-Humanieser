@@ -1,7 +1,7 @@
 import UserProfileHeader from "@/src/modules/UserProfileHeader/Components/UserProfileHeader";
 import Image from "next/image";
 import images from "@/src/assets/images";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import SuccessMessage from "@/src/components/SuccessMessage/SuccessMessage";
 import TeamJourneyPoll from "../TeamJourneyPoll/TeamJourneyPoll";
@@ -13,12 +13,12 @@ import { useAddReflectionMutation } from "@/src/modules/PersonalPathwayModule/Ho
 import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/useGetReflectionWallsQuery";
 import { useGetMtjMessagesQuery } from "../../Hooks/useGetMtjMessagesQuery";
 import useHhFrameworkMtjQuery from "../../Hooks/useHhFrameworkMtjQuery";
+import { openInNewTab } from "@/src/lib/Helpers";
 type TEAM_JOURNEY_PROPS = {
   rituals: Array<MTJ_TEAM_RITUAL_DATA>;
 };
 function TeamJourney(props: TEAM_JOURNEY_PROPS) {
   const { rituals } = props;
-  const router = useRouter();
   const [activePathway, setActivePathway] = useState<string | null>(null);
   const { user } = useAuthValue();
   const [enter, setEnter] = useState(false);
@@ -201,7 +201,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                             ritual.team_ritual_id,
                           );
 
-                          router.push(`/conversation?focusArea=${focusAreaId}`);
+                          openInNewTab(`/conversation?focusArea=${focusAreaId}`);
                         }}
                       >
                         <Image
@@ -236,6 +236,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
                               frameworkRitual?.long_description ||
                               ritual.long_description,
                             common_traps: frameworkRitual?.common_traps ?? [],
+                            try_saying: frameworkRitual?.try_saying ?? [],
                           }}
                           ClosePracticePerspective={ClosePracticePerspective}
                         />

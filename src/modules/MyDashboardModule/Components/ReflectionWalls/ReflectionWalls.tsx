@@ -424,7 +424,7 @@ function ReflectionWalls() {
             <p className="mt-2 text-[14px] sm:text-[18px] lg:text-[22px] text-[#0F4F58] leading-[20px] sm:leading-[22px] lg:leading-[23px] font-[Roboto] ml-0 sm:ml-4 lg:ml-[36px]">
               Every reflection adds a piece to the bigger picture of how your
               team works and grows. These walls capture the real, everyday
-              moments that shape your culture — one insight at a time.
+              moments that shape your culture - one insight at a time.
             </p>
           </div>
 

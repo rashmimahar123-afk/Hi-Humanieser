@@ -91,6 +91,13 @@ function SelectTeamRitualModal() {
           setReflection("");
           setIsOpen(false);
         },
+        onError: (error: any) => {
+          SnackbarHandler.errorToast(
+            error?.response?.data?.detail?.message ||
+              error?.response?.data?.message ||
+              "Something went wrong",
+          );
+        },
       },
     );
   };

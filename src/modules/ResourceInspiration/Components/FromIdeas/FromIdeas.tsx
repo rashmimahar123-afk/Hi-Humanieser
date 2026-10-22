@@ -288,9 +288,8 @@ function FromIdeas() {
                 <p>
                   As you complete Pathways, try micro-actions, and take part in
                   Team Rituals, your practice is captured automatically in your
-                  Dashboard. Over time, this creates a living record of how
-                  you&apos;ve shown up — what you&apos;ve tried, reflected on,
-                  and shaped with others.
+                  Dashboard. Over time, this creates a living record of what
+                  you&apos;ve tried, reflected on, and shaped with others.
                 </p>
                 <p>
                   It means when it comes to PDRs, annual reviews, or development

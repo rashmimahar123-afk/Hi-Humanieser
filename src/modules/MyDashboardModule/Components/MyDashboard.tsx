@@ -1391,7 +1391,7 @@ function MyDashboard() {
           {/* Description + Download */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center max-w-[1000px] mx-auto mt-6 md:mt-10 gap-4">
             <p className="text-[#0F4F58] text-[13px] sm:text-[14px] md:text-[17px] lg:text-[20px] leading-5 md:leading-6 lg:leading-7 max-w-full md:max-w-[800px]">
-              This is your hub — a snapshot of your journey so far. Revisit your
+              This is your hub, a snapshot of your journey so far. Revisit your
               check-in, see what you're building, track what you're practicing,
               and notice how it's showing up in your team.
             </p>

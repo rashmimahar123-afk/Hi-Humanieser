@@ -31,6 +31,7 @@ type TeamRitual = {
   long_description: string;
   activation_message?: string;
   common_traps?: Array<string>;
+  try_saying?: Array<string>;
   reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
 };
 
@@ -86,6 +87,7 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
 
   const latestReflection = ritualReflections[0];
   const commonTraps = ritual.common_traps ?? [];
+  const trySaying = ritual.try_saying ?? [];
 
   const [share, setShare] = useState(
     latestReflection?.shared_anonymously ?? false,
@@ -185,14 +187,19 @@ function TeamJourneyPoll(props: PRACTICE_PERSPECTIVE_PROPS) {
                 {ritual.long_description}
               </p>
 
-              <p className="text-[18px] font-[Aptos] font-[400] text-[#244E52] mb-2">
-                Try saying
-              </p>
+              {trySaying.length > 0 && (
+                <>
+                  <p className="text-[18px] font-[Aptos] font-[400] text-[#244E52] mb-2">
+                    Try saying
+                  </p>
 
-              <ul className="list-disc pl-5 text-[18px] text-[#244E52] font-[Aptos] font-[400] space-y-1">
-                <li>“What story am I telling myself here?”</li>
-                <li>“What else could be going on?”</li>
-              </ul>
+                  <ul className="list-disc pl-5 text-[18px] text-[#244E52] font-[Aptos] font-[400] space-y-1">
+                    {trySaying.map((item: string, tryIndex: number) => (
+                      <li key={tryIndex}>“{item}”</li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
 
             {/* Champion Note */}

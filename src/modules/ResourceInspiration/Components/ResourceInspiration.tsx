@@ -109,13 +109,15 @@ function ResourceInspiration() {
         {/* Intro paragraph */}
         <div className="mt-8 lg:mt-12">
           <p className="text-[#0F4F58] text-[15px] sm:text-[20px] md:text-[22px] lg:text-[26px] leading-relaxed font-[RocaTwo-Bold] font-bold max-w-[90%] sm:max-w-[80%] lg:max-w-none">
-            This space brings together all the learning, tools, and ideas that
-            make Hi Humaniser! come alive.
-            <br className="hidden lg:block" />
+            This space brings together the ideas, tools, and thinking that power
+            Hi Humaniser!™. It’s where the why meets the how, helping you
+            understand the framework, explore what’s possible, and go deeper if
+            curiosity pulls you there.
+            {/* <br className="hidden lg:block" />
             <span className="block mt-3 lg:mt-0">
               Explore the pillars, principles, and pathways — or spend a moment
               with Huma when you need space to pause and think.
-            </span>
+            </span> */}
           </p>
         </div>
 

@@ -127,7 +127,7 @@ function BehindScene() {
           </h2>
           <div className={styles.sectionIndent}>
             <p className={`${styles.bodyText} ${styles.bodyTextSpaced}`}>
-              At the foundation of Hi Humaniser! are three pillars — The Mindset
+              At the foundation of Hi Humaniser! are three pillars: The Mindset
               We Bring, The Way We Connect, and The Culture We Shape.
             </p>
 
@@ -260,7 +260,7 @@ function BehindScene() {
               className={`${styles.sectionBodyText} ${styles.sectionBodyTextSpaced}`}
             >
               These pillars and principles give teams a shared language for how
-              they think, communicate, and build trust — turning good intentions
+              they think, communicate and build trust: turning good intentions
               into everyday behaviours.
             </p>
 

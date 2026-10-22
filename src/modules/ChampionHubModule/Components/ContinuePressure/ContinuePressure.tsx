@@ -227,11 +227,16 @@ function ContinuePressure() {
           </div>
 
           <div className="mt-[60px] flex justify-end items-center  ">
-            <div>
+            <div className="flex flex-col items-center gap-[14px]">
               <CommonButtons
                 label="Go back to Team Focus"
                 bgColor="#FBE1DE"
                 onClick={() => router.push("/champion-hub/team-focus")}
+              />
+              <CommonButtons
+                label="Return to Homepage"
+                bgColor="#FBE1DE"
+                onClick={() => router.push("/home")}
               />
             </div>
           </div>

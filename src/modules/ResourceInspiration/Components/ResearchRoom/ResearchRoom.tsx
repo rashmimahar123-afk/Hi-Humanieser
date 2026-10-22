@@ -67,7 +67,7 @@ function ResearchRoom() {
                 <p>
                   The framework draws on decades of work across neuroscience,
                   psychology, organisational behaviour, and social and cultural
-                  science – reflecting the reality that work is shaped by brains,
+                  science, reflecting the reality that work is shaped by brains,
                   people, teams, and systems.
                 </p>
                 <p>
@@ -148,10 +148,7 @@ function ResearchRoom() {
               }}
             >
               <div className="h-full flex items-center justify-center text-center pointer-events-none">
-                <span
-                  className={styles.downloadLabel}
-                  onClick={handleDownload}
-                >
+                <span className={styles.downloadLabel} onClick={handleDownload}>
                   Research Index
                 </span>
               </div>
