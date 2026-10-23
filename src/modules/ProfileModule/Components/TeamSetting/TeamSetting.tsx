@@ -16,6 +16,7 @@ import { useCreateUserMutation } from "../../Hooks/useCreateUserMutation";
 import useGetAllListUsersQuery from "../../Hooks/useGetAllListUsersQuery";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
 import { useQueryClient } from "@tanstack/react-query";
+import useGetMtjCycleOverviewQuery from "@/src/modules/ChampionHubModule/Hooks/useGetCycleOverviewQuery";
 
 function TeamSetting() {
   const [firstName, setFirstName] = useState("");
@@ -50,6 +51,21 @@ function TeamSetting() {
       setMemberCount(myTeam.member_count);
     }
   }, [myTeam]);
+  const { data: cycleOverviewData } = useGetMtjCycleOverviewQuery(
+    myTeam?.id || user?.team_id || undefined,
+  );
+  const cycle = cycleOverviewData?.data?.cycle;
+  const currentFocusAreas: string[] = Array.from(
+    new Set(
+      (cycle?.focus_areas?.length
+        ? cycle.focus_areas
+        : (cycle?.team_rituals || []).map((ritual) => ritual.focus_area)
+      )
+        .map((focusArea) => focusArea?.trim())
+        .filter(Boolean),
+    ),
+  );
+
   const championTeams = championTeam ? [championTeam] : [];
   const { mutate: createUser } = useCreateUserMutation();
   const handleAddMember = () => {
@@ -193,23 +209,32 @@ function TeamSetting() {
               <label className="w-[103px] text-[#567F55] text-[19px] font-[Roboto]">
                 Current Focus Area
               </label>
-              <div className="ml-[100px]">
-                <input
-                  type="text"
-                  className="appearance-none
+              <div className="ml-[100px] flex gap-4 w-[708px]">
+                {(currentFocusAreas.length ? currentFocusAreas : [""]).map(
+                  (focusArea, index) => (
+                    <input
+                      key={focusArea || index}
+                      type="text"
+                      value={focusArea}
+                      placeholder="No focus area selected yet"
+                      title={focusArea}
+                      disabled
+                      className="appearance-none
           bg-white
           text-[#0F4F58]
           text-[18px]
           font-[400]
           px-6
-          pr-10
           h-[41px]
-          w-[708px]
+          flex-1
+          min-w-0
           rounded-[12px]
           outline-none
           font-[Roboto]
           "
-                />
+                    />
+                  ),
+                )}
               </div>
             </div>
           </div>
