@@ -12,7 +12,6 @@ import useAuthValue from "@/src/modules/AuthModule/Hooks/useAuthValue";
 import useGetTeamsQuery, {
   GET_TEAMS_QUERY_KEY,
 } from "../../Hooks/useGetTeamsQuery";
-import { useEditTeamMutation } from "../../Hooks/useEditTeamMutation";
 import { useCreateUserMutation } from "../../Hooks/useCreateUserMutation";
 import useGetAllListUsersQuery from "../../Hooks/useGetAllListUsersQuery";
 import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/LogoutModal";
@@ -42,9 +41,6 @@ function TeamSetting() {
   const isAddMemberDisabled =
     !firstName.trim() || !lastName.trim() || !isValidEmail || !effectiveTeamId;
 
-  const [isEditingTeam, setIsEditingTeam] = useState(false);
-  const [isEditingMembers, setIsEditingMembers] = useState(false);
-
   const [teamName, setTeamName] = useState("");
   const [memberCount, setMemberCount] = useState(0);
 
@@ -54,9 +50,6 @@ function TeamSetting() {
       setMemberCount(myTeam.member_count);
     }
   }, [myTeam]);
-  const { mutate: editTeamMutation, isPending } = useEditTeamMutation();
-  const myEditTeam = championTeam;
-
   const championTeams = championTeam ? [championTeam] : [];
   const { mutate: createUser } = useCreateUserMutation();
   const handleAddMember = () => {
@@ -137,8 +130,7 @@ function TeamSetting() {
                 <input
                   type="text"
                   value={teamName}
-                  disabled={!isEditingTeam}
-                  onChange={(e) => setTeamName(e.target.value)}
+                  disabled
                   className="appearance-none
           bg-white
           text-[#0F4F58]
@@ -155,30 +147,9 @@ function TeamSetting() {
               </div>
               <div>
                 <CommonButtons
-                  label={isEditingTeam ? "Save" : "Edit Team"}
+                  label="Edit Team"
                   bgColor="#C2E2E2"
-                  onClick={() => {
-                    if (isEditingTeam) {
-                      if (!myEditTeam?.id) return;
-
-                      editTeamMutation(
-                        {
-                          team_id: myEditTeam.id,
-                          new_team_name: teamName,
-                        },
-                        {
-                          onSuccess: (res) => {
-                            setIsEditingTeam(false);
-                          },
-                          onError: (err) => {
-                            console.error("Error updating team:", err);
-                          },
-                        },
-                      );
-                    } else {
-                      setIsEditingTeam(true);
-                    }
-                  }}
+                  onClick={() => router.push("/edit-team")}
                   height={"41px"}
                 />
               </div>
@@ -192,8 +163,7 @@ function TeamSetting() {
                 <input
                   type="text"
                   value={memberCount}
-                  disabled={!isEditingMembers}
-                  onChange={(e) => setMemberCount(Number(e.target.value))}
+                  disabled
                   className="appearance-none
           bg-white
           text-[#0F4F58]
@@ -210,18 +180,9 @@ function TeamSetting() {
               </div>
               <div>
                 <CommonButtons
-                  label={isEditingMembers ? "Save" : "Edit Members"}
+                  label="Edit Members"
                   bgColor="#C2E2E2"
-                  onClick={() => {
-                    if (isEditingMembers) {
-                      // 👉 CALL UPDATE API HERE
-                      console.log("Saving members:", memberCount);
-
-                      setIsEditingMembers(false);
-                    } else {
-                      setIsEditingMembers(true);
-                    }
-                  }}
+                  onClick={() => router.push("/edit-members?type=member")}
                   height={"41px"}
                 />
               </div>
