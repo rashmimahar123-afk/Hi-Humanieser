@@ -59,6 +59,16 @@ export type MTJ_TEAM_RITUALS_REFLECTIONS_DATA = {
   completed_count: number;
   member_count: number;
   completion_percentage: number;
+  // Only returned for champions and partners
+  completed_user_ids?: Array<string>;
+};
+export type MTJ_TEAM_RITUAL_VIEWS_DATA = {
+  opened_by_me: boolean;
+  opened_count: number;
+  member_count: number;
+  opened_percentage: number;
+  // Only returned for champions and partners
+  opened_user_ids?: Array<string>;
 };
 export type MTJ_TEAM_RITUAL_DATA = {
   team_ritual_id: string;
@@ -68,6 +78,7 @@ export type MTJ_TEAM_RITUAL_DATA = {
   long_description: string;
   activation_message?: string;
   reflections: MTJ_TEAM_RITUALS_REFLECTIONS_DATA;
+  views?: MTJ_TEAM_RITUAL_VIEWS_DATA;
 };
 export type GET_MTJ_LIST_RESPONSE = {
   message: string;
@@ -81,11 +92,18 @@ export type GET_MTJ_LIST_RESPONSE = {
   my_reflection_count: number;
   my_reflections: Array<any>;
   team_rituals: Array<MTJ_TEAM_RITUAL_DATA>;
+  // null until the champion has started ritual practice
   ritual_practice: {
     status: string;
     duration_weeks: number;
     started_at: number;
     scheduled_end_at: number;
     extended: boolean;
+  } | null;
+  ritual_completion?: {
+    member_count: number;
+    completed_count: number;
+    completion_percentage: number;
+    completed_by_me: boolean;
   };
 };

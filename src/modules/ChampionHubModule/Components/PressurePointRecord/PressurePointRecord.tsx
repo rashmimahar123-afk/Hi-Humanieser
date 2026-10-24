@@ -33,6 +33,7 @@ import LogoutModal from "@/src/modules/WelcomeModule/Components/LogoutModal/Logo
 import { useRecommendFocusAreaMutation } from "../../Hooks/useRecommendFocusAreaMutation";
 import useGetMtjCycleOverviewQuery from "../../Hooks/useGetCycleOverviewQuery";
 import useGetKpiQuery from "../../Hooks/useGetKpiQuery";
+import useGetMtjListQuery from "@/src/modules/MyTeamJourneyModule/Hooks/useGetMtjListQuery";
 import { useFinishCycleMutation } from "../../Hooks/useFinishCycleMutation";
 import ClosePollEarlyModal, {
   openClosePollEarlyModal,
@@ -153,7 +154,16 @@ Thanks!`,
   );
   const currentKpi = mtjKpiData?.data;
 
+  // Team-wide figures; the backend keeps them at 0 until ritual practice starts
   const engagementData = currentKpi?.engagement;
+  const sharing = engagementData?.sharing;
+
+  // Per-ritual opened (POST /mtj/team-ritual/view) and reflection counts from /list-mtj
+  const { data: mtjListData } = useGetMtjListQuery();
+  const getListRitual = (teamRitualId: string) =>
+    mtjListData?.data?.team_rituals?.find(
+      (item) => item.team_ritual_id === teamRitualId,
+    );
   const cycleData = currentKpi?.cycle;
 
   const previousCycles = currentKpi?.previous_cycles || [];
@@ -806,8 +816,11 @@ Thanks!`,
                           />
                           <span>
                             Awareness:{" "}
-                            {engagementData?.awareness?.percentage ?? 0}% have
-                            viewed the ritual
+                            {getListRitual(ritual.team_ritual_id)?.views
+                              ?.opened_percentage ??
+                              engagementData?.awareness?.percentage ??
+                              0}
+                            % have viewed the ritual
                           </span>
                         </li>
 
@@ -821,8 +834,11 @@ Thanks!`,
                           />
                           <span>
                             Participation:{" "}
-                            {engagementData?.team_ritual_participation
-                              ?.percentage ?? 0}
+                            {getListRitual(ritual.team_ritual_id)?.reflections
+                              ?.completion_percentage ??
+                              engagementData?.team_ritual_participation
+                                ?.percentage ??
+                              0}
                             % have added at least one reflection
                           </span>
                         </li>
@@ -837,8 +853,9 @@ Thanks!`,
                           />
                           <span>
                             Sharing:{" "}
-                            {engagementData?.sharing?.shared_count ?? 0}{" "}
-                            reflections shared on Reflection Wall
+                            {sharing?.sharer_count !== undefined
+                              ? `${sharing.percentage ?? 0}% have shared a reflection on Reflection Wall`
+                              : `${sharing?.shared_count ?? 0} reflections shared on Reflection Wall`}
                           </span>
                         </li>
                       </ul>

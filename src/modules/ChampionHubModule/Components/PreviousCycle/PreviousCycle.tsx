@@ -338,8 +338,10 @@ function PreviousCycle(props: PREVIOUS_CYCLE_PROPS) {
                       className="mt-1"
                     />
                     <span>
-                      Sharing: {engagement?.sharing?.shared_count ?? 0}{" "}
-                      reflections shared on Reflection Wall
+                      Sharing:{" "}
+                      {engagement?.sharing?.sharer_count !== undefined
+                        ? `${engagement.sharing.percentage ?? 0}% have shared a reflection on Reflection Wall`
+                        : `${engagement?.sharing?.shared_count ?? 0} reflections shared on Reflection Wall`}
                     </span>
                   </li>
                 </ul>

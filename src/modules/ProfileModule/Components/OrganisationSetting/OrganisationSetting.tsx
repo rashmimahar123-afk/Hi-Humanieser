@@ -13,7 +13,10 @@ import SnackbarHandler from "@/src/lib/SnackbarHandler";
 import useGetTeamsQuery from "../../Hooks/useGetTeamsQuery";
 import { useDeleteTeamMutation } from "../../Hooks/useDeleteTeamMutation";
 import { useQueryClient } from "@tanstack/react-query";
-import { useCreateUserMutation } from "../../Hooks/useCreateUserMutation";
+import {
+  TEAM_HAS_CHAMPION_MESSAGE,
+  useCreateUserMutation,
+} from "../../Hooks/useCreateUserMutation";
 import useOrganisationDetailsQuery from "../../Hooks/useOrganisationDetailsQuery";
 import SuccessAddTeamModal, {
   openSuccessAddTeamModal,
@@ -184,6 +187,14 @@ function OrganisationSetting() {
   const handleAddUser = () => {
     const selectedUserType = getUserTypeFromRole(role);
 
+    if (role === "Champion") {
+      const targetTeam = teamsData.find((team: any) => team.id === teamId);
+      if (targetTeam?.champion_id) {
+        SnackbarHandler.errorToast(TEAM_HAS_CHAMPION_MESSAGE);
+        return;
+      }
+    }
+
     let payload: any = {
       email_address: email,
       first_name: firstName,
@@ -207,6 +218,9 @@ function OrganisationSetting() {
           setEmail("");
           setRole("");
           setTeamId("");
+          queryClient.invalidateQueries({
+            queryKey: ["getTeamsQueryKey"],
+          });
         },
       },
     );

@@ -7,6 +7,7 @@ import images from "@/src/assets/images";
 import useEventEmitter, {
   emitEvent,
 } from "@/src/components/Hooks/useEventEmitter";
+import { useRouter } from "next/navigation";
 
 const EVENT = "SIGN_UP_MODAL_EVENT";
 
@@ -21,6 +22,8 @@ function SignUpModal() {
     setIsOpen(true);
   });
 
+  const router = useRouter();
+
   return (
     <Dialog open={isOpen} onClose={() => {}} className="relative z-[9999]">
       {/* Overlay */}
@@ -30,7 +33,7 @@ function SignUpModal() {
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <DialogPanel className="w-full max-w-[520px] rounded-[28px] bg-[#FBE6BF] p-8 text-center space-y-6">
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={() => router.push("/")}
             className="absolute left-[65%] font-bold cursor-pointer"
           >
             ✕

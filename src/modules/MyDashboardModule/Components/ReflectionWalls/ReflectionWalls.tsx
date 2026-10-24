@@ -359,6 +359,9 @@ function ReflectionWalls() {
 
   // const isOwnTeam = selectedTeam ? selectedTeam === user?.team_id : true;
 
+  // Partner must pick a team before the wall is shown.
+  const showCardsSection = user?.user_type !== 3 || !!selectedTeam;
+
   const rows = createPatternRows(finalReflections, [3, 2]);
   console.log("rowsrowsrowsrows", rows);
   return (
@@ -517,6 +520,7 @@ font-[Roboto]
           </div>
 
           {/* Cards Section */}
+          {showCardsSection && (
           <div className="bg-[#F8E1B8] rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] mt-6 sm:mt-8 lg:mt-10 px-3 sm:px-5 lg:px-8 py-6 sm:py-8 lg:py-10 relative w-full min-h-[200px]">
             <div className="w-full">
               {/* Card Rows */}
@@ -597,6 +601,7 @@ font-[Roboto]
               </div>
             </div>
           </div>
+          )}
         </div>
 
         <FillUpFormModal />

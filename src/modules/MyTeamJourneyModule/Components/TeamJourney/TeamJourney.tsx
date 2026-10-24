@@ -14,6 +14,7 @@ import useGetReflectionWallsQuery from "@/src/modules/MyDashboardModule/Hooks/us
 import { useGetMtjMessagesQuery } from "../../Hooks/useGetMtjMessagesQuery";
 import useHhFrameworkMtjQuery from "../../Hooks/useHhFrameworkMtjQuery";
 import { openInNewTab } from "@/src/lib/Helpers";
+import { useViewTeamRitualMutation } from "../../Hooks/useViewTeamRitualMutation";
 type TEAM_JOURNEY_PROPS = {
   rituals: Array<MTJ_TEAM_RITUAL_DATA>;
 };
@@ -41,6 +42,17 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
   };
   const { data: randomMessage, isLoading } = useGetMtjMessagesQuery();
   const { data: frameworkData } = useHhFrameworkMtjQuery();
+  const { mutate: viewTeamRitual } = useViewTeamRitualMutation();
+
+  const toggleRitual = (ritual: MTJ_TEAM_RITUAL_DATA) => {
+    const isOpening = activePathway !== ritual.team_ritual_id;
+    setActivePathway(isOpening ? ritual.team_ritual_id : null);
+
+    // Opening a ritual is what counts as "viewed"; no need to re-send once recorded
+    if (isOpening && !ritual.views?.opened_by_me) {
+      viewTeamRitual({ team_ritual_id: ritual.team_ritual_id });
+    }
+  };
 
   const getFocusAreaId = (teamRitualId: string) => {
     const focusAreas = frameworkData?.data?.focus_areas || [];
@@ -161,13 +173,7 @@ function TeamJourney(props: TEAM_JOURNEY_PROPS) {
 
                         <div
                           className="relative mt-2"
-                          onClick={() =>
-                            setActivePathway((prev) =>
-                              prev === ritual.team_ritual_id
-                                ? null
-                                : ritual.team_ritual_id,
-                            )
-                          }
+                          onClick={() => toggleRitual(ritual)}
                         >
                           <Image
                             src={images.pathwayArrow}

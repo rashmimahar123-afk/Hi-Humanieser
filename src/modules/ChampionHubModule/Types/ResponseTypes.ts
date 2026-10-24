@@ -169,6 +169,12 @@ export type TEAM_SHARED_NOTE_DATA = {
   edited: boolean;
   like_count: number;
 };
+export type ENGAGEMENT_SHARING_DATA = {
+  shared_count: number;
+  sharer_count?: number;
+  total?: number;
+  percentage?: number;
+};
 export type PREVIOUS_CYCLE_DATA = {
   id: string;
   status: string;
@@ -197,9 +203,7 @@ export type PREVIOUS_CYCLE_DATA = {
       percentage: number;
     };
     reflection_count: number;
-    sharing: {
-      shared_count: number;
-    };
+    sharing: ENGAGEMENT_SHARING_DATA;
   };
   my_notes?: {
     hub: string;
@@ -259,9 +263,7 @@ export type GET_MTJ_KPI_RESPONSE = {
       total: number;
       percentage: number;
     };
-    sharing: {
-      shared_count: number;
-    };
+    sharing: ENGAGEMENT_SHARING_DATA;
     shared_reflections: Array<GET_MTJ_KPI_SHARED_REFLECTIONS_DATA>;
   };
   previous_cycles: Array<PREVIOUS_CYCLE_DATA>;

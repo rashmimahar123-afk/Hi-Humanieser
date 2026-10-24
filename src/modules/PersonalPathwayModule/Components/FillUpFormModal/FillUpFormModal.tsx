@@ -134,8 +134,9 @@ function FillUpFormModal() {
     if (
       pathname === "/start-team-journey" ||
       pathname === "/champion-hub/champion-notes" ||
-      // /view-all edits both kinds — only team-ritual reflections carry a ritual id
-      (pathname === "/view-all" && !!teamRitualId)
+      // Any reflection opened for a team ritual (e.g. /team-journey, /view-all,
+      // dashboard) is an MTJ reflection and must be saved with source "mtj"
+      !!teamRitualId
     ) {
       if (isEdit) {
         const payload = {
